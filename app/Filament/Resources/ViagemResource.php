@@ -1,0 +1,268 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\ViagemResource\Pages;
+use App\Filament\Resources\ViagemResource\RelationManagers;
+use App\Models\Viagem;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class ViagemResource extends Resource
+{
+    protected static ?string $model = Viagem::class;
+
+    protected static ?string $navigationGroup = 'Viagens';
+
+    protected static ?string $pluralModelLabel = 'Viagens';
+
+    protected static ?string $pluralLabel = 'Viagens';
+
+    protected static ?string $label = 'Viagem';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('veiculo_id')
+                    ->label('Veículo')
+                    ->required()
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload(),
+                Forms\Components\TextInput::make('numero_viagem')
+                    ->required(),
+                Forms\Components\TextInput::make('numero_custo_frete')
+                    ->label('Nº Custo Frete')
+                    ->numeric(),
+                Forms\Components\TextInput::make('documento_transporte')
+                    ->label('Doc. Transp.')
+                    ->numeric(),
+                Forms\Components\Select::make('tipo_viagem')
+                    ->label('Tipo Viagem')
+                    ->options([
+                        'SIMPLES' => 'Simples',
+                        'COMPOSTA' => 'Composta',
+                    ])
+                    ->required(),
+                Forms\Components\TextInput::make('valor_frete')
+                    ->readOnly(),
+                Forms\Components\TextInput::make('valor_cte')
+                    ->readOnly(),
+                Forms\Components\TextInput::make('valor_nfs')
+                    ->readOnly(),
+                Forms\Components\TextInput::make('valor_icms')
+                    ->readOnly(),
+                Forms\Components\TextInput::make('km_rodado')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('km_pago')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('km_cadastro')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('km_ajustado')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('peso')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('entregas')
+                    ->required()
+                    ->numeric()
+                    ->default(1),
+                Forms\Components\DatePicker::make('data_competencia')
+                    ->required(),
+                Forms\Components\DatePicker::make('data_inicio')
+                    ->required(),
+                Forms\Components\DatePicker::make('data_fim')
+                    ->required(),
+                Forms\Components\Toggle::make('conferido')
+                    ->required(),
+                Forms\Components\KeyValue::make('divergencias')
+                    ->columnSpanFull(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->with('carga.integrado', 'veiculo');
+            })
+            ->columns([
+                Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->label('Placa')
+                    ->numeric()
+                    ->sortable()
+                    ->searchable(isIndividual: true, isGlobal: false)
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('numero_viagem')
+                    ->label('Nº Viagem')
+                    ->width('1%')
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true, isGlobal: false),
+                Tables\Columns\TextColumn::make('carga.integrado.nome')
+                    ->label('Integrado')
+                    ->searchable(isIndividual: true, isGlobal: false),
+                Tables\Columns\TextColumn::make('numero_custo_frete')
+                    ->label('Nº Custo Frete')
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true, isGlobal: false)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('documento_transporte')
+                    ->label('Doc. Transp.')
+                    ->copyable()
+                    ->sortable()
+                    ->searchable(isIndividual: true, isGlobal: false)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('tipo_viagem')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('valor_frete')
+                    ->label('Valor Frete')
+                    ->money('BRL')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('valor_cte')
+                    ->label('Valor CTe')
+                    ->money('BRL')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('valor_nfs')
+                    ->label('Valor NFs')
+                    ->money('BRL')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('valor_icms')
+                    ->label('Valor ICMS')
+                    ->money('BRL')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ColumnGroup::make('KM', [
+                    Tables\Columns\TextInputColumn::make('km_rodado')
+                        ->width('1%')
+                        ->summarize(Sum::make()),
+                    Tables\Columns\TextInputColumn::make('km_pago')
+                        ->width('1%')
+                        ->summarize(Sum::make()),
+                    Tables\Columns\TextColumn::make('km_cadastro')
+                        ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->summarize(Sum::make())
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextInputColumn::make('km_ajustado')
+                        ->width('1%')
+                        ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextInputColumn::make('km_divergencia')
+                        ->width('1%')
+                        ->summarize(Sum::make())
+                        ->toggleable(isToggledHiddenByDefault: false),
+                ]),
+
+                Tables\Columns\TextColumn::make('peso')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('entregas')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('data_competencia')
+                    ->label('Dt. Comp.')
+                    ->date('d/m/Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('data_inicio')
+                    ->label('Dt. Início')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('data_fim')
+                    ->label('Dt. Fim')
+                    ->dateTime('d/m/Y H:i')
+                    ->dateTimeTooltip()
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('conferido'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->groups(
+                [
+                    Tables\Grouping\Group::make('data_competencia')
+                        ->label('Data Competência'),
+                    Tables\Grouping\Group::make('veiculo.placa')
+                        ->label('Veículo'),
+                    Tables\Grouping\Group::make('carga.integrado.nome')
+                        ->label('Integrado'),
+                ]
+            )
+            ->defaultSort('numero_viagem')
+            ->searchOnBlur()
+            ->persistFiltersInSession()
+            ->filters([
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
+                    ->columnSpanFull(),
+                Tables\Filters\QueryBuilder::make()
+                    ->constraints([
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_inicio'),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_fim'),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_competencia'),
+                    ]),
+
+
+                ], layout: FiltersLayout::Modal)
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
+            ->filtersTriggerAction(
+                fn(Tables\Actions\Action $action) => $action
+                    ->button()
+                    ->slideOver()
+                    ->label('Filtros'))
+            ->deselectAllRecordsWhenFiltered(false)
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListViagems::route('/'),
+            'create' => Pages\CreateViagem::route('/create'),
+            // 'edit' => Pages\EditViagem::route('/{record}/edit'),
+        ];
+    }
+}

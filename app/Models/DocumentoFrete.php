@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class DocumentoFrete extends Model
 {
-    //
+    protected $table = 'documentos_frete';
 }

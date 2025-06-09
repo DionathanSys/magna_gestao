@@ -10,6 +10,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -23,6 +24,11 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
+            ->sidebarCollapsibleOnDesktop()
+            ->maxContentWidth(MaxWidth::Full)
+            ->brandName('Magna Gestão')
+            // ->databaseNotifications()
             ->default()
             ->id('admin')
             ->path('admin')

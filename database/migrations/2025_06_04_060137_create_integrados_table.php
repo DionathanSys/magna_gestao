@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('integrados', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo', 20)->unique();
             $table->string('nome', 100);
             $table->decimal('km_rota', 10, 2);
             $table->string('municipio')->nullable();

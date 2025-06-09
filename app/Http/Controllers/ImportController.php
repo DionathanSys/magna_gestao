@@ -2,13 +2,121 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\DocumentoFreteDTO;
+use App\DTO\ViagemDTO;
+use App\Frete\TipoDocumentoEnum;
+use App\Imports\IntegradoImport;
 use App\Imports\ViagemImport;
+use App\Models\Veiculo;
+use App\Services\DocumentoFreteService;
+use App\Services\IntegradoService;
+use App\Services\ViagemService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ImportController extends Controller
 {
+    public IntegradoService $integradoService;
+
     public function importarViagens(Request $request)
     {
-        new ViagemImport($request);
+        $this->integradoService = new IntegradoService();
+
+        try {
+
+            $read             = IOFactory::load($request->file);
+            $data             = $read->getActiveSheet()->toArray();
+            $dataCorte        = $request->input('data_corte');
+            $index            = array_flip($data[0]);
+            $veiculos         = Veiculo::all()->pluck('id', 'placa')->toArray();
+            unset($data[0]); // Remove header row
+
+            foreach ($data as $key => $row) {
+
+                $dataFim = Carbon::createFromFormat('d/m/Y H:i', $row[$index['Fim']])->format('Y-m-d');
+                if ($dataFim >= $dataCorte) {
+
+                    if($row[$index['Destino']]) {
+                        $integrado = $this->integradoService->buscaIntegrado($row[$index['Destino']]);
+                    }
+
+                    $viagemDto = ViagemDTO::makeFromArray(
+                        [
+                            'numero_viagem'         => $row[$index['Viagem']],
+                            'documento_transporte'  => $row[$index['Carga Cliente']] ?? null,
+                            'integrado'             => $integrado,
+                            'veiculo_id'            => $veiculos[$row[$index['Placa']]],
+                            'km_rodado'             => $row[$index['Km Rodado']] ?? 0,
+                            'km_pago'               => $row[$index['Km Sugerida']] ?? 0,
+                            'data_competencia'      => $dataFim,
+                            'data_inicio'           => $row[$index['Inicio']],
+                            'data_fim'              => $row[$index['Fim']],
+                        ]
+                    );
+
+                    $viagem = (new ViagemService)->create($viagemDto);
+
+                }
+            }
+
+        } catch (\Exception $e) {
+            Log::alert("Erro ao importar viagens: " . $e->getMessage());
+            dd('Erro ao importar viagens: ' . $e->getMessage());
+        }
+
+    }
+
+    public function importIntegrados(Request $request)
+    {
+        (new IntegradoImport($request))->store();
+    }
+
+    public function importarDocumentoFrete(Request $request)
+    {
+        try {
+
+            $read           = IOFactory::load($request->file);
+            $data           = $read->getActiveSheet()->toArray();
+            $index          = array_flip($data[2]);
+            $tipoDocumento  = $request->input('tipo_documento');
+            $veiculos         = Veiculo::all()->pluck('id', 'placa')->toArray();
+            unset($data[0], $data[1], $data[2]); // Remove row
+
+            foreach ($data as $row) {
+
+                if($tipoDocumento == TipoDocumentoEnum::CTE->value){
+                    $documentoTransporte = preg_match('/Transporte:\s*(\d+)/', $row[$index['Observação']], $matches) ? $matches[1] : null;
+                    $destino = $row[$index['Nome + UF (Cidade Fim CT-e)']];
+                } else {
+                    $documentoTransporte = $row[$index['Documento Transporte']] ?? null;
+                }
+
+                $placa = str_replace(['[', ']'], '', $row[$index['Marca [Placa] (Veículos)']]);
+                $veiculoId = isset($placa) ? $veiculos[$placa] ?? null : null;
+
+                $documentoDto = DocumentoFreteDTO::makeFromArray(
+                    [
+                        'veiculo_id'            => $veiculoId,
+                        'documento_transporte'  => $documentoTransporte,
+                        'numero_documento'      => $row[$index['Nro. Nota']] ?? null,
+                        'tipo_documento'        => $tipoDocumento,
+                        'data_emissao'          => $row[$index['Dt. Neg.']] ?? null,
+                        'valor_total'           => (float) str_replace(',', '.', str_replace('.', '', $row[$index['Vlr. Nota']] ?? 0)),
+                        'valor_icms'            => (float) str_replace(',', '.', str_replace('.', '', $row[$index['Vlr. do ICMS']] ?? 0)),
+                        'destino'               => $destino ?? null,
+                    ]
+                );
+
+                $documento = new DocumentoFreteService();
+                $documento->create($documentoDto);
+
+            }
+
+        } catch (\Exception $e) {
+            Log::alert("Erro ao importar documento de frete: " . $e->getMessage());
+            dd('Erro ao importar documento de frete: ' . $e->getMessage());
+        }
     }
 }

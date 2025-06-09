@@ -16,14 +16,15 @@ return new class extends Migration
             $table->foreignId('veiculo_id')->constrained('veiculos');
             $table->string('numero_viagem', 50);
             $table->string('numero_custo_frete', 50)->nullable();
-            $table->string('documento_transporte', 50);
-            $table->string('tipo_viagem'); // Simples, Composta
+            $table->string('documento_transporte', 50)->nullable();
+            $table->string('tipo_viagem')->nullable(); // Simples, Composta
             $table->decimal('valor_frete', 14)->default(0);
             $table->decimal('valor_cte', 14)->default(0);
             $table->decimal('valor_nfs', 14)->default(0);
             $table->decimal('valor_icms', 14)->default(0);
             $table->decimal('km_rodado', 10, 2)->default(0);
             $table->decimal('km_pago', 10, 2)->default(0);
+            $table->decimal('km_divergencia', 10, 2)->default(0);
             $table->decimal('km_cadastro', 10, 2)->default(0);
             $table->decimal('km_ajustado', 10, 2)->default(0);
             $table->decimal('peso', 10)->default(0);
