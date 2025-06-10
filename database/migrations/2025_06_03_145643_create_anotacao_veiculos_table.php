@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('veiculo_id')->constrained('veiculos')->cascadeOnDelete();
             $table->decimal('quilometragem', 10, 2)->nullable();
-            $table->foreignId('servico_id')->constrained('servicos')->nullOnDelete();
+            $table->foreignId('servico_id')->nullable()->constrained('servicos')->nullOnDelete();
             $table->foreignId('tecnico_manutencao_id')->nullable()->constrained('tecnicos_manutencao')->nullOnDelete();
             $table->foreignId('item_ordem_servico_id')->nullable()->constrained('itens_ordem_servico')->nullOnDelete();
             $table->string('tipo', 20);
