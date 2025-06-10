@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('viagem_id')->constrained('viagens')->cascadeOnDelete();
             $table->foreignId('integrado_id')->nullable()->constrained('integrados')->nullOnDelete();
+            $table->string('documento_transporte', 50)->nullable();
             $table->foreignId('documento_frete_id')->nullable()->constrained('documentos_frete')->nullOnDelete();
             $table->timestamps();
         });
