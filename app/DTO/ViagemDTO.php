@@ -4,6 +4,7 @@ namespace App\DTO;
 
 use App\Models\Integrado;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 readonly class ViagemDTO
 {
@@ -34,29 +35,39 @@ readonly class ViagemDTO
 
     public static function makeFromArray(array $data): self
     {
-        return new self(
-            numero_viagem: $data['numero_viagem'],
-            numero_custo_frete: null,
-            documento_transporte: $data['documento_transporte'] ?? null,
-            tipo_viagem: $data['tipo_viagem'] ?? 'SIMPLES',
-            veiculo_id: $data['veiculo_id'] ?? null,
-            integrado: $data['integrado'] ?? null,
-            valor_frete: 0,
-            valor_cte: 0,
-            valor_nfs: 0,
-            valor_icms: 0,
-            km_rodado: $data['km_rodado'] ?? 0,
-            km_pago: $data['km_pago'] ?? 0,
-            km_divergencia: ($data['km_rodado'] - $data['km_pago']) ?? 0,
-            km_cadastro: $data['integrado']->km_rota ?? 0,
-            km_ajustado: 0,
-            peso: 0,
-            entregas: $data['integrado'] ? 1 : 0,
-            data_competencia: $data['data_competencia'],
-            data_inicio: Carbon::createFromFormat('d/m/Y H:i', $data['data_inicio'])->format('Y-m-d H:i'),
-            data_fim: Carbon::createFromFormat('d/m/Y H:i', $data['data_fim'])->format('Y-m-d H:i'),
-            divergencias: [],
-        );
+        try {
+            $viagemDto = new self(
+                numero_viagem: $data['numero_viagem'],
+                numero_custo_frete: null,
+                documento_transporte: $data['documento_transporte'] ?? null,
+                tipo_viagem: $data['tipo_viagem'] ?? 'SIMPLES',
+                veiculo_id: $data['veiculo_id'] ?? null,
+                integrado: $data['integrado'] ?? null,
+                valor_frete: 0,
+                valor_cte: 0,
+                valor_nfs: 0,
+                valor_icms: 0,
+                km_rodado: $data['km_rodado'] ?? 0,
+                km_pago: $data['km_pago'] ?? 0,
+                km_divergencia: ($data['km_rodado'] - $data['km_pago']) ?? 0,
+                km_cadastro: $data['integrado']->km_rota ?? 0,
+                km_ajustado: 0,
+                peso: 0,
+                entregas: $data['integrado'] ? 1 : 0,
+                data_competencia: $data['data_competencia'],
+                data_inicio: Carbon::createFromFormat('d/m/Y H:i', $data['data_inicio'])->format('Y-m-d H:i'),
+                data_fim: Carbon::createFromFormat('d/m/Y H:i', $data['data_fim'])->format('Y-m-d H:i'),
+                divergencias: [],
+            );
+        } catch (\Exception $e) {
+            Log::error('Erro ao criar ViagemDTO', [
+                'data' => $data
+            ]);
+            throw new \InvalidArgumentException('Dados inválidos para criar ViagemDTO: ' . $e->getMessage());
+        }
+
+        return $viagemDto;
+
     }
 
     public function toArray(): array
@@ -84,6 +95,7 @@ readonly class ViagemDTO
             'divergencias'          => $this->divergencias
         ];
     }
+
 }
 
 
