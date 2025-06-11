@@ -16,10 +16,10 @@ Route::prefix('import')->group(function () {
 
     Route::view('/viagem', 'import.viagem.importFile', [
         'title' => 'Importar Viagens',
-        'route' => 'import.viagens'
-    ]);
+        'route' => 'store.viagens'
+    ])->name('import.viagens');
 
-    Route::post('/viagem', [ImportController::class, 'importarViagens'])->name('import.viagens');
+    Route::post('/viagem', [ImportController::class, 'importarViagens'])->name('store.viagens');
 
     /**
      * Importação de Integrados
@@ -27,10 +27,10 @@ Route::prefix('import')->group(function () {
 
     Route::view('/integrado', 'import.integrado.importFile', [
         'title' => 'Importar Integrados',
-        'route' => 'import.integrados'
+        'route' => 'store.integrados'
     ]);
 
-    Route::post('/integrado', [ImportController::class, 'importIntegrados'])->name('import.integrados');
+    Route::post('/integrado', [ImportController::class, 'importIntegrados'])->name('store.integrados');
 
     /**
      * Importação de documentos de frete
@@ -39,10 +39,10 @@ Route::prefix('import')->group(function () {
     Route::view('/documento-frete', 'import.documentofrete.importFile', [
         'title' => 'Importar Documento de Frete',
         'tipo_documento' => \App\Frete\TipoDocumentoEnum::toSelectArray(),
-        'route' => 'import.documentofrete'
+        'route' => 'store.documentofrete'
     ]);
 
-    Route::post('/documentofrete', [ImportController::class, 'importarDocumentoFrete'])->name('import.documentofrete');
+    Route::post('/documentofrete', [ImportController::class, 'importarDocumentoFrete'])->name('store.documentofrete');
 
 });
 

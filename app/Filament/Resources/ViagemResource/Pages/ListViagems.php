@@ -13,7 +13,15 @@ class ListViagems extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\ActionGroup::make([
+                Actions\CreateAction::make(),
+                Actions\Action::make('importar-viagens')
+                    ->label('Importar Viagens')
+                    ->icon('heroicon-o-arrow-up-on-square')
+                    ->url(route('import.viagens'))
+                    ->color('primary'),
+            ])
+
         ];
     }
 }
