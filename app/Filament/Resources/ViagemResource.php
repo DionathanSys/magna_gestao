@@ -192,6 +192,7 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_morto')
                         ->width('1%')
+                        ->sortable()
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_cobrar')
