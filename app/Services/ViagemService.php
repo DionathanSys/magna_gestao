@@ -98,9 +98,9 @@ class ViagemService
                     );
 
 
-
+                    // dump($viagemDto->toArray());
                     $viagem = $this->create($viagemDto);
-                    dd($viagem);
+                    // dd($viagem);
                 }
 
             } catch (\Exception $e) {

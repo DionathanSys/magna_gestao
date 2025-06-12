@@ -236,13 +236,16 @@ class ViagemResource extends Resource
                     ->label('Dt. Fim')
                     ->dateTime('d/m/Y H:i')
                     ->dateTimeTooltip()
+                    ->tooltip(function (Tables\Columns\TextColumn $column) {
+                        $state = dd($column);
+                    })
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('conferido'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups(

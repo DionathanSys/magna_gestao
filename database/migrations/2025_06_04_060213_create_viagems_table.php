@@ -33,8 +33,8 @@ return new class extends Migration
             $table->decimal('peso', 10)->default(0);
             $table->decimal('entregas', 10)->default(1);
             $table->date('data_competencia');
-            $table->date('data_inicio');
-            $table->date('data_fim');
+            $table->dateTime('data_inicio');
+            $table->dateTime('data_fim');
             $table->boolean('conferido')->default(false);
             $table->json('divergencias')->nullable();
             $table->timestamps();
