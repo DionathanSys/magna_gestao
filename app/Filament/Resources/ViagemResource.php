@@ -256,6 +256,7 @@ class ViagemResource extends Resource
                 ]
             )
             ->defaultSort('numero_viagem')
+            ->defaultSortOptionLabel('date')
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->filters([

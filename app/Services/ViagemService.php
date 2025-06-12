@@ -97,7 +97,10 @@ class ViagemService
                         ]
                     );
 
+
+
                     $viagem = $this->create($viagemDto);
+                    dd($viagem);
                 }
 
             } catch (\Exception $e) {
