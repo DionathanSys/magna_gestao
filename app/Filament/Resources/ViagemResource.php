@@ -186,6 +186,17 @@ class ViagemResource extends Resource
                     Tables\Columns\TextColumn::make('km_pago')
                         ->width('1%')
                         ->summarize(Sum::make()),
+                    Tables\Columns\TextColumn::make('km_cadastro')
+                        ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->summarize(Sum::make())
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('km_divergencia')
+                        ->width('1%')
+                        ->sortable()
+                        ->summarize(Sum::make())
+                        ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
                         ->width('1%')
                         ->summarize(Sum::make())
@@ -199,19 +210,10 @@ class ViagemResource extends Resource
                         ->width('1%')
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
-                    Tables\Columns\TextColumn::make('km_cadastro')
-                        ->width('1%')
-                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make())
-                        ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_rota_corrigido')
                         ->width('1%')
                         ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('km_divergencia')
-                        ->width('1%')
-                        ->summarize(Sum::make())
-                        ->toggleable(isToggledHiddenByDefault: false),
+
                 ]),
 
                 Tables\Columns\TextColumn::make('peso')
