@@ -22,7 +22,7 @@ class ViagemService
         $this->viagem = new Viagem();
         $this->cargaService = new CargaService();
         $this->integradoService = new IntegradoService();
-        $this->veiculos = Veiculo::all()->pluck('placa', 'id')->toArray();
+        $this->veiculos = Veiculo::all()->pluck('id', 'placa')->toArray();
     }
 
     public function create(ViagemDTO $viagemDto)
@@ -53,6 +53,7 @@ class ViagemService
 
         $header = config('mapperColumns.import.viagem');
         $rows = $rows->skip(1);
+        dd($this->veiculos);
 
         $rows->each(function ($row) use ($header, $dataCorte) {
 
@@ -68,7 +69,7 @@ class ViagemService
 
                     $km_rodado = $row[$header['km_rodado']]  ?? 0;
                     $km_pago = $row[$header['km_pago']]  ?? 0;
-                    $km_divergencia = $km_rodado - $km_pago;
+                    $km_divergencia = ($km_rodado - $km_pago ?? 0);
                     $km_cadastro = $integrado->km_rota ?? 0;
 
                     if ($km_pago > $km_rodado) {
@@ -106,7 +107,7 @@ class ViagemService
                     'mensagem' => $e->getMessage(),
                     'row' => $row,
                 ]);
-                
+
                 return;
             }
         });

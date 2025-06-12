@@ -57,6 +57,7 @@ Route::get('/teste', function () {
         'SXA6B49',
         'RKY9I86',
         'SXA6A99',
+        'SXQ3B53',
         'RKY6J30',
         'SXZ8F62',
         'SXA9H64',
