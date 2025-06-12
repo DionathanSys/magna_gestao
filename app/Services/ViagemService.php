@@ -43,7 +43,7 @@ class ViagemService
 
             return $viagem;
         } catch (\Exception $e) {
-            dd($viagem, $e);
+            dump($viagem, $e);
             return $e;
         }
     }
@@ -53,7 +53,6 @@ class ViagemService
 
         $header = config('mapperColumns.import.viagem');
         $rows = $rows->skip(1);
-        dd($this->veiculos);
 
         $rows->each(function ($row) use ($header, $dataCorte) {
 
