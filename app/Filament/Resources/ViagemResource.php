@@ -32,48 +32,80 @@ class ViagemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('veiculo_id')
-                    ->label('Veículo')
-                    ->required()
-                    ->relationship('veiculo', 'placa')
-                    ->searchable()
-                    ->preload(),
-                Forms\Components\TextInput::make('numero_viagem')
-                    ->required(),
-                Forms\Components\TextInput::make('numero_custo_frete')
-                    ->label('Nº Custo Frete')
-                    ->numeric(),
-                Forms\Components\TextInput::make('documento_transporte')
-                    ->label('Doc. Transp.')
-                    ->numeric(),
-                Forms\Components\Select::make('tipo_viagem')
-                    ->label('Tipo Viagem')
-                    ->options([
-                        'SIMPLES' => 'Simples',
-                        'COMPOSTA' => 'Composta',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('valor_frete')
-                    ->readOnly(),
-                Forms\Components\TextInput::make('valor_cte')
-                    ->readOnly(),
-                Forms\Components\TextInput::make('valor_nfs')
-                    ->readOnly(),
-                Forms\Components\TextInput::make('valor_icms')
-                    ->readOnly(),
-                Forms\Components\TextInput::make('km_rodado')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('km_pago')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('km_cadastro')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('km_ajustado')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Section::make('Viagem')
+                    ->columns(4)
+                    ->schema([
+                        Forms\Components\Select::make('veiculo_id')
+                            ->label('Veículo')
+                            ->required()
+                            ->relationship('veiculo', 'placa')
+                            ->searchable()
+                            ->preload(),
+                        Forms\Components\TextInput::make('numero_viagem')
+                            ->required(),
+                        Forms\Components\TextInput::make('numero_custo_frete')
+                            ->label('Nº Custo Frete')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('documento_transporte')
+                            ->label('Doc. Transp.')
+                            ->numeric(),
+                        Forms\Components\Select::make('tipo_viagem')
+                            ->label('Tipo Viagem')
+                            ->options([
+                                'SIMPLES' => 'Simples',
+                                'COMPOSTA' => 'Composta',
+                            ])
+                            ->required(),
+                    ]),
+                Forms\Components\Section::make('Frete')
+                    ->columns(4)
+                    ->schema([
+                        Forms\Components\TextInput::make('valor_frete')
+                            ->readOnly(),
+                        Forms\Components\TextInput::make('valor_cte')
+                            ->readOnly(),
+                        Forms\Components\TextInput::make('valor_nfs')
+                            ->readOnly(),
+                        Forms\Components\TextInput::make('valor_icms')
+                            ->readOnly(),
+                    ]),
+                Forms\Components\Section::make('Quilometragens')
+                    ->columns(4)
+                    ->schema([
+                        Forms\Components\TextInput::make('km_rodado')
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('km_pago')
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('km_cadastro')
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('km_pago_excedente')
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('km_morto')
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('km_cobrar')
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('km_rota_corrigido')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        ]),
+                Forms\Components\Section::make('Datas')
+                    ->columns(4)
+                    ->schema([
+                        Forms\Components\DatePicker::make('data_competencia')
+                            ->required(),
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->required(),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->required(),
+                    ]),
+
                 Forms\Components\TextInput::make('peso')
                     ->numeric()
                     ->default(0),
@@ -81,12 +113,7 @@ class ViagemResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(1),
-                Forms\Components\DatePicker::make('data_competencia')
-                    ->required(),
-                Forms\Components\DatePicker::make('data_inicio')
-                    ->required(),
-                Forms\Components\DatePicker::make('data_fim')
-                    ->required(),
+
                 Forms\Components\Toggle::make('conferido')
                     ->required(),
                 Forms\Components\KeyValue::make('divergencias')
@@ -231,13 +258,14 @@ class ViagemResource extends Resource
                     ]),
 
 
-                ], layout: FiltersLayout::Modal)
+            ], layout: FiltersLayout::Modal)
             ->filtersFormWidth(MaxWidth::FourExtraLarge)
             ->filtersTriggerAction(
                 fn(Tables\Actions\Action $action) => $action
                     ->button()
                     ->slideOver()
-                    ->label('Filtros'))
+                    ->label('Filtros')
+            )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\EditAction::make()
