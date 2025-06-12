@@ -30,7 +30,8 @@ class CargaViagemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('viagem_id')
-                    ->relationship('viagem', 'id')
+                    ->relationship('viagem', 'numero_viagem')
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('integrado_id')
                     ->relationship('integrado', 'nome')
@@ -88,7 +89,7 @@ class CargaViagemResource extends Resource
     {
         return [
             'index' => Pages\ListCargaViagems::route('/'),
-            'create' => Pages\CreateCargaViagem::route('/create'),
+            // 'create' => Pages\CreateCargaViagem::route('/create'),
             // 'edit' => Pages\EditCargaViagem::route('/{record}/edit'),
         ];
     }
