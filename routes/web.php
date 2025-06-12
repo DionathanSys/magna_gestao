@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Models\Veiculo;
 use App\Services\IntegradoService;
 use Illuminate\Support\Facades\Route;
 
@@ -47,9 +48,35 @@ Route::prefix('import')->group(function () {
 });
 
 Route::get('/teste', function () {
-    $service = new IntegradoService();
-    $integrado = $service->buscaIntegrado('LAURI ANTONIO FUNKLER E OU LUC (729868 _STP1,2)');
-    dd($integrado);
+    $veiculos = [
+        'RLP7B55',
+        'RXL3I85',
+        'RYD2D62',
+        'SXV0G23',
+        'SXW4C78',
+        'SXA6B49',
+        'RKY9I86',
+        'SXA6A99',
+        'RKY6J30',
+        'SXZ8F62',
+        'SXA9H64',
+        'RXV0C84',
+        'RYB9C55',
+        'RXO3I55',
+        'RXX3C16',
+        'RXV5H78',
+        'RLO2C88',
+        'RXP5E89',
+        'RXN9G70',
+        'RDX9D24',
+        'SXJ6G77',
+    ];
+
+    foreach ($veiculos as $value) {
+        $d = Veiculo::create([
+            'placa' => $value,
+        ]);
+    }
 
 
 })->name('teste');

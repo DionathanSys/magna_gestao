@@ -18,51 +18,21 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ImportController extends Controller
 {
-    public IntegradoService $integradoService;
-
     public function importarViagens(Request $request)
     {
-        $this->integradoService = new IntegradoService();
-
         try {
 
             $read             = IOFactory::load($request->file);
-            $data             = $read->getActiveSheet()->toArray();
+            $data             = collect($read->getActiveSheet()->toArray());
             $dataCorte        = $request->input('data_corte');
-            $index            = array_flip($data[0]);
-            $veiculos         = Veiculo::all()->pluck('id', 'placa')->toArray();
-            unset($data[0]); // Remove header row
 
-            foreach ($data as $key => $row) {
-
-                $dataFim = Carbon::createFromFormat('d/m/Y H:i', $row[$index['Fim']])->format('Y-m-d');
-                if ($dataFim >= $dataCorte) {
-
-                    if($row[$index['Destino']]) {
-                        $integrado = $this->integradoService->buscaIntegrado($row[$index['Destino']]);
-                    }
-
-                    $viagemDto = ViagemDTO::makeFromArray(
-                        [
-                            'numero_viagem'         => $row[$index['Viagem']],
-                            'documento_transporte'  => $row[$index['Carga Cliente']] ?? null,
-                            'integrado'             => $integrado,
-                            'veiculo_id'            => $veiculos[$row[$index['Placa']]],
-                            'km_rodado'             => $row[$index['Km Rodado']] ?? 0,
-                            'km_pago'               => $row[$index['Km Sugerida']] ?? 0,
-                            'data_competencia'      => $dataFim,
-                            'data_inicio'           => $row[$index['Inicio']],
-                            'data_fim'              => $row[$index['Fim']],
-                        ]
-                    );
-
-                    $viagem = (new ViagemService)->create($viagemDto);
-
-                }
-            }
+            (new ViagemService)->processarImportacao($data, $dataCorte);
 
         } catch (\Exception $e) {
-            Log::alert("Erro ao importar viagens: " . $e->getMessage());
+            Log::error("Erro ao importar viagens", [
+                'metodo' => __METHOD__. ' - ' . __LINE__,
+                'mensagem' => $e->getMessage(),
+            ]);
             dd('Erro ao importar viagens: ' . $e->getMessage());
         }
 

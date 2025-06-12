@@ -26,7 +26,10 @@ return new class extends Migration
             $table->decimal('km_pago', 10, 2)->default(0);
             $table->decimal('km_divergencia', 10, 2)->default(0);
             $table->decimal('km_cadastro', 10, 2)->default(0);
-            $table->decimal('km_ajustado', 10, 2)->default(0);
+            $table->decimal('km_rota_corrigido', 10, 2)->default(0);
+            $table->decimal('km_pago_excedente', 10, 2)->default(0);
+            $table->decimal('km_morto', 10, 2)->default(0);
+            $table->decimal('km_cobrar', 10, 2)->default(0);
             $table->decimal('peso', 10)->default(0);
             $table->decimal('entregas', 10)->default(1);
             $table->date('data_competencia');

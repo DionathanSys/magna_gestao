@@ -25,9 +25,24 @@ class Viagem extends Model
         return $this->hasOne(CargaViagem::class, 'viagem_id');
     }
 
+    public function documento_frete(): HasMany
+    {
+        return $this->hasMany(DocumentoFrete::class, 'documento_transporte');
+    }
+
     public function veiculo()
     {
         return $this->belongsTo(Veiculo::class, 'veiculo_id');
+    }
+
+    public function anotacoes(): HasMany
+    {
+        return $this->hasMany(AnotacaoViagem::class, 'viagem_id');
+    }
+
+    public function divergencias(): HasMany
+    {
+        return $this->hasMany(DivergenciaViagem::class, 'viagem_id');
     }
 
 
