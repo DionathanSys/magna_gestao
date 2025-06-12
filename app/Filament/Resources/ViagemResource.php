@@ -32,15 +32,16 @@ class ViagemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Viagem')
-                    ->columns(4)
-                    ->schema([
-                        Forms\Components\Select::make('veiculo_id')
+                Forms\Components\Select::make('veiculo_id')
                             ->label('Veículo')
                             ->required()
                             ->relationship('veiculo', 'placa')
                             ->searchable()
                             ->preload(),
+                Forms\Components\Section::make('Viagem')
+                    ->columns(4)
+                    ->schema([
+
                         Forms\Components\TextInput::make('numero_viagem')
                             ->required(),
                         Forms\Components\TextInput::make('numero_custo_frete')
@@ -179,22 +180,34 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('KM', [
-                    Tables\Columns\TextInputColumn::make('km_rodado')
+                    Tables\Columns\TextColumn::make('km_rodado')
                         ->width('1%')
                         ->summarize(Sum::make()),
-                    Tables\Columns\TextInputColumn::make('km_pago')
+                    Tables\Columns\TextColumn::make('km_pago')
                         ->width('1%')
                         ->summarize(Sum::make()),
+                    Tables\Columns\TextColumn::make('km_pago_excedente')
+                        ->width('1%')
+                        ->summarize(Sum::make())
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('km_morto')
+                        ->width('1%')
+                        ->summarize(Sum::make())
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('km_cobrar')
+                        ->width('1%')
+                        ->summarize(Sum::make())
+                        ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_cadastro')
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make())
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: false),
-                    Tables\Columns\TextInputColumn::make('km_ajustado')
+                    Tables\Columns\TextColumn::make('km_rota_corrigido')
                         ->width('1%')
                         ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextInputColumn::make('km_divergencia')
+                    Tables\Columns\TextColumn::make('km_divergencia')
                         ->width('1%')
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
