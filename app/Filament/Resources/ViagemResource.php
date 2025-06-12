@@ -182,9 +182,11 @@ class ViagemResource extends Resource
                 Tables\Columns\ColumnGroup::make('KM', [
                     Tables\Columns\TextColumn::make('km_rodado')
                         ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()),
                     Tables\Columns\TextColumn::make('km_pago')
                         ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()),
                     Tables\Columns\TextColumn::make('km_cadastro')
                         ->width('1%')
@@ -195,23 +197,28 @@ class ViagemResource extends Resource
                     Tables\Columns\TextColumn::make('km_divergencia')
                         ->width('1%')
                         ->sortable()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
                         ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_morto')
                         ->width('1%')
                         ->sortable()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_cobrar')
                         ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make())
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_rota_corrigido')
                         ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->toggleable(isToggledHiddenByDefault: true),
 
                 ]),
