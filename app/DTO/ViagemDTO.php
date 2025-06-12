@@ -57,7 +57,7 @@ readonly class ViagemDTO
                 km_rota_corrigido: 0,
                 km_pago_excedente: $data['km_pago_excedente'],
                 km_morto: $data['km_morto'],
-                km_cobrar: $data['km_cobrar'],
+                km_cobrar: 0,
                 peso: 0,
                 entregas: 0,
                 data_competencia: $data['data_competencia'],
