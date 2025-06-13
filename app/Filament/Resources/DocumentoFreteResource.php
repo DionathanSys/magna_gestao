@@ -114,6 +114,8 @@ class DocumentoFreteResource extends Resource
             ->filters([
                 //
             ])
+            ->searchOnBlur()
+            ->persistFiltersInSession()
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
