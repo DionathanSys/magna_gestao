@@ -312,6 +312,7 @@ class ViagemResource extends Resource
                             ->required(),
                     ]),
                 Tables\Actions\EditAction::make()
+                    ->openUrlInNewTab()
                     ->iconButton(),
 
             ])
