@@ -72,7 +72,8 @@ class DocumentoFreteResource extends Resource
                 Tables\Columns\TextColumn::make('integrado.nome')
                     ->numeric()
                     ->searchable(isIndividual: true)
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('numero_documento')
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('documento_transporte')
@@ -92,9 +93,11 @@ class DocumentoFreteResource extends Resource
                     ->sortable()
                     ->summarize(Sum::make()->money(locale: 'pt-BR')),
                 Tables\Columns\TextColumn::make('municipio')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('estado')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
