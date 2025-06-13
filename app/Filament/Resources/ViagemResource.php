@@ -144,6 +144,7 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
+                    ->listWithLineBreaks()
                     ->width('1%')
                     ->label('Integrado')
                     ->searchable(isIndividual: true, isGlobal: false),
