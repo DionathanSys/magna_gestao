@@ -301,20 +301,55 @@ class ViagemResource extends Resource
             )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
-                Tables\Actions\Action::make('nova-carga')
-                    ->label('Carga')
+                Tables\Actions\EditAction::make()
+                    ->openUrlInNewTab()
+                    ->iconButton(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('nova-carga')
+                    ->label('Add. Carga')
                     ->icon('heroicon-o-shopping-bag')
-                    ->iconButton()
                     ->form([
                         Forms\Components\Select::make('integrado_id')
                             ->label('Integrado')
                             ->options(fn() => Integrado::all()->pluck('nome', 'id'))
                             ->required(),
                     ]),
-                Tables\Actions\EditAction::make()
-                    ->openUrlInNewTab()
-                    ->iconButton(),
-
+                Tables\Actions\Action::make('km-cadastro')
+                    ->label('Editar KM')
+                    ->icon('heroicon-o-pencil-square')
+                    ->action(function(Viagem $record, array $data) {
+                            $record->update([
+                                'km_cadastro' => $data['km_cadastro'],
+                                'km_rodado' => $data['km_rodado'],
+                                'km_pago' => $data['km_pago'],
+                                'km_rota_corrigido' => $data['km_rota_corrigido'],
+                            ]);
+                        })
+                        ->fillForm(fn (Viagem $record): array => [
+                            'km_cadastro' => $record->km_cadastro,
+                            'km_rodado' => $record->km_rodado,
+                            'km_pago' => $record->km_pago,
+                            'km_rota_corrigido' => $record->km_rota_corrigido,
+                        ])
+                        ->form([
+                            Forms\Components\TextInput::make('km_rodado')
+                                ->label('KM Cadastro')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('km_pago')
+                                ->label('KM Cadastro')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('km_cadastro')
+                                ->label('KM Cadastro')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('km_rota_corrigido')
+                                ->label('KM Cadastro')
+                                ->numeric()
+                                ->required(),
+                        ]),
+                ]),
             ])
             // ->selectable()
             ->bulkActions([
