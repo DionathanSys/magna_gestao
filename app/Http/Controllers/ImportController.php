@@ -7,6 +7,7 @@ use App\DTO\ViagemDTO;
 use App\Frete\TipoDocumentoEnum;
 use App\Imports\IntegradoImport;
 use App\Imports\ViagemImport;
+use App\Models\DocumentoFrete;
 use App\Models\Veiculo;
 use App\Services\DocumentoFreteService;
 use App\Services\IntegradoService;
@@ -54,6 +55,8 @@ class ImportController extends Controller
             $veiculos         = Veiculo::all()->pluck('id', 'placa')->toArray();
             unset($data[0], $data[1], $data[2]); // Remove row
 
+            echo "Total de linhas: " . count($data) . "<br>";
+            $qtdeDocsDB = DocumentoFrete::all()->count();
             foreach ($data as $row) {
 
                 if($tipoDocumento == TipoDocumentoEnum::CTE->value){
@@ -73,8 +76,8 @@ class ImportController extends Controller
                         'numero_documento'      => $row[$index['Nro. Nota']] ?? null,
                         'tipo_documento'        => $tipoDocumento,
                         'data_emissao'          => Carbon::createFromFormat('d/m/Y', $row[$index['Dt. Neg.']])->format('Y-m-d') ?? null,
-                        'valor_total'           => (float) str_replace(',', '.', str_replace('.', '', $row[$index['Vlr. Nota']] ?? 0)),
-                        'valor_icms'            => (float) str_replace(',', '.', str_replace('.', '', $row[$index['Vlr. do ICMS']] ?? 0)),
+                        'valor_total'           => (float) $row[$index['Vlr. Nota']] ?? 0,
+                        'valor_icms'            => (float) $row[$index['Vlr. do ICMS']] ?? 0,
                         'destino'               => $destino ?? null,
                     ]
                 );
@@ -83,6 +86,8 @@ class ImportController extends Controller
                 $documento->create($documentoDto);
 
             }
+
+            echo "Total de documentos importados: " . (DocumentoFrete::all()->count() - $qtdeDocsDB) . "<br>";
 
         } catch (\Exception $e) {
             Log::alert("Erro ao importar documento de frete: " . $e->getMessage());

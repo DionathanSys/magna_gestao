@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Models\DocumentoFrete;
 use App\Models\Veiculo;
 use App\Models\Viagem;
 use App\Services\IntegradoService;
@@ -49,37 +50,40 @@ Route::prefix('import')->group(function () {
 });
 
 Route::get('/teste', function () {
-    $veiculos = [
-        'RLP7B55',
-        'RXL3I85',
-        'RYD2D62',
-        'SXV0G23',
-        'SXW4C78',
-        'SXA6B49',
-        'RKY9I86',
-        'SXA6A99',
-        'SXQ3B53',
-        'RKY6J30',
-        'SXZ8F62',
-        'SXA9H64',
-        'RXV0C84',
-        'RYB9C55',
-        'RXO3I55',
-        'RXX3C16',
-        'RXV5H78',
-        'RLO2C88',
-        'RXP5E89',
-        'RXN9G70',
-        'RDX9D24',
-        'SXJ6G77',
-    ];
+    // $veiculos = [
+    //     'RLP7B55',
+    //     'RXL3I85',
+    //     'RYD2D62',
+    //     'SXV0G23',
+    //     'SXW4C78',
+    //     'SXA6B49',
+    //     'RKY9I86',
+    //     'SXA6A99',
+    //     'SXQ3B53',
+    //     'RKY6J30',
+    //     'SXZ8F62',
+    //     'SXA9H64',
+    //     'RXV0C84',
+    //     'RYB9C55',
+    //     'RXO3I55',
+    //     'RXX3C16',
+    //     'RXV5H78',
+    //     'RLO2C88',
+    //     'RXP5E89',
+    //     'RXN9G70',
+    //     'RDX9D24',
+    //     'SXJ6G77',
+    // ];
 
-    foreach ($veiculos as $value) {
-        $d = Veiculo::create([
-            'placa' => $value,
-        ]);
-    }
+    // foreach ($veiculos as $value) {
+    //     $d = Veiculo::create([
+    //         'placa' => $value,
+    //     ]);
+    // }
 
+    $viagem = Viagem::with('documentoFrete')->where('documento_transporte', '129042189')->first();
+    $doc = DocumentoFrete::where('documento_transporte', '129042189')->first();
+    dd($viagem->documento_transporte == $doc->documento_transporte);
 
 
 })->name('teste');

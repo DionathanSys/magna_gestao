@@ -11,7 +11,7 @@ class DocumentoFrete extends Model
 
     public function viagem(): BelongsTo
     {
-        return $this->belongsTo(Viagem::class, 'documento_transporte');
+        return $this->belongsTo(Viagem::class, 'documento_transporte', 'documento_transporte');
     }
 
     public function veiculo(): BelongsTo

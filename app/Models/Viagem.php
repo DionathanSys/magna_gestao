@@ -25,9 +25,9 @@ class Viagem extends Model
         return $this->hasOne(CargaViagem::class, 'viagem_id');
     }
 
-    public function documentoFrete(): HasMany
+    public function documentos(): HasMany
     {
-        return $this->hasMany(DocumentoFrete::class, 'documento_transporte');
+        return $this->hasMany(DocumentoFrete::class, 'documento_transporte', 'documento_transporte');
     }
 
     public function veiculo()

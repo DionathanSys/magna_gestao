@@ -16,7 +16,12 @@ class DocumentoFreteService
     }
     public function create(DocumentoFreteDTO $documentoFreteDto)
     {
-        return $this->documentoFrete->create($documentoFreteDto->toArray());
+        return $this->documentoFrete->updateOrCreate(
+            [
+                'numero_documento'      => $documentoFreteDto->numero_documento,
+                'documento_transporte'  => $documentoFreteDto->documento_transporte,
+            ],
+            $documentoFreteDto->toArray()
+        );
     }
-
 }

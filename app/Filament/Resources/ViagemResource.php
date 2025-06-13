@@ -8,6 +8,7 @@ use App\Models\Viagem;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -131,6 +132,7 @@ class ViagemResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
+                    ->width('1%')
                     ->numeric()
                     ->sortable()
                     ->searchable(isIndividual: true, isGlobal: false)
@@ -142,6 +144,7 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('carga.integrado.nome')
+                    ->width('1%')
                     ->label('Integrado')
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('numero_custo_frete')
@@ -159,87 +162,87 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('tipo_viagem')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('valor_frete')
-                    ->label('Valor Frete')
-                    ->money('BRL')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('valor_cte')
-                    ->label('Valor CTe')
-                    ->money('BRL')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('valor_nfs')
-                    ->label('Valor NFs')
-                    ->money('BRL')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('valor_icms')
-                    ->label('Valor ICMS')
-                    ->money('BRL')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('KM', [
                     Tables\Columns\TextColumn::make('km_rodado')
                         ->width('1%')
+                        ->wrapHeader()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make()),
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextColumn::make('km_pago')
                         ->width('1%')
+                        ->wrapHeader()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make()),
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextColumn::make('km_cadastro')
+                        ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'warning' : 'info')
+                        ->badge()
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make())
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_divergencia')
+                        ->color(fn($state, Viagem $record) => $record->km_divergencia > 0 ? 'warning' : 'info')
+                        ->badge()
                         ->width('1%')
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make())
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
+                        ->wrapHeader()
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make())
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_morto')
                         ->width('1%')
+                        ->wrapHeader()
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make())
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_cobrar')
                         ->width('1%')
+                        ->wrapHeader()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make())
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_rota_corrigido')
+                        ->wrapHeader()
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->toggleable(isToggledHiddenByDefault: true),
-
                 ]),
-                Tables\Columns\TextColumn::make('documentoFrete_exists')
-                    ->exists('documentoFrete')
+                Tables\Columns\TextColumn::make('documentos_exists')
+                    ->exists('documentos')
+                    ->width('1%')
                     ->label('Doc. Frete')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    // ->toggleable(isToggledHiddenByDefault: true)
+                    ,
+                Tables\Columns\TextColumn::make('documentos_sum_valor_total')
+                    ->sum('documentos', 'valor_total')
+                    ->width('1%')
+                    ->money('BRL', locale: 'pt-BR')
+                    ->label('Vlr. Frete'),
                 Tables\Columns\TextColumn::make('cargas_count')
                     ->counts('cargas')
+                    ->width('1%')
                     ->label('Qtde. Cargas')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('data_competencia')
+                    ->width('1%')
                     ->label('Dt. Comp.')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_inicio')
+                    ->width('1%')
                     ->label('Dt. Início')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_fim')
+                    ->width('1%')
                     ->label('Dt. Fim')
                     ->dateTime('d/m/Y H:i')
                     ->dateTimeTooltip()
@@ -252,6 +255,7 @@ class ViagemResource extends Resource
                     ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->striped()
             ->groups(
                 [
                     Tables\Grouping\Group::make('data_competencia')

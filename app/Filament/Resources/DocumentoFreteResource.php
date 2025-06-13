@@ -88,7 +88,7 @@ class DocumentoFreteResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor_total')
                     ->label('Vlr. Total')
-                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                    ->money('BRL', locale: 'pt-BR')
                     ->sortable()
                     ->summarize(Sum::make()->money('BRL')),
                 Tables\Columns\TextColumn::make('valor_icms')
