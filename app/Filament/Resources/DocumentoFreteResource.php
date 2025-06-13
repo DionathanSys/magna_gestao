@@ -75,8 +75,10 @@ class DocumentoFreteResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('numero_documento')
+                    ->label('Nº Doc.')
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('documento_transporte')
+                    ->label('Doc. Transporte')
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('tipo_documento')
                     ->searchable(),
@@ -85,10 +87,12 @@ class DocumentoFreteResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor_total')
+                    ->label('Vlr. Total')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->sortable()
                     ->summarize(Sum::make()->money(locale: 'pt-BR')),
                 Tables\Columns\TextColumn::make('valor_icms')
+                    ->label('Vlr. ICMS')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->sortable()
                     ->summarize(Sum::make()->money(locale: 'pt-BR')),
