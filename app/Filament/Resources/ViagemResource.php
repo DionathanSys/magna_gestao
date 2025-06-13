@@ -175,7 +175,7 @@ class ViagemResource extends Resource
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextColumn::make('km_cadastro')
-                        ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'warning' : 'info')
+                        ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'info' : 'succes')
                         ->badge()
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
@@ -184,7 +184,7 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_divergencia')
                         ->label('Km Divergência')
-                        ->color(fn($state, Viagem $record) => $record->km_divergencia > 0 ? 'warning' : 'info')
+                        ->color(fn($state, Viagem $record) => $record->km_divergencia > 0 ? 'info' : 'succes')
                         ->badge()
                         ->width('1%')
                         ->sortable()
