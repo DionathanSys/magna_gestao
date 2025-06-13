@@ -101,9 +101,9 @@ class ViagemResource extends Resource
                     ->schema([
                         Forms\Components\DatePicker::make('data_competencia')
                             ->required(),
-                        Forms\Components\DatePicker::make('data_inicio')
+                        Forms\Components\DateTimePicker::make('data_inicio')
                             ->required(),
-                        Forms\Components\DatePicker::make('data_fim')
+                        Forms\Components\DateTimePicker::make('data_fim')
                             ->required(),
                     ]),
 

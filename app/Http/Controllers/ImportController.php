@@ -69,7 +69,7 @@ class ImportController extends Controller
                 $documentoDto = DocumentoFreteDTO::makeFromArray(
                     [
                         'veiculo_id'            => $veiculoId,
-                        'documento_transporte'  => $documentoTransporte,
+                        'documento_transporte'  => (int) $documentoTransporte,
                         'numero_documento'      => $row[$index['Nro. Nota']] ?? null,
                         'tipo_documento'        => $tipoDocumento,
                         'data_emissao'          => Carbon::createFromFormat('d/m/Y', $row[$index['Dt. Neg.']])->format('Y-m-d') ?? null,
