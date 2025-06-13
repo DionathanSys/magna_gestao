@@ -90,12 +90,12 @@ class DocumentoFreteResource extends Resource
                     ->label('Vlr. Total')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->sortable()
-                    ->summarize(Sum::make()->money(locale: 'pt-BR')),
+                    ->summarize(Sum::make()->money('BRL')),
                 Tables\Columns\TextColumn::make('valor_icms')
                     ->label('Vlr. ICMS')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->sortable()
-                    ->summarize(Sum::make()->money(locale: 'pt-BR')),
+                    ->summarize(Sum::make()->money('BRL')),
                 Tables\Columns\TextColumn::make('municipio')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
