@@ -13,4 +13,14 @@ class DocumentoFrete extends Model
     {
         return $this->belongsTo(Viagem::class, 'documento_transporte');
     }
+
+    public function veiculo(): BelongsTo
+    {
+        return $this->belongsTo(Veiculo::class, 'veiculo_id');
+    }
+
+    public function integrado(): BelongsTo
+    {
+        return $this->belongsTo(Integrado::class, 'integrado_id');
+    }
 }

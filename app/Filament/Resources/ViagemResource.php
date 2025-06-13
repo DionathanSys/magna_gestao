@@ -222,14 +222,14 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: true),
 
                 ]),
-
-                Tables\Columns\TextColumn::make('peso')
-                    ->numeric()
-                    ->sortable()
+                Tables\Columns\TextColumn::make('documentoFrete_exists')
+                    ->exists('documentoFrete')
+                    ->label('Doc. Frete')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('entregas')
+                Tables\Columns\TextColumn::make('cargas_count')
+                    ->counts('cargas')
+                    ->label('Qtde. Cargas')
                     ->numeric()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('data_competencia')
                     ->label('Dt. Comp.')

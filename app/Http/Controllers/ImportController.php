@@ -65,6 +65,7 @@ class ImportController extends Controller
 
                 $placa = str_replace(['[', ']'], '', $row[$index['Marca [Placa] (Veículos)']]);
                 $veiculoId = isset($placa) ? $veiculos[$placa] ?? null : null;
+                dd($veiculoId, $placa, $row[$index['Marca [Placa] (Veículos)']]);
 
                 $documentoDto = DocumentoFreteDTO::makeFromArray(
                     [
