@@ -19,7 +19,7 @@ class DocumentoFreteResource extends Resource
 {
     protected static ?string $model = DocumentoFrete::class;
 
-    protected static ?string $navigationGroup = 'Documentos Frete';
+    protected static ?string $navigationGroup = 'Viagens';
 
     protected static ?string $pluralModelLabel = 'Documentos Frete';
 
