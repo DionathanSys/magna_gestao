@@ -50,6 +50,9 @@ class CargaViagemResource extends Resource
                     ->numeric(0, '', '')
                     ->searchable(isIndividual: true)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('integrado.codigo')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('integrado.nome')
                     ->numeric()
                     ->sortable(),

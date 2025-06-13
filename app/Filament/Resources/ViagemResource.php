@@ -143,7 +143,7 @@ class ViagemResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(isIndividual: true, isGlobal: false),
-                Tables\Columns\TextColumn::make('carga.integrado.nome')
+                Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->width('1%')
                     ->label('Integrado')
                     ->searchable(isIndividual: true, isGlobal: false),
@@ -182,6 +182,7 @@ class ViagemResource extends Resource
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_divergencia')
+                        ->label('Km Divergência')
                         ->color(fn($state, Viagem $record) => $record->km_divergencia > 0 ? 'warning' : 'info')
                         ->badge()
                         ->width('1%')
@@ -217,9 +218,7 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('documentos_exists')
                     ->exists('documentos')
                     ->width('1%')
-                    ->label('Doc. Frete')
-                    // ->toggleable(isToggledHiddenByDefault: true)
-                    ,
+                    ->label('Doc. Frete'),
                 Tables\Columns\TextColumn::make('documentos_sum_valor_total')
                     ->sum('documentos', 'valor_total')
                     ->width('1%')
@@ -267,7 +266,6 @@ class ViagemResource extends Resource
                 ]
             )
             ->defaultSort('numero_viagem')
-            ->defaultSortOptionLabel('date')
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->filters([
@@ -298,6 +296,7 @@ class ViagemResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
