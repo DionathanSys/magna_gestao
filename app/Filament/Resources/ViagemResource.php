@@ -335,7 +335,7 @@ class ViagemResource extends Resource
         return [
             'index' => Pages\ListViagems::route('/'),
             'create' => Pages\CreateViagem::route('/create'),
-            // 'edit' => Pages\EditViagem::route('/{record}/edit'),
+            'edit' => Pages\EditViagem::route('/{record}/edit'),
         ];
     }
 }
