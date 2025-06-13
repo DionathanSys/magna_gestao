@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ViagemResource\Pages;
 use App\Filament\Resources\ViagemResource\RelationManagers;
+use App\Models\CargaViagem;
+use App\Models\Integrado;
 use App\Models\Viagem;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -147,6 +149,8 @@ class ViagemResource extends Resource
                     ->listWithLineBreaks()
                     ->width('1%')
                     ->label('Integrado')
+                    ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id]))
+                    ->openUrlInNewTab()
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('numero_custo_frete')
                     ->label('Nº Custo Frete')
@@ -249,7 +253,7 @@ class ViagemResource extends Resource
                     ->dateTime('d/m/Y H:i')
                     ->dateTimeTooltip()
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('conferido'),
+                Tables\Columns\IconColumn::make('conferido'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -297,10 +301,21 @@ class ViagemResource extends Resource
             )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
+                Tables\Actions\Action::make('nova-carga')
+                    ->label('Carga')
+                    ->icon('heroicon-o-shopping-bag')
+                    ->iconButton()
+                    ->form([
+                        Forms\Components\Select::make('integrado_id')
+                            ->label('Integrado')
+                            ->options(fn() => Integrado::all()->pluck('nome', 'id'))
+                            ->required(),
+                    ]),
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
 
             ])
+            // ->selectable()
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

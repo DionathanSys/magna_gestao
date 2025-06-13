@@ -139,4 +139,6 @@ class ViagemService
 
         return $divergencias;
     }
+
+
 }
