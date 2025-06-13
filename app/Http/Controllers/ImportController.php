@@ -65,7 +65,6 @@ class ImportController extends Controller
 
                 $placa = str_replace(['[', ']'], '', $row[$index['Marca [Placa] (Veículos)']]);
                 $veiculoId = isset($placa) ? $veiculos[$placa] ?? null : null;
-                dd($veiculoId, $placa, $row[$index['Marca [Placa] (Veículos)']]);
 
                 $documentoDto = DocumentoFreteDTO::makeFromArray(
                     [
@@ -73,7 +72,7 @@ class ImportController extends Controller
                         'documento_transporte'  => $documentoTransporte,
                         'numero_documento'      => $row[$index['Nro. Nota']] ?? null,
                         'tipo_documento'        => $tipoDocumento,
-                        'data_emissao'          => $row[$index['Dt. Neg.']] ?? null,
+                        'data_emissao'          => Carbon::createFromFormat('d/m/Y', $row[$index['Dt. Neg.']])->format('Y-m-d') ?? null,
                         'valor_total'           => (float) str_replace(',', '.', str_replace('.', '', $row[$index['Vlr. Nota']] ?? 0)),
                         'valor_icms'            => (float) str_replace(',', '.', str_replace('.', '', $row[$index['Vlr. do ICMS']] ?? 0)),
                         'destino'               => $destino ?? null,

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('documentos_frete', function (Blueprint $table) {
             $table->id();
             $table->foreignId('veiculo_id')->constrained('veiculos');
-            $table->foreignId('integrado_id')->constrained('integrados');
+            $table->foreignId('integrado_id')->nullable()->constrained('integrados');
             $table->string('numero_documento', 50)->nullable();
             $table->string('documento_transporte', 50)->nullable();
             $table->string('tipo_documento', 20)->nullable();
