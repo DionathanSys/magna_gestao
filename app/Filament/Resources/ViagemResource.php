@@ -120,8 +120,8 @@ class ViagemResource extends Resource
 
                 Forms\Components\Toggle::make('conferido')
                     ->required(),
-                Forms\Components\KeyValue::make('divergencias')
-                    ->columnSpanFull(),
+                // Forms\Components\KeyValue::make('divergencias')
+                //     ->columnSpanFull(),
             ]);
     }
 
