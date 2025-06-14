@@ -142,26 +142,26 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
-                    ->copyable()
                     ->sortable()
+                    ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
-                    ->listWithLineBreaks()
-                    ->width('1%')
                     ->label('Integrado')
+                    ->width('1%')
+                    ->listWithLineBreaks()
                     ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id]))
                     ->openUrlInNewTab()
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('numero_custo_frete')
                     ->label('Nº Custo Frete')
-                    ->copyable()
                     ->sortable()
+                    ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('documento_transporte')
                     ->label('Doc. Transp.')
-                    ->copyable()
                     ->sortable()
+                    ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('tipo_viagem')
@@ -179,13 +179,14 @@ class ViagemResource extends Resource
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextColumn::make('km_cadastro')
+                        ->label('Km Cadastro')
                         ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'info' : 'success')
                         ->badge()
                         ->wrapHeader()
                         ->width('1%')
+                        ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
-                        ->sortable()
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_divergencia')
                         ->label('Km Divergência')
@@ -222,21 +223,21 @@ class ViagemResource extends Resource
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->toggleable(isToggledHiddenByDefault: true),
                 ]),
-                Tables\Columns\TextColumn::make('documentos_exists')
-                    ->exists('documentos')
-                    ->width('1%')
-                    ->label('Doc. Frete'),
-                Tables\Columns\TextColumn::make('documentos_sum_valor_total')
-                    ->sum('documentos', 'valor_total')
-                    ->width('1%')
-                    ->money('BRL', locale: 'pt-BR')
-                    ->label('Vlr. Frete'),
-                Tables\Columns\TextColumn::make('cargas_count')
-                    ->counts('cargas')
-                    ->width('1%')
-                    ->label('Qtde. Cargas')
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('documentos_exists')
+                //     ->exists('documentos')
+                //     ->width('1%')
+                //     ->label('Doc. Frete'),
+                // Tables\Columns\TextColumn::make('documentos_sum_valor_total')
+                //     ->sum('documentos', 'valor_total')
+                //     ->width('1%')
+                //     ->money('BRL', locale: 'pt-BR')
+                //     ->label('Vlr. Frete'),
+                // Tables\Columns\TextColumn::make('cargas_count')
+                //     ->counts('cargas')
+                //     ->width('1%')
+                //     ->label('Qtde. Cargas')
+                //     ->numeric()
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('data_competencia')
                     ->width('1%')
                     ->label('Dt. Comp.')
@@ -302,7 +303,7 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->openUrlInNewTab()
+                    // ->openUrlInNewTab()
                     ->iconButton(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('nova-carga')
@@ -371,7 +372,7 @@ class ViagemResource extends Resource
         return [
             'index' => Pages\ListViagems::route('/'),
             'create' => Pages\CreateViagem::route('/create'),
-            'edit' => Pages\EditViagem::route('/{record}/edit'),
+            // 'edit' => Pages\EditViagem::route('/{record}/edit'),
         ];
     }
 }
