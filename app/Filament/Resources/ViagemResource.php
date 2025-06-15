@@ -21,6 +21,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Services\NotificacaoService as notify;
 
 class ViagemResource extends Resource
 {
@@ -288,6 +289,10 @@ class ViagemResource extends Resource
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->filters([
+                Tables\Filters\TernaryFilter::make('conferido')
+                    ->label('Conferido')
+                    ->trueLabel('Sim')
+                    ->falseLabel('Não'),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
@@ -314,12 +319,47 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->openUrlInNewTab()
+                    ->color('black')
                     ->iconButton(),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('nova-carga')
-                    ->label('Add. Carga')
-                    ->icon('heroicon-o-shopping-bag')
+                // Tables\Actions\ActionGroup::make([
+                Tables\Actions\Action::make('viagem')
+                    ->action(function(Viagem $record) {
+                        $data = $record->data_competencia;
+                        $veiculo_id = $record->veiculo_id;
+
+                        $viagem = Viagem::query()
+                            ->whereDate('data_competencia', '>', $data)
+                            ->where('veiculo_id', $veiculo_id)
+                            ->orderBy('data_fim', 'asc')
+                            ->first();
+
+                        if (! $viagem) {
+                            notify::error('Nenhuma viagem encontrada', 'Não há viagens futuras para este veículo.');
+                            return;
+                        }
+
+                        $viagem->data_competencia = $data;
+                        $viagem->save();
+
+                    }),
+                Tables\Actions\Action::make('conferido')
+                    ->label('OK')
+                    ->icon('heroicon-o-check')
+                    ->visible(fn(Viagem $record) => ! $record->conferido)
+                    ->action(function(Viagem $record) {
+                        $record->update(['conferido' => true]);
+                    }),
+                Tables\Actions\Action::make('nao-conferido')
+                    ->label('NOK')
+                    ->icon('heroicon-o-no-symbol')
+                    ->color('red')
+                    ->visible(fn(Viagem $record) => $record->conferido)
+                    ->action(function(Viagem $record) {
+                        $record->update(['conferido' => false]);
+                    }),
+                Tables\Actions\Action::make('nova-carga')
+                    ->label('Carga')
+                    ->icon('heroicon-o-plus')
                     ->form([
                         Forms\Components\Select::make('integrado_id')
                             ->label('Integrado')
@@ -327,7 +367,7 @@ class ViagemResource extends Resource
                             ->required(),
                     ]),
                 Tables\Actions\Action::make('km-cadastro')
-                    ->label('Editar KM')
+                    ->label('KM')
                     ->icon('heroicon-o-pencil-square')
                     ->fillForm(fn (Viagem $record): array => [
                         'km_cadastro'       => $record->km_cadastro,
@@ -362,7 +402,7 @@ class ViagemResource extends Resource
                             ]);
                         })
                     ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
-                ]),
+                // ]),
             ])
             // ->selectable()
             ->bulkActions([
