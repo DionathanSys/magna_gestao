@@ -397,7 +397,7 @@ class ViagemResource extends Resource
                             ->required(),
                     ])
                     ->action(function(Viagem $record, array $data) {
-                            Log::alert('teste');
+
                             $record->update([
                                 'km_cadastro'       => $data['km_cadastro'],
                                 'km_rodado'         => $data['km_rodado'],
