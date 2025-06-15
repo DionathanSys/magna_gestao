@@ -41,16 +41,15 @@ class ViagemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('veiculo_id')
-                            ->label('Veículo')
-                            ->required()
-                            ->relationship('veiculo', 'placa')
-                            ->searchable()
-                            ->preload()
-                            ->visibleOn('create'),
+                    ->label('Veículo')
+                    ->required()
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload()
+                    ->visibleOn('create'),
                 Forms\Components\Section::make('Viagem')
                     ->columns(4)
                     ->schema([
-
                         Forms\Components\TextInput::make('numero_viagem')
                             ->required(),
                         Forms\Components\TextInput::make('numero_custo_frete')
@@ -159,17 +158,17 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false),
-                Tables\Columns\TextColumn::make('cargas.integrado.id')
-                    ->label('ID Carga')
-                    ->width('1%')
-                    ->listWithLineBreaks(),
-                Tables\Columns\TextColumn::make('cargas.integrado.nome')
-                    ->label('Integrado')
-                    ->width('1%')
-                    ->listWithLineBreaks()
-                    ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
-                    ->openUrlInNewTab()
-                    ->searchable(isIndividual: true, isGlobal: false),
+                // Tables\Columns\TextColumn::make('cargas.integrado.id')
+                //     ->label('ID Carga')
+                //     ->width('1%')
+                //     ->listWithLineBreaks(),
+                // Tables\Columns\TextColumn::make('cargas.integrado.nome')
+                //     ->label('Integrado')
+                //     ->width('1%')
+                //     ->listWithLineBreaks()
+                //     ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
+                //     ->openUrlInNewTab()
+                //     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('numero_custo_frete')
                     ->label('Nº Custo Frete')
                     ->sortable()
