@@ -158,17 +158,17 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false),
-                // Tables\Columns\TextColumn::make('cargas.integrado.id')
-                //     ->label('ID Carga')
-                //     ->width('1%')
-                //     ->listWithLineBreaks(),
-                // Tables\Columns\TextColumn::make('cargas.integrado.nome')
-                //     ->label('Integrado')
-                //     ->width('1%')
-                //     ->listWithLineBreaks()
-                //     ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
-                //     ->openUrlInNewTab()
-                //     ->searchable(isIndividual: true, isGlobal: false),
+                Tables\Columns\TextColumn::make('cargas.integrado.id')
+                    ->label('ID Carga')
+                    ->width('1%')
+                    ->listWithLineBreaks(),
+                Tables\Columns\TextColumn::make('cargas.integrado.nome')
+                    ->label('Integrado')
+                    ->width('1%')
+                    ->listWithLineBreaks()
+                    ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
+                    ->openUrlInNewTab()
+                    ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('numero_custo_frete')
                     ->label('Nº Custo Frete')
                     ->sortable()
@@ -380,10 +380,7 @@ class ViagemResource extends Resource
                         Forms\Components\KeyValue::make('divergencias')
                             ->columnSpanFull()
                         ])
-                    ->action(fn(Viagem $record, array $data) => true)
-                    ->before(fn(Viagem $record) => dd($record))
-                    ->after(fn(Viagem $record) => dd($record)),
-                    // ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
+                    ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
                 Tables\Actions\Action::make('km-cadastro')
                     ->label('KM')
                     ->icon('heroicon-o-pencil-square')
