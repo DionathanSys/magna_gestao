@@ -265,6 +265,13 @@ class ViagemResource extends Resource
                         '1' => 'blue',
                         default => 'red',
                     }),
+                Tables\Columns\IconColumn::make('documentos_exists')
+                    ->label('Doc. Existente')
+                    ->color(fn (string $state): string => match ($state) {
+                        '1' => 'blue',
+                        default => 'red',
+                    })
+                    ->exists('documentos'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -419,7 +426,6 @@ class ViagemResource extends Resource
                         })
                     ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
             ])
-            // ->selectable()
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
