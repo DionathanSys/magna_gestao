@@ -382,6 +382,7 @@ class ViagemResource extends Resource
                             ->columnSpanFull()
                         ])
                     ->action(fn(Viagem $record, array $data) => true)
+                    ->before(fn(Viagem $record) => dd($record))
                     ->after(fn(Viagem $record) => dd($record)),
                     // ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
                 Tables\Actions\Action::make('km-cadastro')
