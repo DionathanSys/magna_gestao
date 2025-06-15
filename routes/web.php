@@ -5,6 +5,7 @@ use App\Models\DocumentoFrete;
 use App\Models\Veiculo;
 use App\Models\Viagem;
 use App\Services\IntegradoService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -81,9 +82,9 @@ Route::get('/teste', function () {
     //     ]);
     // }
 
-    $viagem = Viagem::with('documentoFrete')->where('documento_transporte', '129042189')->first();
-    $doc = DocumentoFrete::where('documento_transporte', '129042189')->first();
-    dd($viagem->documento_transporte == $doc->documento_transporte);
-
+    Log::info('Teste de log', [
+        'metodo' => __METHOD__ . ' - ' . __LINE__,
+        'mensagem' => 'Teste de log',
+    ]);
 
 })->name('teste');
