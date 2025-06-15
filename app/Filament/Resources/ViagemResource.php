@@ -8,9 +8,11 @@ use App\Models\CargaViagem;
 use App\Models\Integrado;
 use App\Models\Viagem;
 use App\Enum\MotivoDivergenciaViagem;
+use App\Services\ViagemService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
@@ -94,7 +96,7 @@ class ViagemResource extends Resource
                         Forms\Components\TextInput::make('km_pago_excedente')
                             ->numeric()
                             ->default(0),
-                        Forms\Components\TextInput::make('km_morto')
+                        Forms\Components\TextInput::make('km_rodado_excedente')
                             ->numeric()
                             ->default(0),
                         Forms\Components\TextInput::make('km_cobrar')
@@ -155,11 +157,15 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false),
+                Tables\Columns\TextColumn::make('cargas.integrado.id')
+                    ->label('ID Carga')
+                    ->width('1%')
+                    ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->label('Integrado')
                     ->width('1%')
                     ->listWithLineBreaks()
-                    ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id]))
+                    ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
                     ->openUrlInNewTab()
                     ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('numero_custo_frete')
@@ -190,20 +196,20 @@ class ViagemResource extends Resource
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextColumn::make('km_cadastro')
                         ->label('Km Cadastro')
-                        ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'info' : 'success')
-                        ->badge()
+                        ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'red' : '')
+                        ->badge(fn($state, Viagem $record): bool => $record->km_cadastro != $record->km_pago)
                         ->wrapHeader()
                         ->width('1%')
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
-                    Tables\Columns\TextColumn::make('km_divergencia')
-                        ->label('Km Divergência')
-                        ->color(fn($state, Viagem $record) => $record->km_divergencia > 0 ? 'info' : 'success')
-                        ->badge()
-                        ->wrapHeader()
+                    Tables\Columns\TextColumn::make('km_rodado_excedente')
+                        ->label('Km Perdido')
                         ->width('1%')
+                        ->color(fn($state, Viagem $record): string => $record->km_rodado_excedente > 0 ? 'red' : '')
+                        ->badge(fn($state, Viagem $record): bool => $record->km_rodado_excedente > 0)
+                        ->wrapHeader()
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
@@ -211,13 +217,8 @@ class ViagemResource extends Resource
                     Tables\Columns\TextColumn::make('km_pago_excedente')
                         ->wrapHeader()
                         ->width('1%')
-                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
-                        ->toggleable(isToggledHiddenByDefault: false),
-                    Tables\Columns\TextColumn::make('km_morto')
-                        ->width('1%')
-                        ->wrapHeader()
-                        ->sortable()
+                        ->color(fn($state, Viagem $record): string => $record->km_pago_excedente > 0 ? 'success' : '')
+                        ->badge(fn($state, Viagem $record): bool => $record->km_pago_excedente > 0)
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
@@ -234,7 +235,7 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\SelectColumn::make('motivo_divergencia')
                         ->label('Motivo Divergência')
-                        ->wrapHeader()   
+                        ->wrapHeader()
                         ->width('2%')
                         ->options(MotivoDivergenciaViagem::toSelectArray())
                         ->default(MotivoDivergenciaViagem::DESLOCAMENTO_OUTROS->value)
@@ -258,7 +259,11 @@ class ViagemResource extends Resource
                         ->dateTimeTooltip()
                         ->sortable(),
                 ]),
-                Tables\Columns\IconColumn::make('conferido'),
+                Tables\Columns\IconColumn::make('conferido')
+                    ->color(fn (string $state): string => match ($state) {
+                        '1' => 'blue',
+                        default => 'red',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -324,38 +329,39 @@ class ViagemResource extends Resource
                 Tables\Actions\Action::make('km-cadastro')
                     ->label('Editar KM')
                     ->icon('heroicon-o-pencil-square')
+                    ->fillForm(fn (Viagem $record): array => [
+                        'km_cadastro'       => $record->km_cadastro,
+                        'km_rodado'         => $record->km_rodado,
+                        'km_pago'           => $record->km_pago,
+                        'km_rota_corrigido' => $record->km_rota_corrigido,
+                    ])
+                    ->form([
+                        Forms\Components\TextInput::make('km_rodado')
+                            ->label('KM Rodado')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('km_pago')
+                            ->label('KM Pago')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('km_cadastro')
+                            ->label('KM Cadastro')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('km_rota_corrigido')
+                            ->label('KM Rota Corrigido')
+                            ->numeric()
+                            ->required(),
+                    ])
                     ->action(function(Viagem $record, array $data) {
                             $record->update([
-                                'km_cadastro' => $data['km_cadastro'],
-                                'km_rodado' => $data['km_rodado'],
-                                'km_pago' => $data['km_pago'],
+                                'km_cadastro'       => $data['km_cadastro'],
+                                'km_rodado'         => $data['km_rodado'],
+                                'km_pago'           => $data['km_pago'],
                                 'km_rota_corrigido' => $data['km_rota_corrigido'],
                             ]);
                         })
-                        ->fillForm(fn (Viagem $record): array => [
-                            'km_cadastro' => $record->km_cadastro,
-                            'km_rodado' => $record->km_rodado,
-                            'km_pago' => $record->km_pago,
-                            'km_rota_corrigido' => $record->km_rota_corrigido,
-                        ])
-                        ->form([
-                            Forms\Components\TextInput::make('km_rodado')
-                                ->label('KM Cadastro')
-                                ->numeric()
-                                ->required(),
-                            Forms\Components\TextInput::make('km_pago')
-                                ->label('KM Cadastro')
-                                ->numeric()
-                                ->required(),
-                            Forms\Components\TextInput::make('km_cadastro')
-                                ->label('KM Cadastro')
-                                ->numeric()
-                                ->required(),
-                            Forms\Components\TextInput::make('km_rota_corrigido')
-                                ->label('KM Cadastro')
-                                ->numeric()
-                                ->required(),
-                        ]),
+                    ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
                 ]),
             ])
             // ->selectable()

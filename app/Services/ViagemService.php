@@ -48,6 +48,32 @@ class ViagemService
         }
     }
 
+    public function recalcularViagem(Viagem $viagem)
+    {
+        try {
+
+            if ($viagem->km_pago > $viagem->km_rodado) {
+                $viagem->km_pago_excedente = $viagem->km_pago - $viagem->km_rodado;
+                $viagem->km_rodado_excedente = 0;
+            } else {
+                $viagem->km_pago_excedente = 0;
+                $viagem->km_rodado_excedente = $viagem->km_rodado - $viagem->km_pago;
+            }
+
+            if($viagem->km_rota_corrigido > 0) {
+                $viagem->km_cobrar = $viagem->km_rota_corrigido - $viagem->km_pago;
+            }
+            $viagem->save();
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao recalcular viagem', [
+                'metodo' => __METHOD__ . ' - ' . __LINE__,
+                'mensagem' => $e->getMessage(),
+                'viagem_id' => $viagem->id,
+            ]);
+        }
+    }
+
     public function processarImportacao(Collection $rows, string $dataCorte)
     {
 
@@ -73,10 +99,10 @@ class ViagemService
 
                     if ($km_pago > $km_rodado) {
                         $km_pago_excedente = $km_pago - $km_rodado;
-                        $km_morto = 0;
+                        $km_rodado_excedente = 0;
                     } else {
                         $km_pago_excedente = 0;
-                        $km_morto = $km_rodado - $km_pago;
+                        $km_rodado_excedente = $km_rodado - $km_pago;
                     }
 
                     $viagemDto = ViagemDTO::makeFromArray(
@@ -90,7 +116,7 @@ class ViagemService
                             'km_divergencia'        => $km_divergencia,
                             'km_cadastro'           => $km_cadastro,
                             'km_pago_excedente'     => $km_pago_excedente,
-                            'km_morto'              => $km_morto,
+                            'km_rodado_excedente'              => $km_rodado_excedente,
                             'data_competencia'      => $dataFim,
                             'data_inicio'           => $row[$header['data_inicio']],
                             'data_fim'              => $row[$header['data_fim']],
@@ -102,7 +128,6 @@ class ViagemService
                     $viagem = $this->create($viagemDto);
                     // dd($viagem);
                 }
-
             } catch (\Exception $e) {
                 Log::error('Erro ao processar importação de viagem', [
                     'metodo' => __METHOD__ . ' - ' . __LINE__,
@@ -139,6 +164,4 @@ class ViagemService
 
         return $divergencias;
     }
-
-
 }
