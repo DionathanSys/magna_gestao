@@ -381,7 +381,9 @@ class ViagemResource extends Resource
                         Forms\Components\KeyValue::make('divergencias')
                             ->columnSpanFull()
                         ])
-                    ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
+                    ->action(fn(Viagem $record, array $data) => true)
+                    ->after(fn(Viagem $record) => dd($record)),
+                    // ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
                 Tables\Actions\Action::make('km-cadastro')
                     ->label('KM')
                     ->icon('heroicon-o-pencil-square')

@@ -1,10 +1,6 @@
 <?php
 
 use App\Http\Controllers\ImportController;
-use App\Models\DocumentoFrete;
-use App\Models\Veiculo;
-use App\Models\Viagem;
-use App\Services\IntegradoService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
