@@ -22,6 +22,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use Illuminate\Support\Facades\Log;
 
 class ViagemResource extends Resource
 {
@@ -396,6 +397,7 @@ class ViagemResource extends Resource
                             ->required(),
                     ])
                     ->action(function(Viagem $record, array $data) {
+                            Log::alert('teste');
                             $record->update([
                                 'km_cadastro'       => $data['km_cadastro'],
                                 'km_rodado'         => $data['km_rodado'],
