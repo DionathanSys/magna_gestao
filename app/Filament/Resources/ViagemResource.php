@@ -319,32 +319,42 @@ class ViagemResource extends Resource
             )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->openUrlInNewTab()
-                    ->iconButton(),
-                // Tables\Actions\ActionGroup::make([
-                Tables\Actions\Action::make('viagem')
-                    ->tooltip('Alt. Dt. Próxima Viagem')
-                    ->icon('heroicon-o-arrow-uturn-left')
-                    ->action(function(Viagem $record) {
-                        $data = $record->data_competencia;
-                        $veiculo_id = $record->veiculo_id;
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->openUrlInNewTab()
+                        ->iconButton(),
+                    Tables\Actions\Action::make('importar-viagem')
+                        ->tooltip('Alt. Dt. Próxima Viagem')
+                        ->icon('heroicon-o-arrow-uturn-left')
+                        ->action(function(Viagem $record) {
+                            $data = $record->data_competencia;
+                            $veiculo_id = $record->veiculo_id;
 
-                        $viagem = Viagem::query()
-                            ->whereDate('data_competencia', '>', $data)
-                            ->where('veiculo_id', $veiculo_id)
-                            ->orderBy('data_fim', 'asc')
-                            ->first();
+                            $viagem = Viagem::query()
+                                ->whereDate('data_competencia', '>', $data)
+                                ->where('veiculo_id', $veiculo_id)
+                                ->orderBy('data_fim', 'asc')
+                                ->first();
 
-                        if (! $viagem) {
-                            notify::error('Nenhuma viagem encontrada', 'Não há viagens futuras para este veículo.');
-                            return;
-                        }
+                            if (! $viagem) {
+                                notify::error('Nenhuma viagem encontrada', 'Não há viagens futuras para este veículo.');
+                                return;
+                            }
 
-                        $viagem->data_competencia = $data;
-                        $viagem->save();
+                            $viagem->data_competencia = $data;
+                            $viagem->save();
 
-                    }),
+                        }),
+                    Tables\Actions\Action::make('nova-carga')
+                        ->label('Carga')
+                        ->icon('heroicon-o-plus')
+                        ->form([
+                            Forms\Components\Select::make('integrado_id')
+                                ->label('Integrado')
+                                ->options(fn() => Integrado::all()->pluck('nome', 'id'))
+                                ->required(),
+                        ]),
+                ]),
                 Tables\Actions\Action::make('conferido')
                     ->label('Viagem OK')
                     ->icon('heroicon-o-check')
@@ -372,15 +382,6 @@ class ViagemResource extends Resource
                             ->columnSpanFull()
                         ])
                     ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
-                Tables\Actions\Action::make('nova-carga')
-                    ->label('Carga')
-                    ->icon('heroicon-o-plus')
-                    ->form([
-                        Forms\Components\Select::make('integrado_id')
-                            ->label('Integrado')
-                            ->options(fn() => Integrado::all()->pluck('nome', 'id'))
-                            ->required(),
-                    ]),
                 Tables\Actions\Action::make('km-cadastro')
                     ->label('KM')
                     ->icon('heroicon-o-pencil-square')
@@ -418,7 +419,6 @@ class ViagemResource extends Resource
                             ]);
                         })
                     ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
-                // ]),
             ])
             // ->selectable()
             ->bulkActions([
