@@ -346,14 +346,14 @@ class ViagemResource extends Resource
 
                     }),
                 Tables\Actions\Action::make('conferido')
-                    ->label('OK')
+                    ->label('Viagem OK')
                     ->icon('heroicon-o-check')
                     ->visible(fn(Viagem $record) => ! $record->conferido)
                     ->action(function(Viagem $record) {
                         $record->update(['conferido' => true]);
                     }),
                 Tables\Actions\Action::make('nao-conferido')
-                    ->label('NOK')
+                    ->label('Viagem NOK')
                     ->icon('heroicon-o-no-symbol')
                     ->color('red')
                     ->visible(fn(Viagem $record) => $record->conferido)
