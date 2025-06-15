@@ -116,7 +116,7 @@ class ViagemService
                             'km_divergencia'        => $km_divergencia,
                             'km_cadastro'           => $km_cadastro,
                             'km_pago_excedente'     => $km_pago_excedente,
-                            'km_rodado_excedente'              => $km_rodado_excedente,
+                            'km_rodado_excedente'   => $km_rodado_excedente,
                             'data_competencia'      => $dataFim,
                             'data_inicio'           => $row[$header['data_inicio']],
                             'data_fim'              => $row[$header['data_fim']],

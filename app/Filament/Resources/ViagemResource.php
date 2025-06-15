@@ -134,8 +134,8 @@ class ViagemResource extends Resource
 
                 Forms\Components\Toggle::make('conferido')
                     ->required(),
-                // Forms\Components\KeyValue::make('divergencias')
-                //     ->columnSpanFull(),
+                Forms\Components\KeyValue::make('divergencias')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -275,7 +275,6 @@ class ViagemResource extends Resource
 
 
             ])
-            ->striped()
             ->groups(
                 [
                     Tables\Grouping\Group::make('data_competencia')
@@ -286,6 +285,7 @@ class ViagemResource extends Resource
                         ->label('Integrado'),
                 ]
             )
+            ->defaultGroup('veiculo.placa')
             ->defaultSort('numero_viagem')
             ->searchOnBlur()
             ->persistFiltersInSession()
@@ -360,6 +360,18 @@ class ViagemResource extends Resource
                     ->action(function(Viagem $record) {
                         $record->update(['conferido' => false]);
                     }),
+                Tables\Actions\Action::make('divergencias')
+                    ->label('Divergências')
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->color('warning')
+                    ->fillForm(fn (Viagem $record): array => [
+                        'divergencias' => $record->divergencias,
+                    ])
+                    ->form([
+                        Forms\Components\KeyValue::make('divergencias')
+                            ->columnSpanFull()
+                        ])
+                    ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
                 Tables\Actions\Action::make('nova-carga')
                     ->label('Carga')
                     ->icon('heroicon-o-plus')
