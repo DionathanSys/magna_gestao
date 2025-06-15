@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Frete;
+namespace App\Enum\Frete;
 
 enum TipoDocumentoEnum: string
 {

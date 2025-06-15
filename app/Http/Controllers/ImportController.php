@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\DocumentoFreteDTO;
 use App\DTO\ViagemDTO;
-use App\Frete\TipoDocumentoEnum;
+use App\Enum\Frete\TipoDocumentoEnum;
 use App\Imports\IntegradoImport;
 use App\Imports\ViagemImport;
 use App\Models\DocumentoFrete;

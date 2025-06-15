@@ -41,7 +41,7 @@ Route::prefix('import')->group(function () {
 
     Route::view('/documento-frete', 'import.documentofrete.importFile', [
         'title' => 'Importar Documento de Frete',
-        'tipo_documento' => \App\Frete\TipoDocumentoEnum::toSelectArray(),
+        'tipo_documento' => \App\Enum\Frete\TipoDocumentoEnum::toSelectArray(),
         'route' => 'store.documentofrete'
     ]);
 

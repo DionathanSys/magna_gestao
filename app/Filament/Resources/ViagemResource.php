@@ -7,6 +7,7 @@ use App\Filament\Resources\ViagemResource\RelationManagers;
 use App\Models\CargaViagem;
 use App\Models\Integrado;
 use App\Models\Viagem;
+use App\Enum\MotivoDivergenciaViagem;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -40,7 +41,8 @@ class ViagemResource extends Resource
                             ->required()
                             ->relationship('veiculo', 'placa')
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->visibleOn('create'),
                 Forms\Components\Section::make('Viagem')
                     ->columns(4)
                     ->schema([
@@ -65,12 +67,16 @@ class ViagemResource extends Resource
                     ->columns(4)
                     ->schema([
                         Forms\Components\TextInput::make('valor_frete')
+                            ->prefix('R$')
                             ->readOnly(),
                         Forms\Components\TextInput::make('valor_cte')
+                            ->prefix('R$')
                             ->readOnly(),
                         Forms\Components\TextInput::make('valor_nfs')
+                            ->prefix('R$')
                             ->readOnly(),
                         Forms\Components\TextInput::make('valor_icms')
+                            ->prefix('R$')
                             ->readOnly(),
                     ]),
                 Forms\Components\Section::make('Quilometragens')
@@ -98,6 +104,10 @@ class ViagemResource extends Resource
                             ->required()
                             ->numeric()
                             ->default(0),
+                        Forms\Components\Select::make('motivo_divergencia')
+                            ->label('Motivo Divergência')
+                            ->options(MotivoDivergenciaViagem::toSelectArray())
+                            ->default(MotivoDivergenciaViagem::DESLOCAMENTO_OUTROS->value),
                         ]),
                 Forms\Components\Section::make('Datas')
                     ->columns(4)
@@ -222,38 +232,32 @@ class ViagemResource extends Resource
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\SelectColumn::make('motivo_divergencia')
+                        ->label('Motivo Divergência')
+                        ->wrapHeader()   
+                        ->width('2%')
+                        ->options(MotivoDivergenciaViagem::toSelectArray())
+                        ->default(MotivoDivergenciaViagem::DESLOCAMENTO_OUTROS->value)
+                        ->disabled(fn(Viagem $record) => $record->conferido)
                 ]),
-                // Tables\Columns\TextColumn::make('documentos_exists')
-                //     ->exists('documentos')
-                //     ->width('1%')
-                //     ->label('Doc. Frete'),
-                // Tables\Columns\TextColumn::make('documentos_sum_valor_total')
-                //     ->sum('documentos', 'valor_total')
-                //     ->width('1%')
-                //     ->money('BRL', locale: 'pt-BR')
-                //     ->label('Vlr. Frete'),
-                // Tables\Columns\TextColumn::make('cargas_count')
-                //     ->counts('cargas')
-                //     ->width('1%')
-                //     ->label('Qtde. Cargas')
-                //     ->numeric()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('data_competencia')
-                    ->width('1%')
-                    ->label('Dt. Comp.')
-                    ->date('d/m/Y')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('data_inicio')
-                    ->width('1%')
-                    ->label('Dt. Início')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('data_fim')
-                    ->width('1%')
-                    ->label('Dt. Fim')
-                    ->dateTime('d/m/Y H:i')
-                    ->dateTimeTooltip()
-                    ->sortable(),
+                Tables\Columns\ColumnGroup::make('Datas',[
+                    Tables\Columns\TextColumn::make('data_competencia')
+                        ->label('Dt. Comp.')
+                        ->width('1%')
+                        ->date('d/m/Y')
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('data_inicio')
+                        ->label('Dt. Início')
+                        ->width('1%')
+                        ->dateTime('d/m/Y H:i')
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('data_fim')
+                        ->label('Dt. Fim')
+                        ->width('1%')
+                        ->dateTime('d/m/Y H:i')
+                        ->dateTimeTooltip()
+                        ->sortable(),
+                ]),
                 Tables\Columns\IconColumn::make('conferido'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
@@ -261,6 +265,8 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
+
+
             ])
             ->striped()
             ->groups(

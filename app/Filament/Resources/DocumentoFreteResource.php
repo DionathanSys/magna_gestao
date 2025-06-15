@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DocumentoFreteResource\Pages;
 use App\Filament\Resources\DocumentoFreteResource\RelationManagers;
-use App\Frete\TipoDocumentoEnum;
+use App\Enum\Frete\TipoDocumentoEnum;
 use App\Models\DocumentoFrete;
 use Filament\Forms;
 use Filament\Forms\Form;

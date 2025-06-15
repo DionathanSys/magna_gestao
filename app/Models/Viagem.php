@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\MotivoDivergenciaViagem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,8 +12,9 @@ class Viagem extends Model
     protected $table = 'viagens';
 
     protected $casts = [
-        'divergencias'  => 'array',
-        'conferido'     => 'boolean',
+        'divergencias'          => 'array',
+        'conferido'             => 'boolean',
+        'motivo_divergencia'    => MotivoDivergenciaViagem::class,
     ];
 
     public function cargas(): HasMany
