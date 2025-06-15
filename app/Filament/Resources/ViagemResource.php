@@ -323,6 +323,8 @@ class ViagemResource extends Resource
                     ->iconButton(),
                 // Tables\Actions\ActionGroup::make([
                 Tables\Actions\Action::make('viagem')
+                    ->tooltip('Alt. Dt. Próxima Viagem')
+                    ->icon('heroicon-o-arrow-uturn-left')
                     ->action(function(Viagem $record) {
                         $data = $record->data_competencia;
                         $veiculo_id = $record->veiculo_id;
