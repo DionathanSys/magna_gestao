@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\ViagemDTO;
+use App\Enum\MotivoDivergenciaViagem;
 use App\Models\Integrado;
 use App\Models\Veiculo;
 use App\Models\Viagem;

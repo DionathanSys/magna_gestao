@@ -293,14 +293,14 @@ class ViagemResource extends Resource
                 //     ]),
 
 
-            ], layout: FiltersLayout::Modal)
-            ->filtersFormWidth(MaxWidth::FourExtraLarge)
-            ->filtersTriggerAction(
-                fn(Tables\Actions\Action $action) => $action
-                    ->button()
-                    ->slideOver()
-                    ->label('Filtros')
-            )
+            ])
+            // ->filtersFormWidth(MaxWidth::FourExtraLarge)
+            // ->filtersTriggerAction(
+            //     fn(Tables\Actions\Action $action) => $action
+            //         ->button()
+            //         ->slideOver()
+            //         ->label('Filtros')
+            // )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -361,7 +361,8 @@ class ViagemResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->pool('5s');
     }
 
     public static function getRelations(): array
