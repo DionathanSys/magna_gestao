@@ -267,6 +267,12 @@ class ViagemResource extends Resource
                     ->label('Conferido')
                     ->trueLabel('Sim')
                     ->falseLabel('Não'),
+                Tables\Filters\SelectFilter::make('integrado_id')
+                    ->label('Integrado')
+                    ->relationship('cargas.integrado', 'nome')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
                 Tables\Filters\Filter::make('numero_viagem')
                     ->form([
                         Forms\Components\TextInput::make('numero_viagem')
