@@ -267,6 +267,18 @@ class ViagemResource extends Resource
                     ->label('Conferido')
                     ->trueLabel('Sim')
                     ->falseLabel('Não'),
+                Tables\Filters\Filter::make('numero_viagem')
+                    ->form([
+                        Forms\Components\TextInput::make('numero_viagem')
+                            ->label('Nº Viagem'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['numero_viagem'],
+                                fn (Builder $query, $numeroViagem): Builder => $query->whereDate('numero_viagem', '=', $numeroViagem),
+                            );
+                    }),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
