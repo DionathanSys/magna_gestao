@@ -361,6 +361,7 @@ class ViagemResource extends Resource
                         ->form([
                             Forms\Components\Select::make('integrado_id')
                                 ->label('Integrado')
+                                ->searchable()
                                 ->options(fn() => Integrado::all()->pluck('nome', 'id'))
                                 ->required(),
                         ]),
