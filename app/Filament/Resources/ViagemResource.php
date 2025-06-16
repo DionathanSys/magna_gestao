@@ -221,7 +221,7 @@ class ViagemResource extends Resource
                         ->wrapHeader()
                         ->width('2%')
                         ->options(MotivoDivergenciaViagem::toSelectArray())
-                        ->default(MotivoDivergenciaViagem::DESLOCAMENTO_OUTROS->value)
+                        ->default(MotivoDivergenciaViagem::SEM_OBS->value)
                         ->disabled(fn(Viagem $record) => $record->conferido)
                 ]),
                 Tables\Columns\ColumnGroup::make('Datas',[
