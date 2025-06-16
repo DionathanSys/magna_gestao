@@ -370,8 +370,12 @@ class ViagemResource extends Resource
                     ->icon('heroicon-o-check')
                     ->visible(fn(Viagem $record) => ! $record->conferido)
                     ->action(function(Viagem $record) {
+                        if(! $record->motivo_divergencia){
+                            $record->motivo_divergencia = MotivoDivergenciaViagem::SEM_OBS;
+                        }
+                        $record->conferido = true;
+                        $record->save();
 
-                        $record->update(['conferido' => true]);
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Viagem NOK')
