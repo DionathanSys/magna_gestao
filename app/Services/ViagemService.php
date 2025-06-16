@@ -110,7 +110,7 @@ class ViagemService
                         [
                             'numero_viagem'         => $row[$header['numero_viagem']],
                             'documento_transporte'  => $row[$header['documento_transporte']] ?? null,
-                            'integrado'             => $integrado,
+                            'integrado'             => $integrado ?? null,
                             'veiculo_id'            => $this->veiculos[$row[$header['placa']]],
                             'km_rodado'             => $km_rodado,
                             'km_pago'               => $km_pago,
