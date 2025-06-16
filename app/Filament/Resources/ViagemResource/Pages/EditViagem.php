@@ -16,4 +16,10 @@ class EditViagem extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        // Recalcular a viagem após salvar
+        (new \App\Services\ViagemService())->recalcularViagem($this->record);
+    }
 }

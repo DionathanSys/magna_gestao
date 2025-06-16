@@ -335,9 +335,10 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()
+                    Tables\Actions\Action::make('editar')
+                        ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
-                        ->iconButton(),
+                        ->icon('heroicon-o-pencil-square'),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-uturn-left')
@@ -385,55 +386,6 @@ class ViagemResource extends Resource
                     ->action(function(Viagem $record) {
                         $record->update(['conferido' => false]);
                     }),
-                Tables\Actions\Action::make('divergencias')
-                    ->label('Divergências')
-                    ->icon('heroicon-o-exclamation-triangle')
-                    ->color('warning')
-                    ->fillForm(fn (Viagem $record): array => [
-                        'divergencias' => $record->divergencias,
-                    ])
-                    ->form([
-                        Forms\Components\KeyValue::make('divergencias')
-                            ->columnSpanFull()
-                        ])
-                    ->action(fn(Viagem $record, array $data) => $record->update(['divergencias' => $data['divergencias']])),
-                Tables\Actions\Action::make('km-cadastro')
-                    ->label('KM')
-                    ->icon('heroicon-o-pencil-square')
-                    ->fillForm(fn (Viagem $record): array => [
-                        'km_cadastro'       => $record->km_cadastro,
-                        'km_rodado'         => $record->km_rodado,
-                        'km_pago'           => $record->km_pago,
-                        'km_rota_corrigido' => $record->km_rota_corrigido,
-                    ])
-                    ->form([
-                        Forms\Components\TextInput::make('km_rodado')
-                            ->label('KM Rodado')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('km_pago')
-                            ->label('KM Pago')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('km_cadastro')
-                            ->label('KM Cadastro')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('km_rota_corrigido')
-                            ->label('KM Rota Corrigido')
-                            ->numeric()
-                            ->required(),
-                    ])
-                    ->action(function(Viagem $record, array $data) {
-
-                            $record->update([
-                                'km_cadastro'       => $data['km_cadastro'],
-                                'km_rodado'         => $data['km_rodado'],
-                                'km_pago'           => $data['km_pago'],
-                                'km_rota_corrigido' => $data['km_rota_corrigido'],
-                            ]);
-                        })
-                    ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -454,7 +406,7 @@ class ViagemResource extends Resource
         return [
             'index' => Pages\ListViagems::route('/'),
             'create' => Pages\CreateViagem::route('/create'),
-            // 'edit' => Pages\EditViagem::route('/{record}/edit'),
+            'edit' => Pages\EditViagem::route('/{record}/edit'),
         ];
     }
 }
