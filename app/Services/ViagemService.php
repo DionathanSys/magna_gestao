@@ -137,6 +137,7 @@ class ViagemService
                     'row' => $row,
                 ]);
 
+                echo "<pre>";
                 echo "Erro ao processar viagem: " . $row[$header['numero_viagem']] . " Placa: " . $row[$header['placa']] . "\n";
 
                 return;
