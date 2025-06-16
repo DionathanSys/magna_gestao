@@ -276,14 +276,20 @@ class ViagemResource extends Resource
                     ->columnSpanFull(),
                 Tables\Filters\Filter::make('data_competencia')
                     ->form([
-                        Forms\Components\DatePicker::make('data_competencia')
-                            ->label('Data Competência'),
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->label('Data Comp. Início'),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->label('Data Comp. Fim'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['data_competencia'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '=', $date),
+                                $data['data_inicio'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '>=', $date),
+                            )
+                            ->when(
+                                $data['data_fim'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
                             );
                     }),
                 // Tables\Filters\QueryBuilder::make()
