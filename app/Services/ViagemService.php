@@ -10,6 +10,7 @@ use App\Models\Viagem;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\Echo_;
 
 class ViagemService
 {
@@ -135,6 +136,8 @@ class ViagemService
                     'mensagem' => $e->getMessage(),
                     'row' => $row,
                 ]);
+
+                echo "Erro ao processar viagem: " . $row[$header['numero_viagem']] . " Placa: " . $row[$header['placa']] . "\n";
 
                 return;
             }
