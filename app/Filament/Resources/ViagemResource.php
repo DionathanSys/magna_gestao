@@ -150,39 +150,20 @@ class ViagemResource extends Resource
                     ->width('1%')
                     ->numeric()
                     ->sortable()
-                    ->searchable(isIndividual: true, isGlobal: false)
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
-                    ->sortable()
-                    ->copyable()
-                    ->searchable(isIndividual: true, isGlobal: false),
-                // Tables\Columns\TextColumn::make('cargas.integrado.id')
-                    // ->label('ID Carga')
-                    // ->width('1%')
-                    // ->listWithLineBreaks(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->label('Integrado')
                     ->width('1%')
-                    ->listWithLineBreaks()
-                    ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
-                    ->openUrlInNewTab()
-                    ->searchable(isIndividual: true, isGlobal: false),
-                Tables\Columns\TextColumn::make('numero_custo_frete')
-                    ->label('Nº Custo Frete')
-                    ->sortable()
-                    ->copyable()
-                    ->searchable(isIndividual: true, isGlobal: false)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->listWithLineBreaks(),
+                    // ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
+                    // ->openUrlInNewTab()
+                    // ->searchable(isIndividual: true, isGlobal: false)
                 Tables\Columns\TextColumn::make('documento_transporte')
                     ->label('Doc. Transp.')
-                    ->sortable()
-                    ->copyable()
-                    ->searchable(isIndividual: true, isGlobal: false)
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('tipo_viagem')
-                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('KM', [
                     Tables\Columns\TextColumn::make('km_rodado')
@@ -265,30 +246,6 @@ class ViagemResource extends Resource
                         '1' => 'blue',
                         default => 'red',
                     }),
-                // Tables\Columns\IconColumn::make('documentos_exists')
-                //     ->label('Possui Doc. Frete')
-                //     ->width('1%')
-                //     ->wrapHeader()
-                //     ->color(fn (string $state): string => match ($state) {
-                //         '1' => 'blue',
-                //         default => 'red',
-                //     })
-                //     ->exists('documentos')
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('divergencias')
-                //     ->label('Divergências')
-                //     ->wrap()
-                //     ->listWithLineBreaks()
-                //     ->limitList(2)
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y H:i')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime('d/m/Y H:i')
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-
             ])
             ->groups(
                 [
@@ -316,12 +273,24 @@ class ViagemResource extends Resource
                     ->preload()
                     ->multiple()
                     ->columnSpanFull(),
-                Tables\Filters\QueryBuilder::make()
-                    ->constraints([
-                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_inicio'),
-                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_fim'),
-                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_competencia'),
-                    ]),
+                Tables\Filters\Filter::make('data_competencia')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_competencia')
+                            ->label('Data Competência'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['data_competencia'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '=', $date),
+                            );
+                    }),
+                // Tables\Filters\QueryBuilder::make()
+                //     ->constraints([
+                //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_inicio'),
+                //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_fim'),
+                //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_competencia'),
+                //     ]),
 
 
             ], layout: FiltersLayout::Modal)
@@ -376,6 +345,7 @@ class ViagemResource extends Resource
                     ->icon('heroicon-o-check')
                     ->visible(fn(Viagem $record) => ! $record->conferido)
                     ->action(function(Viagem $record) {
+
                         $record->update(['conferido' => true]);
                     }),
                 Tables\Actions\Action::make('nao-conferido')
