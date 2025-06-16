@@ -144,6 +144,7 @@ class ViagemResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 $query->with('carga.integrado', 'veiculo');
             })
+            ->poll('5s')
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
@@ -361,8 +362,7 @@ class ViagemResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->pool('5s');
+            ]);
     }
 
     public static function getRelations(): array
