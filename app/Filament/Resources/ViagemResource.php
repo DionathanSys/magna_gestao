@@ -158,10 +158,10 @@ class ViagemResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->searchable(isIndividual: true, isGlobal: false),
-                Tables\Columns\TextColumn::make('cargas.integrado.id')
-                    ->label('ID Carga')
-                    ->width('1%')
-                    ->listWithLineBreaks(),
+                // Tables\Columns\TextColumn::make('cargas.integrado.id')
+                    // ->label('ID Carga')
+                    // ->width('1%')
+                    // ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->label('Integrado')
                     ->width('1%')
@@ -265,22 +265,22 @@ class ViagemResource extends Resource
                         '1' => 'blue',
                         default => 'red',
                     }),
-                Tables\Columns\IconColumn::make('documentos_exists')
-                    ->label('Possui Doc. Frete')
-                    ->width('1%')
-                    ->wrapHeader()
-                    ->color(fn (string $state): string => match ($state) {
-                        '1' => 'blue',
-                        default => 'red',
-                    })
-                    ->exists('documentos')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('divergencias')
-                    ->label('Divergências')
-                    ->wrap()
-                    ->listWithLineBreaks()
-                    ->limitList(2)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\IconColumn::make('documentos_exists')
+                //     ->label('Possui Doc. Frete')
+                //     ->width('1%')
+                //     ->wrapHeader()
+                //     ->color(fn (string $state): string => match ($state) {
+                //         '1' => 'blue',
+                //         default => 'red',
+                //     })
+                //     ->exists('documentos')
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('divergencias')
+                //     ->label('Divergências')
+                //     ->wrap()
+                //     ->listWithLineBreaks()
+                //     ->limitList(2)
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
