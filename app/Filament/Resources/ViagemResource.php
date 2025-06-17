@@ -333,10 +333,6 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('editar')
-                        ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
-                        ->openUrlInNewTab()
-                        ->icon('heroicon-o-pencil-square'),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
@@ -374,6 +370,7 @@ class ViagemResource extends Resource
 
                 ])->button(),
                 Tables\Actions\Action::make('editar')
+                        ->link()
                         ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
                         ->icon('heroicon-o-pencil-square'),
