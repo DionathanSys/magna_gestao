@@ -368,9 +368,8 @@ class ViagemResource extends Resource
                         ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
                         ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
 
-                ])->button(),
+                ])->link(),
                 Tables\Actions\Action::make('editar')
-                        ->link()
                         ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
                         ->icon('heroicon-o-pencil-square'),
