@@ -54,6 +54,11 @@ class ViagemService
     {
         try {
 
+            Log::debug("Recalculando viagem {$viagem->numero_viagem}", [
+                'metodo' => __METHOD__ . ' - ' . __LINE__,
+                'viagem' => $viagem->id,
+            ]);
+
             if ($viagem->km_pago > $viagem->km_rodado) {
                 $viagem->km_pago_excedente = $viagem->km_pago - $viagem->km_rodado;
                 $viagem->km_rodado_excedente = 0;
@@ -65,6 +70,11 @@ class ViagemService
             if($viagem->km_rota_corrigido > 0) {
                 $viagem->km_cobrar = $viagem->km_rota_corrigido - $viagem->km_pago;
             }
+
+            Log::debug("Viagem recalculada com sucesso {$viagem->numero_viagem}", [
+                'metodo' => __METHOD__ . ' - ' . __LINE__,
+                'divergencias' => $this->verificaDivergencia($viagem),
+            ]);
             $viagem->save();
 
         } catch (\Exception $e) {

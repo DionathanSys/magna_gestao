@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ViagemResource\Pages;
 use App\Filament\Resources\ViagemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Log;
 
 class EditViagem extends EditRecord
 {
@@ -19,7 +20,9 @@ class EditViagem extends EditRecord
 
     protected function afterSave(): void
     {
-        // Recalcular a viagem após salvar
+        Log::debug("Viagem atualizada ID: {$this->record->id}", [
+            'viagem' => $this->record,
+        ]);
         (new \App\Services\ViagemService())->recalcularViagem($this->record);
     }
 }

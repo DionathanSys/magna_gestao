@@ -33,8 +33,27 @@ class CargaService
             );
         } catch (\Exception $e) {
             Log::error('Erro ao criar carga de viagem: ' . $e->getMessage(), [
+                'metodo'       => __METHOD__. ' - ' . __LINE__,
                 'viagem_id'    => $viagem->id,
                 'integrado_id' => $integrado->id ?? null,
+            ]);
+            return null;
+        }
+    }
+
+    public static function incluirCargaViagem(int $integrado_id, Viagem $viagem): ?CargaViagem
+    {
+        try {
+            $cargaViagem = new self();
+            $itegrado = Integrado::find($integrado_id);
+
+            return $cargaViagem->create($itegrado, $viagem);
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao incluir carga de viagem: ' . $e->getMessage(), [
+                'metodo'       => __METHOD__. ' - ' . __LINE__,
+                'viagem_id'    => $viagem->id,
+                'integrado_id' => $integrado_id,
             ]);
             return null;
         }

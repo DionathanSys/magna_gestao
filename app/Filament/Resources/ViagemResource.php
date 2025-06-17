@@ -8,6 +8,7 @@ use App\Models\CargaViagem;
 use App\Models\Integrado;
 use App\Models\Viagem;
 use App\Enum\MotivoDivergenciaViagem;
+use App\Services\CargaService;
 use App\Services\ViagemService;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -335,7 +336,7 @@ class ViagemResource extends Resource
                         ->icon('heroicon-o-pencil-square'),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
-                        ->icon('heroicon-o-arrow-uturn-left')
+                        ->icon('heroicon-o-arrow-left-end-on-rectangle')
                         ->action(function(Viagem $record) {
                             $data = $record->data_competencia;
                             $veiculo_id = $record->veiculo_id;
@@ -364,10 +365,17 @@ class ViagemResource extends Resource
                                 ->searchable()
                                 ->options(fn() => Integrado::all()->pluck('nome', 'id'))
                                 ->required(),
-                        ]),
-                ]),
+                        ])
+                        ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
+                        ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
+
+                ])->button(),
+                Tables\Actions\Action::make('editar')
+                        ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
+                        ->openUrlInNewTab()
+                        ->icon('heroicon-o-pencil-square'),
                 Tables\Actions\Action::make('conferido')
-                    ->label('Viagem OK')
+                    ->label('Conferido')
                     ->icon('heroicon-o-check')
                     ->visible(fn(Viagem $record) => ! $record->conferido)
                     ->action(function(Viagem $record) {
@@ -379,7 +387,7 @@ class ViagemResource extends Resource
 
                     }),
                 Tables\Actions\Action::make('nao-conferido')
-                    ->label('Viagem NOK')
+                    ->label('Ñ Conferido')
                     ->icon('heroicon-o-no-symbol')
                     ->color('red')
                     ->visible(fn(Viagem $record) => $record->conferido)
