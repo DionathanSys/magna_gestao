@@ -180,6 +180,7 @@ class ViagemResource extends Resource
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextInputColumn::make('km_cadastro')
                         ->label('Km Cadastro')
+                        ->type('number')
                         // ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'info' : '')
                         // ->badge(fn($state, Viagem $record): bool => $record->km_cadastro != $record->km_pago)
                         ->wrapHeader()
@@ -209,6 +210,7 @@ class ViagemResource extends Resource
                     Tables\Columns\TextInputColumn::make('km_cobrar')
                         ->width('1%')
                         ->wrapHeader()
+                        ->type('number')
                         // ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         // ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
@@ -226,10 +228,11 @@ class ViagemResource extends Resource
                         ->disabled(fn(Viagem $record) => $record->conferido)
                 ]),
                 Tables\Columns\ColumnGroup::make('Datas',[
-                    Tables\Columns\TextColumn::make('data_competencia')
+                    Tables\Columns\TextInputColumn::make('data_competencia')
+                        ->type('date')
                         ->label('Dt. Comp.')
                         ->width('1%')
-                        ->date('d/m/Y')
+                        // ->date('d/m/Y')
                         ->sortable(),
                     Tables\Columns\TextColumn::make('data_inicio')
                         ->label('Dt. Início')
