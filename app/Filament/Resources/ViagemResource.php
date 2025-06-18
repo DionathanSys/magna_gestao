@@ -24,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
 
@@ -262,14 +263,21 @@ class ViagemResource extends Resource
             ->groups(
                 [
                     Tables\Grouping\Group::make('data_competencia')
-                        ->label('Data Competência'),
+                        ->label('Data Competência')
+                        ->titlePrefixedWithLabel(false)
+                        ->getTitleFromRecordUsing(fn (Viagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
+                        ->collapsible(),
                     Tables\Grouping\Group::make('veiculo.placa')
-                        ->label('Veículo'),
+                        ->label('Veículo')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
                     Tables\Grouping\Group::make('carga.integrado.nome')
-                        ->label('Integrado'),
+                        ->label('Integrado')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
                 ]
             )
-            ->defaultGroup('veiculo.placa')
+            ->defaultGroup('data_competencia')
             ->defaultSort('numero_viagem')
             ->searchOnBlur()
             ->persistFiltersInSession()
@@ -375,10 +383,12 @@ class ViagemResource extends Resource
                         ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
                         ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
 
-                ])->link(),
+                ])
+                ->link(),
                 Tables\Actions\Action::make('editar')
                         ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
+                        ->visible(fn(Viagem $record) => ! $record->conferido)
                         ->icon('heroicon-o-pencil-square'),
                 Tables\Actions\Action::make('conferido')
                     ->label('Conferido')

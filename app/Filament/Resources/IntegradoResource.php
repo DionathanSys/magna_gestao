@@ -66,6 +66,7 @@ class IntegradoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->searchOnBlur()
             ->filters([
                 //
             ])
