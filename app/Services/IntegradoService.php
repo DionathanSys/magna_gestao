@@ -22,4 +22,9 @@ class IntegradoService
         return null;
     }
 
+    public function atualizarKmRota(Integrado $integrado, float $kmRota): void
+    {
+        $integrado->update(['km_rota' => $kmRota]);
+    }
+
 }

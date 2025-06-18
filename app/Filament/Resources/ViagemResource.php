@@ -9,6 +9,7 @@ use App\Models\Integrado;
 use App\Models\Viagem;
 use App\Enum\MotivoDivergenciaViagem;
 use App\Services\CargaService;
+use App\Services\IntegradoService;
 use App\Services\ViagemService;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -24,9 +25,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Facades\Log;
+use Livewire\Features\SupportEvents\HandlesEvents;
 
 class ViagemResource extends Resource
 {
+
+    use HandlesEvents;
+
     protected static ?string $model = Viagem::class;
 
     protected static ?string $navigationGroup = 'Viagens';
@@ -180,15 +185,17 @@ class ViagemResource extends Resource
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                     Tables\Columns\TextInputColumn::make('km_cadastro')
                         ->label('Km Cadastro')
-                        ->type('number')
-                        // ->color(fn($state, Viagem $record): string => $record->km_cadastro != $record->km_pago ? 'info' : '')
-                        // ->badge(fn($state, Viagem $record): bool => $record->km_cadastro != $record->km_pago)
                         ->wrapHeader()
                         ->width('1%')
+                        ->type('number')
                         ->sortable()
-                        // ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        // ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
-                        ->toggleable(isToggledHiddenByDefault: false),
+                        ->disabled(fn(Viagem $record) => $record->conferido)
+                        ->rules(['numeric', 'min:0', 'required'])
+                        ->toggleable(isToggledHiddenByDefault: false)
+                        ->afterStateUpdated(fn($state, Viagem $record) => (new IntegradoService)->atualizarKmRota(
+                            Integrado::find($record->carga->integrado_id),
+                            $state
+                        )),
                     Tables\Columns\TextColumn::make('km_rodado_excedente')
                         ->label('Km Perdido')
                         ->width('1%')
@@ -211,8 +218,8 @@ class ViagemResource extends Resource
                         ->width('1%')
                         ->wrapHeader()
                         ->type('number')
-                        // ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        // ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
+                        ->disabled(fn(Viagem $record) => $record->conferido)
+                        ->rules(['numeric', 'min:0', 'required'])
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_rota_corrigido')
                         ->wrapHeader()
@@ -232,7 +239,6 @@ class ViagemResource extends Resource
                         ->type('date')
                         ->label('Dt. Comp.')
                         ->width('1%')
-                        // ->date('d/m/Y')
                         ->sortable(),
                     Tables\Columns\TextColumn::make('data_inicio')
                         ->label('Dt. Início')
@@ -315,21 +321,21 @@ class ViagemResource extends Resource
                             );
                     }),
                 // Tables\Filters\QueryBuilder::make()
-                //     ->constraints([
-                //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_inicio'),
-                //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_fim'),
-                //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_competencia'),
-                //     ]),
+                    //     ->constraints([
+                    //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_inicio'),
+                    //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_fim'),
+                    //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_competencia'),
+                    //     ]),
 
 
             ])
             // ->filtersFormWidth(MaxWidth::FourExtraLarge)
-            // ->filtersTriggerAction(
-            //     fn(Tables\Actions\Action $action) => $action
-            //         ->button()
-            //         ->slideOver()
-            //         ->label('Filtros')
-            // )
+                // ->filtersTriggerAction(
+                //     fn(Tables\Actions\Action $action) => $action
+                //         ->button()
+                //         ->slideOver()
+                //         ->label('Filtros')
+                // )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
