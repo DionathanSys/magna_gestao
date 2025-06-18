@@ -62,10 +62,8 @@ class PneuResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('medida')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('desenhoPneu.modelo')
-                    ->label('Desenho Pneu')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('desenho_pneu_id')
+                Tables\Columns\TextColumn::make('desenhoPneu.medida')
+                    ->label('Medida Desenho Pneu')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
