@@ -13,7 +13,10 @@ class ListRecapagems extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Registro Recap')
+                ->icon('heroicon-o-plus-circle')
+                ->color('primary'),
         ];
     }
 }
