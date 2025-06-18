@@ -35,11 +35,11 @@ class RecapagemResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('data_recapagem')
                     ->required(),
-                Forms\Components\TextInput::make('desenho_pneu_id')
+                Forms\Components\Select::make('desenho_pneu_id')
                     ->label('Desenho do Pneu')
                     ->relationship('desenhoPneu', 'modelo')
                     ->required(),
-                Forms\Components\TextInput::make('parceiro_id')
+                Forms\Components\Select::make('parceiro_id')
                     ->label('Parceiro')
                     ->relationship('parceiro', 'nome')
                     ->required(),
