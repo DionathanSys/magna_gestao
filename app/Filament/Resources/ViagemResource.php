@@ -150,7 +150,7 @@ class ViagemResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 $query->with('carga.integrado', 'veiculo');
             })
-            ->poll('5s')
+            ->poll(null)
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
