@@ -57,7 +57,7 @@ class DesenhoPneuResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('estado_pneu')
-                    ->label('Medida')
+                    ->label('Estado pneu')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
