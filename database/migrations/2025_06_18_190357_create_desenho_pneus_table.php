@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('desenhos_pneu', function (Blueprint $table) {
             $table->id();
-            $table->string('descricao');
             $table->string('medida')->nullable();
             $table->string('modelo')->nullable();
+            $table->string('estado_pneu');
             $table->timestamps();
             $table->softDeletes();
         });

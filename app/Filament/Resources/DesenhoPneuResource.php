@@ -29,16 +29,16 @@ class DesenhoPneuResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('descricao')
-                    ->label('Descrição')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('medida')
-                    ->label('Medida')
+                    ->label('Medida Borracha')
                     ->nullable()
                     ->maxLength(50),
                 Forms\Components\TextInput::make('modelo')
                     ->label('Modelo')
+                    ->nullable()
+                    ->maxLength(100),
+                Forms\Components\TextInput::make('estado_pneu')
+                    ->label('Estado do Pneu')
                     ->nullable()
                     ->maxLength(100),
             ]);
@@ -48,16 +48,16 @@ class DesenhoPneuResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('descricao')
-                    ->label('Descrição')
+                Tables\Columns\TextColumn::make('modelo')
+                    ->label('Modelo')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('medida')
-                    ->label('Medida')
+                    ->label('Medida Borracha')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('modelo')
-                    ->label('Modelo')
+                Tables\Columns\TextColumn::make('estado_pneu')
+                    ->label('Medida')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
