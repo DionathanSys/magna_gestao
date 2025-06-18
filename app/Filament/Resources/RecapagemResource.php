@@ -95,8 +95,8 @@ class RecapagemResource extends Resource
     {
         return [
             'index' => Pages\ListRecapagems::route('/'),
-            'create' => Pages\CreateRecapagem::route('/create'),
-            'edit' => Pages\EditRecapagem::route('/{record}/edit'),
+            // 'create' => Pages\CreateRecapagem::route('/create'),
+            // 'edit' => Pages\EditRecapagem::route('/{record}/edit'),
         ];
     }
 }
