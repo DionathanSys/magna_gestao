@@ -40,7 +40,7 @@ class PneuResource extends Resource
                 Forms\Components\TextInput::make('medida')
                     ->maxLength(255),
                 Forms\Components\Select::make('desenho_pneu_id')
-                    ->relationship('desenhoPneu', 'descricao'),
+                    ->relationship('desenhoPneu', 'modelo'),
                 Forms\Components\TextInput::make('status')
                     ->required()
                     ->maxLength(255),
@@ -61,6 +61,9 @@ class PneuResource extends Resource
                 Tables\Columns\TextColumn::make('modelo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('medida')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('desenhoPneu.modelo')
+                    ->label('Desenho Pneu')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('desenho_pneu_id')
                     ->searchable(),
