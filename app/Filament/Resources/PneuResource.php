@@ -55,6 +55,7 @@ class PneuResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('numero_fogo')
+                    ->label('Nº de Fogo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('marca')
                     ->searchable(),
@@ -70,6 +71,7 @@ class PneuResource extends Resource
                 Tables\Columns\TextColumn::make('local')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('data_aquisicao')
+                    ->label('Dt. Aquisição')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -29,6 +29,10 @@ class DesenhoPneuResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('descricao')
+                    ->label('Descrição')
+                    ->nullable()
+                    ->maxLength(50),
                 Forms\Components\TextInput::make('medida')
                     ->label('Medida Borracha')
                     ->nullable()
@@ -48,6 +52,10 @@ class DesenhoPneuResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('descricao')
+                    ->label('Modelo')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('modelo')
                     ->label('Modelo')
                     ->searchable()

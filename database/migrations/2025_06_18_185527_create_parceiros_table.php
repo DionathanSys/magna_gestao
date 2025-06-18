@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('desenhos_pneu', function (Blueprint $table) {
+        Schema::create('parceiros', function (Blueprint $table) {
             $table->id();
-            $table->string('descricao')->nullable();
-            $table->string('medida')->nullable();
-            $table->string('modelo')->nullable();
-            $table->string('estado_pneu');
+            $table->string('nome')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('desenhos_pneu');
+        Schema::dropIfExists('parceiros');
     }
 };
