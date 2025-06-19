@@ -29,13 +29,13 @@ class PneusRelationManager extends RelationManager
                             ->pluck('numero_fogo', 'id')
                     )
                     ->searchable(),
+                Forms\Components\TextInput::make('eixo')
+                    ->numeric()
+                    ->required(),
                 Forms\Components\TextInput::make('posicao')
                     ->label('Posição')
                     ->required()
                     ->maxLength(20),
-                Forms\Components\TextInput::make('eixo')
-                    ->numeric()
-                    ->required(),
                 Forms\Components\TextInput::make('km_inicial')
                     ->label('KM Inicial')
                     ->numeric()
@@ -61,6 +61,11 @@ class PneusRelationManager extends RelationManager
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->label('Pneu')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('posicao')
+                    ->label('Posição')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('eixo')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->width('1%'),
