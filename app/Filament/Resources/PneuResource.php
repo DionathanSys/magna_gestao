@@ -88,6 +88,15 @@ class PneuResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ReplicateAction::make()
+                    ->icon('heroicon-o-document-duplicate')
+                    ->iconButton()
+                    ->excludeAttributes([
+                        'id',
+                        'numero_fogo',
+                        'created_at',
+                        'updated_at',
+                    ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

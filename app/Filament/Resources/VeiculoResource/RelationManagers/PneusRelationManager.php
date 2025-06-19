@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\VeiculoResource\RelationManagers;
 
 use App\Models\Pneu;
+use App\Models\PneuPosicaoVeiculo;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -144,6 +145,7 @@ class PneusRelationManager extends RelationManager
                             ->required(),
                         Forms\Components\TextInput::make('km_inicial')
                             ->label('KM')
+                            ->minValue(fn (PneuPosicaoVeiculo $record) => $record->km_inicial)
                             ->numeric()
                             ->required(),
                         Forms\Components\DatePicker::make('data_inicial')
@@ -152,8 +154,7 @@ class PneusRelationManager extends RelationManager
                             ->default(now())
                             ->maxDate(now())
                             ->required(),
-                    ])->action(function (array $data, $record) {
-                        // dd($data, $record, $record->pneu);
+                    ])->action(function (array $data, PneuPosicaoVeiculo $record) {
                         $record->update([
                                 'pneu_id'       => $data['pneu_id'],
                                 'km_inicial'    => $data['km_inicial'],
