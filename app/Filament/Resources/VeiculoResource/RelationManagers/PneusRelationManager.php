@@ -28,8 +28,7 @@ class PneusRelationManager extends RelationManager
                             })
                             ->pluck('numero_fogo', 'id')
                     )
-                    ->searchable()
-                    ->required(),
+                    ->searchable(),
                 Forms\Components\Select::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
@@ -61,16 +60,34 @@ class PneusRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('numero_fogo'),
-                Tables\Columns\TextColumn::make('km_inicial'),
+                Tables\Columns\TextColumn::make('id')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('pneu.numero_fogo')
+                    ->label('Pneu')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('km_inicial')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('data_inicial')
+                    ->width('1%')
                     ->date('d/m/Y'),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
+            ->groups([
+                Tables\Grouping\Group::make('eixo')
+                    ->label('Eixo')
+                    ->collapsible(),
+            ])
+            ->defaultGroup('eixo')
+            ->defaultSort('id')
             ->filters([
                 //
             ])
