@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\VeiculoResource\RelationManagers;
 
+use App\Models\Pneu;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -20,7 +21,13 @@ class PneusRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('pneu_id')
                     ->label('Pneu')
-                    ->relationship('pneu', 'id')
+                    ->options(
+                        Pneu::query()
+                            ->whereDoesntHave('veiculo', function (Builder $query) {
+                                $query->where('veiculo_id', $this->ownerRecord->id);
+                            })
+                            ->pluck('numero_fogo', 'id')
+                    )
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('veiculo_id')
