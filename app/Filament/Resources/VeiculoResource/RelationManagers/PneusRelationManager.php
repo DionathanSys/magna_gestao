@@ -29,10 +29,6 @@ class PneusRelationManager extends RelationManager
                             ->pluck('numero_fogo', 'id')
                     )
                     ->searchable(),
-                Forms\Components\Select::make('veiculo_id')
-                    ->label('Veículo')
-                    ->relationship('veiculo', 'placa')
-                    ->required(),
                 Forms\Components\TextInput::make('posicao')
                     ->label('Posição')
                     ->required()
