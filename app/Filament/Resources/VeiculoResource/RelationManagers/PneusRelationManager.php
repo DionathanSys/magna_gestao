@@ -57,8 +57,6 @@ class PneusRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->width('1%'),
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->label('Pneu')
                     ->width('1%'),
@@ -90,6 +88,7 @@ class PneusRelationManager extends RelationManager
             ])
             ->defaultGroup('eixo')
             ->defaultSort('id')
+            ->paginated(false)
             ->filters([
                 //
             ])
