@@ -60,6 +60,7 @@ class PneusRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->label('Pneu')
+                    ->placeholder('Vazio')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('posicao')
                     ->label('Posição')
@@ -118,43 +119,53 @@ class PneusRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\Action::make('desvincular-pneu')
-                    ->label('Desvincular Pneu')
                     ->icon('heroicon-o-x-circle')
                     ->iconButton()
                     ->tooltip('Desvincular Pneu')
                     ->requiresConfirmation()
-                    ->action(function ($record) {
-                        $this->ownerRecord->pneus()->detach($record->id);
-                    })
-                    ->visible(fn ($record) => $record->veiculo_id === $this->ownerRecord->id),
+                    ->action(fn($record) => $record->update(['pneu_id' => null]))
+                    ->visible(fn($record) => ! $record->pneu_id == null),
                 Tables\Actions\Action::make('movimentar-pneu')
-                    ->label('Movimentar Pneu')
                     ->icon('heroicon-o-arrows-right-left')
                     ->iconButton()
                     ->tooltip('Movimentar Pneu')
                     ->requiresConfirmation()
                     ->form([
-                        Forms\Components\Select::make('veiculo_id')
-                            ->label('Veículo')
+                        Forms\Components\Select::make('pneu_id')
+                            ->label('Pneu')
                             ->options(
-                                \App\Models\Veiculo::query()
-                                    ->whereDoesntHave('pneus', function (Builder $query) {
-                                        $query->where('pneu_id', $this->ownerRecord->id);
+                                Pneu::query()
+                                    ->whereDoesntHave('veiculo', function (Builder $query) {
+                                        $query->where('veiculo_id', $this->ownerRecord->id);
                                     })
-                                    ->pluck('placa', 'id')
+                                    ->pluck('numero_fogo', 'id')
                             )
                             ->searchable()
                             ->required(),
+                        Forms\Components\TextInput::make('km_inicial')
+                            ->label('KM')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\DatePicker::make('data_inicial')
+                            ->label('Dt. Aplicação')
+                            ->date('d/m/Y')
+                            ->default(now())
+                            ->maxDate(now())
+                            ->required(),
                     ])->action(function (array $data, $record) {
-                        $this->ownerRecord->pneus()->updateExistingPivot($record->id, ['veiculo_id' => $data['veiculo_id']]);
-                    })
-                    ->visible(fn ($record) => $record->veiculo_id === $this->ownerRecord->id),
+                        // dd($data, $record, $record->pneu);
+                        $record->update([
+                                'pneu_id'       => $data['pneu_id'],
+                                'km_inicial'    => $data['km_inicial'],
+                                'data_inicial'  => $data['data_inicial'],
+                            ]);
+                    }),
                 Tables\Actions\EditAction::make()
                     ->iconButton()
-                    ->visible(fn () => Auth::user()->admin),
+                    ->visible(fn() => Auth::user()->admin),
                 Tables\Actions\DeleteAction::make()
                     ->iconButton()
-                    ->visible(fn () => Auth::user()->admin),
+                    ->visible(fn() => Auth::user()->admin),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
