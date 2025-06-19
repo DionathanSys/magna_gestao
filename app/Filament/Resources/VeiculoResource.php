@@ -26,6 +26,8 @@ class VeiculoResource extends Resource
                 Forms\Components\TextInput::make('placa')
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
+                    ->label('Ativo')
+                    ->inline(false)
                     ->default(true)
                     ->required(),
             ]);
@@ -68,7 +70,7 @@ class VeiculoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PneusRelationManager::class,
         ];
     }
 

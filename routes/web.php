@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Models\Veiculo;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -77,10 +78,8 @@ Route::get('/teste', function () {
     //         'placa' => $value,
     //     ]);
     // }
-
-    Log::info('Teste de log', [
-        'metodo' => __METHOD__ . ' - ' . __LINE__,
-        'mensagem' => 'Teste de log',
-    ]);
+    $veiculo = Veiculo::find(1);
+    $pneus = $veiculo->pneus;
+    dd($veiculo, $pneus);
 
 })->name('teste');
