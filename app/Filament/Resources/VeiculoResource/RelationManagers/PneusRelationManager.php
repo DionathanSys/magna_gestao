@@ -49,6 +49,8 @@ class PneusRelationManager extends RelationManager
                     ->label('Dt. Aplicação')
                     ->date()
                     ->default(now())
+                    ->maxDate(now())
+                    ->displayFormat('d/m/Y')
                     ->native(false)
                     ->required(),
             ]);
