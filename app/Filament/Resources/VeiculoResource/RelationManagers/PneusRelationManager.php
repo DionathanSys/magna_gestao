@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class PneusRelationManager extends RelationManager
 {
@@ -116,8 +117,44 @@ class PneusRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('desvincular-pneu')
+                    ->label('Desvincular Pneu')
+                    ->icon('heroicon-o-x-circle')
+                    ->iconButton()
+                    ->tooltip('Desvincular Pneu')
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $this->ownerRecord->pneus()->detach($record->id);
+                    })
+                    ->visible(fn ($record) => $record->veiculo_id === $this->ownerRecord->id),
+                Tables\Actions\Action::make('movimentar-pneu')
+                    ->label('Movimentar Pneu')
+                    ->icon('heroicon-o-arrows-right-left')
+                    ->iconButton()
+                    ->tooltip('Movimentar Pneu')
+                    ->requiresConfirmation()
+                    ->form([
+                        Forms\Components\Select::make('veiculo_id')
+                            ->label('Veículo')
+                            ->options(
+                                \App\Models\Veiculo::query()
+                                    ->whereDoesntHave('pneus', function (Builder $query) {
+                                        $query->where('pneu_id', $this->ownerRecord->id);
+                                    })
+                                    ->pluck('placa', 'id')
+                            )
+                            ->searchable()
+                            ->required(),
+                    ])->action(function (array $data, $record) {
+                        $this->ownerRecord->pneus()->updateExistingPivot($record->id, ['veiculo_id' => $data['veiculo_id']]);
+                    })
+                    ->visible(fn ($record) => $record->veiculo_id === $this->ownerRecord->id),
+                Tables\Actions\EditAction::make()
+                    ->iconButton()
+                    ->visible(fn () => Auth::user()->admin),
+                Tables\Actions\DeleteAction::make()
+                    ->iconButton()
+                    ->visible(fn () => Auth::user()->admin),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
