@@ -46,8 +46,9 @@ class PneusRelationManager extends RelationManager
                     ->numeric()
                     ->required(),
                 Forms\Components\DatePicker::make('eixo')
-                    ->label('Eixo')
+                    ->label('Dt. Aplicação')
                     ->date()
+                    ->default(now())
                     ->native(false)
                     ->required(),
             ]);
