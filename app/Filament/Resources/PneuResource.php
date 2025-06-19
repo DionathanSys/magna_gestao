@@ -91,6 +91,12 @@ class PneuResource extends Resource
                 Tables\Actions\ReplicateAction::make()
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
+                    ->form([
+                        Forms\Components\TextInput::make('numero_fogo')
+                            ->label('Nº de Fogo')
+                            ->required()
+                            ->maxLength(255),
+                    ])
                     ->excludeAttributes([
                         'id',
                         'numero_fogo',
