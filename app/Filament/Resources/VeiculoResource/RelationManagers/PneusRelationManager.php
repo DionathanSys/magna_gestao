@@ -46,7 +46,8 @@ class PneusRelationManager extends RelationManager
                     ->default(now())
                     ->maxDate(now())
                     ->displayFormat('d/m/Y')
-                    ->native(false)
+                    ->closeOnDateSelection()
+                    ->native(true)
                     ->required(),
             ]);
     }
