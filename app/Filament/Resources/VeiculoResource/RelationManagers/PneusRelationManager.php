@@ -32,7 +32,7 @@ class PneusRelationManager extends RelationManager
                     ->required(),
                 Forms\Components\Select::make('veiculo_id')
                     ->label('Veículo')
-                    ->relationship('veiculo', 'id')
+                    ->relationship('veiculo', 'placa')
                     ->required(),
                 Forms\Components\TextInput::make('posicao')
                     ->label('Posição')
