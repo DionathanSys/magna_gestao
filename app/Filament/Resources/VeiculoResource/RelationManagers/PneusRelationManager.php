@@ -45,7 +45,7 @@ class PneusRelationManager extends RelationManager
                     ->label('KM Inicial')
                     ->numeric()
                     ->required(),
-                Forms\Components\DatePicker::make('eixo')
+                Forms\Components\DatePicker::make('data_inicial')
                     ->label('Dt. Aplicação')
                     ->date()
                     ->default(now())
@@ -73,7 +73,27 @@ class PneusRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('Adicionar Pneu')
+                    ->icon('heroicon-o-plus-circle'),
+                Tables\Actions\Action::make('vincular-pneu')
+                    ->label('Vincular Pneu')
+                    ->icon('heroicon-o-link')
+                    ->form([
+                        Forms\Components\Select::make('pneu_id')
+                            ->label('Pneu')
+                            ->options(
+                                Pneu::query()
+                                    ->whereDoesntHave('veiculo', function (Builder $query) {
+                                        $query->where('veiculo_id', $this->ownerRecord->id);
+                                    })
+                                    ->pluck('numero_fogo', 'id')
+                            )
+                            ->searchable()
+                            ->required(),
+                    ])->action(function (array $data) {
+                        $this->ownerRecord->pneus()->attach($data['pneu_id']);
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
