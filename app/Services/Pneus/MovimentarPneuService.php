@@ -21,6 +21,9 @@ class MovimentarPneuService
 
     public function removerPneu(PneuPosicaoVeiculo $pneuVeiculo, array $data)
     {
+        ds($data);
+        ds($pneuVeiculo);
+
         $this->historicoMovimentoPneu->create([
             'pneu_id'           => $pneuVeiculo->pneu_id,
             'veiculo_id'        => $pneuVeiculo->veiculo_id,
@@ -79,6 +82,10 @@ class MovimentarPneuService
 
         $pneusVeiculo->each(function (PneuPosicaoVeiculo $pneuVeiculo) use ($pneusId, $data) {
 
+            $pneuId = Arr::where($pneusId, function ($id) use ($pneuVeiculo) {
+                return $id !== $pneuVeiculo->pneu_id;
+            });
+
             $this->removerPneu($pneuVeiculo, [
                 'data_final' => $data['data_inicial'],
                 'km_final'   => $data['km_inicial'],
@@ -86,10 +93,6 @@ class MovimentarPneuService
                 'observacao' => $data['observacao'] ?? null,
                 'motivo'     => $data['motivo'] ?? MotivoMovimentoPneuEnum::RODIZIO->value,
             ]);
-
-            $pneuId = Arr::where($pneusId, function ($id) use ($pneuVeiculo) {
-                return $id !== $pneuVeiculo->pneu_id;
-            });
 
             $this->aplicarPneu($pneuVeiculo, [
                 'pneu_id'       => $pneuId[0],
