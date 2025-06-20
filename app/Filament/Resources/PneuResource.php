@@ -70,6 +70,7 @@ class PneuResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')
                     ->width('1%')
@@ -119,7 +120,7 @@ class PneuResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('id')
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])
