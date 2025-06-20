@@ -53,7 +53,7 @@ class DesenhoPneuResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('descricao')
-                    ->label('Modelo')
+                    ->label('Descrição')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('modelo')
@@ -61,7 +61,8 @@ class DesenhoPneuResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('medida')
-                    ->label('Medida Borracha')
+                    ->label('Medida Borracha (mm)')
+                    ->wrapHeader()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('estado_pneu')
@@ -70,7 +71,7 @@ class DesenhoPneuResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->filters([
