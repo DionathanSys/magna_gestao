@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('medida')->nullable();
             $table->string('desenho_pneu_id')->nullable();
             $table->string('status');
+            $table->string('ciclo_vida')->default(0);
             $table->string('local')->nullable();
             $table->date('data_aquisicao')->nullable();
             $table->timestamps();

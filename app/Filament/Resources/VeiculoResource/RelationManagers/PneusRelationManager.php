@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class PneusRelationManager extends RelationManager
@@ -98,25 +99,8 @@ class PneusRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Adicionar Pneu')
-                    ->icon('heroicon-o-plus-circle'),
-                Tables\Actions\Action::make('vincular-pneu')
-                    ->label('Vincular Pneu')
-                    ->icon('heroicon-o-link')
-                    ->form([
-                        Forms\Components\Select::make('pneu_id')
-                            ->label('Pneu')
-                            ->options(
-                                Pneu::query()
-                                    ->whereDoesntHave('veiculo', function (Builder $query) {
-                                        $query->where('veiculo_id', $this->ownerRecord->id);
-                                    })
-                                    ->pluck('numero_fogo', 'id')
-                            )
-                            ->searchable()
-                            ->required(),
-                    ])->action(function (array $data) {
-                        $this->ownerRecord->pneus()->attach($data['pneu_id']);
-                    }),
+                    ->icon('heroicon-o-plus-circle')
+                    ->visible(fn() => Auth::user()->is_admin),
             ])
             ->actions([
                 Tables\Actions\Action::make('desvincular-pneu')
@@ -163,14 +147,26 @@ class PneusRelationManager extends RelationManager
                     }),
                 Tables\Actions\EditAction::make()
                     ->iconButton()
-                    ->visible(fn() => Auth::user()->admin),
+                    ->visible(fn() => Auth::user()->is_admin),
                 Tables\Actions\DeleteAction::make()
                     ->iconButton()
-                    ->visible(fn() => Auth::user()->admin),
+                    ->visible(fn() => Auth::user()->is_admin),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\Action::make('rodizio')
+                        ->label('Rodízio')
+                        ->icon('heroicon-o-arrows-right-left')
+                        ->requiresConfirmation()
+                        ->form([
+                            Forms\Components\TextInput::make('sulco')
+                                ->numeric()
+                                ->required(),
+                        ])
+                        ->action(function (array $data, Collection $records) {
+                            dd('Rodízio realizado com sucesso!', $data, $records);
+                        }),
+
                 ]),
             ]);
     }

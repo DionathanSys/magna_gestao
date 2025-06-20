@@ -55,6 +55,14 @@ class PneuResource extends Resource
                     ->default(now())
                     ->maxDate(now())
                     ->required(),
+                Forms\Components\TextInput::make('ciclo_vida')
+                    ->label('Ciclo de Vida')
+                    ->numeric()
+                    ->default(0)
+                    ->minValue(fn(Pneu $record) => $record->ciclo_vida ?? 0)
+                    ->maxValue(3)
+                    ->visibleOn('edit')
+                    ->required(),
             ]);
     }
 
@@ -80,6 +88,10 @@ class PneuResource extends Resource
                     ->wrapHeader()
                     ->width('1%')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('ciclo_vida')
+                    ->label('Ciclo de Vida')
+                    ->wrapHeader()
+                    ->width('1%'),
                 Tables\Columns\SelectColumn::make('status')
                     ->width('1%')
                     ->options(StatusPneuEnum::toSelectArray()),

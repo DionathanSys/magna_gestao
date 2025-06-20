@@ -71,7 +71,7 @@ class NotificacaoService
     public static function debug(string $titulo = 'debug', string $mensagem = ''): void
     {
         $instance = new self('info', $titulo, $mensagem);
-        $instance->usersNotify = User::where('admin', true)->get();
+        $instance->usersNotify = User::where('is_admin', true)->get();
         $instance->sendToDataBase();
     }
 }

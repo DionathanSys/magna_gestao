@@ -28,6 +28,8 @@ return new class extends Migration
             $table->decimal('sulco_movimento', 5, 2)
                 ->default(0.00);
             $table->string('tipo_movimento');
+            $table->string('ciclo_vida')
+                ->default('0');
             $table->string('motivo')->nullable();
             $table->string('observacao')->nullable();
             $table->timestamps();
