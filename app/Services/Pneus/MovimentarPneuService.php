@@ -5,6 +5,7 @@ namespace App\Services\Pneus;
 use App\Enum\Pneu\MotivoMovimentoPneuEnum;
 use App\Models\HistoricoMovimentoPneu;
 use App\Models\PneuPosicaoVeiculo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class MovimentarPneuService
@@ -76,15 +77,25 @@ class MovimentarPneuService
 
         $pneusId = $pneusVeiculo->pluck('pneu_id')->toArray();
 
-        dd($pneusId);
-
         $pneusVeiculo->each(function (PneuPosicaoVeiculo $pneuVeiculo) use ($pneusId, $data) {
+
             $this->removerPneu($pneuVeiculo, [
                 'data_final' => $data['data_inicial'],
                 'km_final'   => $data['km_inicial'],
                 'sulco'      => $data['sulco'] ?? 0,
                 'observacao' => $data['observacao'] ?? null,
             ]);
+
+            $pneuId = Arr::where($pneusId, function ($id) use ($pneuVeiculo) {
+                return $id !== $pneuVeiculo->pneu_id;
+            });
+
+            $this->aplicarPneu($pneuVeiculo, [
+                'pneu_id'       => $pneuId,
+                'data_inicial'  => $data['data_inicial'],
+                'km_inicial'    => $data['km_inicial'],
+            ]);
+
         });
     }
 
