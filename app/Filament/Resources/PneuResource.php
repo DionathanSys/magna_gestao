@@ -64,32 +64,40 @@ class PneuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('marca')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('modelo')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('medida')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('desenhoPneu.medida')
-                    ->label('Medida Desenho Pneu')
+                    ->label('Medida Sulco (mm)')
+                    ->wrapHeader()
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\SelectColumn::make('status')
+                    ->width('1%')
                     ->options(StatusPneuEnum::toSelectArray()),
                 Tables\Columns\SelectColumn::make('local')
+                    ->width('1%')
                     ->options(LocalPneuEnum::toSelectArray()),
                 Tables\Columns\TextColumn::make('data_aquisicao')
                     ->label('Dt. Aquisição')
-                    ->date()
+                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -102,7 +110,7 @@ class PneuResource extends Resource
                 Tables\Actions\ReplicateAction::make()
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
-                    ->fillForm(fn (Pneu $record) => [
+                    ->fillForm(fn(Pneu $record) => [
                         'marca'             => $record->marca,
                         'modelo'            => $record->modelo,
                         'medida'            => $record->medida,
