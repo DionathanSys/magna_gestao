@@ -26,6 +26,7 @@ return new class extends Migration
                 ->nullable();
             $table->string('eixo');
             $table->string('posicao');
+            $table->integer('sequencia');
             $table->timestamps();
         });
     }

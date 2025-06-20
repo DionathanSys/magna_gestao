@@ -33,6 +33,9 @@ class PneusRelationManager extends RelationManager
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('sequencia')
+                    ->numeric()
+                    ->required(),
                 Forms\Components\TextInput::make('eixo')
                     ->numeric()
                     ->required(),
@@ -75,6 +78,9 @@ class PneusRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
                     ->date('d/m/Y'),
+                Tables\Columns\TextColumn::make('sequencia')
+                    ->label('Sequência')
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -93,7 +99,7 @@ class PneusRelationManager extends RelationManager
             ])
             ->defaultGroup('eixo')
             ->groupingSettingsHidden()
-            ->defaultSort('id')
+            ->defaultSort('sequencia')
             ->paginated(false)
             ->filters([
                 //
