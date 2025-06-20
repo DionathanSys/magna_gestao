@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany};
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, HasOne};
 
 class Pneu extends Model
 {
@@ -20,5 +20,10 @@ class Pneu extends Model
     public function veiculo(): HasMany
     {
         return $this->hasMany(PneuPosicaoVeiculo::class);
+    }
+
+    public function recapagem(): HasOne
+    {
+        return $this->hasOne(Recapagem::class, 'pneu_id');
     }
 }

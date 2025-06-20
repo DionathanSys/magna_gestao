@@ -90,9 +90,14 @@ class PneuResource extends Resource
                     ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ciclo_vida')
-                    ->label('Ciclo de Vida')
+                    ->label('Vida')
                     ->wrapHeader()
                     ->width('1%'),
+                Tables\Columns\TextColumn::make('recapagem.desenhoPneu.descricao')
+                    ->label('Borracha Recapada')
+                    ->wrapHeader()
+                    ->width('1%')
+                    ->searchable(),
                 Tables\Columns\SelectColumn::make('status')
                     ->width('1%')
                     ->options(StatusPneuEnum::toSelectArray()),

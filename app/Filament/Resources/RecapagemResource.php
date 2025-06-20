@@ -72,7 +72,7 @@ class RecapagemResource extends Resource
                     ->label('Borracha')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('desenhoPneu.modelo')
-                    ->label('Modelo Desenho')
+                    ->label('Modelo')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->numeric()
