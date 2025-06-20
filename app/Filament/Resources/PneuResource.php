@@ -51,10 +51,12 @@ class PneuResource extends Resource
                     ->relationship('desenhoPneu', 'modelo'),
                 Forms\Components\Select::make('status')
                     ->options(StatusPneuEnum::toSelectArray())
-                    ->required(),
+                    ->required()
+                    ->default(StatusPneuEnum::DISPONIVEL->value),
                 Forms\Components\Select::make('local')
                     ->options(LocalPneuEnum::toSelectArray())
-                    ->required(),
+                    ->required()
+                    ->default(LocalPneuEnum::ESTOQUE_CCO->value),
                 Forms\Components\DatePicker::make('data_aquisicao')
                     ->label('Dt. Aquisição')
                     ->default(now())
