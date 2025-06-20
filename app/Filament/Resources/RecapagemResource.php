@@ -90,7 +90,8 @@ class RecapagemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
                 Tables\Actions\ReplicateAction::make()
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
