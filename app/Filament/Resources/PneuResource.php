@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\Frete\LocalPneuEnum;
+use App\Enum\Frete\StatusPneuEnum;
 use App\Filament\Resources\PneuResource\Pages;
 use App\Filament\Resources\PneuResource\RelationManagers;
 use App\Models\Pneu;
@@ -42,11 +44,12 @@ class PneuResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('desenho_pneu_id')
                     ->relationship('desenhoPneu', 'modelo'),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('local')
-                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->options(StatusPneuEnum::toSelectArray())
+                    ->required(),
+                Forms\Components\Select::make('local')
+                    ->options(LocalPneuEnum::toSelectArray())
+                    ->required(),
                 Forms\Components\DatePicker::make('data_aquisicao')
                     ->label('Dt. Aquisição')
                     ->default(now())
