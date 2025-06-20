@@ -67,8 +67,8 @@ class RecapagemResource extends Resource
                 Tables\Columns\TextColumn::make('data_recapagem')
                     ->date('d/m/Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('desenhoPneu.modelo')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('desenhoPneu.descricao')
+                    ->label('Desenho')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->numeric()
