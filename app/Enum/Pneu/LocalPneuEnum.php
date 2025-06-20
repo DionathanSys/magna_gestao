@@ -4,6 +4,7 @@ namespace App\Enum\Pneu;
 
 enum LocalPneuEnum: string
 {
+    case FROTA       = 'FROTA';
     case ESTOQUE_CCO = 'ESTOQUE_CCO';
     case ESTOQUE_CTV = 'ESTOQUE_CTV';
     case MANUTENCAO  = 'MANUTENÇÃO';
