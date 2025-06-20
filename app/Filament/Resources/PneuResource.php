@@ -43,7 +43,8 @@ class PneuResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('medida')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('ciclo')
+                Forms\Components\TextInput::make('ciclo_vida')
+                    ->label('Vida')
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(3),
@@ -136,7 +137,7 @@ class PneuResource extends Resource
                         'data_aquisicao'    => $record->data_aquisicao,
                         'local'             => $record->local,
                         'status'            => $record->status,
-                        'ciclo'             => $record->ciclo,
+                        'ciclo_vida'        => $record->ciclo,
                     ])
                     ->form(fn(Forms\Form $form) => static::form($form)->columns(4))
                     ->excludeAttributes([
