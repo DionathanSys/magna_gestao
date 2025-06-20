@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RecapagemResource\Pages;
 use App\Filament\Resources\RecapagemResource\RelationManagers;
 use App\Models\Recapagem;
+use App\Services\Pneus\PneuService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -86,6 +87,21 @@ class RecapagemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ReplicateAction::make()
+                    ->icon('heroicon-o-document-duplicate')
+                    ->iconButton()
+                    ->fillForm(fn(Recapagem $record) => [
+                        'data_recapagem'  => $record->data_recapagem,
+                        'desenho_pneu_id' => $record->desenho_pneu_id,
+                        'parceiro_id'     => $record->parceiro_id,
+                    ])
+                    ->form(fn(Forms\Form $form) => static::form($form)->columns(4))
+                    ->excludeAttributes([
+                        'id',
+                        'created_at',
+                        'updated_at',
+                    ])
+                    ->after(fn(Recapagem $record) => PneuService::atualizarCicloVida($record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
