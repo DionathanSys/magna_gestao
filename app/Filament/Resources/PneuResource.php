@@ -43,6 +43,10 @@ class PneuResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('medida')
                     ->maxLength(255),
+                Forms\Components\TextInput::make('ciclo')
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(3),
                 Forms\Components\Select::make('desenho_pneu_id')
                     ->relationship('desenhoPneu', 'modelo'),
                 Forms\Components\Select::make('status')
@@ -128,6 +132,9 @@ class PneuResource extends Resource
                         'modelo'            => $record->modelo,
                         'medida'            => $record->medida,
                         'data_aquisicao'    => $record->data_aquisicao,
+                        'local'             => $record->local,
+                        'status'            => $record->status,
+                        'ciclo'             => $record->ciclo,
                     ])
                     ->form(fn(Forms\Form $form) => static::form($form)->columns(4))
                     ->excludeAttributes([
