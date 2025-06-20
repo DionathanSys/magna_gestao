@@ -36,16 +36,22 @@ class RecapagemResource extends Resource
                     ->searchable()
                     ->preload(),
                 Forms\Components\DatePicker::make('data_recapagem')
+                    ->date('d/m/Y')
+                    ->native(false)
+                    ->closeOnDateSelection()
+                    ->maxDate(now())
                     ->required(),
                 Forms\Components\Select::make('desenho_pneu_id')
                     ->label('Desenho do Pneu')
-                    ->relationship('desenhoPneu', 'modelo')
+                    ->relationship('desenhoPneu', 'descricao')
                     ->required()
+                    ->searchable()
                     ->preload(),
                 Forms\Components\Select::make('parceiro_id')
                     ->label('Parceiro')
                     ->relationship('parceiro', 'nome')
                     ->required()
+                    ->searchable()
                     ->preload(),
             ]);
     }

@@ -81,6 +81,7 @@ class PneuResource extends Resource
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')
                     ->width('1%')
+                    ->numeric(null, '', '')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('marca')
                     ->width('1%')
@@ -121,6 +122,7 @@ class PneuResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('id')
             ->filters([
                 //
             ])
