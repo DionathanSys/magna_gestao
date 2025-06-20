@@ -24,7 +24,7 @@ class MovimentarPneuService
         $this->historicoMovimentoPneu->create([
             'pneu_id'           => $pneuVeiculo->pneu_id,
             'veiculo_id'        => $pneuVeiculo->veiculo_id,
-            'data_incial'       => $pneuVeiculo->data_inicial,
+            'data_inicial'       => $pneuVeiculo->data_inicial,
             'km_inicial'        => $pneuVeiculo->km_inicial,
             'eixo'              => $pneuVeiculo->eixo,
             'posicao'           => $pneuVeiculo->posicao,
