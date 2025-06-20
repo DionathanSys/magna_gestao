@@ -7,6 +7,7 @@ use App\Models\HistoricoMovimentoPneu;
 use App\Models\PneuPosicaoVeiculo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 class MovimentarPneuService
 {
@@ -21,8 +22,10 @@ class MovimentarPneuService
 
     public function removerPneu(PneuPosicaoVeiculo $pneuVeiculo, array $data)
     {
-        ds($data);
-        ds($pneuVeiculo);
+
+        if ($pneuVeiculo->km_inicial < $data['km_final']) {
+            throw new \Exception('A KM final não pode ser maior que a KM inicial.');
+        }
 
         $this->historicoMovimentoPneu->create([
             'pneu_id'           => $pneuVeiculo->pneu_id,
@@ -48,6 +51,7 @@ class MovimentarPneuService
 
     public function aplicarPneu(PneuPosicaoVeiculo $pneuVeiculo, array $data)
     {
+
         $pneuVeiculo->update([
             'pneu_id'       => $data['pneu_id'],
             'data_inicial'  => $data['data_inicial'],
@@ -87,7 +91,7 @@ class MovimentarPneuService
             });
 
             $pneuId = Arr::first($pneuId);
-            
+
             $this->removerPneu($pneuVeiculo, [
                 'data_final' => $data['data_inicial'],
                 'km_final'   => $data['km_inicial'],

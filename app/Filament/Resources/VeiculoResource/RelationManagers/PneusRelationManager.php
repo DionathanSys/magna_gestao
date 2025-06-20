@@ -33,16 +33,6 @@ class PneusRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('pneu_id')
-                    ->label('Pneu')
-                    ->options(
-                        Pneu::query()
-                            ->whereDoesntHave('veiculo', function (Builder $query) {
-                                $query->where('veiculo_id', $this->ownerRecord->id);
-                            })
-                            ->pluck('numero_fogo', 'id')
-                    )
-                    ->searchable(),
                 Forms\Components\TextInput::make('eixo')
                     ->numeric()
                     ->required(),

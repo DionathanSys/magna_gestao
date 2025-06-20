@@ -17,7 +17,13 @@ class HistoricoMovimentoPneuResource extends Resource
 {
     protected static ?string $model = HistoricoMovimentoPneu::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Pneus';
+
+    protected static ?string $pluralModelLabel = 'Hist. Pneus';
+
+    protected static ?string $pluralLabel = 'Hist. Pneus';
+
+    protected static ?string $label = 'Hist. Pneu';
 
     public static function form(Form $form): Form
     {
