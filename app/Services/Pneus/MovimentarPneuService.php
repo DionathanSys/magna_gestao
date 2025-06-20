@@ -66,6 +66,7 @@ class MovimentarPneuService
             'data_final' => $data['data_inicial'],
             'km_final'   => $data['km_inicial'],
             'sulco'      => $data['sulco'] ?? 0,
+            'motivo'     => $data['motivo'],
             'observacao' => $data['observacao'] ?? null,
         ]);
 
