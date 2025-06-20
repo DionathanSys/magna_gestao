@@ -63,14 +63,6 @@ class PneuResource extends Resource
                     ->default(now())
                     ->maxDate(now())
                     ->required(),
-                Forms\Components\TextInput::make('ciclo_vida')
-                    ->label('Ciclo de Vida')
-                    ->numeric()
-                    ->default(0)
-                    ->minValue(fn(Pneu $record) => $record->ciclo_vida ?? 0)
-                    ->maxValue(3)
-                    ->visibleOn('edit')
-                    ->required(),
             ]);
     }
 
