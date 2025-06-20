@@ -17,13 +17,14 @@ class EditVeiculo extends EditRecord
         ];
     }
 
-    public function hasCombinedRelationManagerTabsWithContent(): bool
+    protected function fillForm(): void
     {
-        return true;
+        $this->form->fill([
+            'placa'             => $this->record->placa,
+            'is_active'         => $this->record->is_active,
+            'km_movimento'      => 1,
+            'data_movimento'    => now()->format('Y-m-d'),
+        ]);
     }
 
-    public function getContentTabLabel(): ?string
-    {
-        return 'Veículo';
-    }
 }

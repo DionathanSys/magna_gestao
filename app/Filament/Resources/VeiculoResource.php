@@ -22,13 +22,32 @@ class VeiculoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(12)
             ->schema([
                 Forms\Components\TextInput::make('placa')
+                    ->columnSpan(1)
+                    ->disabledOn('edit')
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Ativo')
+                    ->columnSpan(1)
                     ->inline(false)
                     ->default(true)
+                    ->required(),
+                Forms\Components\TextInput::make('km_movimento')
+                    ->label('KM Movimento')
+                    ->columnSpan(1)
+                    ->numeric()
+                    ->required(),
+                Forms\Components\DatePicker::make('data_movimento')
+                    ->label('Dt. Movimento')
+                    ->columnSpan(1)
+                    ->date()
+                    ->default(now())
+                    ->maxDate(now())
+                    ->displayFormat('d/m/Y')
+                    ->closeOnDateSelection()
+                    ->native(false)
                     ->required(),
             ]);
     }
@@ -58,7 +77,12 @@ class VeiculoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        unset($data['km_movimento']);
+                        unset($data['data_movimento']);
+                        return $data;
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

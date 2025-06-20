@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreignId('veiculo_id')
                 ->constrained('veiculos')
                 ->cascadeOnDelete();
-            $table->date('data_movimento');
+            $table->date('data_inicial');
+            $table->date('data_final');
             $table->string('km_inicial');
             $table->string('km_final')
                 ->nullable();
@@ -27,7 +28,6 @@ return new class extends Migration
             $table->string('posicao');
             $table->decimal('sulco_movimento', 5, 2)
                 ->default(0.00);
-            $table->string('tipo_movimento');
             $table->string('ciclo_vida')
                 ->default('0');
             $table->string('motivo')->nullable();

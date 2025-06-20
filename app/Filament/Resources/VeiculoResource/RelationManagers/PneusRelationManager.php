@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\VeiculoResource\RelationManagers;
 
+use App\Enum\Pneu\MotivoMovimentoPneuEnum;
+use App\Filament\Resources\PneuResource;
 use App\Models\Pneu;
 use App\Models\PneuPosicaoVeiculo;
+use App\Services\Pneus\MovimentarPneuService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +21,13 @@ use Illuminate\Support\Facades\Auth;
 class PneusRelationManager extends RelationManager
 {
     protected static string $relationship = 'pneus';
+
+    protected MovimentarPneuService $movimentarPneuService;
+
+    public function __construct()
+    {
+        $this->movimentarPneuService = new MovimentarPneuService();
+    }
 
     public function form(Form $form): Form
     {
@@ -91,6 +102,7 @@ class PneusRelationManager extends RelationManager
                     ->collapsible(),
             ])
             ->defaultGroup('eixo')
+            ->groupingSettingsHidden()
             ->defaultSort('id')
             ->paginated(false)
             ->filters([
@@ -104,47 +116,66 @@ class PneusRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\Action::make('desvincular-pneu')
-                    ->icon('heroicon-o-x-circle')
+                    ->icon('heroicon-o-arrow-down-on-square')
+                    ->color('danger')
                     ->iconButton()
                     ->tooltip('Desvincular Pneu')
-                    ->requiresConfirmation()
-                    ->action(fn($record) => $record->update(['pneu_id' => null]))
-                    ->visible(fn($record) => ! $record->pneu_id == null),
-                Tables\Actions\Action::make('movimentar-pneu')
+                    ->visible(fn($record) => ! $record->pneu_id == null)
+                    ->modalWidth(MaxWidth::ExtraLarge)
+                    ->form(fn(Forms\Form $form) => $form
+                        ->columns(4)
+                        ->schema([
+                            PneuResource::getMotivoMovimentacaoFormField()
+                                ->columnSpan(3),
+                            PneuResource::getSulcoFormField()
+                                ->columnSpan(1),
+                            PneuResource::getDataFinalOrdemFormField()
+                                ->label('Dt. Movimentação')
+                                ->columnSpan(2),
+                            PneuResource::getKmFinalOrdemFormField()
+                                ->label('KM Movimentação')
+                                ->columnSpan(2),
+                            PneuResource::getObservacaoFormField(),
+                        ]))
+                    ->action(fn($record, array $data) => $this->movimentarPneuService->removerPneu($record, $data)),
+                Tables\Actions\Action::make('vincular-pneu')
+                    ->icon('heroicon-o-arrow-up-on-square')
+                    ->color('info')
+                    ->iconButton()
+                    ->tooltip('Vincular Pneu')
+                    ->visible(fn($record) => $record->pneu_id == null)
+                    ->modalWidth(MaxWidth::ExtraLarge)
+                    ->form(fn(Forms\Form $form) => $form
+                        ->columns(4)
+                        ->schema([
+                            PneuResource::getPneuDisponivelFormField()
+                                ->label('Pneu Disponível')
+                                ->columnSpan(3),
+                            PneuResource::getDataInicialOrdemFormField()
+                                ->label('Dt. Movimentação')
+                                ->columnStart(1)
+                                ->columnSpan(2),
+                            PneuResource::getKmInicialOrdemFormField()
+                                ->label('KM Movimentação')
+                                ->columnSpan(2),
+                        ]))
+                    ->action(fn($record, array $data) => $this->movimentarPneuService->aplicarPneu($record, $data)),
+                Tables\Actions\Action::make('trocar-pneu')
                     ->icon('heroicon-o-arrows-right-left')
                     ->iconButton()
-                    ->tooltip('Movimentar Pneu')
-                    ->requiresConfirmation()
+                    ->tooltip('Substituir Pneu')
+                    ->visible(fn($record) => ! $record->pneu_id == null)
+                    ->modalWidth(MaxWidth::ExtraLarge)
                     ->form([
-                        Forms\Components\Select::make('pneu_id')
-                            ->label('Pneu')
-                            ->options(
-                                Pneu::query()
-                                    ->whereDoesntHave('veiculo', function (Builder $query) {
-                                        $query->where('veiculo_id', $this->ownerRecord->id);
-                                    })
-                                    ->pluck('numero_fogo', 'id')
-                            )
-                            ->searchable()
-                            ->required(),
-                        Forms\Components\TextInput::make('km_inicial')
-                            ->label('KM')
-                            ->minValue(fn (PneuPosicaoVeiculo $record) => $record->km_inicial)
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\DatePicker::make('data_inicial')
-                            ->label('Dt. Aplicação')
-                            ->date('d/m/Y')
-                            ->default(now())
-                            ->maxDate(now())
-                            ->required(),
-                    ])->action(function (array $data, PneuPosicaoVeiculo $record) {
-                        $record->update([
-                                'pneu_id'       => $data['pneu_id'],
-                                'km_inicial'    => $data['km_inicial'],
-                                'data_inicial'  => $data['data_inicial'],
-                            ]);
-                    }),
+                        PneuResource::getMotivoMovimentacaoFormField()
+                            ->label('Motivo Movimentação'),
+                        PneuResource::getPneuDisponivelFormField(),
+                        PneuResource::getDataInicialOrdemFormField()
+                            ->label('Dt. Movimentação'),
+                        PneuResource::getKmInicialOrdemFormField()
+                            ->label('KM Movimentação'),
+                        PneuResource::getObservacaoFormField(),
+                    ])->action(fn (array $data, PneuPosicaoVeiculo $record) => $this->movimentarPneuService->trocarPneu($record, $data)),
                 Tables\Actions\EditAction::make()
                     ->iconButton()
                     ->visible(fn() => Auth::user()->is_admin),
@@ -154,18 +185,30 @@ class PneusRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\Action::make('rodizio')
+                    Tables\Actions\BulkAction::make('rodizio')
                         ->label('Rodízio')
                         ->icon('heroicon-o-arrows-right-left')
                         ->requiresConfirmation()
-                        ->form([
-                            Forms\Components\TextInput::make('sulco')
-                                ->numeric()
-                                ->required(),
-                        ])
-                        ->action(function (array $data, Collection $records) {
-                            dd('Rodízio realizado com sucesso!', $data, $records);
-                        }),
+                        ->modalWidth(MaxWidth::ExtraLarge)
+                        ->form(fn(Forms\Form $form) => $form
+                            ->columns(4)
+                            ->schema([
+                                PneuResource::getMotivoMovimentacaoFormField()
+                                    ->label('Motivo Movimentação')
+                                    ->columnSpan(3)
+                                    ->disabled()
+                                    ->default(MotivoMovimentoPneuEnum::RODIZIO->value),
+                                PneuResource::getSulcoFormField()
+                                    ->columnSpan(1),
+                                PneuResource::getDataInicialOrdemFormField()
+                                    ->label('Dt. Movimentação')
+                                    ->columnSpan(2),
+                                PneuResource::getKmInicialOrdemFormField()
+                                    ->label('KM Movimentação')
+                                    ->columnSpan(2),
+                                PneuResource::getObservacaoFormField(),
+                        ]))
+                        ->action(fn (array $data, Collection $records) => $this->movimentarPneuService->rodizioPneu($records, $data)),
 
                 ]),
             ]);

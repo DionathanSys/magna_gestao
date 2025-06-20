@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enum\Pneu\LocalPneuEnum;
+use App\Enum\Pneu\MotivoMovimentoPneuEnum;
 use App\Enum\Pneu\StatusPneuEnum;
 use App\Filament\Resources\PneuResource\Pages;
 use App\Filament\Resources\PneuResource\RelationManagers;
@@ -157,5 +158,79 @@ class PneuResource extends Resource
             // 'create' => Pages\CreatePneu::route('/create'),
             // 'edit' => Pages\EditPneu::route('/{record}/edit'),
         ];
+    }
+
+    public static function getDataInicialOrdemFormField(): Forms\Components\DatePicker
+    {
+        return  Forms\Components\DatePicker::make('data_inicial')
+            ->label('Dt. Inicial')
+            ->date('d/m/Y')
+            ->default(now())
+            ->maxDate(now())
+            ->required();
+    }
+
+    public static function getDataFinalOrdemFormField(): Forms\Components\DatePicker
+    {
+        return  Forms\Components\DatePicker::make('data_final')
+            ->label('Dt. Final')
+            ->date('d/m/Y')
+            ->default(now())
+            ->maxDate(now())
+            ->required();
+    }
+
+    public static function getKmInicialOrdemFormField(): Forms\Components\TextInput
+    {
+        return  Forms\Components\TextInput::make('km_inicial')
+            ->label('KM Inicial')
+            ->numeric()
+            ->required();
+    }
+
+    public static function getKmFinalOrdemFormField(): Forms\Components\TextInput
+    {
+        return  Forms\Components\TextInput::make('km_final')
+            ->label('KM Final')
+            ->numeric()
+            ->required();
+    }
+
+    public static function getPneuDisponivelFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('pneu_id')
+            ->label('Pneu')
+            ->options(
+                Pneu::query()
+                    ->whereDoesntHave('veiculo')
+                    ->pluck('numero_fogo', 'id')
+            )
+            ->searchable()
+            ->required();
+    }
+
+    public static function getMotivoMovimentacaoFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('motivo')
+            ->columnSpan(3)
+            ->options(MotivoMovimentoPneuEnum::toSelectArray())
+            ->required();
+    }
+
+    public static function getSulcoFormField(): Forms\Components\TextInput
+    {
+        return Forms\Components\TextInput::make('sulco')
+            ->columnSpan(1)
+            ->numeric()
+            ->maxValue(30)
+            ->minValue(0);
+    }
+
+    public static function getObservacaoFormField(): Forms\Components\TextInput
+    {
+        return Forms\Components\TextInput::make('observacao')
+            ->label('Observação')
+            ->columnSpanFull()
+            ->maxLength(255);
     }
 }

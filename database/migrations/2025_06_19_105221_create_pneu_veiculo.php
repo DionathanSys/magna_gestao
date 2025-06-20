@@ -20,8 +20,10 @@ return new class extends Migration
             $table->foreignId('veiculo_id')
                 ->constrained('veiculos')
                 ->cascadeOnDelete();
-            $table->date('data_inicial');
-            $table->string('km_inicial');
+            $table->date('data_inicial')
+                ->nullable();
+            $table->string('km_inicial')
+                ->nullable();
             $table->string('eixo');
             $table->string('posicao');
             $table->timestamps();
