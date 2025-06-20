@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Enum\Frete\LocalPneuEnum;
-use App\Enum\Frete\StatusPneuEnum;
+use App\Enum\Pneu\LocalPneuEnum;
+use App\Enum\Pneu\StatusPneuEnum;
 use App\Filament\Resources\PneuResource\Pages;
 use App\Filament\Resources\PneuResource\RelationManagers;
 use App\Models\Pneu;
@@ -74,19 +74,21 @@ class PneuResource extends Resource
                 Tables\Columns\TextColumn::make('desenhoPneu.medida')
                     ->label('Medida Desenho Pneu')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('local')
-                    ->searchable(),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options(StatusPneuEnum::toSelectArray()),
+                Tables\Columns\SelectColumn::make('local')
+                    ->options(LocalPneuEnum::toSelectArray()),
                 Tables\Columns\TextColumn::make('data_aquisicao')
                     ->label('Dt. Aquisição')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

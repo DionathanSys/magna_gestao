@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enum\Frete;
+namespace App\Enum\Pneu;
 
 enum LocalPneuEnum: string
 {
