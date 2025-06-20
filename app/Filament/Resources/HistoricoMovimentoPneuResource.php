@@ -66,14 +66,15 @@ class HistoricoMovimentoPneuResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('pneu_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('veiculo_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('veiculo.placa')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('data_movimento')
-                    ->date()
+                Tables\Columns\TextColumn::make('data_inicial')
+                    ->date('d/m/Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('data_final')
+                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->searchable(),
@@ -82,34 +83,54 @@ class HistoricoMovimentoPneuResource extends Resource
                 Tables\Columns\TextColumn::make('eixo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('posicao')
+                    ->label('Posição')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sulco_movimento')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tipo_movimento')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('motivo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('observacao')
+                    ->label('Observação')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('pneu_id')
+                    ->label('Pneu')
+                    ->relationship('pneu', 'numero_fogo')
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable(),
+            ])->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->defaultSort('id', 'desc')
+            ->defaultGroup('pneu.numero_fogo')
+            ->groups([
+                Tables\Grouping\Group::make('pneu.numero_fogo')
+                    ->label('Nº de Fogo')
+                    ->collapsible(),
+                Tables\Grouping\Group::make('veiculo.placa')
+                    ->label('Placa')
+                    ->collapsible(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
