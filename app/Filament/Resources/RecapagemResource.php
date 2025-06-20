@@ -63,7 +63,8 @@ class RecapagemResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->numeric(null, '', '')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('data_recapagem')
                     ->date('d/m/Y')
                     ->sortable(),
