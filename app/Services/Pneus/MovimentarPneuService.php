@@ -92,7 +92,7 @@ class MovimentarPneuService
             });
 
             $this->aplicarPneu($pneuVeiculo, [
-                'pneu_id'       => $pneuId,
+                'pneu_id'       => $pneuId[0],
                 'data_inicial'  => $data['data_inicial'],
                 'km_inicial'    => $data['km_inicial'],
             ]);
