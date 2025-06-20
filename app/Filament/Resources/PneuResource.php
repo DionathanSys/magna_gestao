@@ -28,6 +28,7 @@ class PneuResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(4)
             ->schema([
                 Forms\Components\TextInput::make('numero_fogo')
                     ->label('Nº de Fogo')
@@ -46,7 +47,11 @@ class PneuResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('local')
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('data_aquisicao'),
+                Forms\Components\DatePicker::make('data_aquisicao')
+                    ->label('Dt. Aquisição')
+                    ->default(now())
+                    ->maxDate(now())
+                    ->required(),
             ]);
     }
 
@@ -87,16 +92,18 @@ class PneuResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
                 Tables\Actions\ReplicateAction::make()
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
-                    ->form([
-                        Forms\Components\TextInput::make('numero_fogo')
-                            ->label('Nº de Fogo')
-                            ->required()
-                            ->maxLength(255),
+                    ->fillForm(fn (Pneu $record) => [
+                        'marca'             => $record->marca,
+                        'modelo'            => $record->modelo,
+                        'medida'            => $record->medida,
+                        'data_aquisicao'    => $record->data_aquisicao,
                     ])
+                    ->form(fn(Forms\Form $form) => static::form($form)->columns(4))
                     ->excludeAttributes([
                         'id',
                         'numero_fogo',
