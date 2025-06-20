@@ -84,6 +84,7 @@ class MovimentarPneuService
                 'km_final'   => $data['km_inicial'],
                 'sulco'      => $data['sulco'] ?? 0,
                 'observacao' => $data['observacao'] ?? null,
+                'motivo'     => $data['motivo'] ?? MotivoMovimentoPneuEnum::RODIZIO->value,
             ]);
 
             $pneuId = Arr::where($pneusId, function ($id) use ($pneuVeiculo) {
