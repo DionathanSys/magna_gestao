@@ -72,7 +72,8 @@ class PneusRelationManager extends RelationManager
                     ->label('Posição')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('eixo')
-                    ->width('1%'),
+                    ->width('1%')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('data_inicial')
