@@ -86,6 +86,8 @@ class MovimentarPneuService
                 return $id !== $pneuVeiculo->pneu_id;
             });
 
+            $pneuId = Arr::first($pneuId);
+            
             $this->removerPneu($pneuVeiculo, [
                 'data_final' => $data['data_inicial'],
                 'km_final'   => $data['km_inicial'],
@@ -95,7 +97,7 @@ class MovimentarPneuService
             ]);
 
             $this->aplicarPneu($pneuVeiculo, [
-                'pneu_id'       => $pneuId[0],
+                'pneu_id'       => $pneuId,
                 'data_inicial'  => $data['data_inicial'],
                 'km_inicial'    => $data['km_inicial'],
             ]);
