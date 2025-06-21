@@ -90,6 +90,7 @@ class ConsertoResource extends Resource
                     ->label('Com Garantia')
                     ->toggle()
                     ->default(true)
+                    ->query(fn (Builder $query): Builder => $query->where('garantia', true))
 
             ])
             ->actions([
