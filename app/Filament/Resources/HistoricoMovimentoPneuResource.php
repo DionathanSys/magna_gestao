@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\Pneu\MotivoMovimentoPneuEnum;
 use App\Filament\Resources\HistoricoMovimentoPneuResource\Pages;
 use App\Filament\Resources\HistoricoMovimentoPneuResource\RelationManagers;
 use App\Models\HistoricoMovimentoPneu;
@@ -35,7 +36,9 @@ class HistoricoMovimentoPneuResource extends Resource
                 Forms\Components\TextInput::make('veiculo_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('data_movimento')
+                Forms\Components\DatePicker::make('data_inicial')
+                    ->required(),
+                Forms\Components\DatePicker::make('data_final')
                     ->required(),
                 Forms\Components\TextInput::make('km_inicial')
                     ->required()
@@ -46,18 +49,23 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('posicao')
+                    ->label('Posição')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('sulco_movimento')
                     ->required()
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\TextInput::make('tipo_movimento')
+                Forms\Components\Select::make('motivo')
+                    ->options(MotivoMovimentoPneuEnum::toSelectArray()),
+                Forms\Components\TextInput::make('ciclo_vida')
+                    ->label('Vida')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('motivo')
-                    ->maxLength(255),
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(3),
                 Forms\Components\TextInput::make('observacao')
+                    ->label('Observação')
                     ->maxLength(255),
             ]);
     }
@@ -67,37 +75,55 @@ class HistoricoMovimentoPneuResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
+                    ->label('Nº de Fogo')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_inicial')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_final')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_inicial')
+                    ->width('1%')
+                    ->numeric(null, '', '.')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('km_final')
+                    ->width('1%')
+                    ->numeric(null, '', '.')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('ciclo_vida')
+                    ->label('Vida Pneu')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('eixo')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('posicao')
+                    ->width('1%')
                     ->label('Posição')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sulco_movimento')
+                    ->width('1%')
+                    ->wrapHeader()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('motivo')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('observacao')
+                    ->width('1%')
                     ->label('Observação')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
                     ->dateTime('d/m/Y H:i')
@@ -127,8 +153,9 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->collapsible(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                 ]),
@@ -146,8 +173,8 @@ class HistoricoMovimentoPneuResource extends Resource
     {
         return [
             'index' => Pages\ListHistoricoMovimentoPneus::route('/'),
-            'create' => Pages\CreateHistoricoMovimentoPneu::route('/create'),
-            'edit' => Pages\EditHistoricoMovimentoPneu::route('/{record}/edit'),
+            // 'create' => Pages\CreateHistoricoMovimentoPneu::route('/create'),
+            // 'edit' => Pages\EditHistoricoMovimentoPneu::route('/{record}/edit'),
         ];
     }
 }
