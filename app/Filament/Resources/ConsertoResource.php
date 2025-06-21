@@ -44,38 +44,57 @@ class ConsertoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
-                    ->searchable()
+                    ->width('1%')
+                    ->searchable(isIndividual: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_conserto')
+                    ->label('Dt. Reparo')
+                    ->width('1%')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tipo_conserto')
-                    ->searchable(),
+                    ->label('Tipo de Reparo')
+                    ->width('1%')
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('parceiro.nome')
+                    ->width('1%')
                     ->numeric()
+                    ->searchable(isIndividual: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor')
-                    ->numeric()
+                    ->width('1%')
+                    ->money('BRL')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('garantia')
+                    ->label('Com Garantia')
+                    ->width('1%')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
-                    ->numeric()
+                    ->width('1%')
+                    ->placeholder('Sem Veículo')
+                    ->searchable(isIndividual: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('garantia')
+                    ->label('Com Garantia')
+                    ->toggle()
+                    ->default(true)
+
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

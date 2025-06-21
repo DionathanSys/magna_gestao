@@ -70,11 +70,13 @@ class RecapagemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
+                    ->label('Nº Fogo')
                     ->numeric(null, '', '')
                     ->width('1%')
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('data_recapagem')
+                    ->label('Data Recap')
                     ->date('d/m/Y')
                     ->width('1%')
                     ->sortable(),
@@ -109,6 +111,7 @@ class RecapagemResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->searchOnBlur(true)
             ->filters([
             ])
