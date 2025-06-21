@@ -301,7 +301,7 @@ class ViagemResource extends Resource
                         return $query
                             ->when(
                                 $data['numero_viagem'],
-                                fn (Builder $query, $numeroViagem): Builder => $query->whereDate('numero_viagem', '=', $numeroViagem),
+                                fn (Builder $query, $numeroViagem): Builder => $query->where('numero_viagem', $numeroViagem),
                             );
                     }),
                 Tables\Filters\SelectFilter::make('veiculo_id')
