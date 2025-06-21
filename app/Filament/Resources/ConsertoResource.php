@@ -44,6 +44,7 @@ class ConsertoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
+                    ->label('Nº Fogo')
                     ->width('1%')
                     ->searchable(isIndividual: true)
                     ->sortable(),
@@ -87,16 +88,16 @@ class ConsertoResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('garantia')
-                    ->label('Com Garantia')
+                    ->label('Sem Garantia')
                     ->toggle()
-                    ->default(true)
-                    ->query(fn (Builder $query): Builder => $query->where('garantia', true))
+                    ->default(false)
+                    ->query(fn (Builder $query): Builder => $query->where('garantia', false))
 
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

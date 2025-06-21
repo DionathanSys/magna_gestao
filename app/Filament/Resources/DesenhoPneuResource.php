@@ -58,19 +58,23 @@ class DesenhoPneuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('descricao')
                     ->label('Descrição')
+                    ->width('1%')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('modelo')
                     ->label('Modelo')
+                    ->width('1%')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('medida')
                     ->label('Medida Borracha (mm)')
+                    ->width('1%')
                     ->wrapHeader()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('estado_pneu')
                     ->label('Estado pneu')
+                    ->width('1%')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -82,8 +86,9 @@ class DesenhoPneuResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

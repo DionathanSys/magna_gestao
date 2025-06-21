@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Conserto extends Model
 {
+
+    protected $casts = [
+        'garantia' => 'boolean',
+    ];
+
     public function pneu(): BelongsTo
     {
         return $this->belongsTo(Pneu::class);

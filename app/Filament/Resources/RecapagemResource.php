@@ -133,7 +133,7 @@ class RecapagemResource extends Resource
                         'updated_at',
                     ])
                     ->after(fn(Recapagem $record) => PneuService::atualizarCicloVida($record)),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

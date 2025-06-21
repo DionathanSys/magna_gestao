@@ -348,6 +348,12 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('editar')
+                        ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
+                        ->openUrlInNewTab()
+                        ->visible(fn(Viagem $record) => ! $record->conferido)
+                        ->icon('heroicon-o-pencil-square')
+                        ->iconButton(),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
@@ -385,14 +391,11 @@ class ViagemResource extends Resource
 
                 ])
                 ->link(),
-                Tables\Actions\Action::make('editar')
-                        ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
-                        ->openUrlInNewTab()
-                        ->visible(fn(Viagem $record) => ! $record->conferido)
-                        ->icon('heroicon-o-pencil-square'),
+
                 Tables\Actions\Action::make('conferido')
                     ->label('Conferido')
-                    ->icon('heroicon-o-check')
+                    ->iconButton()
+                    ->icon('heroicon-o-check-circle')
                     ->visible(fn(Viagem $record) => ! $record->conferido)
                     ->action(function(Viagem $record) {
                         if(! $record->motivo_divergencia){
@@ -404,6 +407,7 @@ class ViagemResource extends Resource
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Ñ Conferido')
+                    ->iconButton()
                     ->icon('heroicon-o-no-symbol')
                     ->color('red')
                     ->visible(fn(Viagem $record) => $record->conferido)
@@ -447,7 +451,7 @@ class ViagemResource extends Resource
                 //             ]);
                 //         })
                 //     ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
