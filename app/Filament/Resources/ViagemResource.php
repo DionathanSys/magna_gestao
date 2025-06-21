@@ -348,12 +348,17 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    //crie uma action para atualizar o regisstro de viagem
+                    Tables\Actions\Action::make('atualizar')
+                        ->label('Atualizar')
+                        ->icon('heroicon-o-arrow-path')
+                        ->action(function(Viagem $record) {
+                        }),
                     Tables\Actions\Action::make('editar')
                         ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
                         ->visible(fn(Viagem $record) => ! $record->conferido)
-                        ->icon('heroicon-o-pencil-square')
-                        ->iconButton(),
+                        ->icon('heroicon-o-pencil-square'),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
