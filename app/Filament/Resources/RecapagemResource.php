@@ -35,7 +35,7 @@ class RecapagemResource extends Resource
                 Forms\Components\Select::make('pneu_id')
                     ->label('Pneu')
                     ->relationship('pneu', 'numero_fogo', function (Builder $query) {
-                        $query->where('pneu.status', StatusPneuEnum::DISPONIVEL)
+                        $query->where('status', StatusPneuEnum::DISPONIVEL)
                             ->where('local', LocalPneuEnum::ESTOQUE_CCO);
                     })
                     ->required()
