@@ -26,7 +26,7 @@ return new class extends Migration
                 ->constrained('parceiros')
                 ->cascadeOnDelete();
 
-            $table->decimal('valor_conserto', 12, 2)
+            $table->decimal('valor', 12, 2)
                 ->default(0.00);
 
             $table->boolean('garantia')

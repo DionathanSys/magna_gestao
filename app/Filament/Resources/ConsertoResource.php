@@ -29,35 +29,13 @@ class ConsertoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('pneu_id')
-                    ->relationship('pneu', 'numero_fogo')
-                    ->required(),
-                Forms\Components\DatePicker::make('data_conserto')
-                    ->required(),
-                Forms\Components\Select::make('tipo_conserto')
-                    ->options([
-                        'VULGANIZAÇÃO' => 'VULGANIZAÇÃO',
-                        'RAC' => 'RAC',
-                    ])
-                    ->required(),
-                Forms\Components\Select::make('parceiro_id')
-                    ->label('Parceiro')
-                    ->relationship('parceiro', 'nome')
-                    ->required(),
-                Forms\Components\TextInput::make('valor_conserto')
-                    ->label('Valor do Conserto')
-                    ->prefix('R$')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\Toggle::make('garantia')
-                    ->label('Com Garantia')
-                    ->default(true)
-                    ->required(),
-                Forms\Components\Select::make('veiculo_id')
-                    ->label('Veículo')
-                    ->relationship('veiculo', 'placa')
-                    ->required(),
+                static::getPneuIdFormField(),
+                static::getDataConsertoFormField(),
+                static::getTipoConsertoFormField(),
+                static::getParceiroIdFormField(),
+                static::getValorConsertoFormField(),
+                static::getGarantiaFormField(),
+                static::getVeiculoIdFormField(),
             ]);
     }
 
@@ -66,7 +44,6 @@ class ConsertoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
-                    ->numeric()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_conserto')
@@ -77,7 +54,7 @@ class ConsertoResource extends Resource
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('valor_conserto')
+                Tables\Columns\TextColumn::make('valor')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('garantia')
@@ -121,5 +98,71 @@ class ConsertoResource extends Resource
             // 'create' => Pages\CreateConserto::route('/create'),
             // 'edit' => Pages\EditConserto::route('/{record}/edit'),
         ];
+    }
+
+    public static function getParceiroIdFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('parceiro_id')
+            ->label('Parceiro')
+            ->relationship('parceiro', 'nome')
+            ->required();
+    }
+
+    public static function getValorConsertoFormField(): Forms\Components\TextInput
+    {
+        return Forms\Components\TextInput::make('valor')
+            ->label('Valor do Conserto')
+            ->prefix('R$')
+            ->numeric()
+            ->default(0.00);
+    }
+
+    public static function getGarantiaFormField(): Forms\Components\Toggle
+    {
+        return Forms\Components\Toggle::make('garantia')
+            ->label('Com Garantia')
+            ->inline(false)
+            ->default(true)
+            ->required();
+    }
+
+    public static function getVeiculoIdFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('veiculo_id')
+            ->label('Veículo')
+            ->relationship('veiculo', 'placa');
+
+    }
+
+    public static function getTipoConsertoFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('tipo_conserto')
+            ->options([
+                'VULGANIZAÇÃO' => 'VULGANIZAÇÃO',
+                'RAC' => 'RAC',
+            ])
+            ->default('VULGANIZAÇÃO')
+            ->required();
+    }
+
+    public static function getDataConsertoFormField(): Forms\Components\DatePicker
+    {
+        return Forms\Components\DatePicker::make('data_conserto')
+            ->label('Data do Conserto')
+            ->date('d/m/Y')
+            ->displayFormat('d/m/Y')
+            ->native(false)
+            ->default(now())
+            ->maxDate(now())
+            ->closeOnDateSelection()
+            ->required();
+    }
+
+    public static function getPneuIdFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('pneu_id')
+            ->label('Pneu')
+            ->relationship('pneu', 'numero_fogo')
+            ->required();
     }
 }

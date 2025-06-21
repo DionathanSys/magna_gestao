@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\PneuResource\Pages;
 
+use App\Enum\Pneu\LocalPneuEnum;
 use App\Filament\Resources\PneuResource;
 use Filament\Actions;
+use Filament\Facades\Filament;
 use Filament\Resources\Pages\ListRecords;
 
 class ListPneus extends ListRecords
@@ -18,4 +20,33 @@ class ListPneus extends ListRecords
                 ->icon('heroicon-o-plus-circle'),
         ];
     }
+
+    public function getTabs(): array
+    {
+        return [
+            'Estoque' => \Filament\Resources\Components\Tab::make()
+                ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->where('local', LocalPneuEnum::ESTOQUE_CCO->value)),
+            'Frota' => \Filament\Resources\Components\Tab::make()
+                ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->where('local', LocalPneuEnum::FROTA->value)),
+            'Outros' => \Filament\Resources\Components\Tab::make()
+                ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->whereNotIn('local', [LocalPneuEnum::ESTOQUE_CCO->value, LocalPneuEnum::FROTA->value])),
+        ];
+    }
+
+    public function getDefaultActiveTab(): string | int | null
+    {
+        return 'Estoque';
+    }
+
+    // public function mount(): void
+    // {
+    //     parent::mount();
+    //     $this->activeTab = session('listOrdensServicoTab', $this->getDefaultActiveTab());
+    // }
+
+    // public function updatedActiveTab(): void
+    // {
+    //     parent::updatedActiveTab();
+    //     session(['listOrdensServicoTab' => $this->activeTab]);
+    // }
 }

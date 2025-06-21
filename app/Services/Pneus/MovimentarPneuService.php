@@ -24,13 +24,13 @@ class MovimentarPneuService
     {
 
         if ($pneuVeiculo->km_inicial > $data['km_final']) {
-            throw new \Exception('A KM final não pode ser maior que a KM inicial.');
+            throw new \Exception('A KM final não pode ser menor que a KM inicial.');
         }
 
         $this->historicoMovimentoPneu->create([
             'pneu_id'           => $pneuVeiculo->pneu_id,
             'veiculo_id'        => $pneuVeiculo->veiculo_id,
-            'data_inicial'       => $pneuVeiculo->data_inicial,
+            'data_inicial'      => $pneuVeiculo->data_inicial,
             'km_inicial'        => $pneuVeiculo->km_inicial,
             'eixo'              => $pneuVeiculo->eixo,
             'posicao'           => $pneuVeiculo->posicao,
@@ -38,6 +38,7 @@ class MovimentarPneuService
             'sulco_movimento'   => $data['sulco'],
             'data_final'        => $data['data_final'],
             'km_final'          => $data['km_final'],
+            'ciclo_vida'        => $pneuVeiculo->pneu->ciclo_vida,
             'observacao'        => $data['observacao'],
         ]);
 

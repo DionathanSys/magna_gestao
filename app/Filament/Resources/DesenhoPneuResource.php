@@ -41,9 +41,13 @@ class DesenhoPneuResource extends Resource
                     ->label('Modelo')
                     ->nullable()
                     ->maxLength(100),
-                Forms\Components\TextInput::make('estado_pneu')
+                Forms\Components\Select::make('estado_pneu')
                     ->label('Estado do Pneu')
-                    ->nullable()
+                    ->options([
+                        'NOVO'     => 'NOVO',
+                        'RECAPADO' => 'RECAPADO',
+                    ])
+                    ->default('RECAPADO')
                     ->maxLength(100),
             ]);
     }

@@ -8,6 +8,7 @@ use App\Enum\Pneu\StatusPneuEnum;
 use App\Filament\Resources\PneuResource\Pages;
 use App\Filament\Resources\PneuResource\RelationManagers;
 use App\Models\Pneu;
+use App\Services\Pneus\ConsertoService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -41,8 +42,12 @@ class PneuResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('modelo')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('medida')
-                    ->maxLength(255),
+                Forms\Components\Select::make('medida')
+                    ->options([
+                        '275/80 R22.5' => '275/80 R22.5',
+                        '295/80 R22.5' => '295/80 R22.5',
+                    ])
+                    ->default('275/80 R22.5'),
                 Forms\Components\TextInput::make('ciclo_vida')
                     ->label('Vida')
                     ->numeric()
@@ -70,7 +75,8 @@ class PneuResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('id')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')
                     ->width('1%')
@@ -94,21 +100,22 @@ class PneuResource extends Resource
                     ->label('Vida')
                     ->wrapHeader()
                     ->width('1%'),
-                Tables\Columns\TextColumn::make('recapagem.desenhoPneu.descricao')
-                    ->label('Borracha Recapada')
-                    ->wrapHeader()
-                    ->width('1%')
-                    ->searchable(),
                 Tables\Columns\SelectColumn::make('status')
                     ->width('1%')
                     ->options(StatusPneuEnum::toSelectArray()),
                 Tables\Columns\SelectColumn::make('local')
-                    ->width('1%')
-                    ->options(LocalPneuEnum::toSelectArray()),
+                    ->options(LocalPneuEnum::toSelectArray())
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('ultimoRecap.desenhoPneu.descricao')
+                    ->label('Borracha Recap Atual')
+                    ->wrapHeader()
+                    ->placeholder('N/A')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('data_aquisicao')
                     ->label('Dt. Aquisição')
                     ->date('d/m/Y')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -122,9 +129,71 @@ class PneuResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('numero_fogo')
+                    ->label('Nº de Fogo')
+                    ->options(
+                        Pneu::query()
+                            ->pluck('numero_fogo', 'id')
+                    )
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('estado_pneu')
+                        ->options([
+                            'NOVO'     => 'NOVO',
+                            'RECAPADO' => 'RECAPADO',
+                        ]),
+                Tables\Filters\SelectFilter::make('marca')
+                    ->options(
+                        Pneu::query()
+                            ->groupBy('marca')
+                            ->pluck('marca', 'marca')
+                    )
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('modelo')
+                    ->options(
+                        Pneu::query()
+                            ->groupBy('modelo')
+                            ->pluck('modelo', 'modelo')
+                    )
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('medida')
+                    ->options([
+                        '275/80 R22.5' => '275/80 R22.5',
+                        '295/80 R22.5' => '295/80 R22.5',
+                    ]),
+                Tables\Filters\SelectFilter::make('descricao')
+                    ->label('Desenho Recap')
+                    ->relationship('ultimoRecap.desenhoPneu', 'descricao', function (Builder $query) {
+                        $query->where('estado_pneu', 'RECAPADO');
+                    })
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('conserto')
+                        ->icon('heroicon-o-wrench-screwdriver')
+                        ->form(fn(Forms\Form $form) => $form
+                            ->columns(4)
+                            ->schema([
+                                ConsertoResource::getDataConsertoFormField(),
+                                ConsertoResource::getTipoConsertoFormField(),
+                                ConsertoResource::getValorConsertoFormField(),
+                                ConsertoResource::getGarantiaFormField(),
+                            ]))
+                        ->action(fn(Pneu $record, array $data) => (new ConsertoService())->create($record, $data)),
+                    Tables\Actions\Action::make('recapagem')
+                        ->icon('heroicon-o-wrench')
+                        ->form(fn(Forms\Form $form) => $form
+                            ->columns(4)
+                            ->schema([
+                                ConsertoResource::getDataConsertoFormField(),
+                                ConsertoResource::getTipoConsertoFormField(),
+                                ConsertoResource::getValorConsertoFormField(),
+                                ConsertoResource::getGarantiaFormField(),
+                            ]))
+                        ->action(fn(Pneu $record, array $data) => $record->consertar($record, $data)),
+
+                ]),
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
                 Tables\Actions\ReplicateAction::make()
@@ -146,7 +215,7 @@ class PneuResource extends Resource
                         'created_at',
                         'updated_at',
                     ]),
-            ])
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

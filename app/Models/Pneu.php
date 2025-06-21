@@ -22,8 +22,8 @@ class Pneu extends Model
         return $this->hasMany(PneuPosicaoVeiculo::class);
     }
 
-    public function recapagem(): HasOne
+    public function ultimoRecap()
     {
-        return $this->hasOne(Recapagem::class, 'pneu_id');
+        return $this->hasOne(Recapagem::class, 'pneu_id')->latestOfMany();
     }
 }
