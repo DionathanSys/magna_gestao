@@ -2,7 +2,9 @@
 
 namespace App\Services\Pneus;
 
+use App\Enum\Pneu\LocalPneuEnum;
 use App\Enum\Pneu\MotivoMovimentoPneuEnum;
+use App\Enum\Pneu\StatusPneuEnum;
 use App\Models\HistoricoMovimentoPneu;
 use App\Models\PneuPosicaoVeiculo;
 use Illuminate\Support\Arr;
@@ -47,8 +49,35 @@ class MovimentarPneuService
             'data_inicial'  => null,
             'km_inicial'    => null,
         ]);
-    }
 
+        switch ($data['motivo']) {
+            case MotivoMovimentoPneuEnum::CONSERTO->value:
+                $pneuVeiculo->pneu->update([
+                    'status' => StatusPneuEnum::INDISPONIVEL,
+                    'local'  => LocalPneuEnum::MANUTENCAO,
+                ]);
+                break;
+            case MotivoMovimentoPneuEnum::RECAPAGEM->value:
+                $pneuVeiculo->pneu->update([
+                    'status' => StatusPneuEnum::INDISPONIVEL,
+                    'local'  => LocalPneuEnum::ESTOQUE_CTV,
+                ]);
+                break;
+
+            case MotivoMovimentoPneuEnum::ESTEPE->value:
+                $pneuVeiculo->pneu->update([
+                    'status' => StatusPneuEnum::DISPONIVEL,
+                    'local'  => LocalPneuEnum::ESTOQUE_CCO,
+                ]);
+                break;
+            case MotivoMovimentoPneuEnum::SUCATEAR->value:
+                $pneuVeiculo->pneu->update([
+                    'status' => StatusPneuEnum::SUCATA,
+                    'local'  => LocalPneuEnum::SUCATA,
+                ]);
+                break;
+        }
+    }
 
     public function aplicarPneu(PneuPosicaoVeiculo $pneuVeiculo, array $data)
     {
@@ -58,6 +87,12 @@ class MovimentarPneuService
             'data_inicial'  => $data['data_inicial'],
             'km_inicial'    => $data['km_inicial'],
         ]);
+
+        $pneuVeiculo->pneu->update([
+            'status' => StatusPneuEnum::EM_USO,
+            'local'  => LocalPneuEnum::FROTA,
+        ]);
+
     }
 
     public function trocarPneu(PneuPosicaoVeiculo $pneuVeiculo, array $data)
@@ -107,9 +142,6 @@ class MovimentarPneuService
                 'data_inicial'  => $data['data_inicial'],
                 'km_inicial'    => $data['km_inicial'],
             ]);
-
         });
     }
-
-
 }

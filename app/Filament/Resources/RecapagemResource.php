@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\Pneu\LocalPneuEnum;
+use App\Enum\Pneu\StatusPneuEnum;
 use App\Filament\Resources\RecapagemResource\Pages;
 use App\Filament\Resources\RecapagemResource\RelationManagers;
 use App\Models\Recapagem;
@@ -32,7 +34,10 @@ class RecapagemResource extends Resource
             ->schema([
                 Forms\Components\Select::make('pneu_id')
                     ->label('Pneu')
-                    ->relationship('pneu', 'numero_fogo')
+                    ->relationship('pneu', 'numero_fogo', function (Builder $query) {
+                        $query->where('pneu.status', StatusPneuEnum::DISPONIVEL)
+                            ->where('local', LocalPneuEnum::ESTOQUE_CCO);
+                    })
                     ->required()
                     ->searchable()
                     ->preload(),

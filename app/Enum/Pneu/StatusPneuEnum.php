@@ -12,7 +12,7 @@ enum StatusPneuEnum: string
     public static function toSelectArray(): array
     {
         return collect(self::cases())
-            ->mapWithKeys(fn ($item) => [$item->name => $item->value])
+            ->mapWithKeys(fn ($item) => [$item->value => $item->value])
             ->toArray();
     }
 }

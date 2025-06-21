@@ -5,6 +5,7 @@ namespace App\Enum\Pneu;
 enum MotivoMovimentoPneuEnum: string
 {
     case RODIZIO   = 'RODIZIO';
+    case ESTEPE    = 'ESTEPE';
     case RECAPAGEM = 'RECAPAGEM';
     case CONSERTO  = 'CONSERTO';
     case SUCATEAR  = 'SUCATEAR';
