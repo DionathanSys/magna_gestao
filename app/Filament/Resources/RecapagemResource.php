@@ -6,6 +6,7 @@ use App\Enum\Pneu\LocalPneuEnum;
 use App\Enum\Pneu\StatusPneuEnum;
 use App\Filament\Resources\RecapagemResource\Pages;
 use App\Filament\Resources\RecapagemResource\RelationManagers;
+use App\Models\Pneu;
 use App\Models\Recapagem;
 use App\Services\Pneus\PneuService;
 use Filament\Forms;
@@ -72,35 +73,44 @@ class RecapagemResource extends Resource
                     ->numeric(null, '', '')
                     ->width('1%')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('data_recapagem')
                     ->date('d/m/Y')
                     ->width('1%')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('pneu.modelo')
+                    ->width('1%')
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('desenhoPneu.descricao')
                     ->label('Borracha')
                     ->width('1%')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('desenhoPneu.modelo')
                     ->label('Modelo')
                     ->width('1%')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->numeric()
                     ->width('1%')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
                     ->dateTime('d/m/Y H:i')
                     ->width('1%')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->searchOnBlur(true)
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
