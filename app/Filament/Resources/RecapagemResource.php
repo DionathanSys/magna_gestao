@@ -31,6 +31,7 @@ class RecapagemResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(4)
             ->schema([
                 Forms\Components\Select::make('pneu_id')
                     ->label('Pneu')
@@ -43,6 +44,7 @@ class RecapagemResource extends Resource
                     ->preload(),
                 Forms\Components\DatePicker::make('data_recapagem')
                     ->date('d/m/Y')
+                    ->displayFormat('d/m/Y')
                     ->native(false)
                     ->closeOnDateSelection()
                     ->maxDate(now())
@@ -68,26 +70,33 @@ class RecapagemResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->numeric(null, '', '')
+                    ->width('1%')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('data_recapagem')
                     ->date('d/m/Y')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('desenhoPneu.descricao')
                     ->label('Borracha')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('desenhoPneu.modelo')
                     ->label('Modelo')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->numeric()
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
+                    ->width('1%')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('d/m/Y H:i')
+                    ->width('1%')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
