@@ -52,9 +52,7 @@ class AdvancedStatsOverviewWidget extends BaseWidget
                 ->icon('heroicon-o-newspaper')
                 ->description(number_format($this->km_perdido, 2, ',', '.') . ' / ' . number_format($this->km_rodado, 2, ',', '.'))
                 ->iconColor('warning'),
-            Stat::make('Km Rodado Excedente', number_format($this->km_rodado_excedente, 0, ',', '.'))
-                ->iconColor('success'),
-            Stat::make('Km Pago Excedente', number_format($this->km_pago_excedente, 0, ',', '.'))
+            Stat::make('Km Cobrar', number_format($this->km_cobrar, 0, ',', '.'))
                 ->iconColor('success'),
         ];
     }
