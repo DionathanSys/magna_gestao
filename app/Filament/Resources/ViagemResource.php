@@ -8,6 +8,7 @@ use App\Models\CargaViagem;
 use App\Models\Integrado;
 use App\Models\Viagem;
 use App\Enum\MotivoDivergenciaViagem;
+use App\Filament\Resources\ViagemResource\Widgets\AdvancedStatsOverviewWidget;
 use App\Services\CargaService;
 use App\Services\IntegradoService;
 use App\Services\ViagemService;
@@ -479,4 +480,13 @@ class ViagemResource extends Resource
             'edit' => Pages\EditViagem::route('/{record}/edit'),
         ];
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            AdvancedStatsOverviewWidget::class,
+        ];
+    }
+
+    
 }

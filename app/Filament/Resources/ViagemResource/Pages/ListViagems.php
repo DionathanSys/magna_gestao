@@ -24,4 +24,11 @@ class ListViagems extends ListRecords
 
         ];
     }
+
+    // protected function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         \App\Filament\Resources\ViagemResource\Widgets\AdvancedStatsOverviewWidget::class,
+    //     ];
+    // }
 }
