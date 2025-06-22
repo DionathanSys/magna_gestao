@@ -54,7 +54,7 @@ class Viagens extends BaseWidget
                 ]
             )
             ->searchOnBlur()
-            ->defaultGroup('veiculo.placa')
+            
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
