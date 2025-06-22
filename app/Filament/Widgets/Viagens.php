@@ -12,7 +12,7 @@ class Viagens extends BaseWidget
 
     protected int | string | array $columnSpan = 'full';
     protected static ?int $sort = 2;
-    
+
     public function getColumnSpan(): int|string|array
     {
         return 1;
@@ -27,7 +27,7 @@ class Viagens extends BaseWidget
     {
         $viagens = Viagem::query()
             ->where('documento_transporte', null)
-            ->orderBy('numero_viagem', 'desc');
+            ->orderBy('km_rodado_excedente', 'desc');
 
         return $table
             ->heading('Viagens')
