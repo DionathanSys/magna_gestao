@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\ViagemResource;
 use App\Models\Viagem;
 use Carbon\Carbon;
 use Filament\Tables;
@@ -66,7 +67,10 @@ class Viagens extends BaseWidget
                     ->label('Nº Viagem')
                     ->width('1%')
                     ->searchable(isIndividual: true)
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn (Viagem $record) => ViagemResource::getUrl('edit', ['record' => $record->id]))
+                    ->openUrlInNewTab()
+                    ->searchable(isIndividual: true, isGlobal: false),
                 Tables\Columns\TextColumn::make('data_competencia')
                     ->date('d/m/Y')
                     ->label('Dt. Competência'),
