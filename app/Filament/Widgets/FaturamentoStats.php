@@ -11,10 +11,10 @@ class FaturamentoStats extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Viagens Conferidas / Total Viagens', DocumentoFrete::sum('valor_total'))
+            Stat::make('R$', number_format(DocumentoFrete::sum('valor_total'), 2, ',', '.'))
                 ->icon('heroicon-o-document-chart-bar')
                 ->backgroundColor('gray')
-                
+
                 ->progressBarColor('success')
                 ->chartColor('success')
                 ->description('% Viagens Conferidas')
