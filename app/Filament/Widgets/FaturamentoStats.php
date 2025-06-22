@@ -14,7 +14,7 @@ class FaturamentoStats extends BaseWidget
             Stat::make('Viagens Conferidas / Total Viagens', DocumentoFrete::sum('valor_total'))
                 ->icon('heroicon-o-document-chart-bar')
                 ->backgroundColor('gray')
-                ->progress($this->percentualConferido)
+                
                 ->progressBarColor('success')
                 ->chartColor('success')
                 ->description('% Viagens Conferidas')
