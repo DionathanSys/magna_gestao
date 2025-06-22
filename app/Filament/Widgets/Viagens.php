@@ -33,7 +33,7 @@ class Viagens extends BaseWidget
         return $table
             ->heading('Viagens')
             ->poll(null)
-            ->description('Viagens Sem Documento de Transporte')
+            ->description('Viagens Sem Documento de Transporte - Total: ' . $viagens->count())
             ->striped()
             ->paginationPageOptions([10, 25, 50])
             ->query(
