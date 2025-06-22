@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Viagem;
+use Carbon\Carbon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -38,16 +39,33 @@ class Viagens extends BaseWidget
             ->query(
                 $viagens
             )
+            ->groups(
+                [
+                    Tables\Grouping\Group::make('data_competencia')
+                        ->label('Data Competência')
+                        ->titlePrefixedWithLabel(false)
+                        ->getTitleFromRecordUsing(fn (Viagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('veiculo.placa')
+                        ->label('Veículo')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                ]
+            )
+            ->searchOnBlur()
+            ->defaultGroup('data_competencia')
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
                     ->width('1%')
                     ->numeric()
                     ->sortable()
+                    ->searchable(isIndividual: true)
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
+                    ->searchable(isIndividual: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_competencia')
                     ->date('d/m/Y')
