@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth(MaxWidth::Full)
             ->brandName('Magna Gestão')
-            // ->databaseNotifications()
+            ->databaseNotifications()
             ->default()
             ->id('admin')
             ->path('admin')
