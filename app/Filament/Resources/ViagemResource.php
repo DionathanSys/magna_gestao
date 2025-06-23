@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
 
@@ -451,6 +452,16 @@ class ViagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('conferido')
+                        ->label('Conferir')
+                        ->icon('heroicon-o-check-circle')
+                        ->action(function (Collection $records) {
+                            $records->each(function (Viagem $record) {
+                                $record->conferido = true;
+                                $record->save();
+                            });
+                        })
+                        ->requiresConfirmation(),
                 ]),
             ]);
     }
