@@ -339,13 +339,6 @@ class ViagemResource extends Resource
 
 
             ])
-            // ->filtersFormWidth(MaxWidth::FourExtraLarge)
-                // ->filtersTriggerAction(
-                //     fn(Tables\Actions\Action $action) => $action
-                //         ->button()
-                //         ->slideOver()
-                //         ->label('Filtros')
-                // )
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -478,6 +471,7 @@ class ViagemResource extends Resource
             'index' => Pages\ListViagems::route('/'),
             'create' => Pages\CreateViagem::route('/create'),
             'edit' => Pages\EditViagem::route('/{record}/edit'),
+            'teste' => Pages\Teste::route('/{record}/teste'),
         ];
     }
 
@@ -488,5 +482,7 @@ class ViagemResource extends Resource
         ];
     }
 
-    
+
+
+
 }

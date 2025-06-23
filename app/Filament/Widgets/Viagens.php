@@ -12,8 +12,8 @@ use Filament\Widgets\TableWidget as BaseWidget;
 class Viagens extends BaseWidget
 {
 
-    protected int | string | array $columnSpan = 'full';
-    protected static ?int $sort = 2;
+    // protected int | string | array $columnSpan = 'full';
+    protected static ?int $sort = 3;
 
     public function getColumnSpan(): int|string|array
     {
@@ -54,7 +54,7 @@ class Viagens extends BaseWidget
                 ]
             )
             ->searchOnBlur()
-            
+
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
