@@ -330,14 +330,11 @@ class ViagemResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
                             );
                     }),
-                // Tables\Filters\QueryBuilder::make()
-                    //     ->constraints([
-                    //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_inicio'),
-                    //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_fim'),
-                    //         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('data_competencia'),
-                    //     ]),
-
-
+                Tables\Filters\SelectFilter::make('motivo_divergencia')
+                    ->label('Motivo Divergência')
+                    ->options(MotivoDivergenciaViagem::toSelectArray())
+                    ->multiple()
+                    ->columnSpanFull(),
             ])
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
