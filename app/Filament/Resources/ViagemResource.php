@@ -273,7 +273,7 @@ class ViagemResource extends Resource
                         ->label('Veículo')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
-                    Tables\Grouping\Group::make('carga.integrado.nome')
+                    Tables\Grouping\Group::make('cargas.integrado.nome')
                         ->label('Integrado')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
