@@ -88,7 +88,7 @@ class MovimentarPneuService
             'km_inicial'    => $data['km_inicial'],
         ]);
 
-        $pneuVeiculo->pneu->update([
+        $pneuVeiculo->pneu()->update([
             'status' => StatusPneuEnum::EM_USO,
             'local'  => LocalPneuEnum::FROTA,
         ]);
