@@ -47,8 +47,7 @@ class DesenhoPneuResource extends Resource
                         'NOVO'     => 'NOVO',
                         'RECAPADO' => 'RECAPADO',
                     ])
-                    ->default('RECAPADO')
-                    ->maxLength(100),
+                    ->default('RECAPADO'),
             ]);
     }
 
