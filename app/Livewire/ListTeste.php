@@ -37,7 +37,6 @@ class ListTeste extends Component implements HasForms, HasTable
     {
         return $table
             ->query(Viagem::query())
-
             ->columns([
                 TextColumn::make('veiculo.placa')
                     ->label('Placa')
@@ -104,7 +103,7 @@ class ListTeste extends Component implements HasForms, HasTable
                 ]
             )
             ->defaultGroup('veiculo.placa')
-            ->groupsOnly()
+            // ->groupsOnly()
             ->defaultSort('km_rodado', 'desc')
             ->searchOnBlur()
             ->persistFiltersInSession()

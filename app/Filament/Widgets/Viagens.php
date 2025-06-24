@@ -28,7 +28,6 @@ class Viagens extends BaseWidget
     public function table(Table $table): Table
     {
         $viagens = Viagem::query()
-            ->where('documento_transporte', null)
             ->orderBy('km_rodado_excedente', 'desc');
 
         return $table
@@ -51,6 +50,7 @@ class Viagens extends BaseWidget
                         ->label('Veículo')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
+
                 ]
             )
             ->searchOnBlur()
@@ -63,30 +63,33 @@ class Viagens extends BaseWidget
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('numero_viagem')
-                    ->label('Nº Viagem')
+                Tables\Columns\TextColumn::make('documentos_sum_valor_total')
+                    ->sum('documentos', 'valor_total')
+                    ->label('Frete')
                     ->width('1%')
-                    ->searchable(isIndividual: true)
-                    ->sortable()
-                    ->url(fn (Viagem $record) => ViagemResource::getUrl('edit', ['record' => $record->id]))
-                    ->openUrlInNewTab()
-                    ->searchable(isIndividual: true, isGlobal: false),
-                Tables\Columns\TextColumn::make('data_competencia')
-                    ->date('d/m/Y')
-                    ->label('Dt. Competência'),
-                Tables\Columns\TextColumn::make('data_competencia')
-                    ->date('d/m/Y')
-                    ->label('Dt. Competência'),
-                Tables\Columns\TextColumn::make('cargas.integrado.nome')
-                    ->label('Integrado')
-                    ->width('1%')
-                    ->listWithLineBreaks(),
+                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                    ->summarize(Tables\Columns\Summarizers\Sum::make()->money('BRL', locale: 'pt-BR')),
                 Tables\Columns\TextColumn::make('km_rodado')
                     ->width('1%')
                     ->wrapHeader()
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->summarize(Tables\Columns\Summarizers\Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
                 Tables\Columns\TextColumn::make('km_pago')
+                    ->width('1%')
+                    ->wrapHeader()
+                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                    ->summarize(Tables\Columns\Summarizers\Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
+                Tables\Columns\TextColumn::make('km_rodado_excedente')
+                    ->width('1%')
+                    ->wrapHeader()
+                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                    ->summarize(Tables\Columns\Summarizers\Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
+                Tables\Columns\TextColumn::make('km_pago_excedente')
+                    ->width('1%')
+                    ->wrapHeader()
+                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                    ->summarize(Tables\Columns\Summarizers\Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
+                Tables\Columns\TextColumn::make('km_cobrar')
                     ->width('1%')
                     ->wrapHeader()
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
