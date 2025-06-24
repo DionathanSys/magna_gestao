@@ -17,7 +17,7 @@ class Viagens extends BaseWidget
 
     public function getColumnSpan(): int|string|array
     {
-        return 1;
+        return 6;
     }
 
     public static function getSort(): int

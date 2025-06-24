@@ -13,27 +13,42 @@ class Dashboard extends BaseDashboard
 {
     use BaseDashboard\Concerns\HasFiltersForm;
 
+    public function getColumns(): int | string | array
+    {
+        return 12;
+    }
+
     public function filtersForm(Form $form): Form
     {
+
+        // monte uma data, se for antes do dia 26 a data inicial será o dia 26 do mês anterior, até o dia atual. caso for antes do dia 1, será dia 26 do mês atual
+        $dataInicial = now()->day < 26 ? now()->subMonth()->day(26) : now()->day(26);
+        $dataFinal = now();
+
+        //formate as datas para YYYY-MM-DD
+        $dataInicial = $dataInicial->format('Y-m-d');
+        $dataFinal = $dataFinal->format('Y-m-d');
+
         return $form
-            ->columns(12)
             ->schema([
                 Section::make()
                     ->label('Filtros')
-                    ->columns(12)
+                    ->description('Selecione os filtros desejados para a pesquisa')
+                    ->columns(6)
                     ->schema([
-                        Select::make('businessCustomersOnly')
-                            ->columnSpan(2)
-                            ->boolean(),
-                        DatePicker::make('startDate')
-                            ->maxDate(fn (Get $get) => $get('endDate') ?: now())
-                                ->columnSpan(2),
-                        DatePicker::make('endDate')
-                            ->columnSpan(2)
-                            ->minDate(fn (Get $get) => $get('startDate') ?: now())
-                            ->maxDate(now()),
-                    ])
-                    ->columns(3),
+                        Select::make('placa')
+                            ->label('Placa')
+                            ->options(fn () => \App\Models\Veiculo::all()->pluck('placa', 'id'))
+                            ->searchable()
+                            ->placeholder('Selecione uma placa'),
+                        DatePicker::make('data_incial')
+                            // ->maxDate(fn (Get $get) => $get('data_incial') ?: now())
+                            ->default($dataInicial),
+                        DatePicker::make('data_final')
+                            // ->minDate(fn (Get $get) => $get('data_final') ?: now())
+                            ->maxDate(now())
+                            ->default($dataFinal),
+                    ]),
             ]);
     }
 }

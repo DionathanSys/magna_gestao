@@ -54,7 +54,7 @@ class AdvancedStatsOverviewWidget extends BaseWidget
                 ->iconColor('warning'),
             Stat::make('Km Cobrar', number_format($this->km_cobrar, 0, ',', '.'))
                 ->iconColor('success'),
-           
+
         ];
     }
 }
