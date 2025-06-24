@@ -44,10 +44,14 @@ class ListTeste extends Component implements HasForms, HasTable
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                // TextColumn::make('numero_viagem')
-                //     ->label('Nº Viagem')
-                //     ->width('1%')
-                //     ->sortable(),
+                TextColumn::make('numero_viagem')
+                    ->label('Nº Viagem')
+                    ->width('1%')
+                    ->sortable(),
+                TextColumn::make('documento_transporte')
+                    ->label('Doc. Transp.')
+                    ->width('1%')
+                    ->sortable(),
                 TextColumn::make('documentos_sum_valor_total')
                     ->sum('documentos', 'valor_total')
                     ->label('Frete')
