@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget as BaseWidget;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget\Stat;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
+use Illuminate\Support\Facades\Log;
 
 class QuilometragemStats extends BaseWidget
 {
@@ -16,6 +17,12 @@ class QuilometragemStats extends BaseWidget
         $dataInicial = $this->filters['data_inicial'] ?? now()->subMonth()->day(26);
         $dataFinal   = $this->filters['data_final'] ?? now();
         $placa       = $this->filters['placa'];
+
+        Log::debug('QuilometragemStats', [
+            'data_inicial' => $dataInicial,
+            'data_final'   => $dataFinal,
+            'placa'        => $placa,
+        ]);
 
         $viagens = \App\Models\Viagem::query()
             ->when($placa, function ($query) use ($placa) {
@@ -52,7 +59,7 @@ class QuilometragemStats extends BaseWidget
                 ->progress($percentualConferidas)
                 ->progressBarColor('info')
                 ->chartColor('info'),
-            
+
         ];
     }
 }

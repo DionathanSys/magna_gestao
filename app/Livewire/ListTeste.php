@@ -54,6 +54,12 @@ class ListTeste extends Component implements HasForms, HasTable
                     ->width('1%')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->summarize(Sum::make()->money('BRL', locale: 'pt-BR')),
+                TextColumn::make('documentos_count')
+                    ->label('Qtd. Doc.')
+                    ->count('documentos')
+                    ->width('1%')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('km_rodado')
                     ->width('1%')
                     ->wrapHeader()
