@@ -56,10 +56,16 @@ class RecapagemResource extends Resource
                     ->required()
                     ->searchable()
                     ->preload(),
+                Forms\Components\TextInput::make('valor')
+                    ->label('Valor')
+                    ->numeric()
+                    ->default(0)
+                    ->prefix('R$'),
                 Forms\Components\Select::make('parceiro_id')
                     ->label('Parceiro')
                     ->relationship('parceiro', 'nome')
                     ->required()
+                    ->default(1)
                     ->searchable()
                     ->preload(),
             ]);
@@ -125,6 +131,7 @@ class RecapagemResource extends Resource
                         'data_recapagem'  => $record->data_recapagem,
                         'desenho_pneu_id' => $record->desenho_pneu_id,
                         'parceiro_id'     => $record->parceiro_id,
+                        'valor'           => $record->valor,
                     ])
                     ->form(fn(Forms\Form $form) => static::form($form)->columns(4))
                     ->excludeAttributes([
