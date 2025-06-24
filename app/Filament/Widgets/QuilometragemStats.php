@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use Carbon\Carbon;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget as BaseWidget;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget\Stat;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -14,8 +15,8 @@ class QuilometragemStats extends BaseWidget
 
     protected function getStats(): array
     {
-        $dataInicial = $this->filters['data_inicial'] ?? now()->subMonth()->day(26);
-        $dataFinal   = $this->filters['data_final'] ?? now();
+        $dataInicial = Carbon::parse($this->filters['data_inicial'] ?? now()->subMonth()->day(26))->format('Y-m-d');
+        $dataFinal   = Carbon::parse($this->filters['data_final'] ?? now())->format('Y-m-d');
         $placa       = $this->filters['placa'];
 
         Log::debug('QuilometragemStats', [
@@ -23,6 +24,8 @@ class QuilometragemStats extends BaseWidget
             'data_final'   => $dataFinal,
             'placa'        => $placa,
         ]);
+
+
 
         $viagens = \App\Models\Viagem::query()
             ->when($placa, function ($query) use ($placa) {
