@@ -11,8 +11,4 @@ class CreateRecapagem extends CreateRecord
 {
     protected static string $resource = RecapagemResource::class;
 
-    protected function afterCreate(): void
-    {
-        PneuService::atualizarCicloVida($this->record);
-    }
 }

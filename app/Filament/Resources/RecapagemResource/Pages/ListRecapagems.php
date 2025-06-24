@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\RecapagemResource\Pages;
 
 use App\Filament\Resources\RecapagemResource;
+use App\Models\Recapagem;
+use App\Services\Pneus\PneuService;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,7 +18,8 @@ class ListRecapagems extends ListRecords
             Actions\CreateAction::make()
                 ->label('Registro Recap')
                 ->icon('heroicon-o-plus-circle')
-                ->color('primary'),
+                ->color('primary')
+                ->after(fn(Recapagem $record) => PneuService::atualizarCicloVida($record)),
         ];
     }
 }
