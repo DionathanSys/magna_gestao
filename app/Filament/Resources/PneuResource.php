@@ -51,8 +51,13 @@ class PneuResource extends Resource
                 Forms\Components\TextInput::make('ciclo_vida')
                     ->label('Vida')
                     ->numeric()
+                    ->default(0)
                     ->minValue(0)
                     ->maxValue(3),
+                Forms\Components\TextInput::make('valor')
+                    ->label('Valor')
+                    ->numeric()
+                    ->prefix('R$'),
                 Forms\Components\Select::make('desenho_pneu_id')
                     ->relationship('desenhoPneu', 'modelo'),
                 Forms\Components\Select::make('status')
@@ -206,6 +211,7 @@ class PneuResource extends Resource
                         'data_aquisicao'    => $record->data_aquisicao,
                         'local'             => $record->local,
                         'status'            => $record->status,
+                        'valor'             => $record->valor,
                         'ciclo_vida'        => $record->ciclo,
                     ])
                     ->form(fn(Forms\Form $form) => static::form($form)->columns(4))
