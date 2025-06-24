@@ -21,7 +21,6 @@ class Dashboard extends BaseDashboard
     public function filtersForm(Form $form): Form
     {
 
-        // monte uma data, se for antes do dia 26 a data inicial será o dia 26 do mês anterior, até o dia atual. caso for antes do dia 1, será dia 26 do mês atual
         $dataInicial = now()->day < 26 ? now()->subMonth()->day(26) : now()->day(26);
         $dataFinal = now();
 

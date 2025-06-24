@@ -35,9 +35,9 @@ class QuilometragemStats extends BaseWidget
 
         $viagensConferidas = \App\Models\Viagem::query()
             ->where('conferido', true)
-            ->whereBetween('data_inicio', [$dataInicial, $dataFinal])->get();
+            ->whereBetween('data_inicio', [$dataInicial, $dataFinal])->count();
 
-        $percentualConferidas = $viagens->count() > 0 ? ($viagensConferidas->count() / $viagens->count()) * 100 : 0;
+        $percentualConferidas = $viagens->count() > 0 ? ($viagensConferidas / $viagens->count()) * 100 : 0;
 
         $km_rodado = $viagens->sum('km_rodado');
         $km_rodado_excedente = $viagens->sum('km_rodado_excedente');
