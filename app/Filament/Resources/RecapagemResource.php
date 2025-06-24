@@ -46,7 +46,6 @@ class RecapagemResource extends Resource
                 Forms\Components\DatePicker::make('data_recapagem')
                     ->date('d/m/Y')
                     ->displayFormat('d/m/Y')
-                    ->native(false)
                     ->closeOnDateSelection()
                     ->maxDate(now())
                     ->required(),
