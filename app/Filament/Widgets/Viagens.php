@@ -63,12 +63,6 @@ class Viagens extends BaseWidget
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('documentos_sum_valor_total')
-                    ->sum('documentos', 'valor_total')
-                    ->label('Frete')
-                    ->width('1%')
-                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                    ->summarize(Tables\Columns\Summarizers\Sum::make()->money('BRL', locale: 'pt-BR')),
                 Tables\Columns\TextColumn::make('km_rodado')
                     ->width('1%')
                     ->wrapHeader()
