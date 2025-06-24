@@ -25,8 +25,6 @@ class QuilometragemStats extends BaseWidget
             'placa'        => $placa,
         ]);
 
-
-
         $viagens = \App\Models\Viagem::query()
             ->when($placa, function ($query) use ($placa) {
                 $query->whereHas('veiculo', function ($q) use ($placa) {
@@ -35,7 +33,10 @@ class QuilometragemStats extends BaseWidget
             })
             ->whereBetween('data_inicio', [$dataInicial, $dataFinal]);
 
-        $viagensConferidas = \App\Models\Viagem::query()->where('conferido', true)->get();
+        $viagensConferidas = \App\Models\Viagem::query()
+            ->where('conferido', true)
+            ->whereBetween('data_inicio', [$dataInicial, $dataFinal])->get();
+
         $percentualConferidas = $viagens->count() > 0 ? ($viagensConferidas->count() / $viagens->count()) * 100 : 0;
 
         $km_rodado = $viagens->sum('km_rodado');
