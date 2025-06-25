@@ -82,7 +82,7 @@ class PneuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->width('1%'),
-                Tables\Columns\TextColumn::make('veiculo.placa')
+                Tables\Columns\TextColumn::make('veiculo.veiculo.placa')
                     ->label('Placa')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('numero_fogo')
