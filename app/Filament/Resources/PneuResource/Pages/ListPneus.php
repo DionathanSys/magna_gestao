@@ -30,6 +30,8 @@ class ListPneus extends ListRecords
                 ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->where('local', LocalPneuEnum::FROTA)),
             'Outros' => \Filament\Resources\Components\Tab::make()
                 ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->whereNotIn('local', [LocalPneuEnum::ESTOQUE_CCO, LocalPneuEnum::FROTA])),
+            'Est./Frota' => \Filament\Resources\Components\Tab::make()
+                ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->whereIn('local', [LocalPneuEnum::ESTOQUE_CCO, LocalPneuEnum::FROTA])),
         ];
     }
 
