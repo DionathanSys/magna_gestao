@@ -35,6 +35,21 @@ class ViagemService
                 ->where('numero_viagem', $viagemDto->numero_viagem)
                 ->first();
 
+            switch (true) {
+                case ($viagem && $viagem->conferido == false):
+                    Log::info("Viagem Nº {$viagem->numero_viagem} atualizada");
+                    $viagem->update($viagemDto->toArray());
+                    break;
+                case ($viagem && $viagem->conferido == true):
+                    Log::info("Viagem Nº {$viagem->numero_viagem} já conferida, não será atualizado");
+                    break;
+                default:
+                    Log::info("Viagem Nº {$viagemDto->numero_viagem} criada");
+                    $viagem = $this->viagem->create($viagemDto->toArray());
+
+            }
+
+
             if ($viagem && $viagem->conferido == false) {
                 $viagem->update($viagemDto->toArray());
             } else {

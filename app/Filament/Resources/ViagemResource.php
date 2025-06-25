@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
 use Carbon\Carbon;
+use Filament\Infolists\Infolist;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
@@ -336,7 +337,7 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    //crie uma action para atualizar o regisstro de viagem
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('atualizar')
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
@@ -459,6 +460,26 @@ class ViagemResource extends Resource
                         })
                         ->requiresConfirmation(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->columns(6)
+            ->schema([
+                \Filament\Infolists\Components\TextEntry::make('numero_viagem')
+                    ->label('Nº Viagem'),
+                \Filament\Infolists\Components\TextEntry::make('documento_transporte')
+                    ->label('Doc. Transp.'),
+                \Filament\Infolists\Components\TextEntry::make('data_competencia')
+                    ->label('Dt. Comp.'),
+                \Filament\Infolists\Components\TextEntry::make('veiculo.placa')
+                    ->label('Placa'),
+                \Filament\Infolists\Components\TextEntry::make('documentos.placa')
+                    ->label('Placa'),
+                \Filament\Infolists\Components\TextEntry::make('veiculo.placa')
+                    ->label('Placa'),
             ]);
     }
 
