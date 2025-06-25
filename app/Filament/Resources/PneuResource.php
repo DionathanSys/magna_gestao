@@ -84,7 +84,8 @@ class PneuResource extends Resource
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('veiculo.veiculo.placa')
                     ->label('Placa')
-                    ->width('1%'),
+                    ->width('1%')
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')
                     ->width('1%')
