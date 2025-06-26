@@ -17,6 +17,10 @@ class QuilometragemStats extends BaseWidget
     {
         Log::debug("QuilometragemStats getStats method called");
 
+        Log::debug('Filters', [
+            'filters' => $this->filters,
+        ]);
+        
         $dataInicial = Carbon::parse($this->filters['data_inicial'] ?? now()->subMonth()->day(26))->format('Y-m-d');
         $dataFinal   = Carbon::parse($this->filters['data_final'] ?? now())->format('Y-m-d');
         $placa       = $this->filters['placa'];
