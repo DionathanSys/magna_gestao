@@ -50,6 +50,16 @@ class QuilometragemStats extends BaseWidget
             'bindings' => $viagensConferidas->getBindings(),
         ]);
 
+        $km_rodado              = $viagens->sum('km_rodado');
+        $km_rodado_excedente    = $viagens->sum('km_rodado_excedente');
+        $km_dispersao           = ($km_rodado_excedente / $km_rodado);
+
+        Log::debug('Km Rodado', [
+            'km_rodado'           => $km_rodado,
+            'km_rodado_excedente' => $km_rodado_excedente,
+            'km_dispersao'        => $km_dispersao,
+        ]);
+        
         $viagensConferidas      = $viagensConferidas->count();
         $viagens                = $viagens->count();
 
@@ -59,16 +69,6 @@ class QuilometragemStats extends BaseWidget
             'total'         => $viagens,
             'conferidas'    => $viagensConferidas,
             'percentual'    => $percentualConferidas,
-        ]);
-
-        $km_rodado              = $viagens->sum('km_rodado');
-        $km_rodado_excedente    = $viagens->sum('km_rodado_excedente');
-        $km_dispersao           = ($km_rodado_excedente / $km_rodado);
-
-        Log::debug('Km Rodado', [
-            'km_rodado'           => $km_rodado,
-            'km_rodado_excedente' => $km_rodado_excedente,
-            'km_dispersao'        => $km_dispersao,
         ]);
 
         $km_rodado              = number_format($km_rodado, 2, ',', '.');
