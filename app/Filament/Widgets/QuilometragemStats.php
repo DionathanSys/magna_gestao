@@ -53,7 +53,7 @@ class QuilometragemStats extends BaseWidget
         $viagensConferidas      = $viagensConferidas->count();
         $viagens                = $viagens->count();
 
-        $percentualConferidas = $viagens->count() > 0 ? ($viagensConferidas / $viagens) * 100 : 0;
+        $percentualConferidas = $viagens > 0 ? ($viagensConferidas / $viagens) * 100 : 0;
 
         Log::debug('Percentual Conferidas', [
             'total'         => $viagens,
@@ -70,7 +70,7 @@ class QuilometragemStats extends BaseWidget
             'km_rodado_excedente' => $km_rodado_excedente,
             'km_dispersao'        => $km_dispersao,
         ]);
-        
+
         $km_rodado              = number_format($km_rodado, 2, ',', '.');
         $km_rodado_excedente    = number_format($km_rodado_excedente, 2, ',', '.');
         $dispersao              = number_format($km_dispersao, 2, ',', '.');
