@@ -46,7 +46,7 @@ class QuilometragemStats extends BaseWidget
         ]);
 
         Log::debug('Viagens Conferidas Query', [
-            'sql' => $viagensConferidas->dump(),
+            'sql' => $viagensConferidas->toSql(),
             'bindings' => $viagensConferidas->getBindings(),
         ]);
 
