@@ -59,7 +59,7 @@ class QuilometragemStats extends BaseWidget
             'km_rodado_excedente' => $km_rodado_excedente,
             'km_dispersao'        => $km_dispersao,
         ]);
-        
+
         $viagensConferidas      = $viagensConferidas->count();
         $viagens                = $viagens->count();
 
@@ -85,7 +85,7 @@ class QuilometragemStats extends BaseWidget
                 ->iconColor('warning'),
             Stat::make("Conferência Viagens", number_format($percentualConferidas, 2, ',', '.') . '%')
                 ->icon('heroicon-o-newspaper')
-                ->description("Viagens Conferidas: {$viagensConferidas->count()}/{$viagens->count()}")
+                ->description("Viagens Conferidas: {$viagensConferidas}/{$viagens}")
                 ->descriptionIcon('heroicon-o-information-circle', 'before')
                 ->descriptionColor('primary')
                 ->iconColor('warning')
