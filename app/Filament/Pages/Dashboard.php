@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Illuminate\Support\Facades\Log;
 
 class Dashboard extends BaseDashboard
 {
@@ -21,13 +22,17 @@ class Dashboard extends BaseDashboard
     public function filtersForm(Form $form): Form
     {
 
+        Log::debug('Dashboard filtersForm method called');
+
         $dataInicial = now()->day < 26 ? now()->subMonth()->day(26) : now()->day(26);
         $dataFinal = now();
 
-        //formate as datas para YYYY-MM-DD
         $dataInicial = $dataInicial->format('Y-m-d');
         $dataFinal = $dataFinal->format('Y-m-d');
 
+        Log::debug('Data Inicial: ' . $dataInicial);
+        Log::debug('Data Final: ' . $dataFinal);
+        
         return $form
             ->schema([
                 Section::make()

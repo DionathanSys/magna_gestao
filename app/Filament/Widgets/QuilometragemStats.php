@@ -15,6 +15,8 @@ class QuilometragemStats extends BaseWidget
 
     protected function getStats(): array
     {
+        Log::debug("QuilometragemStats getStats method called");
+
         $dataInicial = Carbon::parse($this->filters['data_inicial'] ?? now()->subMonth()->day(26))->format('Y-m-d');
         $dataFinal   = Carbon::parse($this->filters['data_final'] ?? now())->format('Y-m-d');
         $placa       = $this->filters['placa'];
@@ -26,26 +28,53 @@ class QuilometragemStats extends BaseWidget
         ]);
 
         $viagens = \App\Models\Viagem::query()
+            ->select('id')
             ->when($placa, function ($query) use ($placa) {
                 $query->whereHas('veiculo', function ($q) use ($placa) {
                     $q->where('id', $placa);
                 });
             })
-            ->whereBetween('data_inicio', [$dataInicial, $dataFinal]);
+            ->whereBetween('data_competencia', [$dataInicial, $dataFinal]);
 
         $viagensConferidas = \App\Models\Viagem::query()
             ->where('conferido', true)
-            ->whereBetween('data_inicio', [$dataInicial, $dataFinal])->count();
+            ->whereBetween('data_competencia', [$dataInicial, $dataFinal]);
 
-        $percentualConferidas = $viagens->count() > 0 ? ($viagensConferidas / $viagens->count()) * 100 : 0;
+        Log::debug('Viagens Query', [
+            'sql' => $viagens->dump(),
+            'bindings' => $viagens->getBindings(),
+        ]);
 
-        $km_rodado = $viagens->sum('km_rodado');
-        $km_rodado_excedente = $viagens->sum('km_rodado_excedente');
-        $km_dispersao = ($km_rodado_excedente / $km_rodado);
+        Log::debug('Viagens Conferidas Query', [
+            'sql' => $viagensConferidas->dump(),
+            'bindings' => $viagensConferidas->getBindings(),
+        ]);
 
-        $km_rodado = number_format($km_rodado, 2, ',', '.');
-        $km_rodado_excedente = number_format($km_rodado_excedente, 2, ',', '.');
-        $dispersao = number_format($km_dispersao, 2, ',', '.');
+        $viagensConferidas      = $viagensConferidas->count();
+        $viagens                = $viagens->count();
+
+        $percentualConferidas = $viagens->count() > 0 ? ($viagensConferidas / $viagens) * 100 : 0;
+
+        Log::debug('Percentual Conferidas', [
+            'total'         => $viagens,
+            'conferidas'    => $viagensConferidas,
+            'percentual'    => $percentualConferidas,
+        ]);
+
+        $km_rodado              = $viagens->sum('km_rodado');
+        $km_rodado_excedente    = $viagens->sum('km_rodado_excedente');
+        $km_dispersao           = ($km_rodado_excedente / $km_rodado);
+
+        Log::debug('Km Rodado', [
+            'km_rodado'           => $km_rodado,
+            'km_rodado_excedente' => $km_rodado_excedente,
+            'km_dispersao'        => $km_dispersao,
+        ]);
+        
+        $km_rodado              = number_format($km_rodado, 2, ',', '.');
+        $km_rodado_excedente    = number_format($km_rodado_excedente, 2, ',', '.');
+        $dispersao              = number_format($km_dispersao, 2, ',', '.');
+
 
         return [
             Stat::make("Km Perdida", $km_rodado_excedente . ' - ' . $dispersao . '%')
@@ -56,7 +85,7 @@ class QuilometragemStats extends BaseWidget
                 ->iconColor('warning'),
             Stat::make("Conferência Viagens", number_format($percentualConferidas, 2, ',', '.') . '%')
                 ->icon('heroicon-o-newspaper')
-                ->description("Viagens Conferidas: {$viagensConferidas}/{$viagens->count()}")
+                ->description("Viagens Conferidas: {$viagensConferidas->count()}/{$viagens->count()}")
                 ->descriptionIcon('heroicon-o-information-circle', 'before')
                 ->descriptionColor('primary')
                 ->iconColor('warning')
