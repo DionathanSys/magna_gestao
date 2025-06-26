@@ -20,7 +20,7 @@ class QuilometragemStats extends BaseWidget
         Log::debug('Filters', [
             'filters' => $this->filters,
         ]);
-        
+
         $dataInicial = Carbon::parse($this->filters['data_inicial'] ?? now()->subMonth()->day(26))->format('Y-m-d');
         $dataFinal   = Carbon::parse($this->filters['data_final'] ?? now())->format('Y-m-d');
         $placa       = $this->filters['placa'];
@@ -61,7 +61,7 @@ class QuilometragemStats extends BaseWidget
         Log::debug('Km Rodado', [
             'km_rodado'           => $km_rodado,
             'km_rodado_excedente' => $km_rodado_excedente,
-            'km_dispersao'        => $km_dispersao,
+            'km_dispersao'        => $km_dispersao * 100,
         ]);
 
         $viagensConferidas      = $viagensConferidas->count();
