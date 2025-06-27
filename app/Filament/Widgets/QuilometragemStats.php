@@ -13,75 +13,69 @@ class QuilometragemStats extends BaseWidget
 
     use InteractsWithPageFilters;
 
+    protected static ?string $pollingInterval = null;
+
     protected function getStats(): array
     {
-        Log::debug("QuilometragemStats getStats method called");
+        ds('QuilometragemStats getStats method called');
 
-        Log::debug('Filters', [
-            'filters' => $this->filters,
-        ]);
+        ds($this->filters)->label('Filters');
 
-        $dataInicial = Carbon::parse($this->filters['data_inicial'] ?? now()->subMonth()->day(26))->format('Y-m-d');
-        $dataFinal   = Carbon::parse($this->filters['data_final'] ?? now())->format('Y-m-d');
-        $placa       = $this->filters['placa'];
+        $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
+        $dataFinal   = $this->filters['dataFinal'] ?? now();
 
-        Log::debug('QuilometragemStats', [
+        $dataInicial        = Carbon::parse($dataInicial)->format('Y-m-d');
+        $dataFinal          = Carbon::parse($dataFinal)->format('Y-m-d');
+        $placa              = $this->filters['placa'] ?? null;
+        $apenasConferidas   = $this->filters['conferido'] ?? false;
+
+        ds([
             'data_inicial' => $dataInicial,
             'data_final'   => $dataFinal,
             'placa'        => $placa,
-        ]);
+        ])->label('Filter Values');
 
         $viagens = \App\Models\Viagem::query()
-            ->select('id')
             ->when($placa, function ($query) use ($placa) {
                 $query->whereHas('veiculo', function ($q) use ($placa) {
                     $q->where('id', $placa);
                 });
             })
+            ->when($apenasConferidas, function ($query) {
+                $query->where('conferido', true);
+            })
             ->whereBetween('data_competencia', [$dataInicial, $dataFinal]);
 
-        $viagensConferidas = \App\Models\Viagem::query()
-            ->where('conferido', true)
-            ->whereBetween('data_competencia', [$dataInicial, $dataFinal]);
-
-        Log::debug('Viagens Query', [
-            'sql' => $viagens->dump(),
-            'bindings' => $viagens->getBindings(),
-        ]);
-
-        Log::debug('Viagens Conferidas Query', [
-            'sql' => $viagensConferidas->toSql(),
-            'bindings' => $viagensConferidas->getBindings(),
-        ]);
+        ds([
+            'data_inicial' => $dataInicial,
+            'data_final' => $dataFinal,
+        ])->label('Datas Utilizadas');
 
         $km_rodado              = $viagens->sum('km_rodado');
-        $km_rodado_excedente    = $viagens->sum('km_rodado_excedente');
-        $km_dispersao           = ($km_rodado_excedente / $km_rodado);
+        $km_pago                = $viagens->sum('km_pago');
+        $km_dispersao           = $km_rodado - $km_pago;
+        $dispersao              = number_format(($km_dispersao / $km_rodado) * 100, 2, ',', '.');
 
-        Log::debug('Km Rodado', [
-            'km_rodado'           => $km_rodado,
-            'km_rodado_excedente' => $km_rodado_excedente,
-            'km_dispersao'        => $km_dispersao * 100,
-        ]);
+        $km_dispersao           = number_format($km_dispersao, 2, ',', '.');
+        $km_rodado              = number_format($viagens->sum('km_rodado'), 2, ',', '.');
+        $km_pago                = number_format($viagens->sum('km_pago'), 2, ',', '.');
 
-        $viagensConferidas      = $viagensConferidas->count();
         $viagens                = $viagens->count();
+
+        $viagensConferidas = \App\Models\Viagem::query()
+            ->when($placa, function ($query) use ($placa) {
+                $query->whereHas('veiculo', function ($q) use ($placa) {
+                    $q->where('id', $placa);
+                });
+            })
+            ->where('conferido', true)
+            ->whereBetween('data_competencia', [$dataInicial, $dataFinal])
+            ->count();
 
         $percentualConferidas = $viagens > 0 ? ($viagensConferidas / $viagens) * 100 : 0;
 
-        Log::debug('Percentual Conferidas', [
-            'total'         => $viagens,
-            'conferidas'    => $viagensConferidas,
-            'percentual'    => $percentualConferidas,
-        ]);
-
-        $km_rodado              = number_format($km_rodado, 2, ',', '.');
-        $km_rodado_excedente    = number_format($km_rodado_excedente, 2, ',', '.');
-        $dispersao              = number_format($km_dispersao, 2, ',', '.');
-
-
         return [
-            Stat::make("Km Perdida", $km_rodado_excedente . ' - ' . $dispersao . '%')
+            Stat::make("Dispersão KM", $km_dispersao . ' - ' . $dispersao . '%')
                 ->icon('heroicon-o-chart-bar')
                 ->description("Km Rodado: {$km_rodado}")
                 ->descriptionIcon('heroicon-o-information-circle', 'before')
