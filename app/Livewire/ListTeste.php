@@ -44,26 +44,27 @@ class ListTeste extends Component implements HasForms, HasTable
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('numero_viagem')
-                    ->label('Nº Viagem')
-                    ->width('1%')
-                    ->sortable(),
-                TextColumn::make('documento_transporte')
-                    ->label('Doc. Transp.')
-                    ->width('1%')
-                    ->sortable(),
+                // TextColumn::make('numero_viagem')
+                //     ->label('Nº Viagem')
+                //     ->width('1%')
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('documento_transporte')
+                //     ->label('Doc. Transp.')
+                //     ->width('1%')
+                //     ->sortable(),
                 TextColumn::make('documentos_sum_valor_total')
                     ->sum('documentos', 'valor_total')
                     ->label('Frete')
                     ->width('1%')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->summarize(Sum::make()->money('BRL', locale: 'pt-BR')),
-                TextColumn::make('documentos_count')
-                    ->label('Qtd. Doc.')
-                    ->counts('documentos')
-                    ->width('1%')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                // TextColumn::make('documentos_count')
+                //     ->label('Qtd. Doc.')
+                //     ->counts('documentos')
+                //     ->width('1%')
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('km_rodado')
                     ->width('1%')
                     ->wrapHeader()
@@ -74,26 +75,35 @@ class ListTeste extends Component implements HasForms, HasTable
                     ->wrapHeader()
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR')),
-                ColumnGroup::make('Datas',[
-                    TextColumn::make('data_competencia')
-                        ->label('Dt. Comp.')
-                        ->width('1%')
-                        ->sortable(),
-                    TextColumn::make('data_inicio')
-                        ->label('Dt. Início')
-                        ->width('1%')
-                        ->dateTime('d/m/Y H:i')
-                        ->sortable(),
-                    TextColumn::make('data_fim')
-                        ->label('Dt. Fim')
-                        ->width('1%')
-                        ->dateTime('d/m/Y H:i')
-                        ->dateTimeTooltip()
-                        ->sortable(),
-                    TextColumn::make('motivo_divergencia')
-                        ->label('Motivo Divergência')
-                        ->wrapHeader(),
-                ]),
+                TextColumn::make('km_rodado_excedente')
+                    ->width('1%')
+                    ->wrapHeader()
+                    ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                    ->summarize(Sum::make()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->using(fn (Viagem $record): string => number_format($record->km_rodado - $record->km_pago, 2, ',', '.'))
+                        ),
+
+                // ColumnGroup::make('Datas',[
+                //     TextColumn::make('data_competencia')
+                //         ->label('Dt. Comp.')
+                //         ->width('1%')
+                //         ->sortable(),
+                //     TextColumn::make('data_inicio')
+                //         ->label('Dt. Início')
+                //         ->width('1%')
+                //         ->dateTime('d/m/Y H:i')
+                //         ->sortable(),
+                //     TextColumn::make('data_fim')
+                //         ->label('Dt. Fim')
+                //         ->width('1%')
+                //         ->dateTime('d/m/Y H:i')
+                //         ->dateTimeTooltip()
+                //         ->sortable(),
+                //     TextColumn::make('motivo_divergencia')
+                //         ->label('Motivo Divergência')
+                //         ->wrapHeader(),
+                // ]),
             ])
             ->groups(
                 [
@@ -113,7 +123,7 @@ class ListTeste extends Component implements HasForms, HasTable
                 ]
             )
             ->defaultGroup('veiculo.placa')
-            // ->groupsOnly()
+            ->groupsOnly()
             ->defaultSort('km_rodado', 'desc')
             ->searchOnBlur()
             ->persistFiltersInSession()

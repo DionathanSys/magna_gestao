@@ -13,13 +13,10 @@ class QuilometragemStats extends BaseWidget
 
     use InteractsWithPageFilters;
 
-    protected static ?string $pollingInterval = null;
+    protected static ?string $pollingInterval = '10s';
 
     protected function getStats(): array
     {
-        ds('QuilometragemStats getStats method called');
-
-        ds($this->filters)->label('Filters');
 
         $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
         $dataFinal   = $this->filters['dataFinal'] ?? now();
@@ -28,12 +25,6 @@ class QuilometragemStats extends BaseWidget
         $dataFinal          = Carbon::parse($dataFinal)->format('Y-m-d');
         $placa              = $this->filters['placa'] ?? null;
         $apenasConferidas   = $this->filters['conferido'] ?? false;
-
-        ds([
-            'data_inicial' => $dataInicial,
-            'data_final'   => $dataFinal,
-            'placa'        => $placa,
-        ])->label('Filter Values');
 
         $viagens = \App\Models\Viagem::query()
             ->when($placa, function ($query) use ($placa) {
@@ -45,11 +36,6 @@ class QuilometragemStats extends BaseWidget
                 $query->where('conferido', true);
             })
             ->whereBetween('data_competencia', [$dataInicial, $dataFinal]);
-
-        ds([
-            'data_inicial' => $dataInicial,
-            'data_final' => $dataFinal,
-        ])->label('Datas Utilizadas');
 
         $km_rodado              = $viagens->sum('km_rodado');
         $km_pago                = $viagens->sum('km_pago');
