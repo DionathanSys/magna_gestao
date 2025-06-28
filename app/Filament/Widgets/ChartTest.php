@@ -15,6 +15,8 @@ class ChartTest extends ApexChartWidget
 
     use InteractsWithPageFilters;
 
+    protected static ?string $pollingInterval = null;
+
     public function getColumnSpan(): int | string | array
     {
         return 12;
@@ -43,7 +45,7 @@ class ChartTest extends ApexChartWidget
      */
     protected function getOptions(): array
     {
-        $dados = self::getKmDispersaoPorVeiculo();
+        $dados = $this->getKmDispersaoPorVeiculo();
 
         return [
             'chart' => [
@@ -75,18 +77,33 @@ class ChartTest extends ApexChartWidget
         ];
     }
 
-    public static function getKmDispersaoPorVeiculo()
+    public function getSubheading(): string
     {
-        $dataInicial = (new self)->filters['dataInicial'] ?? now()->subMonth()->day(26);
-        $dataFinal   = (new self)->filters['dataFinal'] ?? now();
+        $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
+        $dataFinal   = $this->filters['dataFinal'] ?? now();
 
-        $dataInicial = Carbon::parse($dataInicial)->format('Y-m-d');
-        $dataFinal   = Carbon::parse($dataFinal)->format('Y-m-d');
+        $dataInicial = Carbon::parse($dataInicial)->format('d/m/Y');
+        $dataFinal   = Carbon::parse($dataFinal)->format('d/m/Y');
+
+        return "Período: {$dataInicial} até {$dataFinal}";
+    }
+
+    public function getKmDispersaoPorVeiculo()
+    {
+        // ds($this->filters)->label(__METHOD__.'-'.__LINE__);
+
+        $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
+        $dataFinal   = $this->filters['dataFinal'] ?? now();
+
+        $dataInicial = Carbon::parse($dataInicial);
+        $dataFinal   = Carbon::parse($dataFinal);
+
+        // ds($dataInicial, $dataFinal)->label(__METHOD__.'-'.__LINE__);
 
         return \App\Models\Viagem::query()
             ->select('veiculo_id', DB::raw('SUM(km_rodado - km_pago) as dispersao'))
             ->with('veiculo:id,placa')
-            ->whereBetween('data_competencia', [$dataInicial, $dataFinal])
+            ->whereBetween('data_competencia', [$dataInicial->format('Y-m-d'), $dataFinal->format('Y-m-d')])
             ->groupBy('veiculo_id')
             ->get()
             ->map(function ($item) {

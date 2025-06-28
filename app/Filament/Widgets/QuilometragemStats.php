@@ -13,7 +13,7 @@ class QuilometragemStats extends BaseWidget
 
     use InteractsWithPageFilters;
 
-    protected static ?string $pollingInterval = '10s';
+    protected static ?string $pollingInterval = null;
 
     protected function getStats(): array
     {
@@ -21,8 +21,8 @@ class QuilometragemStats extends BaseWidget
         $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
         $dataFinal   = $this->filters['dataFinal'] ?? now();
 
-        $dataInicial        = Carbon::parse($dataInicial)->format('Y-m-d');
-        $dataFinal          = Carbon::parse($dataFinal)->format('Y-m-d');
+        $dataInicial        = Carbon::parse($dataInicial);
+        $dataFinal          = Carbon::parse($dataFinal);
         $placa              = $this->filters['placa'] ?? null;
         $apenasConferidas   = $this->filters['conferido'] ?? false;
 
@@ -55,7 +55,7 @@ class QuilometragemStats extends BaseWidget
                 });
             })
             ->where('conferido', true)
-            ->whereBetween('data_competencia', [$dataInicial, $dataFinal])
+            ->whereBetween('data_competencia', [$dataInicial->format('Y-m-d'), $dataFinal->format('Y-m-d')])
             ->count();
 
         $percentualConferidas = $viagens > 0 ? ($viagensConferidas / $viagens) * 100 : 0;
@@ -63,7 +63,7 @@ class QuilometragemStats extends BaseWidget
         return [
             Stat::make("Dispersão KM", $km_dispersao . ' - ' . $dispersao . '%')
                 ->icon('heroicon-o-chart-bar')
-                ->description("Km Rodado: {$km_rodado}")
+                ->description("Km Rodado: {$km_rodado} entre {$dataInicial->format('d/m/Y')} e {$dataFinal->format('d/m/Y')}")
                 ->descriptionIcon('heroicon-o-information-circle', 'before')
                 ->descriptionColor('primary')
                 ->iconColor('warning'),
