@@ -169,6 +169,7 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->label('Integrado')
                     ->width('1%')
+                    ->tooltip(fn (Viagem $record) => $record->carga->integrado?->codigo ?? 'N/A')
                     ->listWithLineBreaks(),
                     // ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
                     // ->openUrlInNewTab()
