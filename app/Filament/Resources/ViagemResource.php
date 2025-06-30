@@ -386,7 +386,8 @@ class ViagemResource extends Resource
 
                 ])
                 ->link(),
-
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation(false),
                 Tables\Actions\Action::make('conferido')
                     ->label('Conferido')
                     ->iconButton()

@@ -7,7 +7,10 @@ use App\Models\Viagem;
 use Carbon\Carbon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Flowframe\Trend\Trend;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class ChartTest extends ApexChartWidget
@@ -55,7 +58,7 @@ class ChartTest extends ApexChartWidget
             'series' => [
                 [
                     'name' => 'ChartTest',
-                    'data' => $dados->pluck('dispersao')->toArray(),
+                    'data' => $dados->pluck('km_dispersao')->toArray(),
                 ],
             ],
             'xaxis' => [
@@ -90,7 +93,6 @@ class ChartTest extends ApexChartWidget
 
     public function getKmDispersaoPorVeiculo()
     {
-        // ds($this->filters)->label(__METHOD__.'-'.__LINE__);
 
         $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
         $dataFinal   = $this->filters['dataFinal'] ?? now();
@@ -98,10 +100,8 @@ class ChartTest extends ApexChartWidget
         $dataInicial = Carbon::parse($dataInicial);
         $dataFinal   = Carbon::parse($dataFinal);
 
-        // ds($dataInicial, $dataFinal)->label(__METHOD__.'-'.__LINE__);
-
         return \App\Models\Viagem::query()
-            ->select('veiculo_id', DB::raw('SUM(km_rodado - km_pago) as dispersao'))
+            ->select('veiculo_id', DB::raw('SUM(km_rodado - km_pago) as km_dispersao'))
             ->with('veiculo:id,placa')
             ->whereBetween('data_competencia', [$dataInicial->format('Y-m-d'), $dataFinal->format('Y-m-d')])
             ->groupBy('veiculo_id')
@@ -110,7 +110,7 @@ class ChartTest extends ApexChartWidget
                 return [
                     'veiculo_id' => $item->veiculo_id,
                     'placa'      => $item->veiculo?->placa,
-                    'dispersao'  => $item->dispersao,
+                    'km_dispersao'  => $item->km_dispersao,
                 ];
             });
     }

@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\MotivoDivergenciaViagem;
 use App\Filament\Resources\CargaViagemResource\Pages;
 use App\Filament\Resources\CargaViagemResource\RelationManagers;
 use App\Models\CargaViagem;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -45,20 +48,72 @@ class CargaViagemResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('viagem.data_competencia')
+                    ->label('Data. Competência')
+                    ->width('1%')
+                    ->wrapHeader()
+                    ->date('d/m/Y')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('viagem.numero_viagem')
                     ->label('Nº Viagem')
+                    ->width('1%')
                     ->numeric(0, '', '')
                     ->searchable(isIndividual: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('integrado.codigo')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Cód. Integrado')
+                    ->wrapHeader()
+                    ->width('1%')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('integrado.nome')
+                    ->label('Integrado')
+                    ->width('1%')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('documento_frete_id')
+                Tables\Columns\TextColumn::make('Doc. Frete')
+                    ->width('1%')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ColumnGroup::make('KM', [
+                    Tables\Columns\TextColumn::make('viagem.km_rodado')
+                        ->label('Km Rodado')
+                        ->width('1%')
+                        ->wrapHeader()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                    Tables\Columns\TextColumn::make('viagem.km_pago')
+                        ->label('Km Pago')
+                        ->width('1%')
+                        ->wrapHeader()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                    Tables\Columns\TextColumn::make('viagem.km_rodado_excedente')
+                        ->label('Km Perdido')
+                        ->width('1%')
+                        ->color(fn($state, CargaViagem $record): string => $record->viagem->km_rodado_excedente > 0 ? 'info' : '')
+                        ->badge(fn($state, CargaViagem $record): bool => $record->viagem->km_rodado_excedente > 0)
+                        ->wrapHeader()
+                        ->sortable()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('viagem.km_pago_excedente')
+                        ->label('Km Pago Excedente')
+                        ->wrapHeader()
+                        ->width('1%')
+                        ->color(fn($state, CargaViagem $record): string => $record->viagem->km_pago_excedente > 0 ? 'info' : '')
+                        ->badge(fn($state, CargaViagem $record): bool => $record->viagem->km_pago_excedente > 0)
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('viagem.km_cobrar')
+                        ->label('Km Cobrar')
+                        ->width('1%')
+                        ->wrapHeader()
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('viagem.motivo_divergencia')
+                        ->label('Motivo Divergência')
+                        ->wrapHeader()
+                    // ->width('2%')
+                ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -68,13 +123,73 @@ class CargaViagemResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups(
+                [
+                    Tables\Grouping\Group::make('numero_viagem')
+                        ->label('Nº Viagem')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('data_competencia')
+                        ->label('Data Competência')
+                        ->titlePrefixedWithLabel(false)
+                        ->getTitleFromRecordUsing(fn(CargaViagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('veiculo.placa')
+                        ->label('Veículo')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('integrado.nome')
+                        ->label('Integrado')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('viagem.motivo_divergencia')
+                        ->label('Motivo Divergência')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                ]
+            )
             ->filters([
-
+                Tables\Filters\SelectFilter::make('motivo_divergencia')
+                    ->label('Motivo Divergência')
+                    ->relationship('viagem', 'motivo_divergencia')
+                    ->searchable()
+                    ->preload()
+                    ->options(MotivoDivergenciaViagem::toSelectArray())
+                    ->multiple()
+                    ->columnSpanFull(),
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
+                    ->columnSpanFull(),
+                Tables\Filters\Filter::make('data_competencia')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->label('Data Comp. Início'),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->label('Data Comp. Fim'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['data_inicio'],
+                                fn(Builder $query, $date) =>
+                                $query->whereHas('viagem', fn($q) => $q->whereDate('data_competencia', '>=', $date))
+                            )
+                            ->when(
+                                $data['data_fim'],
+                                fn(Builder $query, $date) =>
+                                $query->whereHas('viagem', fn($q) => $q->whereDate('data_competencia', '<=', $date))
+                            );
+                    }),
             ])
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

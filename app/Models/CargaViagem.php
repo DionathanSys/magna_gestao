@@ -18,4 +18,10 @@ class CargaViagem extends Model
     {
         return $this->belongsTo(Integrado::class, 'integrado_id');
     }
+
+    public function veiculo(): BelongsTo
+    {
+        return $this->belongsTo(Veiculo::class, 'veiculo_id');
+    }
+    
 }
