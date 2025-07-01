@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Enum\MotivoDivergenciaViagem;
 use App\Filament\Resources\CargaViagemResource\Pages;
 use App\Filament\Resources\CargaViagemResource\RelationManagers;
@@ -50,8 +51,8 @@ class CargaViagemResource extends Resource
             ->modifyQueryUsing(function (Builder $query): Builder {
                 return $query->with([
                     'viagem',
-                    'viagem.veiculo:placa',
-                    'integrado:codigo,nome',
+                    'viagem',
+                    'integrado',
                 ]);
             })
             ->columns([
@@ -119,6 +120,7 @@ class CargaViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('viagem.motivo_divergencia')
                         ->label('Motivo Divergência')
+                        ->formatStateUsing(fn($state) => $state?->value ?? '')
                         ->wrapHeader(),
                 ]),
                 Tables\Columns\TextColumn::make('created_at')
@@ -149,10 +151,10 @@ class CargaViagemResource extends Resource
                         ->label('Integrado')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
-                    Tables\Grouping\Group::make('viagem.motivo_divergencia')
-                        ->label('Motivo Divergência')
-                        ->titlePrefixedWithLabel(false)
-                        ->collapsible(),
+                    // Tables\Grouping\Group::make('viagem.motivo_divergencia')
+                    //     ->label('Motivo Divergência')
+                    //     ->titlePrefixedWithLabel(false)
+                    //     ->collapsible(),
                 ]
             )
             ->filters([
@@ -204,6 +206,11 @@ class CargaViagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    FilamentExportBulkAction::make('export')
+                        ->fileName('Cargas Viagem')
+                        ->disableAdditionalColumns()
+                        ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
+                        ->filterColumnsFieldLabel('filter columns')
                 ]),
             ]);
     }
