@@ -49,17 +49,26 @@ class ChartTest extends ApexChartWidget
     protected function getOptions(): array
     {
         $dados = $this->getKmDispersaoPorVeiculo();
-
+        // ds($dados);
         return [
             'chart' => [
-                'type' => 'bar',
+                'type' => 'line',
                 'height' => 300,
             ],
             'series' => [
                 [
-                    'name' => 'ChartTest',
+                    'name' => 'KM Perdido',
                     'data' => $dados->pluck('km_dispersao')->toArray(),
+                    'type' => 'column',
                 ],
+                [
+                    'name' => '% Dispersão',
+                    'data' => $dados->pluck('dispersao')->toArray(),
+                    'type' => 'line',
+                ],
+            ],
+            'stroke' => [
+                'width' => [0, 4],
             ],
             'xaxis' => [
                 'categories' => $dados->pluck('placa')->toArray(),
@@ -70,13 +79,27 @@ class ChartTest extends ApexChartWidget
                 ],
             ],
             'yaxis' => [
+            [
+                'title' => ['text' => 'KM'],
                 'labels' => [
                     'style' => [
                         'fontFamily' => 'inherit',
                     ],
                 ],
             ],
-            'colors' => ['#f59e0b'],
+            [
+                'opposite' => true,
+                'title' => ['text' => '% Dispersão'],
+                'labels' => [
+                    'style' => [
+                        'fontFamily' => 'inherit',
+                    ],
+                ],
+                'min' => 0,
+                'max' => 10,
+            ],
+        ],
+        'colors' => ['#f59e0b', '#3b82f6', '#ef4444'],
         ];
     }
 
@@ -101,16 +124,18 @@ class ChartTest extends ApexChartWidget
         $dataFinal   = Carbon::parse($dataFinal);
 
         return \App\Models\Viagem::query()
-            ->select('veiculo_id', DB::raw('SUM(km_rodado - km_pago) as km_dispersao'))
+            ->select('veiculo_id', DB::raw('SUM(km_rodado - km_pago) as km_dispersao'), DB::raw('SUM(km_rodado) as km_rodado'))
             ->with('veiculo:id,placa')
             ->whereBetween('data_competencia', [$dataInicial->format('Y-m-d'), $dataFinal->format('Y-m-d')])
             ->groupBy('veiculo_id')
             ->get()
             ->map(function ($item) {
                 return [
-                    'veiculo_id' => $item->veiculo_id,
-                    'placa'      => $item->veiculo?->placa,
-                    'km_dispersao'  => $item->km_dispersao,
+                    'veiculo_id'    => $item->veiculo_id,
+                    'placa'         => $item->veiculo?->placa,
+                    'km_dispersao'  => number_format($item->km_dispersao, 2, ',', '.'),
+                    'km_rodado'     => number_format($item->km_rodado, 2, ',', '.'),
+                    'dispersao'     => $item->km_rodado > 0 ? number_format(($item->km_dispersao / $item->km_rodado) * 100, 2, ',', '.') : '0,00',
                 ];
             });
     }

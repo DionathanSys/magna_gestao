@@ -18,7 +18,7 @@ class QuilometragemStats extends BaseWidget
     protected function getStats(): array
     {
 
-        $dataInicial = $this->filters['dataInicial'] ?? now()->subMonth()->day(26);
+        $dataInicial = $this->filters['dataInicial'] ?? '2025-06-10'; //now()->subMonth()->day(26);
         $dataFinal   = $this->filters['dataFinal'] ?? now();
 
         $dataInicial        = Carbon::parse($dataInicial);
@@ -41,11 +41,9 @@ class QuilometragemStats extends BaseWidget
         $km_pago                = $viagens->sum('km_pago');
         $km_dispersao           = $km_rodado - $km_pago;
 
-
-        if ($km_dispersao = 0 || $km_rodado = 0) {
+        if ($km_dispersao == 0 || $km_rodado == 0) {
             $dispersao              = number_format(0, 2, ',', '.');
         } else {
-            dd(($km_dispersao = 0 || $km_rodado = 0), $km_rodado, $km_pago, $km_dispersao);
             $dispersao              = number_format(($km_dispersao / $km_rodado) * 100, 2, ',', '.');
         }
 
