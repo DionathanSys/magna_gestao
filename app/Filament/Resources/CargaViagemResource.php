@@ -62,6 +62,7 @@ class CargaViagemResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('viagem.data_competencia')
                     ->label('Dt. Comp.')
+                    ->dateTime('d/m/Y')
                     ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('viagem.numero_viagem')
