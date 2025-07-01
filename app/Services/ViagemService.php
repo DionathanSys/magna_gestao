@@ -46,17 +46,8 @@ class ViagemService
                 default:
                     Log::info("Viagem Nº {$viagemDto->numero_viagem} criada");
                     $viagem = $this->viagem->create($viagemDto->toArray());
-
+                    $carga = $this->cargaService->create($viagemDto->integrado, $viagem);
             }
-
-
-            if ($viagem && $viagem->conferido == false) {
-                $viagem->update($viagemDto->toArray());
-            } else {
-                $viagem = $this->viagem->create($viagemDto->toArray());
-            }
-
-            $carga = $this->cargaService->create($viagemDto->integrado, $viagem);
 
             return $viagem;
         } catch (\Exception $e) {
