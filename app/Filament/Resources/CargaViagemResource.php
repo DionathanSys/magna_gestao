@@ -60,6 +60,10 @@ class CargaViagemResource extends Resource
                     ->width('1%')
                     ->wrapHeader()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('viagem.data_competencia')
+                    ->label('Dt. Comp.')
+                    ->width('1%')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('viagem.numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
@@ -116,6 +120,7 @@ class CargaViagemResource extends Resource
                         ->label('Motivo Divergência')
                         ->wrapHeader(),
                     Tables\Columns\IconColumn::make('viagem.conferido')
+                        ->state(fn (string $state) => dd($state))
                         ->color(fn (string $state): string => match ($state) {
                             '1' => 'blue',
                             default => 'red',
