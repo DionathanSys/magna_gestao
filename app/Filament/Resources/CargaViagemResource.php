@@ -87,6 +87,11 @@ class CargaViagemResource extends Resource
                         ->width('1%')
                         ->wrapHeader()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                    Tables\Columns\TextColumn::make('viagem.km_cadastro')
+                        ->label('Km Cadastro')
+                        ->width('1%')
+                        ->wrapHeader()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
                     Tables\Columns\TextColumn::make('viagem.km_rodado_excedente')
                         ->label('Km Perdido')
                         ->width('1%')
@@ -125,7 +130,7 @@ class CargaViagemResource extends Resource
             ])
             ->groups(
                 [
-                    Tables\Grouping\Group::make('numero_viagem')
+                    Tables\Grouping\Group::make('viagem.numero_viagem')
                         ->label('Nº Viagem')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
