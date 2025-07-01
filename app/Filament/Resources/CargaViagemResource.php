@@ -120,8 +120,12 @@ class CargaViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('viagem.motivo_divergencia')
                         ->label('Motivo Divergência')
+                        ->width('2%')
                         ->formatStateUsing(fn($state) => $state?->value ?? '')
                         ->wrapHeader(),
+                    Tables\Columns\IconColumn::make('viagem.conferido')
+                        ->label('Conferido')
+                        ->boolean(),
                 ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -151,21 +155,21 @@ class CargaViagemResource extends Resource
                         ->label('Integrado')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
-                    // Tables\Grouping\Group::make('viagem.motivo_divergencia')
-                    //     ->label('Motivo Divergência')
-                    //     ->titlePrefixedWithLabel(false)
-                    //     ->collapsible(),
+                    Tables\Grouping\Group::make('viagem.motivo_divergencia')
+                        ->label('Motivo Divergência')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
                 ]
             )
             ->filters([
-                // Tables\Filters\SelectFilter::make('motivo_divergencia')
-                //     ->label('Motivo Divergência')
-                //     ->relationship('viagem', 'motivo_divergencia')
-                //     ->searchable()
-                //     ->preload()
-                //     // ->options(MotivoDivergenciaViagem::toSelectArray())
-                //     ->multiple()
-                //     ->columnSpanFull(),
+                Tables\Filters\SelectFilter::make('motivo_divergencia')
+                    ->label('Motivo Divergência')
+                    // ->relationship('viagem', 'motivo_divergencia')
+                    ->searchable()
+                    ->preload()
+                    ->options(MotivoDivergenciaViagem::toSelectArray())
+                    ->multiple()
+                    ->columnSpanFull(),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('viagem.veiculo', 'placa')
@@ -198,11 +202,10 @@ class CargaViagemResource extends Resource
             ->persistFiltersInSession()
             ->actions([
                 Tables\Actions\DeleteAction::make()
-                    ->iconButton()
-                    ->requiresConfirmation(false),
+                    ->iconButton(),
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
