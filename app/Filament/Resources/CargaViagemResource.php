@@ -49,7 +49,8 @@ class CargaViagemResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query): Builder {
                 return $query->with([
-                    'viagem:numero_viagem,data_competencia,km_rodado,km_pago,km_cadastro,km_rodado_excedente,km_cobrar,motivo_divergencia',
+                    'viagem',
+                    // 'viagem:numero_viagem,data_competencia,km_rodado,km_pago,km_cadastro,km_rodado_excedente,km_cobrar,motivo_divergencia',
                     'viagem.veiculo:placa',
                     'integrado:codigo,nome',
                 ]);
