@@ -40,7 +40,12 @@ class QuilometragemStats extends BaseWidget
         $km_rodado              = $viagens->sum('km_rodado');
         $km_pago                = $viagens->sum('km_pago');
         $km_dispersao           = $km_rodado - $km_pago;
-        $dispersao              = number_format(($km_dispersao / $km_rodado) * 100, 2, ',', '.');
+
+        if ($km_dispersao = 0 || $km_rodado = 0) {
+            $dispersao              = number_format(0, 2, ',', '.');
+        } else {
+            $dispersao              = number_format(($km_dispersao / $km_rodado) * 100, 2, ',', '.');
+        }
 
         $km_dispersao           = number_format($km_dispersao, 2, ',', '.');
         $km_rodado              = number_format($viagens->sum('km_rodado'), 2, ',', '.');
