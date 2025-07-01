@@ -47,17 +47,18 @@ class CargaViagemResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query): Builder {
+                return $query->with([
+                    'viagem:numero_viagem,data_competencia,km_rodado,km_pago,km_cadastro,km_rodado_excedente,km_cobrar,motivo_divergencia',
+                    'viagem.veiculo:placa',
+                    'integrado:codigo,nome',
+                ]);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('viagem.veiculo.placa')
                     ->label('Placa')
                     ->width('1%')
                     ->wrapHeader()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('viagem.data_competencia')
-                    ->label('Data. Competência')
-                    ->width('1%')
-                    ->wrapHeader()
-                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('viagem.numero_viagem')
                     ->label('Nº Viagem')
@@ -106,14 +107,6 @@ class CargaViagemResource extends Resource
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->toggleable(isToggledHiddenByDefault: false),
-                    Tables\Columns\TextColumn::make('viagem.km_pago_excedente')
-                        ->label('Km Pago Excedente')
-                        ->wrapHeader()
-                        ->width('1%')
-                        ->color(fn($state, CargaViagem $record): string => $record->viagem->km_pago_excedente > 0 ? 'info' : '')
-                        ->badge(fn($state, CargaViagem $record): bool => $record->viagem->km_pago_excedente > 0)
-                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('viagem.km_cobrar')
                         ->label('Km Cobrar')
                         ->width('1%')
@@ -124,13 +117,6 @@ class CargaViagemResource extends Resource
                         ->wrapHeader()
                     // ->width('2%')
                 ]),
-                Tables\Columns\IconColumn::make('viagem.conferido')
-                    ->label('Conferido')
-                    ->state(fn (string $state) => dd($state))
-                    ->color(fn (string $state): string => match ($state) {
-                        '1' => 'blue',
-                        default => 'red',
-                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -146,7 +132,7 @@ class CargaViagemResource extends Resource
                         ->label('Nº Viagem')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
-                    Tables\Grouping\Group::make('data_competencia')
+                    Tables\Grouping\Group::make('viagem.data_competencia')
                         ->label('Data Competência')
                         ->titlePrefixedWithLabel(false)
                         ->getTitleFromRecordUsing(fn(CargaViagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
