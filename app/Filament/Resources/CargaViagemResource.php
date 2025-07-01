@@ -48,6 +48,11 @@ class CargaViagemResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('viagem.veiculo.placa')
+                    ->label('Placa')
+                    ->width('1%')
+                    ->wrapHeader()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('viagem.data_competencia')
                     ->label('Data. Competência')
                     ->width('1%')
@@ -119,6 +124,13 @@ class CargaViagemResource extends Resource
                         ->wrapHeader()
                     // ->width('2%')
                 ]),
+                Tables\Columns\IconColumn::make('viagem.conferido')
+                    ->label('Conferido')
+                    ->state(fn (string $state) => dd($state))
+                    ->color(fn (string $state): string => match ($state) {
+                        '1' => 'blue',
+                        default => 'red',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -139,7 +151,7 @@ class CargaViagemResource extends Resource
                         ->titlePrefixedWithLabel(false)
                         ->getTitleFromRecordUsing(fn(CargaViagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
                         ->collapsible(),
-                    Tables\Grouping\Group::make('veiculo.placa')
+                    Tables\Grouping\Group::make('viagem.veiculo.placa')
                         ->label('Veículo')
                         ->titlePrefixedWithLabel(false)
                         ->collapsible(),
@@ -164,7 +176,7 @@ class CargaViagemResource extends Resource
                 //     ->columnSpanFull(),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
-                    ->relationship('veiculo', 'placa')
+                    ->relationship('viagem.veiculo', 'placa')
                     ->searchable()
                     ->preload()
                     ->multiple()
@@ -193,6 +205,9 @@ class CargaViagemResource extends Resource
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->actions([
+                Tables\Actions\DeleteAction::make()
+                    ->iconButton()
+                    ->requiresConfirmation(false),
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
             ])
