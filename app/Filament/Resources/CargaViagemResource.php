@@ -50,7 +50,6 @@ class CargaViagemResource extends Resource
             ->modifyQueryUsing(function (Builder $query): Builder {
                 return $query->with([
                     'viagem',
-                    // 'viagem:numero_viagem,data_competencia,km_rodado,km_pago,km_cadastro,km_rodado_excedente,km_cobrar,motivo_divergencia',
                     'viagem.veiculo:placa',
                     'integrado:codigo,nome',
                 ]);
@@ -115,7 +114,12 @@ class CargaViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('viagem.motivo_divergencia')
                         ->label('Motivo Divergência')
-                        ->wrapHeader()
+                        ->wrapHeader(),
+                    Tables\Columns\IconColumn::make('viagem.conferido')
+                        ->color(fn (string $state): string => match ($state) {
+                            '1' => 'blue',
+                            default => 'red',
+                        }),
                     // ->width('2%')
                 ]),
                 Tables\Columns\TextColumn::make('created_at')
