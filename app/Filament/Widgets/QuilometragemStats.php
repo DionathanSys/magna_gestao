@@ -45,7 +45,7 @@ class QuilometragemStats extends BaseWidget
         if ($km_dispersao = 0 || $km_rodado = 0) {
             $dispersao              = number_format(0, 2, ',', '.');
         } else {
-            dd($km_rodado, $km_pago, $km_dispersao, $dataInicial, $dataFinal);
+            dd(($km_dispersao = 0 || $km_rodado = 0), $km_rodado, $km_pago, $km_dispersao);
             $dispersao              = number_format(($km_dispersao / $km_rodado) * 100, 2, ',', '.');
         }
 
