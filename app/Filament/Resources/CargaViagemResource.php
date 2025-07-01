@@ -119,13 +119,6 @@ class CargaViagemResource extends Resource
                     Tables\Columns\TextColumn::make('viagem.motivo_divergencia')
                         ->label('Motivo Divergência')
                         ->wrapHeader(),
-                    Tables\Columns\IconColumn::make('viagem.conferido')
-                        ->state(fn (string $state) => dd($state))
-                        ->color(fn (string $state): string => match ($state) {
-                            '1' => 'blue',
-                            default => 'red',
-                        }),
-                    // ->width('2%')
                 ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
