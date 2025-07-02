@@ -375,8 +375,8 @@ class ViagemResource extends Resource
                             Forms\Components\Select::make('integrado_id')
                                 ->label('Integrado')
                                 ->relationship('carga.integrado', 'nome')
-                                ->searchable(['nome', 'codigo'])
-                                // ->options(fn() => Integrado::all()->pluck('nome', 'id'))
+                                ->searchable(['codigo', 'nome'])
+                                ->getOptionLabelFromRecordUsing(fn (Integrado $record) => "{$record->codigo} {$record->nome}")
                                 ->required(),
                         ])
                         ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))

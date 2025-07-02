@@ -60,7 +60,10 @@ class PneuResource extends Resource
                     ->prefix('R$'),
                 Forms\Components\Select::make('desenho_pneu_id')
                     ->label('Desenho Borracha')
-                    ->relationship('desenhoPneu', 'descricao'),
+                    ->relationship('desenhoPneu', 'descricao')
+                    ->searchable()
+                    ->required()
+                    ->createOptionForm(fn (Form $form) => DesenhoPneuResource::form($form)),
                 Forms\Components\Select::make('status')
                     ->options(StatusPneuEnum::toSelectArray())
                     ->required()
