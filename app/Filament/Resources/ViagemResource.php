@@ -171,9 +171,6 @@ class ViagemResource extends Resource
                     ->width('1%')
                     ->tooltip(fn (Viagem $record) => $record->carga->integrado?->codigo ?? 'N/A')
                     ->listWithLineBreaks(),
-                    // ->url(fn (Viagem $record) => IntegradoResource::getUrl('edit', ['record' => $record->carga->integrado_id ?? 0]))
-                    // ->openUrlInNewTab()
-                    // ->searchable(isIndividual: true, isGlobal: false)
                 Tables\Columns\TextColumn::make('documento_transporte')
                     ->label('Doc. Transp.')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -377,7 +374,7 @@ class ViagemResource extends Resource
                         ->form([
                             Forms\Components\Select::make('integrado_id')
                                 ->label('Integrado')
-                                ->searchable()
+                                ->searchable(['nome', 'codigo'])
                                 ->options(fn() => Integrado::all()->pluck('nome', 'id'))
                                 ->required(),
                         ])
@@ -387,7 +384,7 @@ class ViagemResource extends Resource
                 ])
                 ->link(),
                 Tables\Actions\DeleteAction::make()
-                    ->requiresConfirmation(false),
+                    ->iconButton(),
                 Tables\Actions\Action::make('conferido')
                     ->label('Conferido')
                     ->iconButton()
@@ -480,8 +477,11 @@ class ViagemResource extends Resource
                     ->label('Placa'),
                 \Filament\Infolists\Components\TextEntry::make('documentos.placa')
                     ->label('Placa'),
-                \Filament\Infolists\Components\TextEntry::make('veiculo.placa')
-                    ->label('Placa'),
+                \Filament\Infolists\Components\KeyValueEntry::make('divergencias')
+                    ->label('Divergências')
+                    ->keyLabel('Motivo')
+                    ->valueLabel('Descrição')
+                    ->columnSpanFull(),
             ]);
     }
 
