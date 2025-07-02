@@ -54,7 +54,8 @@ class RecapagemResource extends Resource
                     ->relationship('desenhoPneu', 'descricao')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->createOptionForm(fn (Form $form) => DesenhoPneuResource::form($form)),
                 Forms\Components\TextInput::make('valor')
                     ->label('Valor')
                     ->numeric()
