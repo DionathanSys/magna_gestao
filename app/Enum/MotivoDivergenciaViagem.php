@@ -17,6 +17,7 @@ enum MotivoDivergenciaViagem: string
     case DESLOCAMENTO_OUTROS        = 'DESLOCAMENTO OUTROS';
     case RETORNO_VEICULO_QUEBRADO   = 'RETORNO VEÍCULO QUEBRADO';
     case AUX_BALDEIO_CARGA          = 'AUX. EM BALDEIO DE CARGA';
+    case SEM_VIAGEM                 = 'SEM VIAGEM';
 
     public static function toSelectArray(): array
     {
