@@ -29,10 +29,11 @@ class CargaService
 
             if ($cargaViagem) {
                 Log::info("Carga de viagem já existe para a viagem ID {$viagem->id}, atualizando integrado ID " . $integrado->id ?? 'null');
-                return $cargaViagem->update([
+                $cargaViagem->update([
                     'integrado_id' => $integrado->id ?? null,
                     'updated_by'   => Auth::user()->id,
                 ]);
+                return $cargaViagem;
 
             } else {
                 Log::info("Será criado nova carga de viagem para a viagem ID {$viagem->id} com integrado ID {$integrado->id}");
