@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enum\MotivoDivergenciaViagem;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -45,6 +46,21 @@ class Viagem extends Model
     public function divergencias(): HasMany
     {
         return $this->hasMany(DivergenciaViagem::class, 'viagem_id');
+    }
+
+    public function created_by(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updated_by(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function checked_by(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'checked_by');
     }
 
 
