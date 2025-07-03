@@ -48,17 +48,17 @@ class Viagem extends Model
         return $this->hasMany(DivergenciaViagem::class, 'viagem_id');
     }
 
-    public function created_by(): BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updated_by(): BelongsTo
+    public function updater(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function checked_by(): BelongsTo
+    public function checker(): BelongsTo
     {
         return $this->belongsTo(User::class, 'checked_by');
     }
