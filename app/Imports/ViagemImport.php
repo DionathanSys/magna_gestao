@@ -10,6 +10,7 @@ use App\Models\Viagem;
 use App\Services\ViagemService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ViagemImport
@@ -32,8 +33,6 @@ class ViagemImport
 
     public function store()
     {
-        ds()->table($this->data);
-
         foreach ($this->data as $key => $row) {
 
             $dataFim = Carbon::createFromFormat('d/m/Y H:i', $row[$this->index['Fim']])->format('Y-m-d');
@@ -50,6 +49,8 @@ class ViagemImport
                         'data_competencia'      => $this->dataCompetencia,
                         'data_inicio'           => $row[$this->index['Inicio']],
                         'data_fim'              => $row[$this->index['Fim']],
+                        'created_by'            => Auth::user()->id,
+                        'updated_by'            => Auth::user()->id,
                     ]
                 );
 

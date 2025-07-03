@@ -33,6 +33,9 @@ readonly class ViagemDTO
         public string       $data_inicio,
         public string       $data_fim,
         public array        $divergencias,
+        public int          $created_by,
+        public int          $updated_by,
+
 
     ) {}
 
@@ -64,6 +67,8 @@ readonly class ViagemDTO
                 data_inicio: Carbon::createFromFormat('d/m/Y H:i', $data['data_inicio'])->format('Y-m-d H:i'),
                 data_fim: Carbon::createFromFormat('d/m/Y H:i', $data['data_fim'])->format('Y-m-d H:i'),
                 divergencias: [],
+                created_by: $data['created_by'] ?? 0,
+                updated_by: $data['updated_by'] ?? 0,
             );
         } catch (\Exception $e) {
             Log::error('Erro ao criar ViagemDTO', [

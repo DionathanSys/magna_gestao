@@ -14,7 +14,7 @@ class ListViagems extends ListRecords
     {
         return [
             Actions\ActionGroup::make([
-                Actions\CreateAction::make(),
+                // Actions\CreateAction::make(),
                 Actions\Action::make('importar-viagens')
                     ->label('Importar Viagens')
                     ->icon('heroicon-o-arrow-up-on-square')

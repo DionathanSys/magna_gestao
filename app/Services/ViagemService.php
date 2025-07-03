@@ -21,10 +21,10 @@ class ViagemService
 
     public function __construct()
     {
-        $this->viagem = new Viagem();
-        $this->cargaService = new CargaService();
+        $this->viagem           = new Viagem();
+        $this->cargaService     = new CargaService();
         $this->integradoService = new IntegradoService();
-        $this->veiculos = Veiculo::all()->pluck('id', 'placa')->toArray();
+        $this->veiculos         = Veiculo::all()->pluck('id', 'placa')->toArray();
     }
 
     public function create(ViagemDTO $viagemDto)

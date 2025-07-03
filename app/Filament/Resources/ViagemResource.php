@@ -28,6 +28,7 @@ use App\Services\NotificacaoService as notify;
 use Carbon\Carbon;
 use Filament\Infolists\Infolist;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
 
@@ -121,7 +122,7 @@ class ViagemResource extends Resource
                             ->label('Motivo Divergência')
                             ->options(MotivoDivergenciaViagem::toSelectArray())
                             ->default(MotivoDivergenciaViagem::DESLOCAMENTO_OUTROS->value),
-                        ]),
+                    ]),
                 Forms\Components\Section::make('Datas')
                     ->columns(4)
                     ->schema([
@@ -169,7 +170,7 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->label('Integrado')
                     ->width('1%')
-                    ->tooltip(fn (Viagem $record) => $record->carga->integrado?->codigo ?? 'N/A')
+                    ->tooltip(fn(Viagem $record) => $record->carga->integrado?->codigo ?? 'N/A')
                     ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('documento_transporte')
                     ->label('Doc. Transp.')
@@ -236,7 +237,7 @@ class ViagemResource extends Resource
                         ->default(MotivoDivergenciaViagem::SEM_OBS->value)
                         ->disabled(fn(Viagem $record) => $record->conferido)
                 ]),
-                Tables\Columns\ColumnGroup::make('Datas',[
+                Tables\Columns\ColumnGroup::make('Datas', [
                     Tables\Columns\TextInputColumn::make('data_competencia')
                         ->type('date')
                         ->label('Dt. Comp.')
@@ -256,7 +257,7 @@ class ViagemResource extends Resource
                         ->sortable(),
                 ]),
                 Tables\Columns\IconColumn::make('conferido')
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         '1' => 'blue',
                         default => 'red',
                     }),
@@ -266,7 +267,7 @@ class ViagemResource extends Resource
                     Tables\Grouping\Group::make('data_competencia')
                         ->label('Data Competência')
                         ->titlePrefixedWithLabel(false)
-                        ->getTitleFromRecordUsing(fn (Viagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
+                        ->getTitleFromRecordUsing(fn(Viagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
                         ->collapsible(),
                     Tables\Grouping\Group::make('veiculo.placa')
                         ->label('Veículo')
@@ -298,7 +299,7 @@ class ViagemResource extends Resource
                         return $query
                             ->when(
                                 $data['numero_viagem'],
-                                fn (Builder $query, $numeroViagem): Builder => $query->where('numero_viagem', $numeroViagem),
+                                fn(Builder $query, $numeroViagem): Builder => $query->where('numero_viagem', $numeroViagem),
                             );
                     }),
                 Tables\Filters\SelectFilter::make('veiculo_id')
@@ -319,11 +320,11 @@ class ViagemResource extends Resource
                         return $query
                             ->when(
                                 $data['data_inicio'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_competencia', '>=', $date),
                             )
                             ->when(
                                 $data['data_fim'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
                             );
                     }),
                 Tables\Filters\SelectFilter::make('motivo_divergencia')
@@ -339,8 +340,7 @@ class ViagemResource extends Resource
                     Tables\Actions\Action::make('atualizar')
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
-                        ->action(function(Viagem $record) {
-                        }),
+                        ->action(function (Viagem $record) {}),
                     Tables\Actions\Action::make('editar')
                         ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
@@ -349,7 +349,7 @@ class ViagemResource extends Resource
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
-                        ->action(function(Viagem $record) {
+                        ->action(function (Viagem $record) {
                             $data = $record->data_competencia;
                             $veiculo_id = $record->veiculo_id;
 
@@ -365,39 +365,39 @@ class ViagemResource extends Resource
                             }
 
                             $viagem->data_competencia = $data;
+                            $viagem->updated_by = Auth::user()->id;
                             $viagem->save();
-
                         }),
-                    Tables\Actions\Action::make('nova-carga')
-                        ->label('Carga')
-                        ->icon('heroicon-o-plus')
-                        ->form([
-                            Forms\Components\Select::make('integrado_id')
-                                ->label('Integrado')
-                                ->relationship('carga.integrado', 'nome')
-                                ->searchable(['codigo', 'nome'])
-                                ->getOptionLabelFromRecordUsing(fn (Integrado $record) => "{$record->codigo} {$record->nome}")
-                                ->required(),
-                        ])
-                        ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
-                        ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
-
                 ])
-                ->link(),
+                    ->link(),
                 Tables\Actions\DeleteAction::make()
                     ->iconButton(),
+                Tables\Actions\Action::make('nova-carga')
+                    ->label('Carga')
+                    ->icon('heroicon-o-plus')
+                    ->form([
+                        Forms\Components\Select::make('integrado_id')
+                            ->label('Integrado')
+                            ->relationship('carga.integrado', 'nome')
+                            ->searchable(['codigo', 'nome'])
+                            ->getOptionLabelFromRecordUsing(fn(Integrado $record) => "{$record->codigo} {$record->nome}")
+                            ->required(),
+                    ])
+                    ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
+                    ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
                 Tables\Actions\Action::make('conferido')
                     ->label('Conferido')
                     ->iconButton()
                     ->icon('heroicon-o-check-circle')
                     ->visible(fn(Viagem $record) => ! $record->conferido)
-                    ->action(function(Viagem $record) {
-                        if(! $record->motivo_divergencia){
+                    ->action(function (Viagem $record) {
+                        if (! $record->motivo_divergencia) {
                             $record->motivo_divergencia = MotivoDivergenciaViagem::SEM_OBS;
                         }
                         $record->conferido = true;
+                        $record->updated_by = Auth::user()->id;
+                        $record->checked_by = Auth::user()->id;
                         $record->save();
-
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Ñ Conferido')
@@ -405,8 +405,12 @@ class ViagemResource extends Resource
                     ->icon('heroicon-o-no-symbol')
                     ->color('red')
                     ->visible(fn(Viagem $record) => $record->conferido)
-                    ->action(function(Viagem $record) {
-                        $record->update(['conferido' => false]);
+                    ->action(function (Viagem $record) {
+                        $record->update([
+                            'conferido' => false,
+                            'updated_by' => Auth::user()->id,
+                            'checked_by' => null,
+                        ]);
                     }),
                 // Tables\Actions\Action::make('km-cadastro')
                 //     ->label('KM')
@@ -509,8 +513,4 @@ class ViagemResource extends Resource
             AdvancedStatsOverviewWidget::class,
         ];
     }
-
-
-
-
 }
