@@ -204,12 +204,12 @@ class CargaViagemResource extends Resource
                                 $query->whereHas('viagem', fn($q) => $q->whereDate('data_competencia', '<=', $date))
                             );
                     }),
-                Tables\Filters\QueryBuilder::make()
-                ->constraints([
-                        \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
-                            ->emptyable()
-                            ->multiple()
-                    ])
+                // Tables\Filters\QueryBuilder::make()
+                // ->constraints([
+                //         \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
+                //             ->emptyable()
+                //             ->multiple()
+                //     ])
                         ], layout: FiltersLayout::AboveContentCollapsible)
             ->searchOnBlur()
             ->persistFiltersInSession()
