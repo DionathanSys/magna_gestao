@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -161,6 +162,8 @@ class CargaViagemResource extends Resource
                         ->collapsible(),
                 ]
             )
+            ->persistFiltersInSession()
+            ->deferFilters()
             ->filters([
                 Tables\Filters\SelectFilter::make('motivo_divergencia')
                     ->label('Motivo Divergência')
@@ -169,21 +172,25 @@ class CargaViagemResource extends Resource
                     ->preload()
                     ->options(MotivoDivergenciaViagem::toSelectArray())
                     ->multiple()
-                    ->columnSpanFull(),
+                    ->columnSpan(2),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('viagem.veiculo', 'placa')
                     ->searchable()
                     ->preload()
                     ->multiple()
-                    ->columnSpanFull(),
+                    ->columnSpan(2),
                 Tables\Filters\Filter::make('data_competencia')
+                    ->columns(6)
                     ->form([
                         Forms\Components\DatePicker::make('data_inicio')
-                            ->label('Data Comp. Início'),
+                            ->label('Data Comp. Início')
+                            ->columnSpan(2),
                         Forms\Components\DatePicker::make('data_fim')
-                            ->label('Data Comp. Fim'),
+                            ->label('Data Comp. Fim')
+                            ->columnSpan(2),
                     ])
+                    ->columnSpan(2)
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
@@ -197,7 +204,13 @@ class CargaViagemResource extends Resource
                                 $query->whereHas('viagem', fn($q) => $q->whereDate('data_competencia', '<=', $date))
                             );
                     }),
-            ])
+                Tables\Filters\QueryBuilder::make()
+                ->constraints([
+                        \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
+                            ->emptyable()
+                            ->multiple()
+                    ])
+                        ], layout: FiltersLayout::AboveContentCollapsible)
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->actions([
@@ -205,7 +218,7 @@ class CargaViagemResource extends Resource
                     ->iconButton(),
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
-            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
