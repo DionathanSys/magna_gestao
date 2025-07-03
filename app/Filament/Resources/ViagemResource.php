@@ -265,15 +265,18 @@ class ViagemResource extends Resource
                     Tables\Columns\TextColumn::make('creator.name')
                         ->label('Criado Por')
                         ->width('1%')
-                        ->sortable(),
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('updater.name')
                         ->label('Atualizado Por')
                         ->width('1%')
-                        ->sortable(),
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('checker.name')
                         ->label('Conferido Por')
                         ->width('1%')
-                        ->sortable(),
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
                 ])
             ])
             ->groups(
