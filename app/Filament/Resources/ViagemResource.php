@@ -262,15 +262,15 @@ class ViagemResource extends Resource
                         default => 'red',
                     }),
                 Tables\Columns\ColumnGroup::make('Users', [
-                    Tables\Columns\TextColumn::make('creator.nome')
+                    Tables\Columns\TextColumn::make('creator.name')
                         ->label('Criado Por')
                         ->width('1%')
                         ->sortable(),
-                    Tables\Columns\TextColumn::make('updater.nome')
+                    Tables\Columns\TextColumn::make('updater.name')
                         ->label('Atualizado Por')
                         ->width('1%')
                         ->sortable(),
-                    Tables\Columns\TextColumn::make('checker.nome')
+                    Tables\Columns\TextColumn::make('checker.name')
                         ->label('Conferido Por')
                         ->width('1%')
                         ->sortable(),
