@@ -172,15 +172,13 @@ class CargaViagemResource extends Resource
                     ->searchable()
                     ->preload()
                     ->options(MotivoDivergenciaViagem::toSelectArray())
-                    ->multiple()
-                    ->columnSpan(2),
+                    ->multiple(),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('viagem.veiculo', 'placa')
                     ->searchable()
                     ->preload()
-                    ->multiple()
-                    ->columnSpan(2),
+                    ->multiple(),
                 Tables\Filters\SelectFilter::make('integrado_id')
                     ->label('Integrado')
                     ->options(Integrado::query()
