@@ -7,6 +7,7 @@ use App\Enum\MotivoDivergenciaViagem;
 use App\Filament\Resources\CargaViagemResource\Pages;
 use App\Filament\Resources\CargaViagemResource\RelationManagers;
 use App\Models\CargaViagem;
+use App\Models\Integrado;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -180,6 +181,14 @@ class CargaViagemResource extends Resource
                     ->preload()
                     ->multiple()
                     ->columnSpan(2),
+                Tables\Filters\SelectFilter::make('integrado_id')
+                    ->label('Integrado')
+                    ->options(Integrado::query()
+                        ->orderBy('nome')
+                        ->pluck('nome', 'id'))
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
                 Tables\Filters\Filter::make('data_competencia')
                     ->columns(6)
                     ->form([
