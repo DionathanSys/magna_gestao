@@ -295,6 +295,7 @@ class ViagemResource extends Resource
             ->defaultGroup('data_competencia')
             ->defaultSort('numero_viagem')
             ->searchOnBlur()
+            ->deferFilters()
             ->persistFiltersInSession()
             ->filters([
                 Tables\Filters\TernaryFilter::make('conferido')
