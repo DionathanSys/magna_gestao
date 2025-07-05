@@ -166,7 +166,7 @@ class CargaViagemResource extends Resource
             ->persistFiltersInSession()
             ->deferFilters()
             ->filters([
-                Tables\Filters\SelectFilter::make('motivo_divergencia')
+                Tables\Filters\SelectFilter::make('viagem.motivo_divergencia')
                     ->label('Motivo Divergência')
                     // ->relationship('viagem', 'motivo_divergencia')
                     ->searchable()
