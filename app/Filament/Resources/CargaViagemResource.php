@@ -166,13 +166,25 @@ class CargaViagemResource extends Resource
             ->persistFiltersInSession()
             ->deferFilters()
             ->filters([
-                Tables\Filters\SelectFilter::make('motivo_divergencia')
+                Tables\Filters\Filter::make('motivo_divergencia')
                     ->label('Motivo Divergência')
-                    ->relationship('viagem', 'motivo_divergencia')
-                    ->searchable()
-                    ->preload()
-                    // ->options(MotivoDivergenciaViagem::toSelectArray())
-                    ->multiple(),
+                    ->form([
+                        Forms\Components\Select::make('motivo_divergencia')
+                            ->label('Motivo Divergência')
+                            ->options(\App\Enum\MotivoDivergenciaViagem::toSelectArray())
+                            ->searchable()
+                            ->preload()
+                            ->multiple(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            !empty($data['motivo_divergencia']),
+                            fn($query) =>
+                            $query->whereHas('viagem', function ($q) use ($data) {
+                                $q->whereIn('motivo_divergencia', $data['motivo_divergencia']);
+                            })
+                        );
+                    }),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('viagem.veiculo', 'placa')
@@ -213,11 +225,11 @@ class CargaViagemResource extends Resource
                     }),
                 Tables\Filters\QueryBuilder::make()
                     ->constraints([
-                            \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
-                                ->emptyable()
-                                ->multiple()
-                        ])
-                        ], layout: FiltersLayout::AboveContentCollapsible)
+                        \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
+                            ->emptyable()
+                            ->multiple()
+                    ])
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->actions([
