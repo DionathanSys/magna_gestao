@@ -221,7 +221,7 @@ class ViagemResource extends Resource
                         ->width('1%')
                         ->wrapHeader()
                         ->type('number')
-                        ->disabled(fn(Viagem $record) => $record->conferido)
+                        ->disabled(fn(Viagem $record) => ($record->conferido && !Auth::user()->is_admin))
                         ->rules(['numeric', 'min:0', 'required'])
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_rota_corrigido')
