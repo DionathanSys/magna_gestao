@@ -226,8 +226,14 @@ class CargaViagemResource extends Resource
                 Tables\Filters\QueryBuilder::make()
                     ->constraints([
                         \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
-                            ->emptyable()
                             ->multiple()
+                            ->emptyable()
+                            ->selectable(
+                                \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator::make()
+                                    ->titleAttribute('nome')
+                                    ->searchable()
+                                    ->multiple()
+                            )
                     ])
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->searchOnBlur()
