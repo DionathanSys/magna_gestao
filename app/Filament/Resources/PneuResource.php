@@ -256,7 +256,7 @@ class PneuResource extends Resource
                                 'parceiro_id'      => 1,
                             ]);
                         })
-                        ->after(fn(Pneu $record) => PneuService::atualizarCicloVida($record->ultimoRecap))
+                        // ->after(fn(Pneu $record) => PneuService::atualizarCicloVida($record->ultimoRecap))
                         ,
 
                 ]),
