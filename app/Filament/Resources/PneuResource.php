@@ -55,6 +55,7 @@ class PneuResource extends Resource
                     ->options([
                         'X WORKS' => 'X WORKS',
                         'X WORKS Z' => 'X WORKS Z',
+                        'FORZA BLOCK' => 'FORZA BLOCK',
                         'DPLUS' => 'DPLUS',
                         'X MULTI Z' => 'X MULTI Z',
                         'X MULTI D' => 'X MULTI D',
