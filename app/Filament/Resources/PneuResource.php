@@ -40,10 +40,34 @@ class PneuResource extends Resource
                     ->label('Nº de Fogo')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('marca')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('modelo')
-                    ->maxLength(255),
+                Forms\Components\Select::make('marca')
+                    ->options([
+                        'MICHELIN' => 'MICHELIN',
+                        'X BRI' => 'X BRI',
+                        'GOODYEAR' => 'GOODYEAR',
+                        'PIRELLI' => 'PIRELLI',
+                        'SPEEDMAX PRIME' => 'SPEEDMAX PRIME',
+                        'DUNLOP' => 'DUNLOP',
+                        'STRONG TRAC' => 'STRONG TRAC',
+                        'CONTINENTAL' => 'CONTINENTAL',
+                    ]),
+                Forms\Components\Select::make('modelo')
+                    ->options([
+                        'X WORKS' => 'X WORKS',
+                        'X WORKS Z' => 'X WORKS Z',
+                        'DPLUS' => 'DPLUS',
+                        'X MULTI Z' => 'X MULTI Z',
+                        'X MULTI D' => 'X MULTI D',
+                        'MIXMAX A' => 'MIXMAX A',
+                        'MIX WORKS' => 'MIX WORKS',
+                        'SP320' => 'SP320',
+                        'HSR2' => 'HSR2',
+                        'FG-01' => 'FG-01',
+                        'G686 MSS PLUS' => 'G686 MSS PLUS',
+                        'CHD3' => 'CHD3',
+
+
+                    ]),
                 Forms\Components\Select::make('medida')
                     ->options([
                         '275/80 R22.5' => '275/80 R22.5',
