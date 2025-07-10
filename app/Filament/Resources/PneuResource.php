@@ -8,7 +8,9 @@ use App\Enum\Pneu\StatusPneuEnum;
 use App\Filament\Resources\PneuResource\Pages;
 use App\Filament\Resources\PneuResource\RelationManagers;
 use App\Models\Pneu;
+use App\Models\Recapagem;
 use App\Services\Pneus\ConsertoService;
+use App\Services\Pneus\PneuService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -63,7 +65,7 @@ class PneuResource extends Resource
                     ->relationship('desenhoPneu', 'descricao')
                     ->searchable()
                     ->required()
-                    ->createOptionForm(fn (Form $form) => DesenhoPneuResource::form($form)),
+                    ->createOptionForm(fn(Form $form) => DesenhoPneuResource::form($form)),
                 Forms\Components\Select::make('status')
                     ->options(StatusPneuEnum::toSelectArray())
                     ->required()
@@ -89,7 +91,8 @@ class PneuResource extends Resource
                 Tables\Columns\TextColumn::make('veiculo.veiculo.placa')
                     ->label('Placa')
                     ->width('1%')
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')
                     ->width('1%')
@@ -150,10 +153,10 @@ class PneuResource extends Resource
                     )
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('estado_pneu')
-                        ->options([
-                            'NOVO'     => 'NOVO',
-                            'RECAPADO' => 'RECAPADO',
-                        ]),
+                    ->options([
+                        'NOVO'     => 'NOVO',
+                        'RECAPADO' => 'RECAPADO',
+                    ]),
                 Tables\Filters\SelectFilter::make('marca')
                     ->options(
                         Pneu::query()
@@ -199,12 +202,38 @@ class PneuResource extends Resource
                         ->form(fn(Forms\Form $form) => $form
                             ->columns(4)
                             ->schema([
-                                ConsertoResource::getDataConsertoFormField(),
-                                ConsertoResource::getTipoConsertoFormField(),
-                                ConsertoResource::getValorConsertoFormField(),
-                                ConsertoResource::getGarantiaFormField(),
+                                Forms\Components\DatePicker::make('data_recapagem')
+                                    ->date('d/m/Y')
+                                    ->displayFormat('d/m/Y')
+                                    ->closeOnDateSelection()
+                                    ->default(now())
+                                    ->maxDate(now())
+                                    ->required(),
+                                Forms\Components\Select::make('desenho_pneu_id')
+                                    ->label('Desenho do Pneu')
+                                    ->columnSpan(2)
+                                    ->relationship('desenhoPneu', 'descricao')
+                                    ->required()
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm(fn(Form $form) => DesenhoPneuResource::form($form)),
+                                Forms\Components\TextInput::make('valor')
+                                    ->label('Valor')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->prefix('R$'),
                             ]))
-                        ->action(fn(Pneu $record, array $data) => $record->consertar($record, $data)),
+                        ->action(function (Pneu $record, array $data) {
+                            Recapagem::create([
+                                'pneu_id'          => $record->id,
+                                'data_recapagem'   => $data['data_recapagem'],
+                                'desenho_pneu_id'  => $data['desenho_pneu_id'],
+                                'valor'            => $data['valor'],
+                                'parceiro_id'      => 1,
+                            ]);
+                        })
+                        ->after(fn(Recapagem $record) => PneuService::atualizarCicloVida($record))
+                        ,
 
                 ]),
                 Tables\Actions\EditAction::make()
@@ -229,7 +258,7 @@ class PneuResource extends Resource
                         'created_at',
                         'updated_at',
                     ]),
-                ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

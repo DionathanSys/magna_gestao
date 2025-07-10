@@ -42,9 +42,9 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('km_inicial')
                     ->required()
-                    ->maxLength(255),
+                    ->numeric(),
                 Forms\Components\TextInput::make('km_final')
-                    ->maxLength(255),
+                    ->numeric(),
                 Forms\Components\TextInput::make('eixo')
                     ->required()
                     ->maxLength(255),
@@ -97,6 +97,18 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->width('1%')
                     ->numeric(null, '', '.')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('kmPercorrido')
+                    ->width('1%')
+                    ->numeric(null, '', '.')
+                    ->summarize(
+                        Tables\Columns\Summarizers\Summarizer::make()
+                            ->label('Total KM Percorrido')
+                            ->using(function ($query) {
+                                // Busca todos os registros filtrados
+                                $total = $query->get()->sum(fn($item) => $item->km_final - $item->km_inicial);
+                                return number_format($total, 2, ',', '.');
+                            })
+                    ),
                 Tables\Columns\TextColumn::make('ciclo_vida')
                     ->label('Vida Pneu')
                     ->width('1%'),
@@ -157,8 +169,7 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->iconButton(),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 

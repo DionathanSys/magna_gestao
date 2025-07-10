@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class HistoricoMovimentoPneu extends Model
@@ -15,5 +16,12 @@ class HistoricoMovimentoPneu extends Model
     public function veiculo()
     {
         return $this->belongsTo(Veiculo::class);
+    }
+
+    public function kmPercorrido(): Attribute
+    {
+        return Attribute::get(
+            fn () => ($this->km_final ?? 0) - ($this->km_inicial ?? 0)
+        );
     }
 }

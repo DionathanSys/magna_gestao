@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('ordens_servico', function (Blueprint $table) {
             $table->id();
-            $table->string('nro_ordem', 10)->unique();
             $table->foreignId('veiculo_id')->constrained('veiculos');
             $table->decimal('quilometragem', 10, 2)->nullable(); // quilometragem do veiculo no momento da abertura
             $table->string('tipo_manutencao', 50)->nullable(); // preventivo, corretivo, inspecao, etc.
@@ -21,7 +20,7 @@ return new class extends Migration
             $table->date('data_fechamento')->nullable();
             $table->string('status', 20)->default('aberta'); // aberta, em_andamento, concluida, cancelada
             $table->string('status_sankhya', 20)->default('aberta'); // aberta, em_andamento, concluida, cancelada
-            $table->foreignId('created_by')->constrained('users'); 
+            $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
         });
     }
