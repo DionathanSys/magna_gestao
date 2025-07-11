@@ -7,6 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Filament\Resources\OrdemServicoResource\Pages;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers\ItensRelationManager;
+use App\Models\OrdemSankhya;
 use App\Models\OrdemServico;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -91,7 +92,29 @@ class OrdemServicoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+                Tables\Actions\Action::make('ordem_sankhya')
+                    ->icon('heroicon-o-arrow-right')
+                    ->form([
+                        Forms\Components\TextInput::make('ordem_sankhya_id')
+                            ->label('ID Sankhya')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                                $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
+                                $set('existe', $exists ? 'Sim' : 'Não');
+                            }),
+                        Forms\Components\Placeholder::make('existe')
+                            ->label('Já existe?'),
+                    ])
+                    ->action(function (OrdemServico $record, array $data) {
+                        OrdemSankhya::create([
+                            'ordem_servico_id' => $record->id,
+                            'ordem_sankhya_id' => $data['ordem_sankhya_id'],
+                        ]);
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
