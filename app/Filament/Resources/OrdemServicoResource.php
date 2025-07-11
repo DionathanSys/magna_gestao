@@ -84,7 +84,6 @@ class OrdemServicoResource extends Resource
                     ->label('Editado Em')
                     ->toggleable(isToggledHiddenByDefault:true),
             ])
-            ->defaultSort('nro_ordem')
             ->persistFiltersInSession()
             ->filters([
                 //
