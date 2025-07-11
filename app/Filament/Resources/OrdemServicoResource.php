@@ -96,6 +96,7 @@ class OrdemServicoResource extends Resource
                     ->iconButton(),
                 Tables\Actions\Action::make('ordem_sankhya')
                     ->icon('heroicon-o-arrow-right')
+                    ->iconButton()
                     ->form([
                         Forms\Components\TextInput::make('ordem_sankhya_id')
                             ->label('ID Sankhya')
