@@ -48,8 +48,44 @@ class OrdemServicoResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID'),
+                Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->label('Veículo'),
+                Tables\Columns\TextColumn::make('quilometragem')
+                    ->label('Quilometragem')
+                    ->toggleable(isToggledHiddenByDefault:true),
+                Tables\Columns\TextColumn::make('tipo_manutencao')
+                    ->label('Tipo Manutenção'),
+                Tables\Columns\TextColumn::make('data_inicio')
+                    ->label('Dt. Inicio')
+                    ->date('d/m/Y'),
+                Tables\Columns\TextColumn::make('data_fim')
+                    ->label('Dt. Fim')
+                    ->date('d/m/Y')
+                    ->toggleable(isToggledHiddenByDefault:true),
+                Tables\Columns\TextColumn::make('itens_count')->counts('itens')
+                    ->label('Qtd. Serviços'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge('succecs'),
+                Tables\Columns\TextColumn::make('status_sankhya')
+                    ->label('Sankhya')
+                    ->badge('warning'),
+                Tables\Columns\TextColumn::make('parceiro.nome')
+                    ->label('Fornecedor')
+                    ->placeholder('N/A')
+                    ->toggleable(isToggledHiddenByDefault:false),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('d/m/Y H:i')
+                    ->label('Criado Em')
+                    ->toggleable(isToggledHiddenByDefault:true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('d/m/Y H:i')
+                    ->label('Editado Em')
+                    ->toggleable(isToggledHiddenByDefault:true),
             ])
+            ->defaultSort('nro_ordem')
+            ->persistFiltersInSession()
             ->filters([
                 //
             ])
@@ -60,7 +96,10 @@ class OrdemServicoResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->poll('5s')
+            ->emptyStateDescription('');
+
     }
 
     public static function getRelations(): array

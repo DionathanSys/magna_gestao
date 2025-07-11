@@ -18,8 +18,6 @@ class ItemOrdemServicoResource extends Resource
 {
     protected static ?string $model = ItemOrdemServico::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = 'Mant.';
 
     protected static ?string $pluralModelLabel = 'Itens Ordem de Serviço';
@@ -78,7 +76,9 @@ class ItemOrdemServicoResource extends Resource
             ->required()
             ->relationship('servico', 'descricao')
             ->searchable()
-            ->preload();
+            ->preload()
+            ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
+            ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form));
     }
 
     public static function getPosicaoFormField(): Forms\Components\TextInput
