@@ -30,4 +30,9 @@ class OrdemServico extends Model
         return $this->hasMany(ItemOrdemServico::class, 'ordem_servico_id');
     }
 
+    public function sankhyaId(): HasMany
+    {
+        return $this->hasMany(OrdemSankhya::class, 'ordem_servico_id');
+    }
+
 }

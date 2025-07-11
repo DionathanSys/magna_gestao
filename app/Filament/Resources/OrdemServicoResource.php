@@ -50,6 +50,8 @@ class OrdemServicoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID'),
+                Tables\Columns\TextColumn::make('sankhyaId.ordem_sankhya_id')
+                    ->label('OS Sankhya'),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo'),
                 Tables\Columns\TextColumn::make('quilometragem')
