@@ -10,6 +10,7 @@ use App\Filament\Resources\OrdemServicoResource\RelationManagers\ItensRelationMa
 use App\Models\OrdemSankhya;
 use App\Models\OrdemServico;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -115,7 +116,10 @@ class OrdemServicoResource extends Resource
                                 ->default('Não')
                                 ->columnSpan(2),
                         ]))
-                    ->action(function (OrdemServico $record, array $data) {
+                    ->action(function (Action $action, OrdemServico $record, array $data) {
+                        if($data['existe'] == 'Sim') {
+                            $action->halt();
+                        }
                         OrdemSankhya::create([
                             'ordem_servico_id' => $record->id,
                             'ordem_sankhya_id' => $data['ordem_sankhya_id'],
