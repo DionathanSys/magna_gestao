@@ -116,7 +116,7 @@ class OrdemServicoResource extends Resource
                                 ->default('Não')
                                 ->columnSpan(2),
                         ]))
-                    ->action(function (Action $action, OrdemServico $record, array $data) {
+                    ->action(function (\Filament\Forms\Components\Actions\Action $action, OrdemServico $record, array $data) {
                         if($data['existe'] == 'Sim') {
                             $action->halt();
                         }
