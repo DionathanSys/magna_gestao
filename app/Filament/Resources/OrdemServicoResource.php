@@ -103,12 +103,15 @@ class OrdemServicoResource extends Resource
                             ->required()
                             ->numeric()
                             ->minValue(1)
+                            ->columnSpan(1)
                             ->afterStateUpdated(function (Forms\Set $set, $state) {
                                 $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
                                 $set('existe', $exists ? 'Sim' : 'Não');
                             }),
-                        Forms\Components\Placeholder::make('existe')
-                            ->label('Já existe?'),
+                        Forms\Components\TextInput::make('existe')
+                            ->label('Já existe?')
+                            ->default('Não')
+                            ->columnSpan(1),
                     ])
                     ->action(function (OrdemServico $record, array $data) {
                         OrdemSankhya::create([
