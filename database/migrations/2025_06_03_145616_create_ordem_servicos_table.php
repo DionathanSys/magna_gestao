@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('veiculo_id')->constrained('veiculos');
             $table->decimal('quilometragem', 10, 2)->nullable(); // quilometragem do veiculo no momento da abertura
             $table->string('tipo_manutencao', 50)->nullable(); // preventivo, corretivo, inspecao, etc.
-            $table->date('data_abertura')->nullable();
-            $table->date('data_fechamento')->nullable();
+            $table->date('data_inicio')->nullable();
+            $table->date('data_fim')->nullable();
             $table->string('status', 20)->default('aberta'); // aberta, em_andamento, concluida, cancelada
             $table->string('status_sankhya', 20)->default('aberta'); // aberta, em_andamento, concluida, cancelada
             $table->foreignId('created_by')->constrained('users');

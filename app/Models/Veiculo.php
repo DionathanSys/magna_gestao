@@ -12,4 +12,5 @@ class Veiculo extends Model
         return $this->hasMany(PneuPosicaoVeiculo::class);
     }
 
+
 }

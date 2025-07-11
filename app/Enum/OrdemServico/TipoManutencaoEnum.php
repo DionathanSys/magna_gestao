@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Enum\OrdemServico;
+
+enum TipoManutencaoEnum: string
+{
+    case CORRETIVA       = 'CORRETIVA';
+    case PREVENTIVA      = 'PREVENTIVA';
+
+    public static function toSelectArray(): array
+    {
+        return collect(self::cases())
+            ->mapWithKeys(fn ($item) => [$item->value => $item->value])
+            ->toArray();
+    }
+}
