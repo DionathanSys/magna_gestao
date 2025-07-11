@@ -97,22 +97,24 @@ class OrdemServicoResource extends Resource
                 Tables\Actions\Action::make('ordem_sankhya')
                     ->icon('heroicon-o-arrow-right')
                     ->iconButton()
-                    ->form([
-                        Forms\Components\TextInput::make('ordem_sankhya_id')
-                            ->label('ID Sankhya')
-                            ->required()
-                            ->numeric()
-                            ->minValue(1)
-                            ->columnSpan(1)
-                            ->afterStateUpdated(function (Forms\Set $set, $state) {
-                                $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
-                                $set('existe', $exists ? 'Sim' : 'Não');
-                            }),
-                        Forms\Components\TextInput::make('existe')
-                            ->label('Já existe?')
-                            ->default('Não')
-                            ->columnSpan(1),
-                    ])
+                    ->form(fn(Forms\Form $form) => $form
+                        ->columns(4)
+                        ->schema([
+                            Forms\Components\TextInput::make('ordem_sankhya_id')
+                                ->label('ID Sankhya')
+                                ->required()
+                                ->numeric()
+                                ->minValue(1)
+                                ->columnSpan(2)
+                                ->afterStateUpdated(function (Forms\Set $set, $state) {
+                                    $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
+                                    $set('existe', $exists ? 'Sim' : 'Não');
+                                }),
+                            Forms\Components\TextInput::make('existe')
+                                ->label('Já existe?')
+                                ->default('Não')
+                                ->columnSpan(2),
+                        ]))
                     ->action(function (OrdemServico $record, array $data) {
                         OrdemSankhya::create([
                             'ordem_servico_id' => $record->id,
