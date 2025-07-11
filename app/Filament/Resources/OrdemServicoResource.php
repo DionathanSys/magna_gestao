@@ -92,7 +92,6 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\TextInput::make('quilometragem')
             ->label('Quilometragem')
-            ->default(0)
             ->numeric()
             ->minValue(0)
             ->maxValue(999999);
