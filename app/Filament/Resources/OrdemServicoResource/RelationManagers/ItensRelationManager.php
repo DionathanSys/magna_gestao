@@ -36,18 +36,25 @@ class ItensRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('servico.codigo')
-                    ->label('Código'),
+                    ->label('Código')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('servico.descricao')
-                    ->label('Serviço'),
+                    ->label('Serviço')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('posicao')
-                    ->label('Posição'),
-                Tables\Columns\TextColumn::make('observacao')
-                    ->label('Observação'),
+                    ->label('Posição')
+                    ->width('1%')
+                    ->placeholder('N/A'),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Status')
+                    ->width('1%')
                     ->options(StatusOrdemServicoEnum::toSelectArray()),
+                Tables\Columns\TextColumn::make('observacao')
+                    ->label('Observação')
+                    ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -75,8 +82,10 @@ class ItensRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+                Tables\Actions\DeleteAction::make()
+                    ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

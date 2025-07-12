@@ -18,6 +18,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables\Enums\ActionsPosition;
 
 class OrdemServicoResource extends Resource
 {
@@ -36,14 +39,34 @@ class OrdemServicoResource extends Resource
         return $form
             ->columns(8)
             ->schema([
-                static::getVeiculoIdFormField(),
-                static::getQuilometragemFormField(),
-                static::getTipoManutencaoFormField(),
-                static::getDataInicioFormField(),
-                static::getDataFimFormField(),
-                static::getStatusFormField(),
-                static::getStatusSankhyaFormField(),
-                static::getParceiroIdFormField(),
+                Forms\Components\Section::make('Informações Gerais')
+                    ->columnSpanFull()
+                    ->columns(8)
+                    ->schema([
+                        static::getVeiculoIdFormField(),
+                        static::getQuilometragemFormField(),
+                        static::getTipoManutencaoFormField(),
+                        static::getDataInicioFormField()
+                            ->columnStart(1)
+                            ->columnSpan(2),
+                        static::getDataFimFormField()
+                            ->visibleOn('edit')
+                            ->columnSpan(2),
+                        static::getStatusFormField()
+                            ->columnSpan(2),
+                        static::getStatusSankhyaFormField()
+                            ->columnSpan(2),
+                    ]),
+
+                Forms\Components\Section::make('Manutenção Externa')
+                    ->columnSpanFull()
+                    ->columns(8)
+                    ->schema([
+                        static::getParceiroIdFormField()
+                            ->columnSpan(4),
+                    ])
+                    ->collapsed()
+                    ->collapsible(),
             ]);
     }
 
@@ -59,7 +82,7 @@ class OrdemServicoResource extends Resource
                     ->label('Veículo'),
                 Tables\Columns\TextColumn::make('quilometragem')
                     ->label('Quilometragem')
-                    ->toggleable(isToggledHiddenByDefault:true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('tipo_manutencao')
                     ->label('Tipo Manutenção'),
                 Tables\Columns\TextColumn::make('data_inicio')
@@ -68,7 +91,7 @@ class OrdemServicoResource extends Resource
                 Tables\Columns\TextColumn::make('data_fim')
                     ->label('Dt. Fim')
                     ->date('d/m/Y')
-                    ->toggleable(isToggledHiddenByDefault:true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('itens_count')->counts('itens')
                     ->label('Qtd. Serviços'),
                 Tables\Columns\TextColumn::make('status')
@@ -79,63 +102,81 @@ class OrdemServicoResource extends Resource
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->label('Fornecedor')
                     ->placeholder('N/A')
-                    ->toggleable(isToggledHiddenByDefault:false),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->label('Criado Em')
-                    ->toggleable(isToggledHiddenByDefault:true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('d/m/Y H:i')
                     ->label('Editado Em')
-                    ->toggleable(isToggledHiddenByDefault:true),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->persistFiltersInSession()
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->iconButton(),
-                Tables\Actions\Action::make('ordem_sankhya')
-                    ->icon('heroicon-o-arrow-right')
-                    ->iconButton()
-                    ->form(fn(Forms\Form $form) => $form
-                        ->columns(4)
-                        ->schema([
-                            Forms\Components\TextInput::make('ordem_sankhya_id')
-                                ->label('ID Sankhya')
-                                ->required()
-                                ->numeric()
-                                ->minValue(1)
-                                ->columnSpan(2)
-                                ->afterStateUpdated(function (Forms\Set $set, $state) {
-                                    $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
-                                    $set('existe', $exists ? 'Sim' : 'Não');
-                                }),
-                            Forms\Components\TextInput::make('existe')
-                                ->label('Já existe?')
-                                ->default('Não')
-                                ->columnSpan(2),
-                        ]))
-                    ->action(function (OrdemServico $record, array $data) {
-                        if($data['existe'] == 'Sim') {
-                            notify::error('Ordem de Serviço Sankhya já existe!');
-                            return;
-                        }
-                        OrdemSankhya::create([
-                            'ordem_servico_id' => $record->id,
-                            'ordem_sankhya_id' => $data['ordem_sankhya_id'],
-                        ]);
-                    })
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('ordem_sankhya')
+                        ->label('Add Ordem Sankhya')
+                        ->icon('heroicon-o-clipboard-document-list')
+                        ->modal()
+                        ->modalHeading('Vincular OS Sankhya')
+                        ->modalDescription('Preencha o ID da Ordem de Serviço no Sankhya.')
+                        ->modalIcon('heroicon-o-document-plus')
+                        ->modalWidth(MaxWidth::Large)
+                        ->modalAlignment(Alignment::Center)
+                        ->extraModalFooterActions(fn(\Filament\Tables\Actions\Action $action): array => [
+                            $action->makeModalSubmitAction('vincularOutro', arguments: ['another' => true]),
+                        ])
+                        ->modalSubmitActionLabel('Vincular')
+                        ->form(fn(Forms\Form $form) => $form
+                            ->columns(8)
+                            ->schema([
+                                Forms\Components\TextInput::make('ordem_sankhya_id')
+                                    ->label('ID Sankhya')
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->columnSpan(2)
+                                    ->afterStateUpdated(function (Forms\Set $set, $state) {
+                                        $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
+                                        $set('existe', $exists ? 'Sim' : 'Não');
+                                    }),
+                                Forms\Components\TextInput::make('existe')
+                                    ->label('Já existe?')
+                                    ->disabled()
+                                    ->columnSpan(2),
+                            ]))
+                        ->action(function (OrdemServico $record, array $data) {
+                            if ($data['existe'] == 'Sim') {
+                                notify::error('Ordem de Serviço Sankhya já existe!');
+                                return;
+                            }
+                            OrdemSankhya::create([
+                                'ordem_servico_id' => $record->id,
+                                'ordem_sankhya_id' => $data['ordem_sankhya_id'],
+                            ]);
+
+                            if ($arguments['another'] ?? false) {
+                                // Não fecha o modal, reseta o campo do formulário
+                                $this->resetForm();
+                                $this->keepModalOpen();
+                                notify::success('Ordem Sankhya vinculada! Você pode adicionar outra.');
+                                return;
+                            }
+                        })
+                ])
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll('5s')
+            ->poll(null)
             ->emptyStateDescription('');
-
     }
 
     public static function getRelations(): array
@@ -157,6 +198,9 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\Select::make('veiculo_id')
             ->label('Veículo')
+            ->searchPrompt('Buscar Placa')
+            ->placeholder('Buscar ...')
+            ->columnSpan(2)
             ->required()
             ->relationship('veiculo', 'placa')
             ->searchable()
@@ -167,7 +211,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\TextInput::make('quilometragem')
             ->label('Quilometragem')
-            ->columnSpan(1)
+            ->columnSpan(2)
             ->numeric()
             ->minValue(0)
             ->maxValue(999999);
@@ -177,6 +221,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\Select::make('tipo_manutencao')
             ->label('Tipo de Manutenção')
+            ->columnSpan(2)
             ->options(TipoManutencaoEnum::toSelectArray())
             ->required()
             ->default(TipoManutencaoEnum::CORRETIVA->value);
@@ -186,6 +231,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\DateTimePicker::make('data_inicio')
             ->label('Dt. Inicio')
+            ->columnSpan(2)
             ->seconds(false)
             ->required()
             ->maxDate(now())
@@ -196,6 +242,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\DateTimePicker::make('data_fim')
             ->label('Dt. Fim')
+            ->columnSpan(2)
             ->seconds(false)
             ->maxDate(now());
     }
@@ -204,6 +251,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\Select::make('status')
             ->label('Status')
+            ->columnSpan(2)
             ->options(StatusOrdemServicoEnum::toSelectArray())
             ->default(StatusOrdemServicoEnum::PENDENTE->value)
             ->required();
@@ -213,6 +261,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\Select::make('status_sankhya')
             ->label('Sankhya')
+            ->columnSpan(2)
             ->options(StatusOrdemServicoEnum::toSelectArray())
             ->default(StatusOrdemServicoEnum::PENDENTE->value)
             ->required();
@@ -222,6 +271,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\Select::make('parceiro_id')
             ->label('Parceiro')
+            ->columnSpan(2)
             ->relationship('parceiro', 'nome')
             ->searchable()
             ->preload();
