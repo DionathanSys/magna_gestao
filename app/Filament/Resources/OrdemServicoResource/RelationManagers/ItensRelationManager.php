@@ -37,6 +37,8 @@ class ItensRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID'),
+                Tables\Columns\TextColumn::make('servico.codigo')
+                    ->label('Código'),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço'),
                 Tables\Columns\TextColumn::make('posicao')
