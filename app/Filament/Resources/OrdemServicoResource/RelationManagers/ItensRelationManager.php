@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OrdemServicoResource\RelationManagers;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\ItemOrdemServicoResource;
+use App\Models\Servico;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -21,7 +22,8 @@ class ItensRelationManager extends RelationManager
         return $form
             ->schema([
                 ItemOrdemServicoResource::getServicoIdFormField(),
-                ItemOrdemServicoResource::getPosicaoFormField(),
+                ItemOrdemServicoResource::getPosicaoFormField()
+                    ->required(fn(Forms\Get $get) => Servico::find($get('servico_id'))->controla_posicao ?? false),
                 ItemOrdemServicoResource::getObersavacaoFormField(),
                 ItemOrdemServicoResource::getStatusFormField(),
             ]);
