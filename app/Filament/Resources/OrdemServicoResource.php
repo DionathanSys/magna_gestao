@@ -18,6 +18,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\ActionsPosition;
@@ -118,6 +120,9 @@ class OrdemServicoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('Visualizar')
+                        ->icon('heroicon-o-eye'),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('ordem_sankhya')
                         ->label('Add Ordem Sankhya')
@@ -181,6 +186,16 @@ class OrdemServicoResource extends Resource
             ])
             ->poll(null)
             ->emptyStateDescription('');
+    }
+
+    public static function infoList(Infolist $infoList): InfoList
+    {
+        return $infoList
+            ->schema([
+                TextEntry::make('id')->label('ID'),
+                TextEntry::make('nome')->label('Nome'),
+                TextEntry::make('created_at')->dateTime('d/m/Y H:i'),
+            ]);
     }
 
     public static function getRelations(): array
