@@ -18,11 +18,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Enums\ActionsPosition;
+use Fauzie811\FilamentListEntry;
+use Fauzie811\FilamentListEntry\FilamentListEntryPlugin;
+use Fauzie811\FilamentListEntry\Infolists\Components\ListEntry;
 
 class OrdemServicoResource extends Resource
 {
@@ -177,7 +180,7 @@ class OrdemServicoResource extends Resource
                             return;
                         })
                 ])
-                ->icon('heroicon-o-bars-3-center-left')
+                    ->icon('heroicon-o-bars-3-center-left')
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -191,10 +194,43 @@ class OrdemServicoResource extends Resource
     public static function infoList(Infolist $infoList): InfoList
     {
         return $infoList
+            ->columns(8)
             ->schema([
-                TextEntry::make('id')->label('ID'),
-                TextEntry::make('nome')->label('Nome'),
-                TextEntry::make('created_at')->dateTime('d/m/Y H:i'),
+                Infolists\Components\TextEntry::make('veiculo.placa')
+                    ->label('Veículo')
+                    ->columnSpan(2),
+                Infolists\Components\TextEntry::make('quilometragem')
+                    ->label('Quilometragem')
+                    ->columnSpan(2),
+                Infolists\Components\TextEntry::make('tipo_manutencao')
+                    ->label('Tipo Manutenção')
+                    ->columnSpan(2),
+                Infolists\Components\TextEntry::make('data_inicio')
+                    ->label('Data Início')
+                    ->columnSpan(2),
+                Infolists\Components\RepeatableEntry::make('itens')
+                    ->label('Serviços')
+                    ->columnSpanFull()
+                    ->columns(8)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('servico.codigo')
+                            ->label('Código')
+                            ->columnSpan(1),
+                        Infolists\Components\TextEntry::make('servico.descricao')
+                            ->label('Serviço')
+                            ->columnSpan(4),
+                        Infolists\Components\TextEntry::make('posicao')
+                            ->label('Posição')
+                            ->columnSpan(1)
+                            ->placeholder('N/A'),
+                        Infolists\Components\TextEntry::make('status')
+                            ->label('Status')
+                            ->columnSpan(2),
+                        Infolists\Components\TextEntry::make('observacao')
+                            ->label('Observação')
+                            ->columnSpanFull()
+                            ->placeholder('Sem observações'),
+                    ]),
             ]);
     }
 
