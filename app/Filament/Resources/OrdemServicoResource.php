@@ -140,6 +140,7 @@ class OrdemServicoResource extends Resource
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
+                                    ->live(onBlur: true)
                                     ->columnSpan(2)
                                     ->afterStateUpdated(function (Forms\Set $set, $state) {
                                         $exists = OrdemSankhya::where('ordem_sankhya_id', $state)->exists();
@@ -147,24 +148,27 @@ class OrdemServicoResource extends Resource
                                     }),
                                 Forms\Components\TextInput::make('existe')
                                     ->label('Já existe?')
+                                    ->readOnly()
+                                    ->live()
                                     ->columnSpan(2),
                             ]))
-                        ->action(function (OrdemServico $record, array $data) {
+                        ->action(function (Tables\Actions\Action $action, Forms\Set $set, OrdemServico $record, array $data, array $arguments) {
                             if ($data['existe'] == 'Sim') {
                                 notify::error('Ordem de Serviço Sankhya já existe!');
-                                return;
+                                $action->cancel();
                             }
+
                             OrdemSankhya::create([
                                 'ordem_servico_id' => $record->id,
                                 'ordem_sankhya_id' => $data['ordem_sankhya_id'],
                             ]);
 
                             if ($arguments['another'] ?? false) {
+                                $set('ordem_sankhya_id', null);
+                                $set('existe', null);
                                 // Não fecha o modal, reseta o campo do formulário
-                                $this->resetForm();
-                                $this->keepModalOpen();
                                 notify::success('Ordem Sankhya vinculada! Você pode adicionar outra.');
-                                return;
+                                $action->halt();
                             }
                         })
                 ])

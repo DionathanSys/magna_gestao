@@ -31,6 +31,7 @@ class NotificacaoService
         Notification::make()
             ->title($this->titulo)
             ->body($this->mensagem)
+            // ->persistent()
             ->status($this->tipo)
             ->send();
     }
