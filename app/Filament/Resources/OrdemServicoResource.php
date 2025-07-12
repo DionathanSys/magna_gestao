@@ -207,7 +207,8 @@ class OrdemServicoResource extends Resource
                     ->columnSpan(2),
                 Infolists\Components\TextEntry::make('data_inicio')
                     ->label('Data Início')
-                    ->columnSpan(2),
+                    ->columnSpan(2)
+                    ->dateTime('d/m/Y H:i'),
                 Infolists\Components\RepeatableEntry::make('itens')
                     ->label('Serviços')
                     ->columnSpanFull()
