@@ -20,11 +20,11 @@ class ItemOrdemServicoResource extends Resource
 
     protected static ?string $navigationGroup = 'Mant.';
 
-    protected static ?string $pluralModelLabel = 'Itens Ordem de Serviço';
+    protected static ?string $pluralModelLabel = 'Itens OS';
 
-    protected static ?string $pluralLabel = 'Itens Ordem de Serviço';
+    protected static ?string $pluralLabel = 'Itens OS';
 
-    protected static ?string $label = 'Item Ordem de Serviço';
+    protected static ?string $label = 'Item OS';
 
     public static function form(Form $form): Form
     {
@@ -38,7 +38,32 @@ class ItemOrdemServicoResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID'),
+                Tables\Columns\TextColumn::make('servico.descricao')
+                    ->label('Serviço'),
+                Tables\Columns\TextColumn::make('posicao')
+                    ->label('Posição')
+                    ->placeholder('N/A'),
+                Tables\Columns\TextColumn::make('observacao')
+                    ->label('Observação')
+                    ->placeholder('N/A'),
+                Tables\Columns\SelectColumn::make('status')
+                    ->label('Status')
+                    ->options(StatusOrdemServicoEnum::toSelectArray()),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_by.name')
+                    ->label('Criado por')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

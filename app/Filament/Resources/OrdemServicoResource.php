@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Services\NotificacaoService as notify;
 
 class OrdemServicoResource extends Resource
 {
@@ -33,7 +34,7 @@ class OrdemServicoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(4)
+            ->columns(8)
             ->schema([
                 static::getVeiculoIdFormField(),
                 static::getQuilometragemFormField(),
@@ -116,9 +117,10 @@ class OrdemServicoResource extends Resource
                                 ->default('Não')
                                 ->columnSpan(2),
                         ]))
-                    ->action(function (\Filament\Forms\Components\Actions\Action $action, OrdemServico $record, array $data) {
+                    ->action(function (OrdemServico $record, array $data) {
                         if($data['existe'] == 'Sim') {
-                            $action->halt();
+                            notify::error('Ordem de Serviço Sankhya já existe!');
+                            return;
                         }
                         OrdemSankhya::create([
                             'ordem_servico_id' => $record->id,
@@ -165,6 +167,7 @@ class OrdemServicoResource extends Resource
     {
         return Forms\Components\TextInput::make('quilometragem')
             ->label('Quilometragem')
+            ->columnSpan(1)
             ->numeric()
             ->minValue(0)
             ->maxValue(999999);

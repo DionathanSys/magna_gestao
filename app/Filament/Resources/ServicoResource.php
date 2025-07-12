@@ -29,25 +29,33 @@ class ServicoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(8)
             ->schema([
                 Forms\Components\TextInput::make('codigo')
                     ->label('Código')
+                    ->columnSpan(2)
                     ->maxLength(10),
                 Forms\Components\TextInput::make('descricao')
                     ->label('Descrição')
                     ->required()
+                    ->columnSpan(6)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('complemento')
+                    ->columnSpanFull()
                     ->maxLength(255),
                 Forms\Components\Select::make('tipo')
-                    ->options(TipoServicoEnum::toSelectArray()),
+                    ->columnSpan(2)
+                    ->options(TipoServicoEnum::toSelectArray())
+                    ->default(TipoServicoEnum::CORRETIVA->value),
                 Forms\Components\Toggle::make('controla_posicao')
                     ->label('Controla Posição')
+                    ->columnSpan(3)
                     ->inline(false)
                     ->default(false)
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Ativo')
+                    ->columnSpan(3)
                     ->inline(false)
                     ->default(true)
                     ->required(),
