@@ -100,10 +100,8 @@ class ItensRelationManager extends RelationManager
                             ]);
                         }
                         ),
-                    Tables\Actions\EditAction::make()
-                        ->iconButton(),
-                    Tables\Actions\DeleteAction::make()
-                        ->iconButton(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
                 ])->icon('heroicon-o-bars-3-center-left')
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([

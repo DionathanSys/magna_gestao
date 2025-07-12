@@ -7,6 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Filament\Resources\OrdemServicoResource\Pages;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers\ItensRelationManager;
+use App\Models\ItemOrdemServico;
 use App\Models\OrdemSankhya;
 use App\Models\OrdemServico;
 use Filament\Forms;
@@ -226,7 +227,13 @@ class OrdemServicoResource extends Resource
                             ->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('status')
                             ->label('Status')
-                            ->columnSpan(2),
+                            ->columnSpan(2)
+                            ->suffixAction(
+                                Infolists\Components\Actions\Action::make('copyCostToPrice')
+                                    ->icon('heroicon-m-check')
+                                    ->action(function (ItemOrdemServico $record) {
+                                        dd($record);
+                                    })),
                         Infolists\Components\TextEntry::make('observacao')
                             ->label('Observação')
                             ->columnSpanFull()
