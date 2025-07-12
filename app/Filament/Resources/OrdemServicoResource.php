@@ -228,13 +228,7 @@ class OrdemServicoResource extends Resource
                             ->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('status')
                             ->label('Status')
-                            ->columnSpan(2)
-                            ->suffixAction(
-                                Infolists\Components\Actions\Action::make('copyCostToPrice')
-                                    ->icon('heroicon-m-check')
-                                    ->action(function (ItemOrdemServico $record) {
-                                        dd($record);
-                                    })),
+                            ->columnSpan(2),
                         Infolists\Components\TextEntry::make('observacao')
                             ->label('Observação')
                             ->columnSpanFull()
