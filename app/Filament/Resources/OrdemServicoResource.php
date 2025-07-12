@@ -155,7 +155,7 @@ class OrdemServicoResource extends Resource
                         ->action(function (Tables\Actions\Action $action, Forms\Set $set, OrdemServico $record, array $data, array $arguments) {
                             if ($data['existe'] == 'Sim') {
                                 notify::error('Ordem de Serviço Sankhya já existe!');
-                                $action->cancel();
+                                $action->halt();
                             }
 
                             OrdemSankhya::create([
