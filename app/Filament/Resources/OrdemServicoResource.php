@@ -202,7 +202,8 @@ class OrdemServicoResource extends Resource
                     ->columnSpan(2),
                 Infolists\Components\TextEntry::make('quilometragem')
                     ->label('Quilometragem')
-                    ->columnSpan(2),
+                    ->columnSpan(2)
+                    ->placeholder('Não informado'),
                 Infolists\Components\TextEntry::make('tipo_manutencao')
                     ->label('Tipo Manutenção')
                     ->columnSpan(2),
