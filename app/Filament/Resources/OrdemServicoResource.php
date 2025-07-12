@@ -147,7 +147,6 @@ class OrdemServicoResource extends Resource
                                     }),
                                 Forms\Components\TextInput::make('existe')
                                     ->label('Já existe?')
-                                    ->disabled()
                                     ->columnSpan(2),
                             ]))
                         ->action(function (OrdemServico $record, array $data) {
