@@ -4,11 +4,13 @@ namespace App\Filament\Resources\OrdemServicoResource\RelationManagers;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\ItemOrdemServicoResource;
+use App\Models\ItemOrdemServico;
 use App\Models\Servico;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -82,11 +84,28 @@ class ItensRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->iconButton(),
-                Tables\Actions\DeleteAction::make()
-                    ->iconButton(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('comentarios')
+                        ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                        ->form([
+                            Forms\Components\Textarea::make('conteudo')
+                                ->label('Comentário')
+                                ->required()
+                                ->maxLength(500),
+                        ])
+                        ->action(function (array $data, ItemOrdemServico $item) {
+                            $item->comentarios()->create([
+                                'veiculo_id'    => $item->ordemServico->veiculo_id,
+                                'conteudo'      => $data['conteudo'],
+                            ]);
+                        }
+                        ),
+                    Tables\Actions\EditAction::make()
+                        ->iconButton(),
+                    Tables\Actions\DeleteAction::make()
+                        ->iconButton(),
+                ])->icon('heroicon-o-bars-3-center-left')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

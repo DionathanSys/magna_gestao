@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ItemOrdemServico extends Model
 {
@@ -17,6 +18,11 @@ class ItemOrdemServico extends Model
     public function ordemServico(): BelongsTo
     {
         return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
+    }
+
+    public function comentarios(): MorphMany
+    {
+        return $this->morphMany(Comentario::class, 'comentavel');
     }
 
 }

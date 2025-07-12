@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class OrdemServico extends Model
 {
@@ -33,6 +34,11 @@ class OrdemServico extends Model
     public function sankhyaId(): HasMany
     {
         return $this->hasMany(OrdemSankhya::class, 'ordem_servico_id');
+    }
+
+    public function comentarios(): MorphMany
+    {
+        return $this->morphMany(Comentario::class, 'comentavel');
     }
 
 }

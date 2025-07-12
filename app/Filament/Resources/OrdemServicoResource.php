@@ -152,9 +152,9 @@ class OrdemServicoResource extends Resource
                                     ->live()
                                     ->columnSpan(2),
                             ]))
-                        ->action(function (Tables\Actions\Action $action, Forms\Set $set, OrdemServico $record, array $data, array $arguments) {
+                        ->action(function (Tables\Actions\Action $action, Form $form, OrdemServico $record, array $data, array $arguments) {
                             if ($data['existe'] == 'Sim') {
-                                notify::error('Ordem de Serviço Sankhya já existe!');
+                                notify::error('Ordem de Serviço Sankhya já vinculada!');
                                 $action->halt();
                             }
 
@@ -164,14 +164,15 @@ class OrdemServicoResource extends Resource
                             ]);
 
                             if ($arguments['another'] ?? false) {
-                                $set('ordem_sankhya_id', null);
-                                $set('existe', null);
-                                // Não fecha o modal, reseta o campo do formulário
-                                notify::success('Ordem Sankhya vinculada! Você pode adicionar outra.');
+                                $form->fill();
+                                notify::success('Ordem Sankhya vinculada!');
                                 $action->halt();
                             }
+
+                            return;
                         })
                 ])
+                ->icon('heroicon-o-bars-3-center-left')
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
