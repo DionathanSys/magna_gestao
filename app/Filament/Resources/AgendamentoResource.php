@@ -59,8 +59,7 @@ class AgendamentoResource extends Resource
                     ->columnSpan(1)
                     ->required(fn (Agendamento $record): bool => $record->servico->controla_posicao ?? false),
                 OrdemServicoResource::getParceiroIdFormField()
-                    ->columnStart(1)
-                    ->columnSpan(4),
+                    ->columnSpan(3),
                 Forms\Components\Textarea::make('observacao')
                     ->label('Observação')
                     ->columnSpanFull()
