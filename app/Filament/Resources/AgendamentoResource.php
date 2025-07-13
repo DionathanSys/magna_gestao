@@ -55,10 +55,9 @@ class AgendamentoResource extends Resource
                 ItemOrdemServicoResource::getServicoIdFormField()
                     ->columnStart(1)
                     ->columnSpan(4),
-                ItemOrdemServicoResource::getControlaPosicaoFormField()
-                    ->columnSpan(2),
                 ItemOrdemServicoResource::getPosicaoFormField()
-                    ->columnSpan(1),
+                    ->columnSpan(1)
+                    ->required(fn (Agendamento $record): bool => $record->servico->controla_posicao ?? false),
                 OrdemServicoResource::getParceiroIdFormField()
                     ->columnStart(1)
                     ->columnSpan(4),
