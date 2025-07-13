@@ -59,9 +59,9 @@ class AgendamentoResource extends Resource
                     ->disableOptionWhen(fn (string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
                 ItemOrdemServicoResource::getServicoIdFormField()
                     ->columnStart(1)
-                    ->columnSpan(6),
+                    ->columnSpan(4),
                 OrdemServicoResource::getParceiroIdFormField()
-                    ->columnSpan(2),
+                    ->columnSpan(4),
                 Forms\Components\Textarea::make('observacao')
                     ->label('Observação')
                     ->columnSpanFull()

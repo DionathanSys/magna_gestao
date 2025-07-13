@@ -23,8 +23,8 @@ class ParceiroResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nome')
-                    ->maxLength(255),
+                static::getNomeParceiroFormField()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -75,4 +75,14 @@ class ParceiroResource extends Resource
             'edit' => Pages\EditParceiro::route('/{record}/edit'),
         ];
     }
+
+    public static function getNomeParceiroFormField(): Forms\Components\TextInput
+    {
+        return Forms\Components\TextInput::make('nome')
+            ->label('Nome do Parceiro')
+            ->required()
+            ->autocomplete(false)
+            ->maxLength(255);
+    }
+
 }

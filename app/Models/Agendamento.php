@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Agendamento extends Model
 {
+
+    protected $casts = [
+        'status' => StatusOrdemServicoEnum::class,
+    ];
+
     public function veiculo(): BelongsTo
     {
         return $this->belongsTo(Veiculo::class);

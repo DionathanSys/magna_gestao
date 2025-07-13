@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Enum\OrdemServico\TipoManutencaoEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,7 @@ class OrdemServico extends Model
 
     protected $casts = [
         'tipo_manutencao' => TipoManutencaoEnum::class,
+        'status' => StatusOrdemServicoEnum::class,
     ];
 
     public function parceiro(): BelongsTo

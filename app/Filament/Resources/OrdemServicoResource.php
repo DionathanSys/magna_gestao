@@ -332,6 +332,10 @@ class OrdemServicoResource extends Resource
             ->columnSpan(2)
             ->relationship('parceiro', 'nome')
             ->searchable()
-            ->preload();
+            ->preload()
+            ->searchPrompt('Buscar Parceiro')
+            ->placeholder('Buscar ...')
+            ->createOptionForm(fn(Forms\Form $form) => ParceiroResource::form($form))
+            ->editOptionForm(fn(Forms\Form $form) => ParceiroResource::form($form));
     }
 }
