@@ -120,8 +120,8 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Checkbox::make('controla_posicao')
             ->label('Controla Posição')
             ->inline(false)
-            ->disabled()
-            ->reactive()
+            // ->disabled()
+            // ->reactive()
             ->default(false);
     }
 
