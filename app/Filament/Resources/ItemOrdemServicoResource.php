@@ -103,10 +103,11 @@ class ItemOrdemServicoResource extends Resource
             ->relationship('servico', 'descricao')
             ->searchable()
             ->preload()
-            ->live(onBlur: true)
+            ->live()
             ->afterStateUpdated(function (Forms\Set $set, $state) {
                 if ($state) {
                     $servico = Servico::find($state);
+                    dd($servico->controla_posicao);
                     $set('controla_posicao', $servico->controla_posicao ?? false);
                     $set('posicao', null);
                 }
@@ -120,9 +121,9 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Checkbox::make('controla_posicao')
             ->label('Controla Posição')
             ->inline(false)
+            ->live();
             // ->disabled()
-            // ->reactive()
-            ->default(false);
+            // ->reactive();
     }
 
     public static function getPosicaoFormField(): Forms\Components\TextInput
