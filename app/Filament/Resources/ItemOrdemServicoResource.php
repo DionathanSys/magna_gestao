@@ -107,11 +107,19 @@ class ItemOrdemServicoResource extends Resource
             ->afterStateUpdated(function (Forms\Set $set, $state) {
                 if($state) {
                     $servico = Servico::find($state);
-                    $set('posicao', $servico->controla_posicao ? 'sim' : 'não');
+                    $set('controla_posicao', $servico->controla_posicao ? true : false);
                 }
             })
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
             ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form));
+    }
+
+    public static function getControlaPosicaoFormField(): Forms\Components\Checkbox
+    {
+        return Forms\Components\Checkbox::make('controla_posicao')
+            ->label('Controla Posição')
+            ->inline(false)
+            ->live();
     }
 
     public static function getPosicaoFormField(): Forms\Components\TextInput
