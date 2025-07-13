@@ -37,11 +37,6 @@ class AgendamentoResource extends Resource
                     ->columnSpan(2)
                     ->visible(fn () => Auth::user()->is_admin)
                     ->readOnly(fn () => ! Auth::user()->is_admin)
-                    ->exists(
-                        Agendamento::class,
-                        'id',
-                        fn (Builder $query) => $query->withoutGlobalScopes([SoftDeletingScope::class])
-                    )
                     ->numeric(),
                 OrdemServicoResource::getVeiculoIdFormField()
                     ->columnSpan(2)
