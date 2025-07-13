@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\ItemOrdemServicoResource\Pages;
 use App\Filament\Resources\ItemOrdemServicoResource\RelationManagers;
 use App\Models\ItemOrdemServico;
+use App\Models\Servico;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -102,15 +103,33 @@ class ItemOrdemServicoResource extends Resource
             ->relationship('servico', 'descricao')
             ->searchable()
             ->preload()
+            ->live(onBlur: true)
+            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                if ($state) {
+                    $servico = Servico::find($state);
+                    $set('controla_posicao', $servico->controla_posicao ?? false);
+                    $set('posicao', null);
+                }
+            })
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
             ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form));
+    }
+
+    public static function getControlaPosicaoFormField(): Forms\Components\Checkbox
+    {
+        return Forms\Components\Checkbox::make('controla_posicao')
+            ->label('Controla Posição')
+            ->inline(false)
+            ->disabled()
+            ->reactive()
+            ->default(false);
     }
 
     public static function getPosicaoFormField(): Forms\Components\TextInput
     {
         return Forms\Components\TextInput::make('posicao')
             ->label('Posição')
-            ->required()
+            ->requiredIf('controla_posicao', true)
             ->minLength(2)
             ->maxLength(5);
     }

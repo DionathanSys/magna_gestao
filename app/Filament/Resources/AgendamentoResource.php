@@ -55,7 +55,12 @@ class AgendamentoResource extends Resource
                 ItemOrdemServicoResource::getServicoIdFormField()
                     ->columnStart(1)
                     ->columnSpan(4),
+                ItemOrdemServicoResource::getControlaPosicaoFormField()
+                    ->columnSpan(2),
+                ItemOrdemServicoResource::getPosicaoFormField()
+                    ->columnSpan(1),
                 OrdemServicoResource::getParceiroIdFormField()
+                    ->columnStart(1)
                     ->columnSpan(4),
                 Forms\Components\Textarea::make('observacao')
                     ->label('Observação')
@@ -109,7 +114,18 @@ class AgendamentoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->iconButton(),
+                    ->iconButton()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['updated_by'] = Auth::user()->id;
+                        return $data;
+                    }),
+                Tables\Actions\Action::make('gerar-ordem-servico')
+                    ->label('Gerar OS')
+                    ->icon('heroicon-o-forward')
+                    ->requiresConfirmation()
+                    ->action(function (Agendamento $record) {
+                        session()->flash('message', 'Ordem de Serviço gerada com sucesso!');
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -129,7 +145,6 @@ class AgendamentoResource extends Resource
     {
         return [
             'index' => Pages\ListAgendamentos::route('/'),
-            'edit' => Pages\EditAgendamento::route('/{record}/edit'),
         ];
     }
 }

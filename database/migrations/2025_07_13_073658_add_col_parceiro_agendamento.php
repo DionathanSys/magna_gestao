@@ -17,6 +17,9 @@ return new class extends Migration
                 ->constrained('parceiros')
                 ->nullOnDelete()
                 ->after('ordem_servico_id');
+            $table->string('posicao', 10)
+                ->nullable()
+                ->after('servico_id');
         });
     }
 
@@ -28,6 +31,7 @@ return new class extends Migration
         Schema::table('agendamentos', function (Blueprint $table) {
             $table->dropForeign(['parceiro_id']);
             $table->dropColumn('parceiro_id');
+            $table->dropColumn('posicao');
         });
     }
 };
