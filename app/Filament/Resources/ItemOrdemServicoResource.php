@@ -121,7 +121,7 @@ class ItemOrdemServicoResource extends Resource
             ->label('Controla Posição')
             ->inline(false)
             ->live()
-            ->default(true);
+            ->default(1);
             // ->disabled()
             // ->reactive();
     }
