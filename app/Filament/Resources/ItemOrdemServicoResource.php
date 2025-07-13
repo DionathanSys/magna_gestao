@@ -126,7 +126,7 @@ class ItemOrdemServicoResource extends Resource
     {
         return Forms\Components\TextInput::make('posicao')
             ->label('Posição')
-            ->live()
+            ->requiredIf('controla_posicao', true)
             ->minLength(2)
             ->maxLength(5);
     }

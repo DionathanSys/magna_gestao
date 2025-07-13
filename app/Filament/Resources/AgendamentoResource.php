@@ -58,8 +58,7 @@ class AgendamentoResource extends Resource
                 ItemOrdemServicoResource::getControlaPosicaoFormField()
                     ->columnSpan(2),
                 ItemOrdemServicoResource::getPosicaoFormField()
-                    ->columnSpan(1)
-                    ->required(fn (Agendamento $record): bool => $record->servico->controla_posicao ?? false),
+                    ->columnSpan(1),
                 OrdemServicoResource::getParceiroIdFormField()
                     ->columnSpan(3),
                 Forms\Components\Textarea::make('observacao')
