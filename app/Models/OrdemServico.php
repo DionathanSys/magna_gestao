@@ -48,5 +48,10 @@ class OrdemServico extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function agendamentos(): HasMany
+    {
+        return $this->hasMany(Agendamento::class, 'veiculo_id');
+    }
+
 
 }

@@ -119,6 +119,7 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Toggle::make('controla_posicao')
             ->label('Controla Posição')
             ->inline(false)
+            ->disabled()
             ->live();
     }
 

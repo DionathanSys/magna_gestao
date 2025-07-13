@@ -6,7 +6,9 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Filament\Resources\OrdemServicoResource\Pages;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers;
+use App\Filament\Resources\OrdemServicoResource\RelationManagers\AgendamentosRelationManager;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers\ItensRelationManager;
+use App\Models\Agendamento;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemSankhya;
 use App\Models\OrdemServico;
@@ -245,6 +247,7 @@ class OrdemServicoResource extends Resource
     {
         return [
             ItensRelationManager::class,
+            AgendamentosRelationManager::class,
         ];
     }
 

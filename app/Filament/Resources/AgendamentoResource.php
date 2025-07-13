@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class AgendamentoResource extends Resource
@@ -139,17 +140,19 @@ class AgendamentoResource extends Resource
                         $data['updated_by'] = Auth::user()->id;
                         return $data;
                     }),
-                Tables\Actions\Action::make('gerar-ordem-servico')
-                    ->label('Gerar OS')
-                    ->icon('heroicon-o-forward')
-                    ->requiresConfirmation()
-                    ->action(function (Agendamento $record) {
-                        session()->flash('message', 'Ordem de Serviço gerada com sucesso!');
-                    }),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('gerar-ordem-servico')
+                    ->label('Gerar OS')
+                    ->icon('heroicon-o-forward')
+                    ->requiresConfirmation()
+                    ->action(function (Collection $record) {
+
+
+                    }),
                 ]),
             ]);
     }
