@@ -107,8 +107,7 @@ class ItemOrdemServicoResource extends Resource
             ->afterStateUpdated(function (Forms\Set $set, $state) {
                 if ($state) {
                     $servico = Servico::find($state);
-                    dd($servico->controla_posicao);
-                    $set('controla_posicao', $servico->controla_posicao ?? false);
+                    $set('controla_posicao', $servico->controla_posicao);
                     $set('posicao', null);
                 }
             })
@@ -121,7 +120,8 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Checkbox::make('controla_posicao')
             ->label('Controla Posição')
             ->inline(false)
-            ->live();
+            ->live()
+            ->default(true);
             // ->disabled()
             // ->reactive();
     }
