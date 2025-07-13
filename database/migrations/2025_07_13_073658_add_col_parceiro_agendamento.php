@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('posicao', 10)
                 ->nullable()
                 ->after('servico_id');
+            $table->date('data_limite')
+                ->nullable()
+                ->after('data_agendamento');
+            $table->date('data_realizado')
+                ->nullable()
+                ->after('data_limite');
         });
     }
 
@@ -32,6 +38,8 @@ return new class extends Migration
             $table->dropForeign(['parceiro_id']);
             $table->dropColumn('parceiro_id');
             $table->dropColumn('posicao');
+            $table->dropColumn('data_limite');
+            $table->dropColumn('data_realizado');
         });
     }
 };

@@ -32,39 +32,60 @@ class AgendamentoResource extends Resource
         return $form
             ->columns(8)
             ->schema([
-                Forms\Components\TextInput::make('ordem_servico_id')
-                    ->label('Ordem de Serviço')
-                    ->columnSpan(2)
-                    ->visible(fn () => Auth::user()->is_admin)
-                    ->readOnly(fn () => ! Auth::user()->is_admin)
-                    ->numeric(),
-                OrdemServicoResource::getVeiculoIdFormField()
-                    ->columnSpan(2)
-                    ->required(),
-                Forms\Components\DatePicker::make('data_agendamento')
-                    ->label('Agendar Para')
-                    ->minDate(now())
-                    ->columnSpan(2),
-                Forms\Components\Select::make('status')
-                    ->columnSpan(2)
-                    ->options(StatusOrdemServicoEnum::toSelectArray())
-                    ->required()
-                    ->default(StatusOrdemServicoEnum::PENDENTE->value)
-                    ->selectablePlaceholder(false)
-                    ->disableOptionWhen(fn (string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
-                ItemOrdemServicoResource::getServicoIdFormField()
-                    ->columnStart(1)
-                    ->columnSpan(4),
-                ItemOrdemServicoResource::getControlaPosicaoFormField()
-                    ->columnSpan(2),
-                ItemOrdemServicoResource::getPosicaoFormField()
-                    ->columnSpan(1),
+                Forms\Components\Fieldset::make('Informações Básicas')
+                    ->columns(8)
+                    ->schema([
+                        Forms\Components\TextInput::make('ordem_servico_id')
+                            ->label('Ordem de Serviço')
+                            ->columnSpan(2)
+                            ->visible(fn() => Auth::user()->is_admin)
+                            ->readOnly(fn() => ! Auth::user()->is_admin)
+                            ->numeric(),
+                        OrdemServicoResource::getVeiculoIdFormField()
+                            ->columnSpan(2)
+                            ->required(),
+                        Forms\Components\Select::make('status')
+                            ->columnSpan(2)
+                            ->options(StatusOrdemServicoEnum::toSelectArray())
+                            ->required()
+                            ->default(StatusOrdemServicoEnum::PENDENTE->value)
+                            ->selectablePlaceholder(false)
+                            ->disableOptionWhen(fn(string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
+                    ]),
+                Forms\Components\Fieldset::make('Datas')
+                    ->columns(8)
+                    ->schema([
+                        Forms\Components\DatePicker::make('data_agendamento')
+                            ->label('Agendado Para')
+                            ->minDate(now())
+                            ->columnSpan(2),
+                        Forms\Components\DatePicker::make('data_limite')
+                            ->label('Dt. Limite')
+                            ->minDate(now())
+                            ->columnSpan(2),
+                        Forms\Components\DatePicker::make('data_realizado')
+                            ->label('Realizado em')
+                            ->minDate(now())
+                            ->columnSpan(2),
+                    ]),
+                Forms\Components\Fieldset::make('Datas')
+                    ->columns(8)
+                    ->schema([
+                        ItemOrdemServicoResource::getServicoIdFormField()
+                            ->columnStart(1)
+                            ->columnSpan(4),
+                        ItemOrdemServicoResource::getControlaPosicaoFormField()
+                            ->columnSpan(2),
+                        ItemOrdemServicoResource::getPosicaoFormField()
+                            ->columnSpan(1),
+                        Forms\Components\Textarea::make('observacao')
+                            ->label('Observação')
+                            ->columnSpanFull()
+                            ->maxLength(255),
+                    ]),
                 OrdemServicoResource::getParceiroIdFormField()
-                    ->columnSpan(3),
-                Forms\Components\Textarea::make('observacao')
-                    ->label('Observação')
-                    ->columnSpanFull()
-                    ->maxLength(255),
+                    ->columnSpan(4),
+
             ]);
     }
 
