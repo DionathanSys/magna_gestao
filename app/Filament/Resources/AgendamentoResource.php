@@ -34,20 +34,37 @@ class AgendamentoResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('ordem_servico_id')
                     ->label('Ordem de Serviço')
+                    ->columnSpan(2)
                     ->visible(fn () => Auth::user()->is_admin)
+                    ->readOnly(fn () => ! Auth::user()->is_admin)
                     ->exists(
                         Agendamento::class,
                         'id',
                         fn (Builder $query) => $query->withoutGlobalScopes([SoftDeletingScope::class])
                     )
                     ->numeric(),
-                OrdemServicoResource::getVeiculoIdFormField(),
-                Forms\Components\DatePicker::make('data_agendamento'),
-                ItemOrdemServicoResource::getServicoIdFormField(),
+                OrdemServicoResource::getVeiculoIdFormField()
+                    ->columnSpan(2)
+                    ->required(),
+                Forms\Components\DatePicker::make('data_agendamento')
+                    ->label('Agendar Para')
+                    ->minDate(now())
+                    ->columnSpan(2),
                 Forms\Components\Select::make('status')
-                    ->options(StatusOrdemServicoEnum::toSelectArray()),
+                    ->columnSpan(2)
+                    ->options(StatusOrdemServicoEnum::toSelectArray())
+                    ->required()
+                    ->default(StatusOrdemServicoEnum::PENDENTE->value)
+                    ->selectablePlaceholder(false)
+                    ->disableOptionWhen(fn (string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
+                ItemOrdemServicoResource::getServicoIdFormField()
+                    ->columnStart(1)
+                    ->columnSpan(6),
+                OrdemServicoResource::getParceiroIdFormField()
+                    ->columnSpan(2),
                 Forms\Components\Textarea::make('observacao')
                     ->label('Observação')
+                    ->columnSpanFull()
                     ->maxLength(255),
             ]);
     }
