@@ -21,4 +21,9 @@ class Agendamento extends Model
     {
         return $this->belongsTo(Servico::class);
     }
+
+    public function parceiro(): BelongsTo
+    {
+        return $this->belongsTo(Parceiro::class);
+    }
 }
