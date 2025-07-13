@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\OrdemServicoResource\RelationManagers;
 
 use App\Filament\Resources\AgendamentoResource;
+use App\Models\Agendamento;
+use App\Services\OrdemServico\AgendamentoService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -14,6 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AgendamentosRelationManager extends RelationManager
 {
     protected static string $relationship = 'agendamentos';
+
+    protected AgendamentoService $agendamentoService;
+
+    public function __construct()
+    {
+        $this->agendamentoService = new AgendamentoService();
+    }
 
     public function form(Form $form): Form
     {
@@ -28,11 +37,16 @@ class AgendamentosRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('data_agendamento')
-                    ->label('Agendado Para'),
+                    ->label('Agendado Para')
+                    ->date('d/m/Y'),
                 Tables\Columns\TextColumn::make('data_limite')
-                    ->label('Dt. Limite'),
+                    ->label('Dt. Limite')
+                    ->date('d/m/Y')
+                    ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('data_finalizado')
-                    ->label('Finalizado Em'),
+                    ->label('Finalizado Em')
+                    ->date('d/m/Y')
+                    ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status'),
                 Tables\Columns\TextColumn::make('observacao')
@@ -56,7 +70,11 @@ class AgendamentosRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('vincular')
+                    ->label('Incluir na Ordem de Serviço')
+                    ->action(function (Agendamento $record) {
+                        $this->agendamentoService->vincularServico($record, $this->ownerRecord);
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -14,13 +14,11 @@ class AgendamentoService
 {
 
     protected OrdemServicoService   $ordemServicoService;
-    protected OrdemServico          $ordemServico;
     protected int                   $veiculoId;
 
     public function __construct()
     {
         $this->ordemServicoService  = new OrdemServicoService();
-        $this->ordemServico         = new OrdemServico();
     }
 
     public function gerarOrdemServico(Collection $agendamentos): void
@@ -34,7 +32,7 @@ class AgendamentoService
             }
         });
 
-        $this->ordemServico = $this->ordemServicoService->create([
+        $ordemServico = $this->ordemServicoService->create([
             'veiculo_id'        => $this->veiculoId,
             'quilometragem'     => null,
             'tipo_manutencao'   => TipoManutencaoEnum::CORRETIVA,
@@ -45,11 +43,16 @@ class AgendamentoService
             'created_by'        => Auth::user()->id,
         ]);
 
+        $agendamentos->each(function (Agendamento $agendamento) use ($ordemServico) {
+            $this->vincularServico($agendamento, $ordemServico);
+        });
+
     }
 
-    protected function vincularServico(Agendamento $agendamento): void
+    //precisa incluir validação
+    public function vincularServico(Agendamento $agendamento, OrdemServico $ordemServico): void
     {
-        $this->ordemServico->itens()->create([
+        $ordemServico->itens()->create([
             // 'ordem_servico_id'  => $this->ordemServico->id,
             'servico_id'        => $agendamento->servico_id,
             'posicao'           => $agendamento->posicao ?? null,
@@ -58,6 +61,12 @@ class AgendamentoService
             'created_by'        => Auth::user()->id,
             'updated_by'        => Auth::user()->id,
         ]);
+
+        $agendamento->update([
+                'ordem_servico_id' => $ordemServico->id,
+                'status'           => StatusOrdemServicoEnum::EXECUCAO,
+                'updated_by'       => Auth::user()->id,
+            ]);
     }
 
     protected function validarAgendamento(Agendamento $agendamento): bool
