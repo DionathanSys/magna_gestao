@@ -43,4 +43,10 @@ class OrdemServico extends Model
         return $this->morphMany(Comentario::class, 'comentavel');
     }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+
 }

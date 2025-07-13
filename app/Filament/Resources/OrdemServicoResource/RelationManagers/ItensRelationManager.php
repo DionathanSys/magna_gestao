@@ -67,9 +67,10 @@ class ItensRelationManager extends RelationManager
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_by.name')
+                Tables\Columns\TextColumn::make('creator.name')
                     ->label('Criado por')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 //

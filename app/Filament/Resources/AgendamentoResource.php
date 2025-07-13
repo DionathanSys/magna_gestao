@@ -85,16 +85,21 @@ class AgendamentoResource extends Resource
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação'),
-                Tables\Columns\TextColumn::make('created_by')
+                Tables\Columns\TextColumn::make('creator.name')
+                    ->label('Criado por')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('updater.name')
+                    ->label('Atualizado por')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -117,6 +117,10 @@ class OrdemServicoResource extends Resource
                     ->dateTime('d/m/Y H:i')
                     ->label('Editado Em')
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('creator.name')
+                    ->label('Criado por')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->persistFiltersInSession()
             ->filters([
