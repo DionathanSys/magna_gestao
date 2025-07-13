@@ -103,6 +103,13 @@ class ItemOrdemServicoResource extends Resource
             ->relationship('servico', 'descricao')
             ->searchable()
             ->preload()
+            ->live()
+            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                if($state) {
+                    $servico = Servico::find($state);
+                    $set('posicao', $servico->controla_posicao ? 'sim' : 'não');
+                }
+            })
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
             ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form));
     }
@@ -111,6 +118,7 @@ class ItemOrdemServicoResource extends Resource
     {
         return Forms\Components\TextInput::make('posicao')
             ->label('Posição')
+            ->live()
             ->minLength(2)
             ->maxLength(5);
     }
