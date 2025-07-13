@@ -50,7 +50,7 @@ class OrdemServico extends Model
 
     public function agendamentos(): HasMany
     {
-        return $this->hasMany(Agendamento::class, 'veiculo_id');
+        return $this->hasMany(Agendamento::class, 'veiculo_id', 'veiculo_id');
     }
 
 
