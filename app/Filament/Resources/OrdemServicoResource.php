@@ -128,9 +128,10 @@ class OrdemServicoResource extends Resource
                 Tables\Columns\TextColumn::make('itens_count')->counts('itens')
                     ->label('Qtd. Serviços'),
                 Tables\Columns\TextColumn::make('pendentes_count')->counts('pendentes')
-                    ->label('Pendencias'),
+                    ->label('Pendencias')
+                    ->badge('danger'),
                 Tables\Columns\TextColumn::make('status')
-                    ->badge('succecs'),
+                    ->badge('success'),
                 Tables\Columns\SelectColumn::make('status_sankhya')
                     ->label('Sankhya')
                     ->options(StatusOrdemServicoEnum::toSelectArray()),
