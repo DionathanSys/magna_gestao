@@ -107,7 +107,9 @@ class ItemOrdemServicoResource extends Resource
             ->afterStateUpdated(function (Forms\Set $set, $state) {
                 if($state) {
                     $servico = Servico::find($state);
-                    $set('controla_posicao', $servico->controla_posicao ? 'Sim' : 'Não');
+                    $set('controla_posicao', $servico->controla_posicao ? true : false);
+                } else {
+                    $set('controla_posicao', false);
                 }
             })
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))

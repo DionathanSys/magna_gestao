@@ -96,6 +96,7 @@ class OrdemServicoResource extends Resource
                                             ->columnSpanFull(),
                                     ])
                                     ->columnSpan(2)
+                                    ->defaultItems(0)
                                     ->addable(false),
                             ]),
                     ]),

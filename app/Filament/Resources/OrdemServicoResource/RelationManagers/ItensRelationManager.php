@@ -34,8 +34,7 @@ class ItensRelationManager extends RelationManager
                 ItemOrdemServicoResource::getControlaPosicaoFormField()
                     ->columnSpan(2),
                 ItemOrdemServicoResource::getPosicaoFormField()
-                    ->columnSpan(1)
-                    ->required(fn(ItemOrdemServico $record): bool => $record->servico->controla_posicao ?? false),
+                    ->columnSpan(1),
                 ItemOrdemServicoResource::getStatusFormField()
                     ->columnSpan(2),
                 ItemOrdemServicoResource::getObersavacaoFormField()
