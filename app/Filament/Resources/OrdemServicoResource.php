@@ -131,7 +131,7 @@ class OrdemServicoResource extends Resource
                     ->label('Qtd. Serviços'),
                 Tables\Columns\TextColumn::make('pendentes_count')->counts('pendentes')
                     ->label('Pendencias')
-                    ->color(fn($state): bool => $state > 0 ? 'danger' : 'gray')
+                    ->color(fn($state): string => $state == 0 ? 'gray' : 'info')
                     ->badge(fn($state): bool => $state > 0),
                 Tables\Columns\TextColumn::make('status')
                     ->badge('success'),
