@@ -150,7 +150,7 @@ class AgendamentoResource extends Resource
                         ->label('Gerar OS')
                         ->icon('heroicon-o-forward')
                         ->requiresConfirmation()
-                        ->action(function (Collection $records) {
+                        ->action(function ($records) {
                             (new AgendamentoService())->gerarOrdemServico($records);
                         }),
                 ]),

@@ -3,6 +3,7 @@
 namespace App\Services\OrdemServico;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
+use App\Models\Agendamento;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
 use App\Services\NotificacaoService as notify;
@@ -17,7 +18,7 @@ class OrdemServicoService
         $this->agendamentoService = new AgendamentoService();
     }
 
-    public function create(array $data): ?OrdemServico
+    public static function create(array $data): ?OrdemServico
     {
         return OrdemServico::create($data);
     }
@@ -55,7 +56,7 @@ class OrdemServicoService
             'status' => StatusOrdemServicoEnum::ADIADO,
         ]);
 
-        $this->agendamentoService->create([
+        Agendamento::create([
             'ordem_servico_id'  => null,
             'veiculo_id'        => $item->ordemServico->veiculo_id,
             'data_agendamento'  => $data ?? null,

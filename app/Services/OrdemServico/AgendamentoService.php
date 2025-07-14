@@ -14,22 +14,10 @@ use Illuminate\Support\Facades\Log;
 class AgendamentoService
 {
 
-    protected OrdemServicoService   $ordemServicoService;
-    protected int                   $veiculoId;
-
-    public function __construct()
-    {
-        $this->ordemServicoService  = new OrdemServicoService();
-    }
-
-    public function create(array $data): ?Agendamento
-    {
-        return Agendamento::create($data);
-    }
+    protected int $veiculoId;
 
     public function gerarOrdemServico(Collection $agendamentos): void
     {
-        dd($agendamentos);
         Log::debug('Iniciando geração de Ordem de Serviço a partir dos agendamentos.', [
             'agendamentos' => $agendamentos->pluck('id')->toArray(),
         ]);
@@ -44,7 +32,7 @@ class AgendamentoService
             }
         });
 
-        $ordemServico = $this->ordemServicoService->create([
+        $ordemServico = OrdemServico::create([
             'veiculo_id'        => $this->veiculoId,
             'quilometragem'     => null,
             'tipo_manutencao'   => TipoManutencaoEnum::CORRETIVA,
