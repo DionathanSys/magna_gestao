@@ -48,7 +48,7 @@ class AgendamentosRelationManager extends RelationManager
                     ->label('Status'),
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação')
-                    ->placaceholder('Não possui'),
+                    ->placeholder('Não possui'),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Criado Por')
                     ->toggleable(isToggledHiddenByDefault: true),
