@@ -10,6 +10,7 @@ use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Services\NotificacaoService as notify;
 
 class AgendamentoService
 {
@@ -53,6 +54,8 @@ class AgendamentoService
             ]);
             $this->vincularServico($agendamento, $ordemServico);
         });
+
+        notify::success(mensagem: 'Agendamentos vinculados à Ordem de Serviço com sucesso.');
 
     }
 
