@@ -49,6 +49,9 @@ class AgendamentosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação')
                     ->placeholder('Não possui'),
+                Tables\Columns\TextColumn::make('parceiro.nome')
+                    ->label('Fornecedor')
+                    ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Criado Por')
                     ->toggleable(isToggledHiddenByDefault: true),
