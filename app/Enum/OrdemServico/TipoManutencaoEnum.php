@@ -6,6 +6,7 @@ enum TipoManutencaoEnum: string
 {
     case CORRETIVA       = 'CORRETIVA';
     case PREVENTIVA      = 'PREVENTIVA';
+    case SOCORRO         = 'SOCORRO';
 
     public static function toSelectArray(): array
     {
