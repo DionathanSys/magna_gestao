@@ -228,7 +228,7 @@ class OrdemServicoResource extends Resource
                         ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ])
-            ->poll(null)
+            ->poll('5s')
             ->emptyStateDescription('');
     }
 

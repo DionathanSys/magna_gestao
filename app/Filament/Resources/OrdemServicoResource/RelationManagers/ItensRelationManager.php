@@ -146,6 +146,7 @@ class ItensRelationManager extends RelationManager
                             });
                         }),
                 ]),
-            ]);
+            ])
+            ->poll('5s');
     }
 }

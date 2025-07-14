@@ -92,6 +92,7 @@ class AgendamentosRelationManager extends RelationManager
                             });
                         })
                 ]),
-            ]);
+            ])
+            ->poll('5s');
     }
 }
