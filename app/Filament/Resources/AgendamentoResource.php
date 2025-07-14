@@ -147,12 +147,13 @@ class AgendamentoResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('gerar-ordem-servico')
-                    ->label('Gerar OS')
-                    ->icon('heroicon-o-forward')
-                    ->requiresConfirmation()
-                    ->action(function (Collection $records) {
-                        (new AgendamentoService())->gerarOrdemServico($records);
-                    }),
+                        ->label('Gerar OS')
+                        ->icon('heroicon-o-forward')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            dd($records);
+                            (new AgendamentoService())->gerarOrdemServico($records);
+                        }),
                 ]),
             ]);
     }
