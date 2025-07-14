@@ -151,7 +151,8 @@ class AgendamentoResource extends Resource
                         ->icon('heroicon-o-forward')
                         ->requiresConfirmation()
                         ->action(function ($records) {
-                            (new AgendamentoService())->gerarOrdemServico($records);
+                            $service = new AgendamentoService();
+                            $service->gerarOrdemServico($records);
                         }),
                 ]),
             ]);

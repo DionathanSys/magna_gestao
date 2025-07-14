@@ -67,7 +67,6 @@ class AgendamentoService
             'observacao'        => $agendamento->observacao,
             'status'            => StatusOrdemServicoEnum::PENDENTE,
             'created_by'        => Auth::user()->id,
-            'updated_by'        => Auth::user()->id,
         ]);
 
         Log::debug('Serviço vinculado à OS.', [
