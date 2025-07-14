@@ -53,11 +53,11 @@ class OrdemServicoResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Informações')
-                            ->columns(6)
+                            ->columns(8)
                             ->schema([
                                 Forms\Components\Section::make('Informações Gerais')
                                     ->columnSpanFull()
-                                    ->columns(10)
+                                    ->columns(8)
                                     ->schema([
                                         static::getVeiculoIdFormField(),
                                         static::getQuilometragemFormField(),
