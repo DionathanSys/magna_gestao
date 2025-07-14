@@ -54,5 +54,11 @@ class OrdemServico extends Model
             ->where('status', StatusOrdemServicoEnum::PENDENTE);
     }
 
+    public function pendentes(): HasMany
+    {
+        return $this->hasMany(Agendamento::class, 'veiculo_id', 'veiculo_id')
+            ->where('status', StatusOrdemServicoEnum::PENDENTE);
+    }
+
 
 }

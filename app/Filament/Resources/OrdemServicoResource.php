@@ -127,7 +127,7 @@ class OrdemServicoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('itens_count')->counts('itens')
                     ->label('Qtd. Serviços'),
-                Tables\Columns\TextColumn::make('agendamentosPendentes_count')->counts('agendamentosPendentes')
+                Tables\Columns\TextColumn::make('pendentes_count')->counts('pendentes')
                     ->label('Pendencias'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge('succecs'),
