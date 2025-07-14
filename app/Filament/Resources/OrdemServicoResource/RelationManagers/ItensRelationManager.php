@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\ItemOrdemServicoResource;
 use App\Models\ItemOrdemServico;
 use App\Models\Servico;
+use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -14,11 +15,20 @@ use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NotificacaoService as notify;
 
 class ItensRelationManager extends RelationManager
 {
     protected static string $relationship = 'itens';
+
+    protected OrdemServicoService $ordemServicoService;
+
+    public function __construct()
+    {
+        $this->ordemServicoService = new OrdemServicoService();
+    }
 
     public function form(Form $form): Form
     {
@@ -66,12 +76,6 @@ class ItensRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação')
                     ->placeholder('N/A'),
-                Tables\Columns\TextColumn::make('comentarios.conteudo')
-                    ->label('Comentários')
-                    ->placeholder('N/A')
-                    ->listWithLineBreaks()
-                    ->limitList(1)
-                    ->expandableLimitedList(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -101,6 +105,20 @@ class ItensRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('visualizar-comentarios')
+                        ->modalHeading('Comentários')
+                        ->slideOver()
+                        ->modalSubmitAction(false)
+                        ->infolist([
+                            \Filament\Infolists\Components\RepeatableEntry::make('comentarios')
+                                ->schema([
+                                    \Filament\Infolists\Components\TextEntry::make('conteudo')
+                                        ->label('Comentário'),
+                                    \Filament\Infolists\Components\TextEntry::make('created_at')
+                                        ->label('Criado em')
+                                        ->dateTime('d/m/Y H:i'),
+                                ])
+                        ])->icon('heroicon-o-chat-bubble-left-ellipsis'),
                     Tables\Actions\Action::make('comentarios')
                         ->icon('heroicon-o-chat-bubble-left-ellipsis')
                         ->form([
@@ -122,6 +140,19 @@ class ItensRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('reagendar')
+                        ->label('Reagendar')
+                        ->icon('heroicon-o-calendar')
+                        ->form([
+                            Forms\Components\DateTimePicker::make('data_agendamento')
+                                ->label('Agendar Para')
+                                ->minDate(now()),
+                        ])
+                        ->action(function (array $data, Collection $records) {
+                            $records->each(function (ItemOrdemServico $item) use ($data) {
+                                $this->ordemServicoService->reagendarServico($item, $data['data_agendamento'] ?? null);
+                            });
+                        }),
                 ]),
             ]);
     }

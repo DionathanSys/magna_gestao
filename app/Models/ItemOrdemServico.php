@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -9,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class ItemOrdemServico extends Model
 {
     protected $table = 'itens_ordem_servico';
+
+    protected $casts = [
+        'status' => StatusOrdemServicoEnum::class,
+    ];
 
     public function servico(): BelongsTo
     {

@@ -21,6 +21,11 @@ class AgendamentoService
         $this->ordemServicoService  = new OrdemServicoService();
     }
 
+    public function create(array $data): ?Agendamento
+    {
+        return Agendamento::create($data);
+    }
+
     public function gerarOrdemServico(Collection $agendamentos): void
     {
         $this->veiculoId = $agendamentos->first()->veiculo_id;

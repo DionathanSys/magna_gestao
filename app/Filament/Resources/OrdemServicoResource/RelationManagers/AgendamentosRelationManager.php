@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 
 class AgendamentosRelationManager extends RelationManager
 {
-    protected static string $relationship = 'agendamentos';
+    protected static string $relationship = 'agendamentosPendentes';
 
     protected AgendamentoService $agendamentoService;
 
@@ -49,21 +49,27 @@ class AgendamentosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('data_finalizado')
                     ->label('Finalizado Em')
                     ->date('d/m/Y')
-                    ->placeholder('Não definido'),
+                    ->placeholder('Não definido')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status'),
                 Tables\Columns\TextColumn::make('observacao')
-                    ->label('Observação'),
+                    ->label('Observação')
+                    ->placaceholder('Não possui'),
                 Tables\Columns\TextColumn::make('creator.name')
-                    ->label('Criado Por'),
-                Tables\Columns\TextColumn::make('updator.name')
-                    ->label('Atualizado Por'),
+                    ->label('Criado Por')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updater.name')
+                    ->label('Atualizado Por')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado Em')
-                    ->dateTime('d/m/Y H:i'),
+                    ->dateTime('d/m/Y H:i')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado Em')
-                    ->dateTime('d/m/Y H:i'),
+                    ->dateTime('d/m/Y H:i')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -72,7 +78,8 @@ class AgendamentosRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
 
             ])
             ->bulkActions([
@@ -80,10 +87,11 @@ class AgendamentosRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('vincular')
                         ->label('Incluir na Ordem de Serviço')
-                            ->action(function (Collection $records) {
-                                $records->each(function (Agendamento $agendamento) {
-                                    $this->agendamentoService->vincularServico($agendamento, $this->ownerRecord);
-                                });
+                        ->icon('heroicon-o-document-arrow-up')
+                        ->action(function (Collection $records) {
+                            $records->each(function (Agendamento $agendamento) {
+                                $this->agendamentoService->vincularServico($agendamento, $this->ownerRecord);
+                            });
                         })
                 ]),
             ]);
