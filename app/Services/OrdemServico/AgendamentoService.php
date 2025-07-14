@@ -19,6 +19,7 @@ class AgendamentoService
 
     public function __construct()
     {
+        Log::debug(__METHOD__);
         $this->ordemServicoService  = new OrdemServicoService();
     }
 
@@ -28,7 +29,7 @@ class AgendamentoService
     }
 
     public function gerarOrdemServico(Collection $agendamentos): void
-    {
+    {dd($agendamentos);
         Log::debug('Iniciando geração de Ordem de Serviço a partir dos agendamentos.', [
             'agendamentos' => $agendamentos->pluck('id')->toArray(),
         ]);
