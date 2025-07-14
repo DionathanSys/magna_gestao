@@ -9,6 +9,7 @@ use App\Models\OrdemServico;
 use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AgendamentoService
 {
@@ -28,10 +29,15 @@ class AgendamentoService
 
     public function gerarOrdemServico(Collection $agendamentos): void
     {
+        Log::debug('Iniciando geração de Ordem de Serviço a partir dos agendamentos.', [
+            'agendamentos' => $agendamentos->pluck('id')->toArray(),
+        ]);
+
         $this->veiculoId = $agendamentos->first()->veiculo_id;
 
         $agendamentos->each(function (Agendamento $agendamento) {
             if (! $this->validarAgendamento($agendamento)) {
+                Log::error('Agendamento inválido: ' . $agendamento->id);
                 notify::error('Agendamento inválido: ' . $agendamento->id);
                 return;
             }
@@ -48,7 +54,15 @@ class AgendamentoService
             'created_by'        => Auth::user()->id,
         ]);
 
+        Log::debug('Ordem de Serviço criada com sucesso.', [
+            'ordem_servico_id' => $ordemServico->id,
+        ]);
+
         $agendamentos->each(function (Agendamento $agendamento) use ($ordemServico) {
+            Log::debug('Vinculando item agendado à OS.', [
+                'agendamento_id'    => $agendamento->id,
+                'ordem_servico_id'  => $ordemServico->id,
+            ]);
             $this->vincularServico($agendamento, $ordemServico);
         });
 
@@ -67,11 +81,22 @@ class AgendamentoService
             'updated_by'        => Auth::user()->id,
         ]);
 
+        Log::debug('Serviço vinculado à OS.', [
+            'agendamento_id'    => $agendamento->id,
+            'ordem_servico_id'  => $ordemServico->id,
+            'servico_id'        => $agendamento->servico_id,
+        ]);
+
         $agendamento->update([
                 'ordem_servico_id' => $ordemServico->id,
                 'status'           => StatusOrdemServicoEnum::EXECUCAO,
                 'updated_by'       => Auth::user()->id,
             ]);
+
+        Log::debug('Agendamento atualizado com a OS vinculada.', [
+            'agendamento_id'    => $agendamento->id,
+            'ordem_servico_id'  => $ordemServico->id,
+        ]);
     }
 
     protected function validarAgendamento(Agendamento $agendamento): bool
