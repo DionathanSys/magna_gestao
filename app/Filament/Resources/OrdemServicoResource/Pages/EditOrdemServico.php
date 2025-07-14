@@ -12,13 +12,6 @@ class EditOrdemServico extends EditRecord
 {
     protected static string $resource = OrdemServicoResource::class;
 
-    protected OrdemServicoService $ordemServicoService;
-
-    public function __construct()
-    {
-        $this->ordemServicoService = new OrdemServicoService();
-    }
-
     protected function getHeaderActions(): array
     {
         return [
@@ -26,7 +19,7 @@ class EditOrdemServico extends EditRecord
             Actions\Action::make('encerrar')
                 ->label('Encerrar OS')
                 ->action(function (OrdemServico $record) {
-                    $this->ordemServicoService->encerrarOrdemServico($record);
+                    (new OrdemServicoService)->encerrarOrdemServico($record);
                 })
                 ->requiresConfirmation()
                 ->color('success')
