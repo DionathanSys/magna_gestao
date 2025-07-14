@@ -32,6 +32,7 @@ class OrdemServicoService
 
         $ordemServico->update([
             'status'        => StatusOrdemServicoEnum::CONCLUIDO,
+            'data_fim'      => now(),
         ]);
 
         $ordemServico->itens()->each(function (ItemOrdemServico $item) {
