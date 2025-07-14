@@ -7,6 +7,7 @@ use App\Models\OrdemServico;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Auth;
 
 class EditOrdemServico extends EditRecord
 {
@@ -15,7 +16,8 @@ class EditOrdemServico extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn() => Auth::user()->is_admin),
             Actions\Action::make('encerrar')
                 ->label('Encerrar OS')
                 ->action(function (OrdemServico $record) {

@@ -30,6 +30,7 @@ use Filament\Tables\Enums\ActionsPosition;
 use Fauzie811\FilamentListEntry;
 use Fauzie811\FilamentListEntry\FilamentListEntryPlugin;
 use Fauzie811\FilamentListEntry\Infolists\Components\ListEntry;
+use Illuminate\Support\Facades\Auth;
 
 class OrdemServicoResource extends Resource
 {
@@ -223,7 +224,8 @@ class OrdemServicoResource extends Resource
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ])
             ->poll(null)
