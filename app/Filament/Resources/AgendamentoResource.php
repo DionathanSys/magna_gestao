@@ -108,12 +108,24 @@ class AgendamentoResource extends Resource
                     ->label('Agendado Para')
                     ->date('d/m/Y')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('data_limite')
+                    ->label('Dt. Limite')
+                    ->date('d/m/Y')
+                    ->placeholder('Não definido'),
+                Tables\Columns\TextColumn::make('data_finalizado')
+                    ->label('Finalizado Em')
+                    ->date('d/m/Y')
+                    ->placeholder('Não definido')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação'),
+                Tables\Columns\TextColumn::make('parceiro.nome')
+                    ->label('Fornecedor')
+                    ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Criado por')
                     ->sortable()
