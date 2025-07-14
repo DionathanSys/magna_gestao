@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\AgendamentoResource\Pages;
 use App\Filament\Resources\AgendamentoResource\RelationManagers;
 use App\Models\Agendamento;
+use App\Services\OrdemServico\AgendamentoService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -149,9 +150,8 @@ class AgendamentoResource extends Resource
                     ->label('Gerar OS')
                     ->icon('heroicon-o-forward')
                     ->requiresConfirmation()
-                    ->action(function (Collection $record) {
-
-
+                    ->action(function (Collection $records) {
+                        (new AgendamentoService())->gerarOrdemServico($records);
                     }),
                 ]),
             ]);
