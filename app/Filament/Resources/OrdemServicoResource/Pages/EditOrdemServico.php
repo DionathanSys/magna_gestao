@@ -25,7 +25,11 @@ class EditOrdemServico extends EditRecord
                 })
                 ->requiresConfirmation()
                 ->color('success')
-                ->icon('heroicon-o-check-circle'),
+                ->icon('heroicon-o-check-circle')
+                ->after(fn() => $this->refreshFormData([
+                    'status',
+                    'data_fim',
+                ])),
         ];
     }
 }
