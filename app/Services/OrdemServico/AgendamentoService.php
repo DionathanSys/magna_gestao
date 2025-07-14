@@ -31,7 +31,9 @@ class AgendamentoService
         $ordemServico = OrdemServico::query()->updateOrCreate(
             [
                 'veiculo_id'    => $this->veiculoId,
-                'status'        => StatusOrdemServicoEnum::PENDENTE],
+                'status'        => StatusOrdemServicoEnum::PENDENTE,
+                'parceiro_id'   => $agendamentos->first()->parceiro_id,
+            ],
             [
                 'veiculo_id'        => $this->veiculoId,
                 'quilometragem'     => null,
@@ -39,7 +41,7 @@ class AgendamentoService
                 'data_inicio'       => now(),
                 'status'            => StatusOrdemServicoEnum::PENDENTE,
                 'status_sankhya'    => StatusOrdemServicoEnum::PENDENTE,
-                'parceiro_id'       => $agendamentos->first()->parceiro_id ?? null,
+                'parceiro_id'       => $agendamentos->first()->parceiro_id,
                 'created_by'        => Auth::user()->id,
             ]
         );
