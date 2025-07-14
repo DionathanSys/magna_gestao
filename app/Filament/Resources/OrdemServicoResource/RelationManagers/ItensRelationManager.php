@@ -32,7 +32,7 @@ class ItensRelationManager extends RelationManager
                     ->columnSpan(2),
                 ItemOrdemServicoResource::getPosicaoFormField()
                     ->columnSpan(1)
-                    ->required(fn (ItemOrdemServico $record): bool => $record->servico->controla_posicao ?? false),
+                    ->required(fn(ItemOrdemServico $record): bool => $record->servico->controla_posicao ?? false),
                 ItemOrdemServicoResource::getStatusFormField()
                     ->columnSpan(2),
                 ItemOrdemServicoResource::getObersavacaoFormField()
@@ -66,6 +66,12 @@ class ItensRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação')
                     ->placeholder('N/A'),
+                Tables\Columns\TextColumn::make('comentarios.conteudo')
+                    ->label('Comentários')
+                    ->placeholder('N/A')
+                    ->listWithLineBreaks()
+                    ->limitList(1)
+                    ->expandableLimitedList(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -108,8 +114,7 @@ class ItensRelationManager extends RelationManager
                                 'veiculo_id'    => $item->ordemServico->veiculo_id,
                                 'conteudo'      => $data['conteudo'],
                             ]);
-                        }
-                        ),
+                        }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])->icon('heroicon-o-bars-3-center-left')

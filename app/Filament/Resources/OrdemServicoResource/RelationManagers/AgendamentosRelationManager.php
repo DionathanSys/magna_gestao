@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class AgendamentosRelationManager extends RelationManager
 {
@@ -36,6 +37,8 @@ class AgendamentosRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('servico.descricao')
+                    ->label('Serviço'),
                 Tables\Columns\TextColumn::make('data_agendamento')
                     ->label('Agendado Para')
                     ->date('d/m/Y'),
@@ -70,15 +73,18 @@ class AgendamentosRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('vincular')
-                    ->label('Incluir na Ordem de Serviço')
-                    ->action(function (Agendamento $record) {
-                        $this->agendamentoService->vincularServico($record, $this->ownerRecord);
-                    })
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('vincular')
+                        ->label('Incluir na Ordem de Serviço')
+                            ->action(function (Collection $records) {
+                                $records->each(function (Agendamento $agendamento) {
+                                    $this->agendamentoService->vincularServico($agendamento, $this->ownerRecord);
+                                });
+                        })
                 ]),
             ]);
     }
