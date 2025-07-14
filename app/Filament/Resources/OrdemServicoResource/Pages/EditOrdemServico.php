@@ -16,14 +16,14 @@ class EditOrdemServico extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
-            // Actions\Action::make('encerrar')
-            //     ->label('Encerrar OS')
-            //     ->action(function (OrdemServico $record) {
-            //         (new OrdemServicoService)->encerrarOrdemServico($record);
-            //     })
-            //     ->requiresConfirmation()
-            //     ->color('success')
-            //     ->icon('heroicon-o-check-circle'),
+            Actions\Action::make('encerrar')
+                ->label('Encerrar OS')
+                ->action(function (OrdemServico $record) {
+                    (new OrdemServicoService)->encerrarOrdemServico($record);
+                })
+                ->requiresConfirmation()
+                ->color('success')
+                ->icon('heroicon-o-check-circle'),
         ];
     }
 }

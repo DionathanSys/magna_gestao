@@ -133,19 +133,19 @@ class ItensRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    // Tables\Actions\BulkAction::make('reagendar')
-                    //     ->label('Reagendar')
-                    //     ->icon('heroicon-o-calendar')
-                    //     ->form([
-                    //         Forms\Components\DateTimePicker::make('data_agendamento')
-                    //             ->label('Agendar Para')
-                    //             ->minDate(now()),
-                    //     ])
-                    //     ->action(function (array $data, Collection $records) {
-                    //         $records->each(function (ItemOrdemServico $item) use ($data) {
-                    //             $this->ordemServicoService->reagendarServico($item, $data['data_agendamento'] ?? null);
-                    //         });
-                    //     }),
+                    Tables\Actions\BulkAction::make('reagendar')
+                        ->label('Reagendar')
+                        ->icon('heroicon-o-calendar')
+                        ->form([
+                            Forms\Components\DateTimePicker::make('data_agendamento')
+                                ->label('Agendar Para')
+                                ->minDate(now()),
+                        ])
+                        ->action(function (array $data, Collection $records) {
+                            $records->each(function (ItemOrdemServico $item) use ($data) {
+                                (new OrdemServicoService)->reagendarServico($item, $data['data_agendamento'] ?? null);
+                            });
+                        }),
                 ]),
             ]);
     }

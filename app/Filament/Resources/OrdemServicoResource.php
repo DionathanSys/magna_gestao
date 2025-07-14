@@ -21,6 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Support\Enums\Alignment;
@@ -47,34 +48,58 @@ class OrdemServicoResource extends Resource
         return $form
             ->columns(8)
             ->schema([
-                Forms\Components\Section::make('Informações Gerais')
+                Forms\Components\Tabs::make()
                     ->columnSpanFull()
-                    ->columns(10)
-                    ->schema([
-                        static::getVeiculoIdFormField(),
-                        static::getQuilometragemFormField(),
-                        static::getTipoManutencaoFormField(),
-                        static::getDataInicioFormField()
-                            ->columnStart(1)
-                            ->columnSpan(2),
-                        static::getDataFimFormField()
-                            ->visibleOn('edit')
-                            ->columnSpan(2),
-                        static::getStatusFormField()
-                            ->columnSpan(2),
-                        static::getStatusSankhyaFormField()
-                            ->columnSpan(2),
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Informações')
+                            ->columns(8)
+                            ->schema([
+                                Forms\Components\Section::make('Informações Gerais')
+                                    ->columnSpanFull()
+                                    ->columns(10)
+                                    ->schema([
+                                        static::getVeiculoIdFormField(),
+                                        static::getQuilometragemFormField(),
+                                        static::getTipoManutencaoFormField(),
+                                        static::getDataInicioFormField()
+                                            ->columnStart(1)
+                                            ->columnSpan(2),
+                                        static::getDataFimFormField()
+                                            ->visibleOn('edit')
+                                            ->columnSpan(2),
+                                        static::getStatusFormField()
+                                            ->columnSpan(2),
+                                        static::getStatusSankhyaFormField()
+                                            ->columnSpan(2),
+                                    ]),
+
+                                Forms\Components\Section::make('Manutenção Externa')
+                                    ->columnSpanFull()
+                                    ->columns(8)
+                                    ->schema([
+                                        static::getParceiroIdFormField()
+                                            ->columnSpan(4),
+                                    ])
+                                    ->collapsed()
+                                    ->collapsible(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Ordens Sankhya')
+                            ->columns(8)
+                            ->schema([
+                                Forms\Components\Repeater::make('sankhyaId')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('ordem_sankhya_id')
+                                            ->label('ID Sankhya')
+                                            ->readOnly()
+                                            ->numeric()
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->columnSpan(2)
+                                    ->addable(false),
+                            ]),
                     ]),
 
-                Forms\Components\Section::make('Manutenção Externa')
-                    ->columnSpanFull()
-                    ->columns(8)
-                    ->schema([
-                        static::getParceiroIdFormField()
-                            ->columnSpan(4),
-                    ])
-                    ->collapsed()
-                    ->collapsible(),
             ]);
     }
 
@@ -102,11 +127,13 @@ class OrdemServicoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('itens_count')->counts('itens')
                     ->label('Qtd. Serviços'),
+                Tables\Columns\TextColumn::make('agendamentosPendentes_count')->counts('agendamentosPendentes')
+                    ->label('Pendencias'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge('succecs'),
-                Tables\Columns\TextColumn::make('status_sankhya')
+                Tables\Columns\SelectColumn::make('status_sankhya')
                     ->label('Sankhya')
-                    ->badge('warning'),
+                    ->options(StatusOrdemServicoEnum::toSelectArray()),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->label('Fornecedor')
                     ->placeholder('N/A')
@@ -130,6 +157,9 @@ class OrdemServicoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('encerrar')
+                        ->label('Encerrar OS')
+                        ->action(fn(OrdemServico $record) => (new OrdemServicoService)->encerrarOrdemServico($record)),
                     Tables\Actions\ViewAction::make()
                         ->label('Visualizar')
                         ->icon('heroicon-o-eye'),
