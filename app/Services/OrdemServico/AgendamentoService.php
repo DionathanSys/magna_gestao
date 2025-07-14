@@ -16,12 +16,8 @@ class AgendamentoService
 
     protected int $veiculoId;
 
-    public function gerarOrdemServico(Collection $agendamentos): void
+    public function incluirAgendamentosEmOrdemServico(Collection $agendamentos)
     {
-        Log::debug('Iniciando geração de Ordem de Serviço a partir dos agendamentos.', [
-            'agendamentos' => $agendamentos->pluck('id')->toArray(),
-        ]);
-
         $this->veiculoId = $agendamentos->first()->veiculo_id;
 
         $agendamentos->each(function (Agendamento $agendamento) {
@@ -32,22 +28,23 @@ class AgendamentoService
             }
         });
 
-        $ordemServico = OrdemServico::create([
-            'veiculo_id'        => $this->veiculoId,
-            'quilometragem'     => null,
-            'tipo_manutencao'   => TipoManutencaoEnum::CORRETIVA,
-            'data_inicio'       => now(),
-            'status'            => StatusOrdemServicoEnum::PENDENTE,
-            'status_sankhya'    => StatusOrdemServicoEnum::PENDENTE,
-            'parceiro_id'       => $agendamentos->first()->parceiro_id ?? null,
-            'created_by'        => Auth::user()->id,
-        ]);
+        $ordemServico = OrdemServico::query()->updateOrCreate(
+            [
+                'veiculo_id'    => $this->veiculoId,
+                'status'        => StatusOrdemServicoEnum::PENDENTE],
+            [
+                'veiculo_id'        => $this->veiculoId,
+                'quilometragem'     => null,
+                'tipo_manutencao'   => TipoManutencaoEnum::CORRETIVA,
+                'data_inicio'       => now(),
+                'status'            => StatusOrdemServicoEnum::PENDENTE,
+                'status_sankhya'    => StatusOrdemServicoEnum::PENDENTE,
+                'parceiro_id'       => $agendamentos->first()->parceiro_id ?? null,
+                'created_by'        => Auth::user()->id,
+            ]
+        );
 
-        Log::debug('Ordem de Serviço criada com sucesso.', [
-            'ordem_servico_id' => $ordemServico->id,
-        ]);
-
-        $agendamentos->each(function (Agendamento $agendamento) use ($ordemServico) {
+         $agendamentos->each(function (Agendamento $agendamento) use ($ordemServico) {
             Log::debug('Vinculando item agendado à OS.', [
                 'agendamento_id'    => $agendamento->id,
                 'ordem_servico_id'  => $ordemServico->id,
@@ -57,8 +54,7 @@ class AgendamentoService
 
     }
 
-    //!precisa incluir validação
-    public function vincularServico(Agendamento $agendamento, OrdemServico $ordemServico): void
+    protected function vincularServico(Agendamento $agendamento, OrdemServico $ordemServico): void
     {
         $ordemServico->itens()->create([
             // 'ordem_servico_id'  => $this->ordemServico->id,

@@ -68,4 +68,11 @@ class OrdemServicoService
             'parceiro_id'       => $item->ordemServico->parceiro_id ?? null,
         ]);
     }
+
+    public function ordemServicoPendente(int $veiculoId): ?OrdemServico
+    {
+        return OrdemServico::where('veiculo_id', $veiculoId)
+            ->where('status', StatusOrdemServicoEnum::PENDENTE)
+            ->first();
+    }
 }

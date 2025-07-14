@@ -18,13 +18,6 @@ class AgendamentosRelationManager extends RelationManager
 {
     protected static string $relationship = 'agendamentosPendentes';
 
-    protected AgendamentoService $agendamentoService;
-
-    public function __construct()
-    {
-        $this->agendamentoService = new AgendamentoService();
-    }
-
     public function form(Form $form): Form
     {
         return $form
@@ -90,7 +83,9 @@ class AgendamentosRelationManager extends RelationManager
                         ->icon('heroicon-o-document-arrow-up')
                         ->action(function (Collection $records) {
                             $records->each(function (Agendamento $agendamento) {
-                                $this->agendamentoService->vincularServico($agendamento, $this->ownerRecord);
+                                (new AgendamentoService)
+                                    ->incluirAgendamentosEmOrdemServico(
+                                        collect($agendamento));
                             });
                         })
                 ]),
