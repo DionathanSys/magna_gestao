@@ -53,7 +53,7 @@ class OrdemServicoResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Informações')
-                            ->columns(8)
+                            ->columns(6)
                             ->schema([
                                 Forms\Components\Section::make('Informações Gerais')
                                     ->columnSpanFull()
