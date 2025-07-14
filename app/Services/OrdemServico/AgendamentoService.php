@@ -10,7 +10,6 @@ use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use App\Services\NotificacaoService as notify;
 
 class AgendamentoService
 {
