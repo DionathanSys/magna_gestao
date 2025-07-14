@@ -15,10 +15,13 @@ class AgendamentoService
 {
 
     protected int $veiculoId;
+    protected int $parceiroId;
+
 
     public function incluirAgendamentosEmOrdemServico(Collection $agendamentos)
     {
-        $this->veiculoId = $agendamentos->first()->veiculo_id;
+        $this->veiculoId    = $agendamentos->first()->veiculo_id;
+        $this->parceiroId   = $agendamentos->first()->parceiro_id;
 
         $agendamentos->each(function (Agendamento $agendamento) {
             if (! $this->validarAgendamento($agendamento)) {
@@ -101,6 +104,11 @@ class AgendamentoService
 
         if ($agendamento->veiculo_id != $this->veiculoId) {
             notify::error('Não é possível vincular agendamentos de veículos diferentes.');
+            return false;
+        }
+
+        if ($agendamento->parceiro_id != $this->parceiroId) {
+            notify::error('Não é possível vincular agendamentos de parceiros externos diferentes.');
             return false;
         }
 
