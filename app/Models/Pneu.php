@@ -24,9 +24,9 @@ class Pneu extends Model
         return $this->hasMany(Conserto::class, 'pneu_id');
     }
 
-    public function veiculo(): HasMany
+    public function veiculo(): HasOne
     {
-        return $this->hasMany(PneuPosicaoVeiculo::class);
+        return $this->hasOne(PneuPosicaoVeiculo::class);
     }
 
     public function ultimoRecap()

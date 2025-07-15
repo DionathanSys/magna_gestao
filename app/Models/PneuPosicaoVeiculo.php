@@ -18,5 +18,4 @@ class PneuPosicaoVeiculo extends Model
         return $this->belongsTo(Veiculo::class, 'veiculo_id');
     }
 
-    
 }
