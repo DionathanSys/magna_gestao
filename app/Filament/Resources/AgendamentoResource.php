@@ -61,7 +61,7 @@ class AgendamentoResource extends Resource
                     ->schema([
                         Forms\Components\DatePicker::make('data_agendamento')
                             ->label('Agendado Para')
-                            ->minDate(now())
+                            ->minDate(now()->format('Y-m-d'))
                             ->columnSpan(2),
                         Forms\Components\DatePicker::make('data_limite')
                             ->label('Dt. Limite')
