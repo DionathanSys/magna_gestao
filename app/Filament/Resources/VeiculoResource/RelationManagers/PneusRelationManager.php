@@ -205,7 +205,8 @@ class PneusRelationManager extends RelationManager
                                     ->columnSpan(2),
                                 PneuResource::getObservacaoFormField(),
                         ]))
-                        ->action(fn (array $data, Collection $records) => $this->movimentarPneuService->rodizioPneu($records, $data)),
+                        ->action(fn (array $data, Collection $records) => $this->movimentarPneuService->rodizioPneu($records, $data))
+                        ->deselectRecordsAfterCompletion(),
 
                 ]),
             ]);

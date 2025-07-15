@@ -146,8 +146,52 @@ class AgendamentoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('parceiro_id')
+                    ->label('Fornecedor')
+                    ->relationship('parceiro', 'nome')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(StatusOrdemServicoEnum::toSelectArray())
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('ordem_servico_id')
+                    ->label('Ordem de Serviço')
+                    ->relationship('ordemServico', 'id')
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\Filter::make('data_agendamento')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->label('Data Comp. Início'),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->label('Data Comp. Fim'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['data_inicio'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_agendamento', '>=', $date),
+                            )
+                            ->when(
+                                $data['data_fim'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_agendamento', '<=', $date),
+                            );
+                    }),
             ])
+            ->groups([
+                Tables\Grouping\Group::make('veiculo.placa')
+                    ->label('Placa')
+                    ->collapsible()
+            ])
+            ->defaultGroup('veiculo.placa')
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->iconButton()
@@ -167,9 +211,12 @@ class AgendamentoResource extends Resource
                         ->action(function ($records) {
                             (new AgendamentoService())
                                 ->incluirAgendamentosEmOrdemServico($records);
-                        }),
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
-            ]);
+            ])->checkIfRecordIsSelectableUsing(
+            fn (Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE,
+        );
     }
 
     public static function getRelations(): array
