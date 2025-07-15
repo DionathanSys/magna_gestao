@@ -69,7 +69,7 @@ class AgendamentoResource extends Resource
                             ->columnSpan(2),
                         Forms\Components\DatePicker::make('data_realizado')
                             ->label('Realizado em')
-                            ->minDate(now())
+                            ->minDate(now()->format('Y-m-d'))
                             ->columnSpan(2),
                     ]),
                 Forms\Components\Fieldset::make('Datas')
