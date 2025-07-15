@@ -472,7 +472,8 @@ class ViagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('conferido')
+                ]),
+                Tables\Actions\BulkAction::make('conferido')
                         ->label('Conferir')
                         ->icon('heroicon-o-check-circle')
                         ->action(function (Collection $records) {
@@ -482,7 +483,6 @@ class ViagemResource extends Resource
                             });
                         })
                         ->requiresConfirmation(),
-                ]),
                 FilamentExportBulkAction::make('export')
                         ->fileName('Viagens')
                         ->disableAdditionalColumns()
