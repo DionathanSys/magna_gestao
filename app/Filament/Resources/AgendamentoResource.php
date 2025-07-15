@@ -235,7 +235,8 @@ class AgendamentoResource extends Resource
                 ]),
             ])->checkIfRecordIsSelectableUsing(
                 fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE,
-            );
+            )
+            ->poll('5s');
     }
 
     public static function getRelations(): array
