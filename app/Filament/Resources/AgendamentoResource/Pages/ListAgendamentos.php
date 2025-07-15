@@ -4,6 +4,7 @@ namespace App\Filament\Resources\AgendamentoResource\Pages;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\AgendamentoResource;
+use App\Models\Agendamento;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -31,11 +32,17 @@ class ListAgendamentos extends ListRecords
         return [
             'todos' => Tab::make(),
             'Sem Data' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', null)),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', null))
+                ->badge(Agendamento::query()->where('data_agendamento', null)->count())
+                ->badgeColor('info'),
             'Hoje' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->format('Y-m-d'))),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->format('Y-m-d')))
+                ->badge(Agendamento::query()->where('data_agendamento', now()->format('Y-m-d'))->count())
+                ->badgeColor('info'),
             'Amanhã' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->addDay()->format('Y-m-d'))),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->addDay()->format('Y-m-d')))
+                ->badge(Agendamento::query()->where('data_agendamento', now()->addDay()->format('Y-m-d'))->count())
+                ->badgeColor('info'),
             'Semana' => Tab::make()
                 ->modifyQueryUsing(
                     fn(Builder $query) =>
@@ -48,7 +55,10 @@ class ListAgendamentos extends ListRecords
                 ->modifyQueryUsing(fn(Builder $query) =>
                     $query->where('data_agendamento', '<', now()->subDay()->format('Y-m-d'))
                           ->whereIn('status', [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])
-                ),
+                )
+                ->badge(Agendamento::query()->where('data_agendamento', '<', now()->subDay()->format('Y-m-d'))
+                          ->whereIn('status', [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])->count())
+                ->badgeColor('info'),
 
         ];
     }
