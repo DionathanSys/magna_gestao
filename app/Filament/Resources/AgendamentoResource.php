@@ -99,7 +99,8 @@ class AgendamentoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
-                    ->sortable(),
+                    ->sortable()
+                    ->extraAttributes(['class' => 'bg-gray-600']),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
                     ->label('OS ID')
                     ->numeric()
@@ -111,6 +112,7 @@ class AgendamentoResource extends Resource
                 Tables\Columns\TextColumn::make('data_limite')
                     ->label('Dt. Limite')
                     ->date('d/m/Y')
+                    ->sortable()
                     ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('data_finalizado')
                     ->label('Finalizado Em')
@@ -120,7 +122,8 @@ class AgendamentoResource extends Resource
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação'),
                 Tables\Columns\TextColumn::make('parceiro.nome')
@@ -152,6 +155,11 @@ class AgendamentoResource extends Resource
                     ->multiple()
                     ->searchable()
                     ->preload(),
+                Tables\Filters\SelectFilter::make('servico_id')
+                    ->label('Serviço')
+                    ->relationship('servico', 'descricao')
+                    ->multiple()
+                    ->searchable(),
                 Tables\Filters\SelectFilter::make('parceiro_id')
                     ->label('Fornecedor')
                     ->relationship('parceiro', 'nome')
@@ -167,6 +175,10 @@ class AgendamentoResource extends Resource
                     ->relationship('ordemServico', 'id')
                     ->searchable()
                     ->multiple(),
+                Tables\Filters\TernaryFilter::make('possui_vinculo')
+                    ->label('Possui Vinculo c/ OS')
+                    ->nullable()
+                    ->attribute('ordem_servico_id'),
                 Tables\Filters\Filter::make('data_agendamento')
                     ->form([
                         Forms\Components\DatePicker::make('data_inicio')
@@ -185,6 +197,10 @@ class AgendamentoResource extends Resource
                                 fn(Builder $query, $date): Builder => $query->whereDate('data_agendamento', '<=', $date),
                             );
                     }),
+                Tables\Filters\TernaryFilter::make('data_agenda')
+                    ->label('Possui Dt. Agendada')
+                    ->nullable()
+                    ->attribute('data_agendamento')
             ])
             ->groups([
                 Tables\Grouping\Group::make('veiculo.placa')
@@ -192,6 +208,7 @@ class AgendamentoResource extends Resource
                     ->collapsible()
             ])
             ->defaultGroup('veiculo.placa')
+            ->defaultSort('data_agendamento', 'asc')
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->iconButton()
@@ -215,8 +232,8 @@ class AgendamentoResource extends Resource
                         ->deselectRecordsAfterCompletion(),
                 ]),
             ])->checkIfRecordIsSelectableUsing(
-            fn (Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE,
-        );
+                fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE,
+            );
     }
 
     public static function getRelations(): array
