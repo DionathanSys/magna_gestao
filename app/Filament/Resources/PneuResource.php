@@ -121,6 +121,7 @@ class PneuResource extends Resource
                     ->width('1%')
                     ->searchable(isIndividual: true)
                     ->toggleable(isToggledHiddenByDefault: false)
+                    ->placeholder('Não Aplicado')
                     ->url(fn (Pneu $record): string => VeiculoResource::getUrl('edit', ['record' => $record->veiculo->veiculo->id ?? 0]))
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('numero_fogo')
