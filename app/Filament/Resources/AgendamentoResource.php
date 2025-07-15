@@ -171,8 +171,7 @@ class AgendamentoResource extends Resource
                     ->label('Status')
                     ->options(StatusOrdemServicoEnum::toSelectArray())
                     ->multiple()
-                    ->default([StatusOrdemServicoEnum::PENDENTE->value, StatusOrdemServicoEnum::EXECUCAO->value])
-                    ->disableOptionWhen(fn(string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
+                    ->default([StatusOrdemServicoEnum::PENDENTE->value, StatusOrdemServicoEnum::EXECUCAO->value]),
                 Tables\Filters\SelectFilter::make('ordem_servico_id')
                     ->label('Ordem de Serviço')
                     ->relationship('ordemServico', 'id')
