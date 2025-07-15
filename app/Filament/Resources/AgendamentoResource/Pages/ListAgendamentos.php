@@ -30,6 +30,8 @@ class ListAgendamentos extends ListRecords
     {
         return [
             'todos' => Tab::make(),
+            'Sem Data' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', null)),
             'Hoje' => Tab::make()
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->format('Y-m-d'))),
             'Amanhã' => Tab::make()

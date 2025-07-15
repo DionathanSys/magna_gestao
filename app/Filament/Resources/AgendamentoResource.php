@@ -170,7 +170,8 @@ class AgendamentoResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
                     ->options(StatusOrdemServicoEnum::toSelectArray())
-                    ->multiple(),
+                    ->multiple()
+                    ->default([StatusOrdemServicoEnum::PENDENTE->value, StatusOrdemServicoEnum::EXECUCAO->value]),
                 Tables\Filters\SelectFilter::make('ordem_servico_id')
                     ->label('Ordem de Serviço')
                     ->relationship('ordemServico', 'id')
