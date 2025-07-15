@@ -42,6 +42,11 @@ class ListAgendamentos extends ListRecords
                         now()->endOfWeek()->format('Y-m-d')
                     ])
                 ),
+            'Atrasados' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) =>
+                    $query->where('data_agendamento', '<', now()->subDay()->format('Y-m-d'))
+                          ->whereIn('status', [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])
+                ),
 
         ];
     }

@@ -99,12 +99,13 @@ class AgendamentoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
-                    ->sortable()
-                    ->extraAttributes(['class' => 'bg-gray-600']),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
                     ->label('OS ID')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn (Agendamento $record): string => OrdemServicoResource::getUrl('edit', ['record' => $record->ordem_servico_id ?? 0]))
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('data_agendamento')
                     ->label('Agendado Para')
                     ->date('d/m/Y')
