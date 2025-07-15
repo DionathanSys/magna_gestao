@@ -482,6 +482,11 @@ class ViagemResource extends Resource
                         })
                         ->requiresConfirmation(),
                 ]),
+                FilamentExportBulkAction::make('export')
+                        ->fileName('Viagens')
+                        ->disableAdditionalColumns()
+                        ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
+                        ->filterColumnsFieldLabel('filter columns')
             ]);
     }
 
