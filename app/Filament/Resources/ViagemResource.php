@@ -236,7 +236,6 @@ class ViagemResource extends Resource
                         ->width('2%')
                         ->options(MotivoDivergenciaViagem::toSelectArray())
                         ->default(MotivoDivergenciaViagem::SEM_OBS->value)
-                        ->getStateUsing(fn($state) => is_object($state) && method_exists($state, 'value') ? $state->value : $state)
                         
                         ->disabled(fn(Viagem $record) => ($record->conferido && !Auth::user()->is_admin))
                 ]),
