@@ -15,7 +15,7 @@ class AgendamentoService
 {
 
     protected int $veiculoId;
-    protected int $parceiroId;
+    protected ?int $parceiroId;
 
 
     public function incluirAgendamentosEmOrdemServico(Collection $agendamentos)
