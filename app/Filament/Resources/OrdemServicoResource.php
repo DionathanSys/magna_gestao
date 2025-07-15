@@ -156,8 +156,46 @@ class OrdemServicoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->persistFiltersInSession()
+            ->defaultSort('veiculo_id')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('parceiro_id')
+                    ->label('Fornecedor')
+                    ->relationship('parceiro', 'nome')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('tipo_manutencao')
+                    ->label('Tipo Manutenção')
+                    ->options(TipoManutencaoEnum::toSelectArray())
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(StatusOrdemServicoEnum::toSelectArray())
+                    ->multiple(),
+                Tables\Filters\Filter::make('data_inicio')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->label('Dt. Abertura de'),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->label('Dt. Abertura até'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['data_inicio'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_inicio', '>=', $date),
+                            )
+                            ->when(
+                                $data['data_fim'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_inicio', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -229,7 +267,7 @@ class OrdemServicoResource extends Resource
                         ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ])
-            ->poll('5s')
+            ->poll(null)
             ->emptyStateDescription('');
     }
 

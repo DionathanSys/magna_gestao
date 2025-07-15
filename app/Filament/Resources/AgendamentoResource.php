@@ -170,9 +170,9 @@ class AgendamentoResource extends Resource
                 Tables\Filters\Filter::make('data_agendamento')
                     ->form([
                         Forms\Components\DatePicker::make('data_inicio')
-                            ->label('Data Comp. Início'),
+                            ->label('Dt. Agendada Inicio'),
                         Forms\Components\DatePicker::make('data_fim')
-                            ->label('Data Comp. Fim'),
+                            ->label('Dt. Agendada Fim'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
