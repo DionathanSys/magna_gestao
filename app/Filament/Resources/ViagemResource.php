@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\ViagemResource\Pages;
 use App\Filament\Resources\ViagemResource\RelationManagers;
 use App\Models\CargaViagem;
