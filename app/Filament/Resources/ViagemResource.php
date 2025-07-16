@@ -362,11 +362,7 @@ class ViagemResource extends Resource
                         ->icon('heroicon-o-arrow-path')
                         ->action(function (Viagem $record) {}),
                     Tables\Actions\EditAction::make()
-                        // ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
-                        // ->openUrlInNewTab()
-                        // ->visible(fn(Viagem $record) => ! $record->conferido)
-                        // ->icon('heroicon-o-pencil-square')
-                        ,
+                        ->visible(fn(Viagem $record) => ! $record->conferido),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
