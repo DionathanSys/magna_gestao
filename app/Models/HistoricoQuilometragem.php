@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class HistoricoQuilometragem extends Model
 {
-    //
+    protected $table = 'historico_quilometragens';
 }
