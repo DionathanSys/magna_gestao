@@ -278,6 +278,8 @@ class OrdemServicoResource extends Resource
             ->schema([
                 Infolists\Components\TextEntry::make('veiculo.placa')
                     ->label('Veículo')
+                    ->badge()
+                    ->color('primary')
                     ->columnSpan(2),
                 Infolists\Components\TextEntry::make('quilometragem')
                     ->label('Quilometragem')
@@ -300,14 +302,17 @@ class OrdemServicoResource extends Resource
                             ->columnSpan(1),
                         Infolists\Components\TextEntry::make('servico.descricao')
                             ->label('Serviço')
-                            ->columnSpan(4),
+                            ->columnSpan(4)
+                            ->formatStateUsing(fn(ItemOrdemServico $item) => $item->servico->descricao),
                         Infolists\Components\TextEntry::make('posicao')
                             ->label('Posição')
                             ->columnSpan(1)
                             ->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('status')
                             ->label('Status')
-                            ->columnSpan(2),
+                            ->columnSpan(2)
+                            ->badge()
+                            ->color('primary'),
                         Infolists\Components\TextEntry::make('observacao')
                             ->label('Observação')
                             ->columnSpanFull()
