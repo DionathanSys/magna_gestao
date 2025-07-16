@@ -356,7 +356,7 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('atualizar')
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
