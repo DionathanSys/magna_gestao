@@ -361,7 +361,7 @@ class ViagemResource extends Resource
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
                         ->action(function (Viagem $record) {}),
-                    Tables\Actions\Action::make('editar')
+                    Tables\Actions\Action::make('edit')
                         ->url(fn(Viagem $record): string => ViagemResource::getUrl('edit', ['record' => $record->id]))
                         ->openUrlInNewTab()
                         ->visible(fn(Viagem $record) => ! $record->conferido)
@@ -388,8 +388,7 @@ class ViagemResource extends Resource
                             $viagem->updated_by = Auth::user()->id;
                             $viagem->save();
                         }),
-                ])
-                    ->link(),
+                ])->link(),
                 Tables\Actions\DeleteAction::make()
                     ->iconButton(),
                 Tables\Actions\Action::make('nova-carga')
@@ -527,7 +526,7 @@ class ViagemResource extends Resource
         return [
             'index' => Pages\ListViagems::route('/'),
             'create' => Pages\CreateViagem::route('/create'),
-            'edit' => Pages\EditViagem::route('/{record}/edit'),
+            // 'edit' => Pages\EditViagem::route('/{record}/edit'),
             'teste' => Pages\Teste::route('/{record}/teste'),
         ];
     }
