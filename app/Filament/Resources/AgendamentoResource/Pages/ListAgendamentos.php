@@ -41,7 +41,10 @@ class ListAgendamentos extends ListRecords
                 ->badgeColor('info'),
             'Amanhã' => Tab::make()
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->addDay()->format('Y-m-d')))
-                ->badge(Agendamento::query()->where('data_agendamento', now()->addDay()->format('Y-m-d'))->count())
+                ->badge(Agendamento::query()
+                    ->where('data_agendamento', now()->addDay()->format('Y-m-d'))
+                    ->whereIn('status', [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])
+                    ->count())
                 ->badgeColor('info'),
             'Semana' => Tab::make()
                 ->modifyQueryUsing(
