@@ -225,8 +225,9 @@ class CargaViagemResource extends Resource
                     }),
                 Tables\Filters\QueryBuilder::make()
                 ->constraints([
-                        \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_cobrar'),
-                        \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_perdido'),
+                        \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_cobrar')
+                            ->relationship('viagem','km_cobrar'),
+                        // \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_perdido'),
                         \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
                             ->multiple()
                             ->emptyable()
