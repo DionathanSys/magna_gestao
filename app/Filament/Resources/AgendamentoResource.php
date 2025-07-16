@@ -115,7 +115,7 @@ class AgendamentoResource extends Resource
                     ->date('d/m/Y')
                     ->sortable()
                     ->placeholder('Não definido'),
-                Tables\Columns\TextColumn::make('data_finalizado')
+                Tables\Columns\TextColumn::make('data_realizado')
                     ->label('Finalizado Em')
                     ->date('d/m/Y')
                     ->placeholder('Não definido')
