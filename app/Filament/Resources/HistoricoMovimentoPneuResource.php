@@ -30,15 +30,21 @@ class HistoricoMovimentoPneuResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('pneu_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('veiculo_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('pneu_id')
+                    ->label('Nº de Fogo')
+                    ->relationship('pneu', 'numero_fogo')
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->required(),
                 Forms\Components\DatePicker::make('data_inicial')
+                    ->label('Data Inicial')
                     ->required(),
                 Forms\Components\DatePicker::make('data_final')
+                    ->label('Data Final')
                     ->required(),
                 Forms\Components\TextInput::make('km_inicial')
                     ->required()
@@ -51,12 +57,14 @@ class HistoricoMovimentoPneuResource extends Resource
                 Forms\Components\TextInput::make('posicao')
                     ->label('Posição')
                     ->required()
-                    ->maxLength(255),
+                    ->minLength(2)
+                    ->maxLength(4),
                 Forms\Components\TextInput::make('sulco_movimento')
                     ->required()
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\Select::make('motivo')
+                    ->required()
                     ->options(MotivoMovimentoPneuEnum::toSelectArray()),
                 Forms\Components\TextInput::make('ciclo_vida')
                     ->label('Vida')
@@ -64,7 +72,7 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(3),
-                Forms\Components\TextInput::make('observacao')
+                Forms\Components\RichEditor::make('observacao')
                     ->label('Observação')
                     ->maxLength(255),
             ]);
