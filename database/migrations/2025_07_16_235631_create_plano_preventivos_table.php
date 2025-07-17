@@ -11,9 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plano_preventivos', function (Blueprint $table) {
+        Schema::create('planos_preventivo', function (Blueprint $table) {
             $table->id();
+            $table->string('descricao')
+                ->unique();
+            $table->string('periodicidade');
+            $table->unsignedInteger('intervalo')
+                ->default(0);
+            $table->boolean('is_active')
+                ->default(true);
+            $table->json('itens')
+                ->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plano_preventivos');
+        Schema::dropIfExists('planos_preventivo');
     }
 };

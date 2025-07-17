@@ -17,7 +17,13 @@ class VeiculoResource extends Resource
 {
     protected static ?string $model = Veiculo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Veículos';
+
+    protected static ?string $pluralModelLabel = 'Veículos';
+
+    protected static ?string $pluralLabel = 'Veículos';
+
+    protected static ?string $label = 'Veículo';
 
     public static function form(Form $form): Form
     {
@@ -36,11 +42,13 @@ class VeiculoResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('km_movimento')
                     ->label('KM Movimento')
+                    ->visibleOn('edit')
                     ->columnSpan(1)
                     ->numeric()
                     ->required(),
                 Forms\Components\DatePicker::make('data_movimento')
                     ->label('Dt. Movimento')
+                    ->visibleOn('edit')
                     ->columnSpan(1)
                     ->date()
                     ->default(now())

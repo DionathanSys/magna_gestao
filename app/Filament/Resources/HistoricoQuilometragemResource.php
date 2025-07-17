@@ -17,13 +17,39 @@ class HistoricoQuilometragemResource extends Resource
 {
     protected static ?string $model = HistoricoQuilometragem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Veículos';
+
+    protected static ?string $pluralModelLabel = 'Hist. KM';
+
+    protected static ?string $pluralLabel = 'Hist. KM';
+
+    protected static ?string $label = 'Hist. KM';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->required()
+                    ->columnSpan(1),
+                Forms\Components\TextInput::make('quilometragem')
+                    ->label('Quilometragem')
+                    ->required()
+                    ->numeric()
+                    ->columnSpan(1),
+                Forms\Components\DatePicker::make('data_referencia')
+                    ->label('Data de Referência')
+                    ->required()
+                    ->date()
+                    ->default(now())
+                    ->maxDate(now())
+                    ->displayFormat('d/m/Y')
+                    ->closeOnDateSelection()
+                    ->columnSpan(1),
+
             ]);
     }
 
