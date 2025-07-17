@@ -55,24 +55,19 @@ class OrdemServicoResource extends Resource
                         Forms\Components\Tabs\Tab::make('Informações')
                             ->columns(8)
                             ->schema([
-                                Forms\Components\Section::make('Informações Gerais')
-                                    ->columnSpanFull()
-                                    ->columns(8)
-                                    ->schema([
-                                        static::getVeiculoIdFormField(),
-                                        static::getQuilometragemFormField(),
-                                        static::getTipoManutencaoFormField(),
-                                        static::getDataInicioFormField()
-                                            ->columnStart(1)
-                                            ->columnSpan(2),
-                                        static::getDataFimFormField()
-                                            ->visibleOn('edit')
-                                            ->columnSpan(2),
-                                        static::getStatusFormField()
-                                            ->columnSpan(2),
-                                        static::getStatusSankhyaFormField()
-                                            ->columnSpan(2),
-                                    ]),
+                                static::getVeiculoIdFormField(),
+                                static::getQuilometragemFormField(),
+                                static::getTipoManutencaoFormField(),
+                                static::getDataInicioFormField()
+                                    ->columnStart(1)
+                                    ->columnSpan(2),
+                                static::getDataFimFormField()
+                                    ->visibleOn('edit')
+                                    ->columnSpan(2),
+                                static::getStatusFormField()
+                                    ->columnSpan(2),
+                                static::getStatusSankhyaFormField()
+                                    ->columnSpan(2),
 
                                 Forms\Components\Section::make('Manutenção Externa')
                                     ->columnSpanFull()
@@ -86,6 +81,7 @@ class OrdemServicoResource extends Resource
                             ]),
                         Forms\Components\Tabs\Tab::make('Ordens Sankhya')
                             ->columns(8)
+                            ->visibleOn('edit')
                             ->schema([
                                 Forms\Components\Repeater::make('sankhyaId')
                                     ->relationship()
@@ -347,7 +343,18 @@ class OrdemServicoResource extends Resource
             ->required()
             ->relationship('veiculo', 'placa')
             ->searchable()
-            ->preload();
+            ->preload()
+            ->live(onBlur: true)
+            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                if ($state) {
+                    $veiculo = \App\Models\Veiculo::with('kmAtual')->find($state);
+                    if ($veiculo) {
+                        $set('quilometragem', $veiculo->kmAtual?->quilometragem ?? 0);
+                    }
+                } else {
+                    $set('quilometragem', null);
+                }
+            });
     }
 
     public static function getQuilometragemFormField(): Forms\Components\TextInput
@@ -357,7 +364,8 @@ class OrdemServicoResource extends Resource
             ->columnSpan(2)
             ->numeric()
             ->minValue(0)
-            ->maxValue(999999);
+            ->maxValue(999999)
+            ->required();
     }
 
     public static function getTipoManutencaoFormField(): Forms\Components\Select

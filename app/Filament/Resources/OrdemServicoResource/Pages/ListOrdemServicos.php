@@ -5,10 +5,12 @@ namespace App\Filament\Resources\OrdemServicoResource\Pages;
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\OrdemServicoResource;
 use App\Models\OrdemServico;
+use App\Models\Veiculo;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
+use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Facades\Auth;
 
 class ListOrdemServicos extends ListRecords
@@ -21,6 +23,13 @@ class ListOrdemServicos extends ListRecords
             Actions\CreateAction::make()
                 ->label('OS')
                 ->icon('heroicon-o-plus')
+                ->before(function (Actions\CreateAction $action, array $data) {
+                    $veiculo = Veiculo::with('kmAtual')->find($data['veiculo_id']);
+                    if ($veiculo->kmAtual->quilometragem > $data['quilometragem']) {
+                        notify::error('A quilometragem informada deve ser maior ou igual à quilometragem atual do veículo.');
+                        $action->halt();
+                    }
+                })
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['created_by'] = Auth::user()->id;
                     return $data;

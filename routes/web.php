@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Models\Pneu;
 use App\Models\PneuPosicaoVeiculo;
 use App\Models\Veiculo;
 use Illuminate\Support\Facades\DB;
@@ -49,15 +50,10 @@ Route::prefix('import')->group(function () {
 });
 
 Route::get('/teste', function () {
-    // crie uma consulta que verifique na model viagem, quantas viagens possue mais de um registro com o mesmo valor para o campo numero_viagem
 
-    $viagens = \App\Models\Viagem::query()
-        ->select('numero_viagem', DB::raw('COUNT(*) as total'))
-        ->groupBy('numero_viagem')
-        ->having('total', '>', 1)
-        ->pluck('total', 'numero_viagem');
-    dd($viagens);
-    
+        $pneu = Pneu::find(182);
+        dd($pneu->veiculo->id);
+
 });
 
 

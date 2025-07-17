@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enum\Pneu\LocalPneuEnum;
 use App\Enum\Pneu\StatusPneuEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, HasOne};
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, HasOne, HasOneThrough};
 
 class Pneu extends Model
 {
@@ -24,9 +24,19 @@ class Pneu extends Model
         return $this->hasMany(Conserto::class, 'pneu_id');
     }
 
-    public function veiculo(): HasOne
+    public function veiculo(): HasOneThrough
     {
-        return $this->hasOne(PneuPosicaoVeiculo::class);
+        return $this->hasOneThrough(
+            Veiculo::class,
+            PneuPosicaoVeiculo::class,
+            'pneu_id', // Foreign key on PneuPosicaoVeiculo table
+            'id', // Foreign key on Veiculo table
+            'id', // Local key on Pneu table
+            'veiculo_id' // Local key on PneuPosicaoVeiculo table
+        )->withDefault([
+            'id' => 0,
+            'placa' => 'Não Aplicado',
+        ]);
     }
 
     public function ultimoRecap()

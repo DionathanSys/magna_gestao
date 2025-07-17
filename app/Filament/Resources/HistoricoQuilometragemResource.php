@@ -37,13 +37,15 @@ class HistoricoQuilometragemResource extends Resource
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('data_referencia')
+                    ->label('Data de Referência')
+                    ->sortable()
                     ->dateTime('d/m/Y H:i'),
                 Tables\Columns\TextColumn::make('quilometragem')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
@@ -51,7 +53,8 @@ class HistoricoQuilometragemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

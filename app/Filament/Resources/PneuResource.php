@@ -116,12 +116,12 @@ class PneuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->width('1%'),
-                Tables\Columns\TextColumn::make('veiculo.veiculo.placa')
+                Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
                     ->width('1%')
                     ->searchable(isIndividual: true)
                     ->toggleable(isToggledHiddenByDefault: false)
-                    ->placeholder('Não Aplicado')
+                    ->url(fn(Pneu $record): string => VeiculoResource::getUrl('edit', ['record' => $record->veiculo->id]))
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('numero_fogo')
                     ->label('Nº de Fogo')

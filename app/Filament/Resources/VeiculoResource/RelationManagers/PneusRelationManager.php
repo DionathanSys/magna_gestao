@@ -76,6 +76,8 @@ class PneusRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->width('1%'),
+                Tables\Columns\TextColumn::make('km_inicial')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
                     ->date('d/m/Y'),

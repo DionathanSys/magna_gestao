@@ -70,10 +70,12 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->label('Vida')
                     ->required()
                     ->numeric()
+                    ->default(0)
                     ->minValue(0)
                     ->maxValue(3),
                 Forms\Components\RichEditor::make('observacao')
                     ->label('Observação')
+                    ->columnSpanFull()
                     ->maxLength(255),
             ]);
     }

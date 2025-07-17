@@ -20,7 +20,9 @@ class Agendamento extends Model
 
     public function ordemServico(): BelongsTo
     {
-        return $this->belongsTo(OrdemServico::class);
+        return $this->belongsTo(OrdemServico::class)->withDefault(
+            ['ordem_servico_id' => 0]
+        );
     }
 
     public function servico(): BelongsTo
