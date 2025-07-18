@@ -71,11 +71,11 @@ class ServicoResource extends Resource
                 Tables\Columns\TextColumn::make('codigo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descricao')
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('complemento')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tipo')
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 Tables\Columns\IconColumn::make('controla_posicao')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_active')
@@ -96,6 +96,7 @@ class ServicoResource extends Resource
             ->filters([
                 //
             ])
+            ->persistFiltersInSession(true)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
