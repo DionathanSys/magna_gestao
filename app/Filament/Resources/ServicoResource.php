@@ -66,6 +66,8 @@ class ServicoResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('codigo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descricao')
