@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\TipoServicoEnum;
 use App\Filament\Resources\PlanoPreventivoResource\Pages;
 use App\Filament\Resources\PlanoPreventivoResource\RelationManagers;
 use App\Models\PlanoPreventivo;
@@ -41,9 +42,19 @@ class PlanoPreventivoResource extends Resource
                     ->label('Ativo')
                     ->required()
                     ->default(true),
-                Forms\Components\TagsInput::make('itens')
+                Forms\Components\Repeater::make('itens')
                     ->label('Itens do Plano')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->schema([
+                        Forms\Components\Select::make('servico_id')
+                            ->label('Descrição do Item')
+                            ->options(
+                                \App\Models\Servico::where('is_active', true)
+                                    ->where('tipo', TipoServicoEnum::PREVENTIVA->value)
+                                    ->pluck('descricao', 'id')
+                            )
+                            ->required(),
+                    ]),
             ]);
     }
 
