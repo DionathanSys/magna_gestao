@@ -53,9 +53,7 @@ class PlanoPreventivoResource extends Resource
                     ->label('Itens do Plano')
                     ->keyLabel('Item')
                     ->valueLabel('Descrição')
-                    ->required()
-                    ->maxItems(10)
-                    ->minItems(1),
+                    ->required(),
             ]);
     }
 
