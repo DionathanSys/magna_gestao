@@ -101,7 +101,7 @@ class PlanoPreventivoResource extends Resource
         return [
             'index' => Pages\ListPlanoPreventivos::route('/'),
             // 'create' => Pages\CreatePlanoPreventivo::route('/create'),
-            'edit' => Pages\EditPlanoPreventivo::route('/{record}/edit'),
+            // 'edit' => Pages\EditPlanoPreventivo::route('/{record}/edit'),
         ];
     }
 }
