@@ -31,8 +31,7 @@ class PlanoPreventivoResource extends Resource
             ->schema([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
                 Forms\Components\TextInput::make('descricao')
                     ->label('Descrição')
                     ->required()
