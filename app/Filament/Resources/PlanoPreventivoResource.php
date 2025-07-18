@@ -29,9 +29,9 @@ class PlanoPreventivoResource extends Resource
     {
         return $form
             ->schema([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('id')
+                //     ->label('ID')
+                //     ->sortable(),
                 // Forms\Components\TextInput::make('descricao')
                 //     ->label('Descrição')
                 //     ->required()
@@ -94,7 +94,7 @@ class PlanoPreventivoResource extends Resource
     {
         return [
             'index' => Pages\ListPlanoPreventivos::route('/'),
-            'create' => Pages\CreatePlanoPreventivo::route('/create'),
+            // 'create' => Pages\CreatePlanoPreventivo::route('/create'),
             'edit' => Pages\EditPlanoPreventivo::route('/{record}/edit'),
         ];
     }
