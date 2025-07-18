@@ -50,10 +50,7 @@ class PlanoPreventivoResource extends Resource
                     ->required()
                     ->default(true),
                 Forms\Components\KeyValue::make('itens')
-                    ->label('Itens do Plano')
-                    ->keyLabel('Item')
-                    ->valueLabel('Descrição')
-                    ->required(),
+                    ->label('Itens do Plano'),
             ]);
     }
 
@@ -73,8 +70,6 @@ class PlanoPreventivoResource extends Resource
                     ->label('Periodicidade'),
                 Tables\Columns\TextColumn::make('intervalo')
                     ->label('Intervalo'),
-                Tables\Columns\ToggleColumn::make('is_active')
-                    ->label('Ativo'),
             ])
             ->filters([
                 //
