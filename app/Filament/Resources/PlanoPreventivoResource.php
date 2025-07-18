@@ -33,10 +33,6 @@ class PlanoPreventivoResource extends Resource
                     ->label('Descrição')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('periodicidade')
-                    ->label('Periodicidade')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('intervalo')
                     ->label('Intervalo')
                     ->required()
@@ -46,7 +42,8 @@ class PlanoPreventivoResource extends Resource
                     ->required()
                     ->default(true),
                 Forms\Components\KeyValue::make('itens')
-                    ->label('Itens do Plano'),
+                    ->label('Itens do Plano')
+                    ->columnSpanFull(),
             ]);
     }
 
