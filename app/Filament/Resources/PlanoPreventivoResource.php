@@ -29,7 +29,33 @@ class PlanoPreventivoResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                Forms\Components\TextInput::make('descricao')
+                    ->label('Descrição')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('periodicidade')
+                    ->label('Periodicidade')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('intervalo')
+                    ->label('Intervalo')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Ativo')
+                    ->required()
+                    ->default(true),
+                Forms\Components\KeyValue::make('itens')
+                    ->label('Itens do Plano')
+                    ->keyLabel('Item')
+                    ->valueLabel('Descrição')
+                    ->required()
+                    ->maxItems(10)
+                    ->minItems(1),
             ]);
     }
 
@@ -37,7 +63,20 @@ class PlanoPreventivoResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('descricao')
+                    ->label('Descrição')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('periodicidade')
+                    ->label('Periodicidade'),
+                Tables\Columns\TextColumn::make('intervalo')
+                    ->label('Intervalo'),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Ativo'),
             ])
             ->filters([
                 //
