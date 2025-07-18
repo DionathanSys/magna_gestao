@@ -44,6 +44,7 @@ class PlanoPreventivoResource extends Resource
                     ->default(true),
                 Forms\Components\Repeater::make('itens')
                     ->label('Itens do Plano')
+                    ->columnSpanFull()
                     ->schema([
                         Forms\Components\Select::make('servico_id')
                             ->label('Descrição do Item')
