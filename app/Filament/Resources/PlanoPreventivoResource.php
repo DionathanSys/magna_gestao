@@ -30,8 +30,7 @@ class PlanoPreventivoResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')
-                    ->label('ID')
-                    ->sortable(),
+                    ->label('ID'),
                 Forms\Components\TextInput::make('descricao')
                     ->label('Descrição')
                     ->required()
