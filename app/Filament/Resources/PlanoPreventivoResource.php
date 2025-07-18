@@ -41,7 +41,7 @@ class PlanoPreventivoResource extends Resource
                     ->label('Ativo')
                     ->required()
                     ->default(true),
-                Forms\Components\KeyValue::make('itens')
+                Forms\Components\TagsInput::make('itens')
                     ->label('Itens do Plano')
                     ->columnSpanFull(),
             ]);
