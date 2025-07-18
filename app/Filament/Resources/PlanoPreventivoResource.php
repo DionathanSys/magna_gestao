@@ -32,24 +32,24 @@ class PlanoPreventivoResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->sortable(),
-                Forms\Components\TextInput::make('descricao')
-                    ->label('Descrição')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('periodicidade')
-                    ->label('Periodicidade')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('intervalo')
-                    ->label('Intervalo')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Ativo')
-                    ->required()
-                    ->default(true),
-                Forms\Components\KeyValue::make('itens')
-                    ->label('Itens do Plano'),
+                // Forms\Components\TextInput::make('descricao')
+                //     ->label('Descrição')
+                //     ->required()
+                //     ->maxLength(255),
+                // Forms\Components\TextInput::make('periodicidade')
+                //     ->label('Periodicidade')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('intervalo')
+                //     ->label('Intervalo')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\Toggle::make('is_active')
+                //     ->label('Ativo')
+                //     ->required()
+                //     ->default(true),
+                // Forms\Components\KeyValue::make('itens')
+                //     ->label('Itens do Plano'),
             ]);
     }
 
