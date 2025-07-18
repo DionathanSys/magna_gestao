@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enum\Pneu\LocalPneuEnum;
 use App\Enum\Pneu\StatusPneuEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, HasOne, HasOneThrough};
 
@@ -29,10 +30,10 @@ class Pneu extends Model
         return $this->hasOneThrough(
             Veiculo::class,
             PneuPosicaoVeiculo::class,
-            'pneu_id', // Foreign key on PneuPosicaoVeiculo table
-            'id', // Foreign key on Veiculo table
-            'id', // Local key on Pneu table
-            'veiculo_id' // Local key on PneuPosicaoVeiculo table
+            'pneu_id',
+            'id',
+            'id',
+            'veiculo_id'
         )->withDefault([
             'id' => 0,
             'placa' => 'Não Aplicado',
@@ -43,4 +44,5 @@ class Pneu extends Model
     {
         return $this->hasOne(Recapagem::class, 'pneu_id')->latestOfMany();
     }
+
 }

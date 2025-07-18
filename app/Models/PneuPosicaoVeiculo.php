@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class PneuPosicaoVeiculo extends Model
@@ -16,6 +17,13 @@ class PneuPosicaoVeiculo extends Model
     public function veiculo()
     {
         return $this->belongsTo(Veiculo::class, 'veiculo_id');
+    }
+
+      public function kmPercorrido(): Attribute
+    {
+        return Attribute::get(
+            fn () => ($this->km_final ?? 0) - ($this->km_inicial ?? 0)
+        );
     }
 
 }
