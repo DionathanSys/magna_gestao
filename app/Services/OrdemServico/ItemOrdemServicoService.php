@@ -41,10 +41,9 @@ class ItemOrdemServicoService
             return false;
         }
 
-        ItemOrdemServico::query()
-            ->where('ordem_servico_id', $planoManutencaoOrdemServico->ordem_servico_id)
-            ->where('plano_preventivo_id', $planoManutencaoOrdemServico->plano_preventivo_id)
-            ->delete();
+        $itens->each(function ($item) {
+            $item->delete();
+        });
 
         return true;
     }
