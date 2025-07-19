@@ -47,10 +47,12 @@ class PlanoManutencaoVeiculoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano Preventivo')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -60,6 +62,16 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups([
+                Tables\Grouping\Group::make('planoPreventivo.descricao')
+                    ->label('Plano Preventivo')
+                    ->collapsible(),
+                Tables\Grouping\Group::make('veiculo.placa')
+                    ->label('Veículo')
+                    ->collapsible(),
+            ])
+            ->defaultGroup('veiculo.placa')
+            ->defaultSort('planoPreventivo.descricao', 'asc')
             ->filters([
 
             ])
@@ -76,7 +88,7 @@ class PlanoManutencaoVeiculoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            
+
         ];
     }
 
