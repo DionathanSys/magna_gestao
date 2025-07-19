@@ -44,9 +44,9 @@ class PlanoManutencaoVeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                $query->with(['planoPreventivo', 'veiculo', 'ultimaExecucao']);
-            })
+            // ->modifyQueryUsing(function (Builder $query) {
+            //     $query->with(['planoPreventivo', 'veiculo']);
+            // })
             ->columns([
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano Preventivo')
@@ -62,11 +62,11 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->label('Quilometragem Atual')
                     ->width('1%')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ultimaExecucao.km_execucao')
+                Tables\Columns\TextColumn::make('ultima_execucao.km_execucao')
                     ->label('KM de Execução')
                     ->width('1%')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ultimaExecucao.data_execucao')
+                Tables\Columns\TextColumn::make('ultima_execucao.data_execucao')
                     ->label('Data de Execução')
                     ->width('1%')
                     ->dateTime('d/m/Y')
