@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class PlanoPreventivoRelationManager extends RelationManager
 {
@@ -44,11 +45,15 @@ class PlanoPreventivoRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn() => Auth::user()->is_admin)
             ])
             ->actions([
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    // Tables\Actions\DeleteBulkAction::make()
+                    //     ->visible(fn() => Auth::user()->is_admin)
                 ]),
             ]);
     }
