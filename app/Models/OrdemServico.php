@@ -60,8 +60,8 @@ class OrdemServico extends Model
             ->where('status', StatusOrdemServicoEnum::PENDENTE);
     }
 
-    public function planoPreventivoVinculado(): BelongsTo
+    public function planoPreventivoVinculado(): HasMany
     {
-        return $this->belongsTo(PlanoManutencaoOrdemServico::class, 'ordem_servico_id');
+        return $this->hasMany(PlanoManutencaoOrdemServico::class, 'ordem_servico_id');
     }
 }
