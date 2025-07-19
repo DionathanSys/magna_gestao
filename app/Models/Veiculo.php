@@ -17,5 +17,10 @@ class Veiculo extends Model
         return $this->hasOne(HistoricoQuilometragem::class)->latestOfMany();
     }
 
+    public function planoPreventivo(): BelongsToMany
+    {
+        return $this->belongsToMany(PlanoManutencaoVeiculo::class, 'planos_manutencao_veiculo', 'veiculo_id', 'plano_preventivo_id');
+    }
+
 
 }

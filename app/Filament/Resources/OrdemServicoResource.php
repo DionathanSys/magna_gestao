@@ -8,6 +8,7 @@ use App\Filament\Resources\OrdemServicoResource\Pages;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers\AgendamentosRelationManager;
 use App\Filament\Resources\OrdemServicoResource\RelationManagers\ItensRelationManager;
+use App\Filament\Resources\OrdemServicoResource\RelationManagers\PlanoPreventivoRelationManager;
 use App\Models\Agendamento;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemSankhya;
@@ -322,6 +323,7 @@ class OrdemServicoResource extends Resource
         return [
             ItensRelationManager::class,
             AgendamentosRelationManager::class,
+            PlanoPreventivoRelationManager::class,
         ];
     }
 

@@ -51,8 +51,7 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-        $pneu = Pneu::find(182);
-        dd($pneu->veiculo->id);
+        dd(1);
 
 });
 
