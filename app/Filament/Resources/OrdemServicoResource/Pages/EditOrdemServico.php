@@ -42,7 +42,7 @@ class EditOrdemServico extends EditRecord
                             ->options(
                                 Veiculo::find($this->record->veiculo_id)
                                     ->planoPreventivo()
-                                    ->pluck('descricao', 'id')
+                                    ->pluck('descricao', 'plano_preventivo_id')
                             )
                             ->required()
                     ]))
