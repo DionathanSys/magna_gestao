@@ -4,12 +4,15 @@ namespace App\Services\OrdemServico;
 
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
+use App\Models\PlanoPreventivo;
 use App\Services\NotificacaoService as notify;
 
 class ManutencaoPreventivaService
 {
     public static function associarPlanoPreventivo(OrdemServico $ordemServico, $planoPreventivoId)
     {
+        dd(PlanoPreventivo::find($planoPreventivoId)->itens);
+
         $manutencaoPreventivaAssociada = PlanoManutencaoOrdemServico::query()
             ->where('ordem_servico_id', $ordemServico->id)
             ->where('plano_preventivo_id', $planoPreventivoId)
