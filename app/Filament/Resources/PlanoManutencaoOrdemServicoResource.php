@@ -30,7 +30,7 @@ class PlanoManutencaoOrdemServicoResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('veiculo_id')
-                    ->relationship('veiculo', 'descricao')
+                    ->relationship('veiculo', 'placa')
                     ->live()
                     ->required(),
                 Forms\Components\Select::make('plano_preventivo_id')
