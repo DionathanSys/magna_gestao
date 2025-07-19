@@ -44,9 +44,9 @@ class PlanoManutencaoVeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->modifyQueryUsing(function (Builder $query) {
-            //     $query->with(['planoPreventivo', 'veiculo']);
-            // })
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->with(['planoPreventivo', 'veiculo', 'ultimaExecucao']);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano Preventivo')
