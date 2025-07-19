@@ -61,6 +61,7 @@ class PlanoManutencaoVeiculoResource extends Resource
                 Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
                     ->label('Quilometragem Atual')
                     ->width('1%')
+                    ->numeric(0, ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ultima_execucao.km_execucao')
                     ->label('KM de Execução')
