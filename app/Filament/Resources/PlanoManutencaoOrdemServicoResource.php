@@ -34,7 +34,7 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     ->live()
                     ->required(),
                 Forms\Components\Select::make('plano_preventivo_id')
-                    ->relationship('planoPreventivoVinculado', 'descricao', function ($query, Forms\Get $get) {
+                    ->relationship('planoPreventivoVinculado.planoPreventivo', 'descricao', function ($query, Forms\Get $get) {
                         return $query
                             ->where('is_active', true)
                             ->where('veiculo_id', $get('veiculo_id'))
