@@ -68,6 +68,8 @@ class ItensRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação')
                     ->placeholder('N/A'),
+                Tables\Columns\TextColumn::make('servico.tipo')
+                    ->label('Tipo de Serviço'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
