@@ -71,6 +71,9 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                 Tables\Columns\TextColumn::make('plano_preventivo_id')
                     ->label('Plano Preventivo')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('planoPreventivo.descricao')
+                    ->label('Descrição')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
                     ->label('Ordem de Serviço')
                     ->placeholder('Sem Vínculo')
