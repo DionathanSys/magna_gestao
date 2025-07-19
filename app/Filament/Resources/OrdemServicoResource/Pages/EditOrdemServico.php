@@ -44,6 +44,8 @@ class EditOrdemServico extends EditRecord
                                     ->planoPreventivo()
                                     ->pluck('descricao', 'plano_preventivo_id')
                             )
+                            ->searchable()
+                            ->preload()
                             ->required()
                     ]))
                 ->action(function (OrdemServico $record, array $data) {
