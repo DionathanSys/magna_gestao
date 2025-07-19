@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Models\OrdemServico;
 use App\Models\Pneu;
 use App\Models\PneuPosicaoVeiculo;
 use App\Models\Veiculo;
@@ -51,8 +52,10 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-    $var = Veiculo::with('planoPreventivo')->find(1);
-        dd($var);
+    $var = Veiculo::with('planoPreventivo')->find(23);
+    dump($var);
+    $var = OrdemServico::with(['planoPreventivo', 'veiculo.planoPreventivo'])->find(57);
+    dd($var);
 
 });
 
