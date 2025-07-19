@@ -30,6 +30,24 @@ class EditOrdemServico extends EditRecord
                     'status',
                     'data_fim',
                 ])),
+            Actions\Action::make('manutencao-preventiva')
+                ->label('Manutenção Preventiva')
+                ->form(fn(Forms\Form $form) => $form
+                    ->schema([
+                        Forms\Components\Select::make('plano_preventivo_id')
+                            ->label('Plano Preventivo')
+                            ->options(
+                                OrdemServico::find($this->record->id)
+                                    ->veiculo
+                                    ->planoPreventivo
+                                    ->pluck('nome', 'id')
+                            )
+                            ->required()
+                    ]))
+                ->action(function (OrdemServico $record) {
+                })
+                ->color('primary')
+                ->icon('heroicon-o-wrench')
         ];
     }
 }

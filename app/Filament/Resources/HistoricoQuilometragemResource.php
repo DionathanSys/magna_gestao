@@ -75,6 +75,7 @@ class HistoricoQuilometragemResource extends Resource
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

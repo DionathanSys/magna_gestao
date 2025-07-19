@@ -18,10 +18,6 @@ class PlanoPreventivoRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('plano_preventivo_id')
-                    ->label('Plano Preventivo')
-                    ->relationship('veiculo', 'descricao')
-                    ->required(),
             ]);
     }
 
@@ -44,15 +40,11 @@ class PlanoPreventivoRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
