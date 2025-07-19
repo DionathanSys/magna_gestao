@@ -29,7 +29,7 @@ class ItemOrdemServicoService
         );
     }
 
-    public static function removerVinculoComPlanoPreventivo(PlanoManutencaoOrdemServico $planoManutencaoOrdemServico): bool
+    public static function removerItensComPlanoPreventivo(PlanoManutencaoOrdemServico $planoManutencaoOrdemServico): bool
     {
         $itens = ItemOrdemServico::query()
             ->where('ordem_servico_id', $planoManutencaoOrdemServico->ordem_servico_id)
@@ -44,11 +44,8 @@ class ItemOrdemServicoService
         ItemOrdemServico::query()
             ->where('ordem_servico_id', $planoManutencaoOrdemServico->ordem_servico_id)
             ->where('plano_preventivo_id', $planoManutencaoOrdemServico->plano_preventivo_id)
-            ->update([
-                'plano_preventivo_id' => null,
-            ]);
+            ->delete();
 
-        notify::success('Vínculo com o plano preventivo removido com sucesso.');
         return true;
     }
 

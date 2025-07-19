@@ -60,7 +60,7 @@ class ManutencaoPreventivaService
     public static function desassociarPlanoPreventivo(PlanoManutencaoOrdemServico $planoManutencaoOrdemServico)
     {
 
-        if (! ItemOrdemServicoService::removerVinculoComPlanoPreventivo($planoManutencaoOrdemServico)){
+        if (! ItemOrdemServicoService::removerItensComPlanoPreventivo($planoManutencaoOrdemServico)){
             notify::error('Erro ao desassociar Plano Preventivo.');
             return;
         }
