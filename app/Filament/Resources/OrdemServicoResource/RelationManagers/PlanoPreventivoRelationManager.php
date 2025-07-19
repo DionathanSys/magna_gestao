@@ -20,7 +20,7 @@ class PlanoPreventivoRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('plano_preventivo_id')
                     ->label('Plano Preventivo')
-                    ->relationship('veiculo.planoPreventivo', 'descricao')
+                    ->relationship('veiculo', 'descricao')
                     ->required(),
             ]);
     }
