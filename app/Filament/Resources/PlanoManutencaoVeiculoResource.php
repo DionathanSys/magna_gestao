@@ -47,20 +47,24 @@ class PlanoManutencaoVeiculoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano Preventivo')
+                    ->width('1%')
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
+                    ->width('1%')
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->groups([
                 Tables\Grouping\Group::make('planoPreventivo.descricao')
