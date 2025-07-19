@@ -53,7 +53,7 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-dd(PlanoManutencaoVeiculo::find($id)->ultimaExecucao()->get());
+dd(PlanoManutencaoVeiculo::find(1)->ultimaExecucao()->get());
 
 });
 
