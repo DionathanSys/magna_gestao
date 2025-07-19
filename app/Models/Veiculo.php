@@ -19,7 +19,7 @@ class Veiculo extends Model
 
     public function planoPreventivo(): BelongsToMany
     {
-        return $this->belongsToMany(PlanoManutencaoVeiculo::class, 'planos_manutencao_veiculo', 'veiculo_id', 'plano_preventivo_id');
+        return $this->belongsToMany(PlanoPreventivo::class, 'planos_manutencao_veiculo', 'veiculo_id', 'plano_preventivo_id');
     }
 
 
