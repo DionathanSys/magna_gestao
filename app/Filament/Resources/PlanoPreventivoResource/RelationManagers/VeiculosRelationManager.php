@@ -18,9 +18,9 @@ class VeiculosRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id')
+                Forms\Components\Select::make('veiculo_id')
                     ->required()
-                    ->maxLength(255),
+                    ->relationship('veiculo', 'placa'),
             ]);
     }
 
@@ -30,13 +30,26 @@ class VeiculosRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->label('Veículo')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('Adicionar Veículo'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
