@@ -57,19 +57,14 @@ class ManutencaoPreventivaService
         }
     }
 
-    public static function desassociarPlanoPreventivo(OrdemServico $ordemServico, $planoPreventivoId)
+    public static function desassociarPlanoPreventivo(PlanoManutencaoOrdemServico $planoManutencaoOrdemServico)
     {
-        $manutencaoPreventivaAssociada = PlanoManutencaoOrdemServico::query()
-            ->where('ordem_servico_id', $ordemServico->id)
-            ->where('plano_preventivo_id', $planoPreventivoId)
-            ->first();
 
-        if (!$manutencaoPreventivaAssociada) {
-            notify::error('Plano Preventivo não está associado a esta Ordem de Serviço.');
-            return;
+        if (ItemOrdemServicoService::removerVinculoComPlanoPreventivo($planoManutencaoOrdemServico)){
+            $planoManutencaoOrdemServico->delete();
+            notify::success('Plano Preventivo desassociado com sucesso.');
         }
 
-        $manutencaoPreventivaAssociada->delete();
-        notify::success('Plano Preventivo desassociado com sucesso.');
+        notify::error('Erro ao desassociar Plano Preventivo.');
     }
 }

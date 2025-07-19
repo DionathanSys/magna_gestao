@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
+use App\Models\PlanoManutencaoOrdemServico;
 use App\Services\NotificacaoService as notify;
 
 class ItemOrdemServicoService
@@ -28,6 +29,29 @@ class ItemOrdemServicoService
         );
     }
 
+    public static function removerVinculoComPlanoPreventivo(PlanoManutencaoOrdemServico $planoManutencaoOrdemServico): bool
+    {
+        $itens = ItemOrdemServico::query()
+            ->where('ordem_servico_id', $planoManutencaoOrdemServico->ordem_servico_id)
+            ->where('plano_preventivo_id', $planoManutencaoOrdemServico->plano_preventivo_id)
+            ->get();
+
+        if ($itens->where('status', '!=', StatusOrdemServicoEnum::PENDENTE)->count() > 0) {
+            notify::error('Não é possível remover o vínculo com o plano preventivo, pois existem itens com status diferente de PENDENTE.');
+            return false;
+        }
+
+        ItemOrdemServico::query()
+            ->where('ordem_servico_id', $planoManutencaoOrdemServico->ordem_servico_id)
+            ->where('plano_preventivo_id', $planoManutencaoOrdemServico->plano_preventivo_id)
+            ->update([
+                'plano_preventivo_id' => null,
+            ]);
+
+        notify::success('Vínculo com o plano preventivo removido com sucesso.');
+        return true;
+    }
+
     public static function delete(ItemOrdemServico $itemOrdemServico)
     {
         if ($itemOrdemServico->status != StatusOrdemServicoEnum::PENDENTE) {
@@ -35,10 +59,10 @@ class ItemOrdemServicoService
             return;
         }
 
-        if($itemOrdemServico->servico->tipo == TipoManutencaoEnum::PREVENTIVA) {
-            notify::alert('Removido um item de manutenção preventiva, verifique se a ordem de serviço não está vinculada a um plano preventivo.');
+        if($itemOrdemServico->plano_preventivo_id) {
+            notify::alert('Não é possível remover um item de ordem de serviço que esteja associado a um plano preventivo.');
+            return;
         }
-
 
         $itemOrdemServico->delete();
 

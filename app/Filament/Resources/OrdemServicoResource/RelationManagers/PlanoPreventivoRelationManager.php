@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrdemServicoResource\RelationManagers;
 
+use App\Services\OrdemServico\ManutencaoPreventivaService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -9,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class PlanoPreventivoRelationManager extends RelationManager
@@ -47,6 +49,11 @@ class PlanoPreventivoRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\DeleteBulkAction::make()
                         ->visible(fn() => Auth::user()->is_admin)
+                        ->action(function (Collection $records) {
+                            foreach ($records as $record) {
+                                ManutencaoPreventivaService::desassociarPlanoPreventivo($record);
+                            }
+                        }),
             ])
             ->actions([
             ])

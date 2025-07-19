@@ -25,6 +25,11 @@ class ItemOrdemServico extends Model
         return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
     }
 
+    public function planoPreventivo(): BelongsTo
+    {
+        return $this->belongsTo(PlanoPreventivo::class, 'plano_preventivo_id');
+    }
+
     public function comentarios(): MorphMany
     {
         return $this->morphMany(Comentario::class, 'comentavel');
