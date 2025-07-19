@@ -22,7 +22,7 @@ class PlanoManutencaoVeiculo extends Model
     public function ultimaExecucao()
     {
         return $this->hasMany(PlanoManutencaoOrdemServico::class, 'plano_preventivo_id', 'plano_preventivo_id')
-            ->where('veiculo_id', dd($this->veiculo_id))
+            ->where('veiculo_id', $this->veiculo_id)
             ->latest();
     }
 }
