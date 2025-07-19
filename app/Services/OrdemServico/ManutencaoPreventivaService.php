@@ -28,7 +28,7 @@ class ManutencaoPreventivaService
             'data_execucao'         => $ordemServico->data_fim,
         ]);
 
-        dd($manutencaoPreventivaAssociada);
+        dd($manutencaoPreventivaAssociada->planoPreventivo);
 
 
         if ($manutencaoPreventivaAssociada) {
