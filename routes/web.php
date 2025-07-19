@@ -51,7 +51,8 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-        dd(1);
+    $var = Veiculo::with('planoPreventivo')->find(1);
+        dd($var);
 
 });
 
