@@ -6,6 +6,7 @@ use App\Filament\Resources\OrdemServicoResource;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoVeiculo;
 use App\Models\Veiculo;
+use App\Services\OrdemServico\ManutencaoPreventivaService;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Actions;
 use Filament\Facades\Filament;
@@ -49,7 +50,7 @@ class EditOrdemServico extends EditRecord
                             ->required()
                     ]))
                 ->action(function (OrdemServico $record, array $data) {
-                    dd('Manutenção Preventiva', $record, $data);
+                    ManutencaoPreventivaService::associarPlanoPreventivo($record, $data['plano_preventivo_id']);
                 })
                 ->color('primary')
                 ->icon('heroicon-o-wrench')
