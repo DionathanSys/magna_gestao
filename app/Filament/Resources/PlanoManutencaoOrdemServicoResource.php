@@ -73,14 +73,17 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Descrição')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
                     ->label('Ordem de Serviço')
                     ->placeholder('Sem Vínculo')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('km_execucao')
                     ->label('KM de Execução')
                     ->numeric(0, ',', '.')
