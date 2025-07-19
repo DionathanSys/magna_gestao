@@ -4,7 +4,6 @@ namespace App\Services\OrdemServico;
 
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
-use App\Models\PlanoManutencaoVeiculo;
 use App\Services\NotificacaoService as notify;
 
 class ManutencaoPreventivaService
@@ -21,7 +20,7 @@ class ManutencaoPreventivaService
             return;
         }
 
-        $manutencaoPreventivaAssociada = PlanoManutencaoVeiculo::create([
+        $manutencaoPreventivaAssociada = PlanoManutencaoOrdemServico::create([
             'plano_preventivo_id'   => $planoPreventivoId,
             'ordem_servico_id'      => $ordemServico->id,
             'veiculo_id'            => $ordemServico->veiculo_id,
