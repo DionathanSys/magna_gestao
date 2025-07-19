@@ -9,8 +9,6 @@ class PlanoManutencaoVeiculo extends Model
 {
     protected $table = 'planos_manutencao_veiculo';
 
-    protected $appends = ['ultima_execucao'];
-    
     public function planoPreventivo(): BelongsTo
     {
         return $this->belongsTo(PlanoPreventivo::class, 'plano_preventivo_id');
@@ -21,11 +19,10 @@ class PlanoManutencaoVeiculo extends Model
         return $this->belongsTo(Veiculo::class);
     }
 
-    public function getUltimaExecucaoAttribute()
-{
-    return $this->hasOne(PlanoManutencaoOrdemServico::class, 'plano_preventivo_id', 'plano_preventivo_id')
-        ->where('veiculo_id', $this->veiculo_id)
-        ->latest()
-        ->first();
-}
+    public function ultimaExecucao()
+    {
+        return $this->hasOne(PlanoManutencaoOrdemServico::class, 'plano_preventivo_id', 'plano_preventivo_id')
+            ->where('veiculo_id', $this->veiculo_id)
+            ->latest();
+    }
 }
