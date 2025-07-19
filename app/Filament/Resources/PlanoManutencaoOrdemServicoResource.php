@@ -42,7 +42,7 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                             ->where('planos_manutencao_veiculo.veiculo_id', $get('veiculo_id'))
                             ->where('planos_preventivo.is_active', true)
                             ->orderBy('planos_preventivo.descricao')
-                            ->pluck('planos_preventivo.descricao', 'id');
+                            ->pluck('planos_preventivo.descricao', 'planos_preventivo.id');
                     })
                     ->live()
                     ->required(),
