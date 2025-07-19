@@ -70,7 +70,7 @@ class PlanoPreventivoResource extends Resource
                     ->columns([
                         'sm' => 1,
                         'md' => 1,
-                        'lg' => 2,
+                        'lg' => 8,
                     ])
                     ->schema([
                         Forms\Components\Select::make('servico_id')
