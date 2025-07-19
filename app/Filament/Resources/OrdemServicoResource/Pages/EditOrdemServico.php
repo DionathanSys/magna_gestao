@@ -5,6 +5,7 @@ namespace App\Filament\Resources\OrdemServicoResource\Pages;
 use App\Filament\Resources\OrdemServicoResource;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoVeiculo;
+use App\Models\Veiculo;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Actions;
 use Filament\Facades\Filament;
@@ -39,9 +40,9 @@ class EditOrdemServico extends EditRecord
                         \Filament\Forms\Components\Select::make('plano_preventivo_id')
                             ->label('Plano Preventivo')
                             ->options(
-                                PlanoManutencaoVeiculo::query()
-                                    ->where('veiculo_id', $this->record->veiculo_id)
-                                    ->pluck('plano_preventivo.nome', 'id')
+                                Veiculo::find($this->record->veiculo_id)
+                                    ->planoPreventivo()
+                                    ->pluck('descricao', 'id')
                             )
                             ->required()
                     ]))
