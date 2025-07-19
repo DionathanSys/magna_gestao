@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ImportController;
 use App\Models\OrdemServico;
+use App\Models\PlanoManutencaoVeiculo;
 use App\Models\Pneu;
 use App\Models\PneuPosicaoVeiculo;
 use App\Models\Veiculo;
@@ -52,8 +53,8 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-    $var = OrdemServico::with(['planoPreventivoVinculado'])->find(57);
-    dd($var);
+    $model = PlanoManutencaoVeiculo::find(1);
+    echo $model->veiculo_id;
 
 });
 
