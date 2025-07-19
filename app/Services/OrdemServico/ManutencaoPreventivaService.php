@@ -13,8 +13,6 @@ class ManutencaoPreventivaService
 {
     public static function associarPlanoPreventivo(OrdemServico $ordemServico, $planoPreventivoId)
     {
-        dd(PlanoPreventivo::find($planoPreventivoId)->itens);
-
         $manutencaoPreventivaAssociada = PlanoManutencaoOrdemServico::query()
             ->where('ordem_servico_id', $ordemServico->id)
             ->where('plano_preventivo_id', $planoPreventivoId)
