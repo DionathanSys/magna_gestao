@@ -52,9 +52,7 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-    $var = Veiculo::with('planoPreventivo')->find(23);
-    dump($var);
-    $var = OrdemServico::with(['planoPreventivo', 'veiculo.planoPreventivo'])->find(57);
+    $var = OrdemServico::with(['planoPreventivoVinculado'])->find(57);
     dd($var);
 
 });
