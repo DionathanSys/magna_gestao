@@ -9,21 +9,16 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
-class VeiculosRelationManager extends RelationManager
+class OrdensServicoRelationManager extends RelationManager
 {
-    protected static string $relationship = 'veiculos';
+    protected static string $relationship = 'ordensServico';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('veiculo_id')
-                    ->label('Veículo')
-                    ->required()
-                    ->relationship('veiculo', 'placa')
-                    ->searchable()
-                    ->preload(),
             ]);
     }
 
@@ -33,8 +28,18 @@ class VeiculosRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('veiculo.placa')
+                Tables\Columns\TextColumn::make('ordem_servico_id')
+                    ->label('Ordem de Serviço')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('veiculo_id')
                     ->label('Veículo')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('km_execucao')
+                    ->label('KM Execução')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('data_execucao')
+                    ->label('Data Execução')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
@@ -48,19 +53,27 @@ class VeiculosRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('ordem_servico_id')
+                    ->label('Ordem de Serviço')
+                    ->relationship('ordemServico', 'descricao')
+                    ->searchable(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Adicionar Veículo'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn() => Auth::user()->is_admin),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn() => Auth::user()->is_admin),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ]);
     }
