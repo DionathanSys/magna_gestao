@@ -32,10 +32,14 @@ class PlanoManutencaoOrdemServicoResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('veiculo_id')
+                    ->label('Veículo')
                     ->relationship('veiculo', 'placa')
                     ->live()
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('plano_preventivo_id')
+                    ->label('Plano Preventivo')
                     ->options(function (Forms\Get $get) {
                         return PlanoPreventivo::query()
                             ->join('planos_manutencao_veiculo', 'planos_manutencao_veiculo.plano_preventivo_id', '=', 'planos_preventivo.id')
@@ -46,14 +50,17 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     })
                     ->live()
                     ->required(),
-                Forms\Components\TextInput::make('ordem_servico_id')
-                    ->numeric(),
                 Forms\Components\TextInput::make('km_execucao')
+                    ->label('KM de Execução')
+                    ->columnStart(1)
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('data_execucao')
                     ->label('Data de Execução')
                     ->required(),
+                Forms\Components\TextInput::make('ordem_servico_id')
+                    ->label('Ordem de Serviço')
+                    ->numeric(),
             ]);
     }
 
@@ -65,22 +72,27 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     ->label('Plano Preventivo')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
+                    ->label('Ordem de Serviço')
+                    ->placeholder('Sem Vínculo')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_execucao')
                     ->label('KM de Execução')
+                    ->numeric(0, ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_execucao')
                     ->label('Data de Execução')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
