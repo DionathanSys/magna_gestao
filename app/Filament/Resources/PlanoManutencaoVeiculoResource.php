@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PlanoManutencaoVeiculoResource\Pages;
 use App\Filament\Resources\PlanoManutencaoVeiculoResource\RelationManagers;
+use App\Filament\Resources\PlanoPreventivoResource\RelationManagers\VeiculosRelationManager;
 use App\Models\PlanoManutencaoVeiculo;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -75,7 +76,7 @@ class PlanoManutencaoVeiculoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VeiculosRelationManager::class,
         ];
     }
 
@@ -84,7 +85,7 @@ class PlanoManutencaoVeiculoResource extends Resource
         return [
             'index' => Pages\ListPlanoManutencaoVeiculos::route('/'),
             // 'create' => Pages\CreatePlanoManutencaoVeiculo::route('/create'),
-            // 'edit' => Pages\EditPlanoManutencaoVeiculo::route('/{record}/edit'),
+            'edit' => Pages\EditPlanoManutencaoVeiculo::route('/{record}/edit'),
         ];
     }
 }
