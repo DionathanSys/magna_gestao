@@ -21,6 +21,7 @@ class ItemOrdemServicoService
             [
                 'ordem_servico_id'  => $data['ordem_servico_id'],
                 'servico_id'        => $data['servico_id'],
+                'plano_preventivo_id' => $data['plano_preventivo_id'] ?? null,
                 'posicao'           => $data['posicao'] ?? null,
                 'observacao'        => $data['observacao'] ?? null,
                 'status'            => $data['status'] ?? null,
