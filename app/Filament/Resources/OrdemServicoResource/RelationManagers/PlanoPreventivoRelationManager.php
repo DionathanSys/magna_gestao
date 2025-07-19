@@ -24,7 +24,7 @@ class PlanoPreventivoRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('plano_preventivo_id')
+            ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('plano_preventivo_id')
                     ->label('ID Plano')
