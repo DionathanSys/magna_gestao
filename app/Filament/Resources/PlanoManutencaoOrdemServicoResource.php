@@ -29,14 +29,21 @@ class PlanoManutencaoOrdemServicoResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('veiculo_id')
+                    ->relationship('veiculo', 'descricao')
+                    ->live()
+                    ->required(),
                 Forms\Components\Select::make('plano_preventivo_id')
-                    ->relationship('planoPreventivo', 'descricao')
+                    ->relationship('planoPreventivoVinculado', 'descricao', function ($query, Forms\Get $get) {
+                        return $query
+                            ->where('is_active', true)
+                            ->where('veiculo_id', $get('veiculo_id'))
+                            ->orderBy('descricao');
+                    })
+                    ->live()
                     ->required(),
                 Forms\Components\TextInput::make('ordem_servico_id')
                     ->numeric(),
-                Forms\Components\Select::make('veiculo_id')
-                    ->relationship('veiculo', 'descricao')
-                    ->required(),
                 Forms\Components\TextInput::make('km_execucao')
                     ->required()
                     ->numeric(),
@@ -51,7 +58,6 @@ class PlanoManutencaoOrdemServicoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('plano_preventivo_id')
-                    ->relationship('planoPreventivo', 'descricao')
                     ->label('Plano Preventivo')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ordem_servico_id')

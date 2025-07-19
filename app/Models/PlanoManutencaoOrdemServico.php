@@ -14,6 +14,11 @@ class PlanoManutencaoOrdemServico extends Model
         return $this->belongsTo(PlanoPreventivo::class, 'plano_preventivo_id');
     }
 
+    public function planoPreventivoVinculado(): BelongsTo
+    {
+        return $this->belongsTo(PlanoManutencaoVeiculo::class, 'plano_preventivo_id');
+    }
+
     public function ordemServico(): BelongsTo
     {
         return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
