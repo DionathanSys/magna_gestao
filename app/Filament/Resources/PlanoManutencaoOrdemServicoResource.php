@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PlanoManutencaoOrdemServicoResource\Pages;
 use App\Filament\Resources\PlanoManutencaoOrdemServicoResource\RelationManagers;
 use App\Models\PlanoManutencaoOrdemServico;
+use App\Models\PlanoManutencaoVeiculo;
+use App\Models\PlanoPreventivo;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,9 +36,13 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     ->live()
                     ->required(),
                 Forms\Components\Select::make('plano_preventivo_id')
-                    ->relationship('planoPreventivoVinculado', 'id', function ($query, Forms\Get $get) {
-                        return $query
-                            ->where('veiculo_id', $get('veiculo_id'));
+                    ->options(function (Forms\Get $get) {
+                        return PlanoPreventivo::query()
+                            ->join('planos_manutencao_veiculo', 'planos_manutencao_veiculo.plano_preventivo_id', '=', 'planos_preventivos.id')
+                            ->where('planos_manutencao_veiculo.veiculo_id', $get('veiculo_id'))
+                            ->where('planos_preventivos.is_active', true)
+                            ->orderBy('planos_preventivos.descricao')
+                            ->pluck('planos_preventivos.descricao', 'id');
                     })
                     ->live()
                     ->required(),
