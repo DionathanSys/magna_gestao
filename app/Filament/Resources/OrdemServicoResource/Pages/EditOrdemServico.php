@@ -4,8 +4,10 @@ namespace App\Filament\Resources\OrdemServicoResource\Pages;
 
 use App\Filament\Resources\OrdemServicoResource;
 use App\Models\OrdemServico;
+use App\Models\PlanoManutencaoVeiculo;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Actions;
+use Filament\Facades\Filament;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,19 +34,19 @@ class EditOrdemServico extends EditRecord
                 ])),
             Actions\Action::make('manutencao-preventiva')
                 ->label('Manutenção Preventiva')
-                ->form(fn(Forms\Form $form) => $form
+                ->form(fn(\Filament\Forms\Form $form) => $form
                     ->schema([
-                        Forms\Components\Select::make('plano_preventivo_id')
+                        \Filament\Forms\Components\Select::make('plano_preventivo_id')
                             ->label('Plano Preventivo')
                             ->options(
-                                OrdemServico::find($this->record->id)
-                                    ->veiculo
-                                    ->planoPreventivo
-                                    ->pluck('nome', 'id')
+                                PlanoManutencaoVeiculo::query()
+                                    ->where('veiculo_id', $this->record->veiculo_id)
+                                    ->pluck('plano_preventivo.nome', 'id')
                             )
                             ->required()
                     ]))
-                ->action(function (OrdemServico $record) {
+                ->action(function (OrdemServico $record, array $data) {
+                    dd('Manutenção Preventiva', $record, $data);
                 })
                 ->color('primary')
                 ->icon('heroicon-o-wrench')
