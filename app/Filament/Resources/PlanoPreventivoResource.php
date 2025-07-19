@@ -66,8 +66,13 @@ class PlanoPreventivoResource extends Resource
                     ->default(true),
                 Forms\Components\Repeater::make('itens')
                     ->label('Itens do Plano')
-                    // ->columnSpanFull()
+                    ->columnStart(1)
                     ->columns([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 4,
+                    ])
+                    ->columnSpan([
                         'sm' => 1,
                         'md' => 1,
                         'lg' => 4,
