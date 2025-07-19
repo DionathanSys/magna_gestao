@@ -38,6 +38,7 @@ class ManutencaoPreventivaService
                 ItemOrdemServicoService::create([
                     'ordem_servico_id'  => $ordemServico->id,
                     'servico_id'        => $item['servico_id'],
+                    'plano_preventivo_id' => $planoPreventivoId,
                     'posicao'           => null,
                     'observacao'        => null,
                     'status'            => StatusOrdemServicoEnum::PENDENTE,
