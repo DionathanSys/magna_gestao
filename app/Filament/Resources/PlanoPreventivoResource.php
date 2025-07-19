@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enum\TipoServicoEnum;
 use App\Filament\Resources\PlanoPreventivoResource\Pages;
 use App\Filament\Resources\PlanoPreventivoResource\RelationManagers;
+use App\Filament\Resources\PlanoPreventivoResource\RelationManagers\VeiculosRelationManager;
 use App\Models\PlanoPreventivo;
 use Filament\Forms;
 use Filament\Forms\Form;
