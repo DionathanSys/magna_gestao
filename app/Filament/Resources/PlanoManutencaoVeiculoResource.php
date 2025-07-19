@@ -57,11 +57,13 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
+                    ->width('1%')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
+                    ->width('1%')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
