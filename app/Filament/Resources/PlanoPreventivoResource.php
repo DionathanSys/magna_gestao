@@ -29,26 +29,56 @@ class PlanoPreventivoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(
+                [
+                    'sm' => 1,
+                    'md' => 2,
+                    'lg' => 8,
+                ])
             ->schema([
                 Forms\Components\TextInput::make('descricao')
                     ->label('Descrição')
                     ->required()
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2,
+                    ])
                     ->maxLength(255),
                 Forms\Components\TextInput::make('intervalo')
                     ->label('Intervalo')
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2,
+                    ])
                     ->required()
                     ->numeric(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Ativo')
-                    ->required()
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2,
+                    ])
+                    ->inline(false)
                     ->default(true),
                 Forms\Components\Repeater::make('itens')
                     ->label('Itens do Plano')
                     ->columnSpanFull()
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2,
+                    ])
                     ->schema([
                         Forms\Components\Select::make('servico_id')
                             ->label('Descrição do Item')
-                            ->columnSpanFull()
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 1,
+                                'lg' => 2,
+                            ])
                             ->options(
                                 \App\Models\Servico::where('is_active', true)
                                     ->where('tipo', TipoServicoEnum::PREVENTIVA->value)
@@ -93,7 +123,7 @@ class PlanoPreventivoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VeiculosRelationManager::class,
         ];
     }
 
