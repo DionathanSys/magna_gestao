@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Services\NotificacaoService as notify;
+use App\Services\OrdemServico\ItemOrdemServicoService;
 
 class ItensRelationManager extends RelationManager
 {
@@ -70,6 +71,8 @@ class ItensRelationManager extends RelationManager
                     ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('servico.tipo')
                     ->label('Tipo de Serviço'),
+                Tables\Columns\TextColumn::make('plano_preventivo_id')
+                    ->label('Plano Preventivo'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -128,12 +131,15 @@ class ItensRelationManager extends RelationManager
                             ]);
                         }),
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->action(function (ItemOrdemServico $itemOrdemServico) {
+                            ItemOrdemServicoService::delete($itemOrdemServico);
+                        })
+                        ->requiresConfirmation(),
                 ])->icon('heroicon-o-bars-3-center-left')
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('reagendar')
                         ->label('Reagendar')
                         ->icon('heroicon-o-calendar')
