@@ -55,6 +55,19 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->width('1%')
                     ->sortable()
                     ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
+                    ->label('Quilometragem Atual')
+                    ->width('1%')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ultimaExecucao.km_execucao')
+                    ->label('KM de Execução')
+                    ->width('1%')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ultimaExecucao.data_execucao')
+                    ->label('Data de Execução')
+                    ->width('1%')
+                    ->dateTime('d/m/Y')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->width('1%')

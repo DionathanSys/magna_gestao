@@ -18,4 +18,11 @@ class PlanoManutencaoVeiculo extends Model
     {
         return $this->belongsTo(Veiculo::class);
     }
+
+    public function ultimaExecucao()
+    {
+        return $this->hasOne(PlanoManutencaoOrdemServico::class, 'plano_preventivo_id', 'plano_preventivo_id')
+            ->where('veiculo_id', $this->veiculo_id)
+            ->latest();
+    }
 }
