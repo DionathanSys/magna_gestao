@@ -2,10 +2,12 @@
 
 namespace App\Services\OrdemServico;
 
+use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
 use App\Models\PlanoPreventivo;
 use App\Services\NotificacaoService as notify;
+use Illuminate\Support\Facades\Auth;
 
 class ManutencaoPreventivaService
 {
@@ -31,8 +33,24 @@ class ManutencaoPreventivaService
             'data_execucao'         => $ordemServico->data_fim,
         ]);
 
-        dd($manutencaoPreventivaAssociada->planoPreventivo);
+        $itensPlano = $manutencaoPreventivaAssociada->planoPreventivo->itens;
 
+        try {
+            foreach ($itensPlano as $item) {
+                ItemOrdemServicoService::create([
+                    'ordem_servico_id'  => $ordemServico->id,
+                    'servico_id'        => $item['servico_id'],
+                    'posicao'           => null,
+                    'observacao'        => null,
+                    'status'            => StatusOrdemServicoEnum::PENDENTE,
+                    'created_by'        => Auth::user()->id,
+                ]);
+            }
+        } catch (\Exception $e) {
+            $manutencaoPreventivaAssociada->delete();
+            notify::error('Erro ao associar Plano Preventivo. Itens não foram criados');
+            return;
+        }
 
         if ($manutencaoPreventivaAssociada) {
             notify::success('Plano Preventivo associado com sucesso.');
