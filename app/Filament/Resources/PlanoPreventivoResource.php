@@ -66,11 +66,11 @@ class PlanoPreventivoResource extends Resource
                     ->default(true),
                 Forms\Components\Repeater::make('itens')
                     ->label('Itens do Plano')
-                    ->columnSpanFull()
+                    // ->columnSpanFull()
                     ->columns([
                         'sm' => 1,
                         'md' => 1,
-                        'lg' => 8,
+                        'lg' => 4,
                     ])
                     ->schema([
                         Forms\Components\Select::make('servico_id')
