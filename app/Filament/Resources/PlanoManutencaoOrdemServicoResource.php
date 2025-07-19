@@ -38,7 +38,7 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                         return $query
                             ->where('is_active', true)
                             ->where('veiculo_id', $get('veiculo_id'))
-                            ->orderBy('descricao');
+                            ->orderBy('placa');
                     })
                     ->live()
                     ->required(),
