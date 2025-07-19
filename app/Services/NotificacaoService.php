@@ -38,7 +38,7 @@ class NotificacaoService
 
     public static function error(string $titulo = 'Falha no processamento', string $mensagem = '', bool $toDataBase = false): void
     {
-        $instance = new self('danger', $titulo, $mensagem);
+        $instance = new self('danger', $titulo, $mensagem, false);
 
         if ($toDataBase) {
             $instance->sendToDataBase();
@@ -49,7 +49,7 @@ class NotificacaoService
 
     public static function success(string $titulo = 'Sucesso', string $mensagem = '', bool $toDataBase = false): void
     {
-        $instance = new self('success', $titulo, $mensagem);
+        $instance = new self('success', $titulo, $mensagem, false);
 
         if ($toDataBase) {
             $instance->sendToDataBase();
