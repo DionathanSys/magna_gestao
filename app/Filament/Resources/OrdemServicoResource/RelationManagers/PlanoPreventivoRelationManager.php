@@ -26,6 +26,9 @@ class PlanoPreventivoRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('ordem_servico_id')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID Plano')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('plano_preventivo_id')
                     ->label('ID Plano')
                     ->sortable(),
@@ -34,6 +37,7 @@ class PlanoPreventivoRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('planoPreventivo.intervalo')
                     ->label('Intervalo (km)')
+                    ->numeric(0, ',', '.')
                     ->sortable(),
             ])
             ->filters([
