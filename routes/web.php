@@ -62,19 +62,22 @@ $viagensComDispersao = Viagem::with(['cargas.integrado'])
     })
     ->map(function ($viagem) {
         return [
-            'viagem_id' => $viagem->id,
-            'km_rodado' => $viagem->km_rodado,
-            'km_pago' => $viagem->km_pago,
-            'km_disperso' => $viagem->km_rodado - $viagem->km_pago,
-            'num_destinos' => $viagem->cargas->pluck('destino_id')->unique()->count(),
-            'destinos' => $viagem->cargas
+            'nro_viagem'            => $viagem->numero_viagem,
+            'doc_transp'            => $viagem->documento_transporte,
+            'km_rodado'             => $viagem->km_rodado,
+            'km_pago'               => $viagem->km_pago,
+            'km_disperso'           => $viagem->km_rodado - $viagem->km_pago,
+            'motivo_divergencia'    => $viagem->motivo_divergencia->value,
+            'num_destinos'          => $viagem->cargas->pluck('destino_id')->unique()->count(),
+            'destinos'              => $viagem->cargas
                 ->pluck('integrado.nome') 
                 ->unique()
                 ->implode(', '),
         ];
     });
 
-dd($viagensComDispersao);
+dump($viagensComDispersao);
+dd($viagensComDispersao->groupBy('destinos'));
 });
 
 
