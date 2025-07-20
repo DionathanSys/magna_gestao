@@ -57,7 +57,7 @@ Route::get('/teste', function () {
 $viagensComDispersao = Viagem::with(['cargas.integrado'])
     ->get()
     ->filter(function ($viagem) {
-        return $viagem->km_rodado > $viagem->km_pago && 
+        return ($viagem->km_rodado - $viagem->km_pago) > 3.5 && 
                $viagem->cargas->pluck('integrado_id')->unique()->count() > 1;
     })
     ->map(function ($viagem) {
@@ -68,7 +68,7 @@ $viagensComDispersao = Viagem::with(['cargas.integrado'])
             'km_disperso' => $viagem->km_rodado - $viagem->km_pago,
             'num_destinos' => $viagem->cargas->pluck('destino_id')->unique()->count(),
             'destinos' => $viagem->cargas
-                ->pluck('destino.nome') // ou cidade, ou outra propriedade
+                ->pluck('integrado.nome') 
                 ->unique()
                 ->implode(', '),
         ];
