@@ -47,7 +47,7 @@ class PlanoManutencaoVeiculo extends Model
             'proxima_execucao' => $this->proxima_execucao,
         ]);
         return Attribute::make(
-            get: fn(): float => $this->veiculo->km_atual->quilometragem - $this->proxima_execucao
+            get: fn(): float => $this->veiculo->kmAtual->quilometragem - $this->proxima_execucao
         );
     }
 }
