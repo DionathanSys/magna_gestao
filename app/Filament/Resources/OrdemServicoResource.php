@@ -51,7 +51,7 @@ class OrdemServicoResource extends Resource
             ->columns([
                 'sm' => 1,
                 'md' => 4,
-                'lg' => 8,
+                'lg' => 10,
             ])
             ->schema([
                 Forms\Components\Tabs::make()
@@ -61,7 +61,7 @@ class OrdemServicoResource extends Resource
                             ->columns([
                                 'sm' => 1,
                                 'md' => 4,
-                                'lg' => 8,
+                                'lg' => 10,
                             ])
                             ->schema([
                                 static::getVeiculoIdFormField(),
