@@ -29,7 +29,7 @@ class ItensRelationManager extends RelationManager
         return $form
             ->columns([
                 'sm' => 1,
-                'md' => 2,
+                'md' => 4,
                 'lg' => 8,
             ])
 
@@ -38,7 +38,7 @@ class ItensRelationManager extends RelationManager
                     ->columnStart(1)
                     ->columnSpan([
                         'sm' => 1,
-                        'md' => 1,
+                        'md' => 2,
                         'lg' => 3
                     ]),
                 ItemOrdemServicoResource::getControlaPosicaoFormField()
@@ -56,7 +56,7 @@ class ItensRelationManager extends RelationManager
                 ItemOrdemServicoResource::getStatusFormField()
                     ->columnSpan([
                         'sm' => 1,
-                        'md' => 1,
+                        'md' => 2,
                         'lg' => 3
                     ]),
                 ItemOrdemServicoResource::getObersavacaoFormField()
