@@ -48,13 +48,21 @@ class OrdemServicoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(8)
+            ->columns([
+                'sm' => 1,
+                'md' => 4,
+                'lg' => 8,
+            ])
             ->schema([
                 Forms\Components\Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Informações')
-                            ->columns(8)
+                            ->columns([
+                                'sm' => 1,
+                                'md' => 4,
+                                'lg' => 8,
+                            ])
                             ->schema([
                                 static::getVeiculoIdFormField(),
                                 static::getQuilometragemFormField(),
