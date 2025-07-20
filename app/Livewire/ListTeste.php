@@ -33,31 +33,10 @@ class ListTeste extends Component implements HasForms, HasTable
     use InteractsWithForms;
 
 
-    public function table(Table $table): Table
+     public function table(Table $table): Table
     {
         return $table
-            ->query(
-                Viagem::with(['cargas.integrado'])
-                    ->filter(function ($viagem) {
-                        return ($viagem->km_rodado - $viagem->km_pago) > 3.5 &&
-                            $viagem->cargas->pluck('integrado_id')->unique()->count() > 1;
-                    })
-                    ->map(function ($viagem) {
-                        return [
-                            'nro_viagem'            => $viagem->numero_viagem,
-                            'doc_transp'            => $viagem->documento_transporte,
-                            'km_rodado'             => $viagem->km_rodado,
-                            'km_pago'               => $viagem->km_pago,
-                            'km_disperso'           => $viagem->km_rodado - $viagem->km_pago,
-                            'motivo_divergencia'    => $viagem->motivo_divergencia->value,
-                            'num_destinos'          => $viagem->cargas->pluck('destino_id')->unique()->count(),
-                            'destinos'              => $viagem->cargas
-                                ->pluck('integrado.nome')
-                                ->unique()
-                                ->implode(', '),
-                        ];
-                    })
-            )
+            ->query(ViagemResource)
             ->columns([
                 TextColumn::make('veiculo.placa')
                     ->label('Placa')
@@ -65,12 +44,27 @@ class ListTeste extends Component implements HasForms, HasTable
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                // TextColumn::make('numero_viagem')
+                //     ->label('Nº Viagem')
+                //     ->width('1%')
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // TextColumn::make('documento_transporte')
+                //     ->label('Doc. Transp.')
+                //     ->width('1%')
+                //     ->sortable(),
                 TextColumn::make('documentos_sum_valor_total')
                     ->sum('documentos', 'valor_total')
                     ->label('Frete')
                     ->width('1%')
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                     ->summarize(Sum::make()->money('BRL', locale: 'pt-BR')),
+                // TextColumn::make('documentos_count')
+                //     ->label('Qtd. Doc.')
+                //     ->counts('documentos')
+                //     ->width('1%')
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('km_rodado')
                     ->width('1%')
                     ->wrapHeader()
@@ -85,11 +79,10 @@ class ListTeste extends Component implements HasForms, HasTable
                     ->width('1%')
                     ->wrapHeader()
                     ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                    ->summarize(
-                        Sum::make()
-                            ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                            ->using(fn(Viagem $record): string => number_format($record->km_rodado - $record->km_pago, 2, ',', '.'))
-                    ),
+                    ->summarize(Sum::make()
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->using(fn (Viagem $record): string => number_format($record->km_rodado - $record->km_pago, 2, ',', '.'))
+                        ),
 
                 // ColumnGroup::make('Datas',[
                 //     TextColumn::make('data_competencia')
@@ -117,7 +110,7 @@ class ListTeste extends Component implements HasForms, HasTable
                     Group::make('data_competencia')
                         ->label('Data Competência')
                         ->titlePrefixedWithLabel(false)
-                        ->getTitleFromRecordUsing(fn(Viagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
+                        ->getTitleFromRecordUsing(fn (Viagem $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
                         ->collapsible(),
                     Group::make('veiculo.placa')
                         ->label('Veículo')
@@ -154,7 +147,7 @@ class ListTeste extends Component implements HasForms, HasTable
                         return $query
                             ->when(
                                 $data['numero_viagem'],
-                                fn(Builder $query, $numeroViagem): Builder => $query->where('numero_viagem', $numeroViagem),
+                                fn (Builder $query, $numeroViagem): Builder => $query->where('numero_viagem', $numeroViagem),
                             );
                     }),
                 SelectFilter::make('veiculo_id')
@@ -175,11 +168,11 @@ class ListTeste extends Component implements HasForms, HasTable
                         return $query
                             ->when(
                                 $data['data_inicio'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('data_competencia', '>=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '>=', $date),
                             )
                             ->when(
                                 $data['data_fim'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
                             );
                     }),
             ])
