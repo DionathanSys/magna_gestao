@@ -6,6 +6,7 @@ use App\Models\PlanoManutencaoVeiculo;
 use App\Models\Pneu;
 use App\Models\PneuPosicaoVeiculo;
 use App\Models\Veiculo;
+use App\Models\Viagem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +54,27 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-dd(1);  
+$viagensComDispersao = Viagem::with(['cargas.integrado'])
+    ->get()
+    ->filter(function ($viagem) {
+        return $viagem->km_rodado > $viagem->km_pago && 
+               $viagem->cargas->pluck('integrado_id')->unique()->count() > 1;
+    })
+    ->map(function ($viagem) {
+        return [
+            'viagem_id' => $viagem->id,
+            'km_rodado' => $viagem->km_rodado,
+            'km_pago' => $viagem->km_pago,
+            'km_disperso' => $viagem->km_rodado - $viagem->km_pago,
+            'num_destinos' => $viagem->cargas->pluck('destino_id')->unique()->count(),
+            'destinos' => $viagem->cargas
+                ->pluck('destino.nome') // ou cidade, ou outra propriedade
+                ->unique()
+                ->implode(', '),
+        ];
+    });
+
+dd($viagensComDispersao);
 });
 
 
