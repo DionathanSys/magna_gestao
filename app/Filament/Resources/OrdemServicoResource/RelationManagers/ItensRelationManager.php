@@ -27,17 +27,38 @@ class ItensRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
-            ->columns(8)
+            ->columns([
+                'sm' => 1,
+                'md' => 2,
+                'lg' => 8,
+            ])
+
             ->schema([
                 ItemOrdemServicoResource::getServicoIdFormField()
                     ->columnStart(1)
-                    ->columnSpan(4),
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 3
+                    ]),
                 ItemOrdemServicoResource::getControlaPosicaoFormField()
-                    ->columnSpan(2),
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2
+                    ]),
                 ItemOrdemServicoResource::getPosicaoFormField()
-                    ->columnSpan(1),
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2
+                    ]),
                 ItemOrdemServicoResource::getStatusFormField()
-                    ->columnSpan(2),
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 3
+                    ]),
                 ItemOrdemServicoResource::getObersavacaoFormField()
                     ->columnSpanFull(),
 
