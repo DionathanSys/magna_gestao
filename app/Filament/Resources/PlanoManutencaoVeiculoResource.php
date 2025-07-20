@@ -68,6 +68,11 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->width('1%')
                     ->numeric(0, ',', '.')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('proxima_execucao')
+                    ->label('Próxima Execução')
+                    ->width('1%')
+                    ->numeric(0, ',', '.')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('ultima_execucao.km_execucao')
                     ->label('KM de Execução')
                     ->width('1%')
