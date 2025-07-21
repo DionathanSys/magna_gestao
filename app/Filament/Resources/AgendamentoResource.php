@@ -34,22 +34,36 @@ class AgendamentoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(8)
+            ->columns([
+                'sm' => 1,
+                'md' => 2,
+                'lg' => 3,
+                'xl' => 8,
+            ])
             ->schema([
                 Forms\Components\Fieldset::make('Informações Básicas')
-                    ->columns(8)
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 4,
+                        'xl' => 8,
+                    ])
                     ->schema([
-                        Forms\Components\TextInput::make('ordem_servico_id')
-                            ->label('Ordem de Serviço')
-                            ->columnSpan(2)
-                            ->visible(fn() => Auth::user()->is_admin)
-                            ->readOnly(fn() => ! Auth::user()->is_admin)
-                            ->numeric(),
                         OrdemServicoResource::getVeiculoIdFormField()
-                            ->columnSpan(2)
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
+                                'xl' => 2,
+                            ])
                             ->required(),
                         Forms\Components\Select::make('status')
-                            ->columnSpan(2)
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 1,
+                                'lg' => 2,
+                                'xl' => 2,
+                            ])
                             ->options(StatusOrdemServicoEnum::toSelectArray())
                             ->required()
                             ->default(StatusOrdemServicoEnum::PENDENTE->value)
@@ -57,31 +71,63 @@ class AgendamentoResource extends Resource
                             ->disableOptionWhen(fn(string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
                     ]),
                 Forms\Components\Fieldset::make('Datas')
-                    ->columns(8)
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 3,
+                        'xl' => 8,
+                    ])
                     ->schema([
                         Forms\Components\DatePicker::make('data_agendamento')
                             ->label('Agendado Para')
                             ->minDate(now()->format('Y-m-d'))
-                            ->columnSpan(2),
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 1,
+                                'xl' => 2,
+                            ]),
                         Forms\Components\DatePicker::make('data_limite')
                             ->label('Dt. Limite')
                             ->minDate(now())
-                            ->columnSpan(2),
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 1,
+                                'xl' => 2,
+                            ]),
                         Forms\Components\DatePicker::make('data_realizado')
                             ->label('Realizado em')
                             ->minDate(now()->format('Y-m-d'))
-                            ->columnSpan(2),
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 1,
+                                'xl' => 2,
+                            ]),
                     ]),
-                Forms\Components\Fieldset::make('Datas')
-                    ->columns(8)
+                Forms\Components\Fieldset::make('Serviço')
+                    ->columns([
+                        'sm' => 1,
+                        'md' => 3,
+                        'xl' => 8,
+                    ])
                     ->schema([
                         ItemOrdemServicoResource::getServicoIdFormField()
                             ->columnStart(1)
-                            ->columnSpan(4),
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 2,
+                                'xl' => 3,
+                            ]),
                         ItemOrdemServicoResource::getControlaPosicaoFormField()
-                            ->columnSpan(2),
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 1,
+                                'xl' => 2,
+                            ]),
                         ItemOrdemServicoResource::getPosicaoFormField()
-                            ->columnSpan(1),
+                            ->columnSpan([
+                                'sm' => 1,
+                                'md' => 2,
+                                'xl' => 2,
+                            ]),
                         Forms\Components\Textarea::make('observacao')
                             ->label('Observação')
                             ->columnSpanFull()
@@ -96,6 +142,9 @@ class AgendamentoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->with(['veiculo', 'ordemServico', 'servico', 'parceiro', 'creator', 'updater']);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')

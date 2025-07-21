@@ -54,7 +54,6 @@ class PneusRelationManager extends RelationManager
                     ->maxDate(now())
                     ->displayFormat('d/m/Y')
                     ->closeOnDateSelection()
-                    // ->native(false)
                     ->required(),
             ]);
     }
@@ -63,6 +62,9 @@ class PneusRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('id')
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->with(['veiculo', 'veiculo.kmAtual', 'pneu']);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->label('Pneu')
@@ -77,6 +79,8 @@ class PneusRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('km_inicial')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
