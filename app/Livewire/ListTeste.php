@@ -37,7 +37,8 @@ class ListTeste extends Component implements HasForms, HasTable
      public function table(Table $table): Table
     {
         return $table
-            ->query(ViagemResource::getEloquentQuery())
+            ->query(Viagem::query()
+            )
             ->columns([
                 TextColumn::make('veiculo.placa')
                     ->label('Placa')
