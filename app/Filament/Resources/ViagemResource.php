@@ -467,7 +467,7 @@ class ViagemResource extends Resource
                 Tables\Actions\BulkAction::make('cobrar')
                         ->successNotification(null)
                         ->label('Cobrar')
-                        ->icon('heroicon-o-money')
+                        ->icon('heroicon-o-banknotes')
                         ->action(function (Collection $records) {
                             $records->each(function (Viagem $record) {
                                 if($record->km_cobrar > 0) {
