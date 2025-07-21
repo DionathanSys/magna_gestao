@@ -32,6 +32,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
+use App\Jobs\RegistrarViagemComplementoJob;
 
 class ViagemResource extends Resource
 {
@@ -414,6 +415,8 @@ class ViagemResource extends Resource
                         $record->updated_by = Auth::user()->id;
                         $record->checked_by = Auth::user()->id;
                         $record->save();
+
+                        RegistrarViagemComplementoJob::dispatch($record);
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Ñ Conferido')

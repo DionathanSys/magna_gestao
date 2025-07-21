@@ -16,6 +16,10 @@ return new class extends Migration
             $table->foreignId('viagem_id')
                 ->constrained('viagens')
                 ->cascadeOnDelete();
+            $table->foreignId('veiculo_id')
+                ->nullable()
+                ->constrained('veiculos')
+                ->nullOnDelete();
             $table->string('numero_viagem');
             $table->string('documento_transporte')  
                 ->nullable();
