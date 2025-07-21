@@ -17,7 +17,7 @@ class PneuPosicaoVeiculoResource extends Resource
 {
     protected static ?string $model = PneuPosicaoVeiculo::class;
 
-    protected static ?string $navigationGroup = 'Posições de Pneus';
+    protected static ?string $navigationGroup = 'Pneus';
 
     protected static ?string $pluralModelLabel = 'Posições de Pneus';
 
