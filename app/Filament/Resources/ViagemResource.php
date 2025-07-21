@@ -475,6 +475,7 @@ class ViagemResource extends Resource
                                 }
                             });
                         })
+                        ->deselectRecordsAfterCompletion()
                         ->requiresConfirmation(),
                 FilamentExportBulkAction::make('export')
                         ->fileName('Viagens')
