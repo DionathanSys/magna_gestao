@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Viagem;
 use App\Services\Viagem\ViagemComplementoService;
+use Illuminate\Support\Facades\Log;
 
 class RegistrarViagemComplementoJob implements ShouldQueue
 {
@@ -24,6 +25,7 @@ class RegistrarViagemComplementoJob implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::debug('Iniciando o registro do complemento da viagem: ' . $this->viagem->id);
         (new ViagemComplementoService)->create($this->viagem);
     }
 }

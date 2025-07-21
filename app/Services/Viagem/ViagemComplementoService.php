@@ -5,6 +5,7 @@ namespace App\Services\Viagem;
 use App\Enum\Viagem\StatusViagemEnum;
 use App\Models\Viagem;
 use App\Models\ViagemComplemento;
+use Illuminate\Support\Facades\Log;
 
 class ViagemComplementoService
 {
@@ -12,6 +13,10 @@ class ViagemComplementoService
     {
         $cargas = $viagem->cargas->pluck('integrado_id')->unique();
         
+        Log::debug('Criando complementos para a viagem: ' . $viagem->id . ' com cargas: ' . implode(', ', $cargas->toArray()), [
+            'metodo' => __METHOD__,
+        ]);
+
         foreach ($cargas as $integradoId) {
             $complemento = ViagemComplemento::query()
                 ->updateOrCreate(
@@ -40,6 +45,10 @@ class ViagemComplementoService
                 $viagem->km_pago = 0;
                 $viagem->km_divergencia = 0;
                 $viagem->km_cobrar = 0;
+
+                Log::debug('Complemento criado ou atualizado para a viagem: ' . $viagem->id . ' e integrado_id: ' . $integradoId, [
+                    'complemento_id' => $complemento->id,
+                ]);
         }
 
     }
