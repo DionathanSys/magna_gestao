@@ -11,7 +11,7 @@ class NotificacaoService
     private Collection|User $usersNotify;
 
     public function __construct(
-        protected string $tipo, protected string $titulo, protected string $mensagem, protected bool $persistent = false)
+        protected string $tipo, protected string $titulo, protected string $mensagem)
     {
         //TODO: Implementar o envio de notificações para usuários ativos, precisa add a coluna de usuários ativos
         $this->usersNotify = User::all();
@@ -31,14 +31,13 @@ class NotificacaoService
         Notification::make()
             ->title($this->titulo)
             ->body($this->mensagem)
-            // ->persistent($this->persistent)
             ->status($this->tipo)
             ->send();
     }
 
     public static function error(string $titulo = 'Falha no processamento', string $mensagem = '', bool $toDataBase = false): void
     {
-        $instance = new self('danger', $titulo, $mensagem, false);
+        $instance = new self('danger', $titulo, $mensagem);
 
         if ($toDataBase) {
             $instance->sendToDataBase();
@@ -49,7 +48,7 @@ class NotificacaoService
 
     public static function success(string $titulo = 'Sucesso', string $mensagem = '', bool $toDataBase = false): void
     {
-        $instance = new self('success', $titulo, $mensagem, false);
+        $instance = new self('success', $titulo, $mensagem);
 
         if ($toDataBase) {
             $instance->sendToDataBase();
@@ -60,7 +59,7 @@ class NotificacaoService
 
     public static function alert(string $titulo = 'Alerta', string $mensagem = '', bool $toDataBase = false): void
     {
-        $instance = new self('warning', $titulo, $mensagem, true);
+        $instance = new self('warning', $titulo, $mensagem);
 
         if ($toDataBase) {
             $instance->sendToDataBase();
