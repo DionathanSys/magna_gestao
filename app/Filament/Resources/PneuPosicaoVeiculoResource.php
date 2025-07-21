@@ -35,6 +35,9 @@ class PneuPosicaoVeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                    $query->with(['veiculo', 'veiculo.kmAtual', 'pneu']);
+                })
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->numeric()
@@ -46,9 +49,11 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_inicial')
-                    ->label('Km Inicial')
-                    ->numeric(0, ',', '.')
-                    ->searchable(),
+                    ->width('1%')
+                    ->numeric(0, ',', '.'),
+                Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
+                    ->width('1%')
+                    ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('eixo')
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('posicao')
