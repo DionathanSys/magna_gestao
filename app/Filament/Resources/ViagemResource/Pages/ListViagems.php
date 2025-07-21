@@ -23,9 +23,7 @@ class ListViagems extends ListRecords
                     ->icon('heroicon-o-arrow-up-on-square')
                     ->url(route('import.viagens'))
                     ->color('primary'),
-            ])
-            ->label('Ações'),
-            BulkAction::make('conferido')
+                    BulkAction::make('conferido')
                 ->label('Conferir')
                 ->icon('heroicon-o-check-circle')
                 ->action(function (Collection $records) {
@@ -35,11 +33,14 @@ class ListViagems extends ListRecords
                     });
                 })
                 ->requiresConfirmation(),
-            // FilamentExportBulkAction::make('export')
-            //     ->fileName('Viagens')
-            //     ->disableAdditionalColumns()
-            //     ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
-            //     ->filterColumnsFieldLabel('filter columns')
+            FilamentExportBulkAction::make('export')
+                ->fileName('Viagens')
+                ->disableAdditionalColumns()
+                ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
+                ->filterColumnsFieldLabel('filter columns')
+            ])
+            ->label('Ações'),
+            
         ];
     }
 }
