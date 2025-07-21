@@ -52,13 +52,11 @@ class VeiculoResource extends Resource
                 Forms\Components\TextInput::make('marca')
                     ->label('Marca')
                     ->columnSpan(2)
-                    ->required()
                     ->maxLength(50)
                     ->placeholder('Marca do veículo'),
                 Forms\Components\TextInput::make('modelo')
                     ->label('Modelo')
                     ->columnSpan(2)
-                    ->required()
                     ->maxLength(50)
                     ->placeholder('Modelo do veículo'),
                 Forms\Components\TextInput::make('chassis')

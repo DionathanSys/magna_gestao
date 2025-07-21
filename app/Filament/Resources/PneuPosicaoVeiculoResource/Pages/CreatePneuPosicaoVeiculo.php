@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Filament\Resources\PneuPosicaoVeiculoResource\Pages;
+
+use App\Filament\Resources\PneuPosicaoVeiculoResource;
+use Filament\Actions;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreatePneuPosicaoVeiculo extends CreateRecord
+{
+    protected static string $resource = PneuPosicaoVeiculoResource::class;
+}
