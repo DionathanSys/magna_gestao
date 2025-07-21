@@ -16,6 +16,7 @@
         "leandrocfe/filament-apex-charts": "^3.2",
         "opcodesio/log-viewer": "^3.17",
         "phpoffice/phpspreadsheet": "^4.3",
+        "predis/predis": "^3.0",
         "robsontenorio/mary": "^2.4"
     },
     "require-dev": {
