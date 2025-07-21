@@ -418,7 +418,7 @@ class ViagemResource extends Resource
 
                         if($record->km_cobrar > 0) {
                             notify::success('Viagem registrada p/ cobrança.');
-                            RegistrarViagemComplementoJob::dispatch($record);
+                            RegistrarViagemComplementoJob::dispatch($record->id);
                             Log::debug('Disparado job de registro de complemento da viagem: ' . $record->id);
                         }
                     }),

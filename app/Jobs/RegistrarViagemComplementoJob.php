@@ -15,9 +15,9 @@ class RegistrarViagemComplementoJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected Viagem $viagem)
+    public function __construct(protected int $viagemId)
     {
-        //
+
     }
 
     /**
@@ -25,7 +25,7 @@ class RegistrarViagemComplementoJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::debug('Iniciando o registro do complemento da viagem: ' . $this->viagem->id);
-        (new ViagemComplementoService)->create($this->viagem);
+        Log::debug('Iniciando o registro do complemento da viagem: ' . $this->viagemId);
+        (new ViagemComplementoService)->create($this->viagemId);
     }
 }

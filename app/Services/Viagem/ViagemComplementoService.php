@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Log;
 
 class ViagemComplementoService
 {
-    public function create(Viagem $viagem): void
+    public function create(int $viagemId): void
     {
+        $viagem = Viagem::findOrFail($viagemId);
         $cargas = $viagem->cargas->pluck('integrado_id')->unique();
-        
+
         Log::debug('Criando complementos para a viagem: ' . $viagem->id . ' com cargas: ' . implode(', ', $cargas->toArray()), [
             'metodo' => __METHOD__,
         ]);
