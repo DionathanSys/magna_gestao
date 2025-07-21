@@ -19,20 +19,20 @@ class NotificacaoService
 
     public function sendToDataBase(): void
     {
-        Notification::make()
-            ->title($this->tipo)
-            ->body($this->mensagem)
-            ->status($this->tipo)
-            ->sendToDataBase($this->usersNotify);
+        // Notification::make()
+        //     ->title($this->tipo)
+        //     ->body($this->mensagem)
+        //     ->status($this->tipo)
+        //     ->sendToDataBase($this->usersNotify);
     }
 
     public function sendToast(): void
     {
-        Notification::make()
-            ->title($this->titulo)
-            ->body($this->mensagem)
-            ->status($this->tipo)
-            ->send();
+        // Notification::make()
+        //     ->title($this->titulo)
+        //     ->body($this->mensagem)
+        //     ->status($this->tipo)
+        //     ->send();
     }
 
     public static function error(string $titulo = 'Falha no processamento', string $mensagem = '', bool $toDataBase = false): void
