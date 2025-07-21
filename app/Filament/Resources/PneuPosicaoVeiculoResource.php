@@ -36,7 +36,8 @@ class PneuPosicaoVeiculoResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                    $query->with(['veiculo', 'veiculo.kmAtual', 'pneu']);
+                    $query->with(['veiculo', 'veiculo.kmAtual', 'pneu'])
+                    ->whereHas('pneu');
                 })
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
