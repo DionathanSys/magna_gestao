@@ -464,6 +464,18 @@ class ViagemResource extends Resource
                             });
                         })
                         ->requiresConfirmation(),
+                Tables\Actions\BulkAction::make('cobrar')
+                        ->successNotification(null)
+                        ->label('Cobrar')
+                        ->icon('heroicon-o-money')
+                        ->action(function (Collection $records) {
+                            $records->each(function (Viagem $record) {
+                                if($record->km_cobrar > 0) {
+                                    (new ViagemComplementoService)->create($record);
+                                }
+                            });
+                        })
+                        ->requiresConfirmation(),
                 FilamentExportBulkAction::make('export')
                         ->fileName('Viagens')
                         ->disableAdditionalColumns()
