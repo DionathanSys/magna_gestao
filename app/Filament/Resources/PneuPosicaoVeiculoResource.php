@@ -35,10 +35,10 @@ class PneuPosicaoVeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->modifyQueryUsing(function (Builder $query) {
-            //         $query->with(['veiculo', 'veiculo.kmAtual', 'pneu'])
-            //         ->whereHas('pneu');
-            //     })
+            ->modifyQueryUsing(function (Builder $query) {
+                    $query->with(['veiculo', 'veiculo.kmAtual', 'pneu'])
+                    ->whereHas('pneu');
+                })
             ->columns([
                 Tables\Columns\TextColumn::make('pneu.numero_fogo')
                     ->numeric()
@@ -49,15 +49,15 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->label('Dt. Inicial')
                     ->date('d/m/Y')
                     ->sortable(),
-                // Tables\Columns\TextColumn::make('km_inicial')
-                //     ->label('Km. Rodado')
-                //     ->width('1%')
-                //     ->sortable()
-                //     ->state(fn (PneuPosicaoVeiculo $record): string => $record->km_inicial ? (($record->veiculo->kmAtual->quilometragem ?? 0) - $record->km_inicial) : 'N/A')
-                //     ->numeric(0, ',', '.'),
-                // Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
-                //     ->width('1%')
-                //     ->numeric(0, ',', '.'),
+                Tables\Columns\TextColumn::make('km_inicial')
+                    ->label('Km. Rodado')
+                    ->width('1%')
+                    ->sortable()
+                    ->state(fn (PneuPosicaoVeiculo $record): string => $record->km_inicial ? (($record->veiculo->kmAtual->quilometragem ?? 0) - $record->km_inicial) : 'N/A')
+                    ->numeric(0, ',', '.'),
+                Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
+                    ->width('1%')
+                    ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('eixo')
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('posicao')
