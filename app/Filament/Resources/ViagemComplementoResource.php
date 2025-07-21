@@ -17,7 +17,13 @@ class ViagemComplementoResource extends Resource
 {
     protected static ?string $model = ViagemComplemento::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+     protected static ?string $navigationGroup = 'Complemento Viagens';
+
+    protected static ?string $pluralModelLabel = 'Complemento Viagens';
+
+    protected static ?string $pluralLabel = 'Complemento Viagens';
+
+    protected static ?string $label = 'Complemento Viagem';
 
     public static function form(Form $form): Form
     {
@@ -30,34 +36,44 @@ class ViagemComplementoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('viagem_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('id')
+                    ->numeric(0,'','')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('veiculo_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->label('Placa')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('numero_viagem')
+                    ->label('Nº Viagem')
+                    ->numeric(0,'','')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('documento_transporte')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('integrado_id')
-                    ->numeric()
+                    ->numeric(0,'','')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('integrado.codigo')
+                    ->numeric(0,'','')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('integrado.nome')
+                    ->label('Integrado')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_rodado')
-                    ->numeric()
+                    ->numeric(2, '.',',')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_pago')
-                    ->numeric()
+                    ->numeric(2, '.',',')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_divergencia')
-                    ->numeric()
+                    ->numeric(2, '.',',')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_cobrar')
-                    ->numeric()
+                    ->numeric(2, '.',',')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('motivo_divergencia')
+                    ->label('Motivo Divergência')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('data_competencia')
+                    ->label('Data Competência')
+                    ->date('d/m/Y')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('conferido')
                     ->boolean(),
