@@ -422,6 +422,9 @@ class ViagemResource extends Resource
                         $record->updated_by = Auth::user()->id;
                         $record->checked_by = Auth::user()->id;
                         $record->save();
+
+                        (new ViagemComplementoService)->create($record);
+                        
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->successNotification(null)
