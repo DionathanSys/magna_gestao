@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        dd(11   );
         return $panel
             ->topNavigation()
             ->sidebarCollapsibleOnDesktop()
@@ -62,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
-                // DispatchServingFilamentEvent::class,
+                DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
