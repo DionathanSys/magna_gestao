@@ -81,9 +81,6 @@ class PneusRelationManager extends RelationManager
                     ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
                     ->width('1%')
-                    ->state(function (Forms\Get $get, $state): float {
-                        return $state - $get('km_inicial');
-                    })
                     ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
