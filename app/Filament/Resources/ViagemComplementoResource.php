@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ViagemComplementoResource\Pages;
 use App\Filament\Resources\ViagemComplementoResource\RelationManagers;
 use App\Models\ViagemComplemento;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -41,14 +42,16 @@ class ViagemComplementoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->numeric(0,'','')
-                    ->searchable(),
+                    ->sortable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('documento_transporte')
                     ->numeric(0,'','')
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('integrado.codigo')
                     ->numeric(0,'','')
@@ -88,6 +91,24 @@ class ViagemComplementoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups(
+                [
+                    Tables\Grouping\Group::make('data_competencia')
+                        ->label('Data Competência')
+                        ->titlePrefixedWithLabel(false)
+                        ->getTitleFromRecordUsing(fn(ViagemComplemento $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('veiculo.placa')
+                        ->label('Veículo')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                    Tables\Grouping\Group::make('numero_viagem')
+                        ->label('Nº Viagem')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                ]
+            )
+            ->defaultGroup('numero_viagem')
             ->filters([
                 //
             ])
