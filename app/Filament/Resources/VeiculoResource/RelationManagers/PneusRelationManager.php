@@ -77,11 +77,14 @@ class PneusRelationManager extends RelationManager
                     ->width('1%')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('km_inicial')
-                    ->width('1%'),
-                Tables\Columns\TextColumn::make('km_inicial')
-                    ->width('1%'),
+                    ->width('1%')
+                    ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
-                    ->width('1%'),
+                    ->width('1%')
+                    ->state(function (Forms\Get $get, $state): float {
+                        return $state - $get('km_inicial');
+                    })
+                    ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
                     ->date('d/m/Y'),
@@ -178,7 +181,7 @@ class PneusRelationManager extends RelationManager
                         PneuResource::getKmInicialOrdemFormField()
                             ->label('KM Movimentação'),
                         PneuResource::getObservacaoFormField(),
-                    ])->action(fn (array $data, PneuPosicaoVeiculo $record) => $this->movimentarPneuService->trocarPneu($record, $data)),
+                    ])->action(fn(array $data, PneuPosicaoVeiculo $record) => $this->movimentarPneuService->trocarPneu($record, $data)),
                 Tables\Actions\EditAction::make()
                     ->iconButton()
                     ->visible(fn() => Auth::user()->is_admin),
@@ -210,8 +213,8 @@ class PneusRelationManager extends RelationManager
                                     ->label('KM Movimentação')
                                     ->columnSpan(2),
                                 PneuResource::getObservacaoFormField(),
-                        ]))
-                        ->action(fn (array $data, Collection $records) => $this->movimentarPneuService->rodizioPneu($records, $data))
+                            ]))
+                        ->action(fn(array $data, Collection $records) => $this->movimentarPneuService->rodizioPneu($records, $data))
                         ->deselectRecordsAfterCompletion(),
 
                 ]),
