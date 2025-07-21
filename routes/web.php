@@ -10,6 +10,8 @@ use App\Models\Viagem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,30 +56,60 @@ Route::prefix('import')->group(function () {
 
 Route::get('/teste', function () {
 
-$viagensComDispersao = Viagem::with(['cargas.integrado'])
-    ->get()
-    ->filter(function ($viagem) {
-        return ($viagem->km_rodado - $viagem->km_pago) > 3.5 && 
-               $viagem->cargas->pluck('integrado_id')->unique()->count() > 1;
-    })
-    ->map(function ($viagem) {
-        return [
-            'nro_viagem'            => $viagem->numero_viagem,
-            'doc_transp'            => $viagem->documento_transporte,
-            'km_rodado'             => $viagem->km_rodado,
-            'km_pago'               => $viagem->km_pago,
-            'km_disperso'           => $viagem->km_rodado - $viagem->km_pago,
-            'motivo_divergencia'    => $viagem->motivo_divergencia->value,
-            'num_destinos'          => $viagem->cargas->pluck('destino_id')->unique()->count(),
-            'destinos'              => $viagem->cargas
-                ->pluck('integrado.nome') 
-                ->unique()
-                ->implode(', '),
-        ];
-    });
+    $viagensComDispersao = Viagem::with(['cargas.integrado'])
+        ->get()
+        ->filter(function ($viagem) {
+            return ($viagem->km_rodado - $viagem->km_pago) > 3.5
+            //  && $viagem->numero_viagem == '21052347'
+             ;
+        })
+        ->map(function ($viagem) {
+            return [
+                'nro_viagem'            => $viagem->numero_viagem,
+                'doc_transp'            => $viagem->documento_transporte,
+                'km_rodado'             => $viagem->km_rodado,
+                'km_pago'               => $viagem->km_pago,
+                'km_disperso'           => $viagem->km_rodado - $viagem->km_pago,
+                'motivo_divergencia'    => $viagem->motivo_divergencia->value ?? 'N/A',
+                'num_destinos'          => $viagem->cargas->pluck('integrado_id')->unique()->count(),
+                'destinos'              => $viagem->cargas
+                    ->pluck('integrado.nome') 
+                    ->unique()
+                    ->implode(', '),
+            ];
+        })->values()->all();
 
-dump($viagensComDispersao);
-dd($viagensComDispersao->groupBy('destinos'));
+    // Cria a planilha
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Cabeçalho
+    $headers = [
+        'Nº Viagem', 'Doc. Transporte', 'KM Rodado', 'KM Pago', 'KM Disperso', 
+        'Motivo Divergência', 'Nº Destinos', 'Destinos'
+    ];
+    $sheet->fromArray($headers, null, 'A1');
+
+    // Dados
+    $row = 2;
+    foreach ($viagensComDispersao as $viagem) {
+        $sheet->fromArray(array_values($viagem), null, 'A' . $row);
+        $row++;
+    }
+
+    // Download
+    $writer = new Xlsx($spreadsheet);
+    $filename = 'viagens_dispersao.xlsx';
+
+    // Cabeçalhos para download
+    return response()->streamDownload(function () use ($writer) {
+        $writer->save('php://output');
+    }, $filename, [
+        'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Cache-Control' => 'max-age=0',
+        'Pragma' => 'public',
+    ]);
+
 });
 
 
