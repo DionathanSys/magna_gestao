@@ -50,6 +50,7 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_inicial')
+                    ->label('Km. Rodado')
                     ->width('1%')
                     ->state(fn (PneuPosicaoVeiculo $record): string => $record->km_inicial ? (($record->veiculo->kmAtual->quilometragem ?? 0) - $record->km_inicial) : 'N/A')
                     ->numeric(0, ',', '.'),
@@ -96,6 +97,7 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->label('Veículo')
                     ->collapsible(),
             ])
+            ->defaultsort('km_inicial', 'desc')
             ->defaultGroup('eixo')
             ->actions([
                 Tables\Actions\EditAction::make(),
