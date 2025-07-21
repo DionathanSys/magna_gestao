@@ -17,7 +17,13 @@ class PneuPosicaoVeiculoResource extends Resource
 {
     protected static ?string $model = PneuPosicaoVeiculo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Posições de Pneus';
+
+    protected static ?string $pluralModelLabel = 'Posições de Pneus';
+
+    protected static ?string $pluralLabel = 'Posições de Pneus';
+
+    protected static ?string $label = 'Posição de Pneu';
 
     public static function form(Form $form): Form
     {
