@@ -132,6 +132,7 @@ class ViagemComplementoResource extends Resource
                                 $record->save();
                             });
                         })
+                        ->deselectRecordsAfterCompletion()
                         ->requiresConfirmation(),
             ]);
     }
