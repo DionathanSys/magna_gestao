@@ -25,7 +25,6 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        dd(11   );
         return $panel
             ->topNavigation()
             ->sidebarCollapsibleOnDesktop()
