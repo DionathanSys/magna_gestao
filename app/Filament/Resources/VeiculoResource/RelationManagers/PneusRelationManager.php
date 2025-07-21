@@ -79,9 +79,9 @@ class PneusRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->width('1%')
                     ->numeric(0, ',', '.'),
-                Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
-                    ->width('1%')
-                    ->numeric(0, ',', '.'),
+                // Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
+                //     ->width('1%')
+                //     ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
                     ->date('d/m/Y'),
