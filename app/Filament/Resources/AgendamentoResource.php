@@ -262,6 +262,7 @@ class AgendamentoResource extends Resource
             ->defaultSort('data_agendamento', 'asc')
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->successNotification(null)
                     ->iconButton()
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['updated_by'] = Auth::user()->id;
@@ -271,8 +272,10 @@ class AgendamentoResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null),
                     Tables\Actions\BulkAction::make('gerar-ordem-servico')
+                        ->successNotification(null)
                         ->label('Gerar OS')
                         ->icon('heroicon-o-forward')
                         ->requiresConfirmation()

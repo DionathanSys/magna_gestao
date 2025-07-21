@@ -48,6 +48,7 @@ class PlanoPreventivoRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null)
                         ->visible(fn() => Auth::user()->is_admin)
                         ->action(function (Collection $records) {
                             foreach ($records as $record) {

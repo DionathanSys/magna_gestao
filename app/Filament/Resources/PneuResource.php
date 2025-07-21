@@ -217,6 +217,7 @@ class PneuResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('conserto')
+                        ->successNotification(null)
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->form(fn(Forms\Form $form) => $form
                             ->columns(4)
@@ -228,6 +229,7 @@ class PneuResource extends Resource
                             ]))
                         ->action(fn(Pneu $record, array $data) => (new ConsertoService())->create($record, $data)),
                     Tables\Actions\Action::make('recapagem')
+                                ->successNotification(null)
                         ->icon('heroicon-o-wrench')
                         ->form(fn(Forms\Form $form) => $form
                             ->columns(4)
@@ -267,8 +269,10 @@ class PneuResource extends Resource
 
                 ]),
                 Tables\Actions\EditAction::make()
+                    ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\ReplicateAction::make()
+                    ->successNotification(null)
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
                     ->fillForm(fn(Pneu $record) => [
@@ -291,7 +295,8 @@ class PneuResource extends Resource
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null),
                 ]),
             ]);
     }

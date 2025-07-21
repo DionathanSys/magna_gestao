@@ -117,11 +117,13 @@ class DocumentoFreteResource extends Resource
             ->searchOnBlur()
             ->persistFiltersInSession()
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null),
                 ]),
             ]);
     }

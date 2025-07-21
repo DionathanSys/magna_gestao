@@ -19,13 +19,15 @@ class ListViagems extends ListRecords
         return [
             Actions\ActionGroup::make([
                 Actions\Action::make('importar-viagens')
+
+                    ->successNotification(null)
                     ->label('Importar Viagens')
                     ->icon('heroicon-o-arrow-up-on-square')
                     ->url(route('import.viagens'))
                     ->color('primary'),
             ])
             ->label('Ações'),
-            
+
         ];
     }
 }

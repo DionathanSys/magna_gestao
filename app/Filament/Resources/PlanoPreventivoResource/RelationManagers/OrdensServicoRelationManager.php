@@ -66,13 +66,16 @@ class OrdensServicoRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->successNotification(null)
                     ->visible(fn() => Auth::user()->is_admin),
                 Tables\Actions\DeleteAction::make()
+                    ->successNotification(null)
                     ->visible(fn() => Auth::user()->is_admin),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null)
                         ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ]);

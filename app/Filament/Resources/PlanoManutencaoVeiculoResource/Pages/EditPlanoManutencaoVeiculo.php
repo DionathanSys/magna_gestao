@@ -13,7 +13,8 @@ class EditPlanoManutencaoVeiculo extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->successNotification(null),
         ];
     }
 }

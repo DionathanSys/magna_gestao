@@ -14,6 +14,7 @@ class ListIntegrados extends ListRecords
     {
         return [
             Actions\CreateAction::make()
+                ->successNotification(null)
                 ->label('Integrado')
                 ->icon('heroicon-o-plus')
                 ->color('primary'),

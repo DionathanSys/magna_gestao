@@ -71,17 +71,21 @@ class AgendamentosRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->successNotification(null),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->successNotification(null)
                     ->iconButton(),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null),
                     Tables\Actions\BulkAction::make('vincular')
+                        ->successNotification(null)
                         ->label('Incluir na Ordem de Serviço')
                         ->icon('heroicon-o-document-arrow-up')
                         ->action(function (Collection $records) {

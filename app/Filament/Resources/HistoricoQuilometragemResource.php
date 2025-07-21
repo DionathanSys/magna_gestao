@@ -81,11 +81,13 @@ class HistoricoQuilometragemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->successNotification(null)
                     ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null),
                 ]),
             ]);
     }

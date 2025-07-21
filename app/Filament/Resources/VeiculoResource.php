@@ -120,6 +120,7 @@ class VeiculoResource extends Resource
             ->paginated([25, 50, 100])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->successNotification(null)
                     ->mutateFormDataUsing(function (array $data): array {
                         unset($data['km_movimento']);
                         unset($data['data_movimento']);
@@ -128,7 +129,8 @@ class VeiculoResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null),
                 ]),
             ]);
     }

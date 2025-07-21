@@ -15,7 +15,8 @@ class EditViagem extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->successNotification(null),
         ];
     }
 
@@ -31,6 +32,7 @@ class EditViagem extends EditRecord
     public function atualizarCadastroIntegrado(array $data): void
     {
         Actions\Action::make('atualizar_cadastro_integrado')
+            ->successNotification(null)
             ->action(function () use ($data) {
                 dd($data);
             })

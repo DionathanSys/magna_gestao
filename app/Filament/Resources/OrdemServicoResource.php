@@ -205,13 +205,17 @@ class OrdemServicoResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('encerrar')
+                        ->successNotification(null)
                         ->label('Encerrar OS')
                         ->action(fn(OrdemServico $record) => (new OrdemServicoService)->encerrarOrdemServico($record)),
                     Tables\Actions\ViewAction::make()
+                        ->successNotification(null)
                         ->label('Visualizar')
                         ->icon('heroicon-o-eye'),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->successNotification(null),
                     Tables\Actions\Action::make('ordem_sankhya')
+                        ->successNotification(null)
                         ->label('Add Ordem Sankhya')
                         ->icon('heroicon-o-clipboard-document-list')
                         ->modal()
@@ -269,6 +273,7 @@ class OrdemServicoResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(null)
                         ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ])

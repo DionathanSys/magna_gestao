@@ -14,6 +14,7 @@ class ListDesenhoPneus extends ListRecords
     {
         return [
             Actions\CreateAction::make()
+                ->successNotification(null)
                 ->label('Desenho Pneu')
                 ->icon('heroicon-o-plus-circle')
                 ->color('primary'),
