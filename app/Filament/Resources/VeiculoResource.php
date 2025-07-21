@@ -106,7 +106,6 @@ class VeiculoResource extends Resource
                         'CONCORDIA'  => 'Concórdia',
                     ])
                     ->default(fn() => Auth::user()->name == 'Carol' ? 'CATANDUVAS' : 'CHAPECO'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->paginated([25, 50, 100])
             ->actions([
