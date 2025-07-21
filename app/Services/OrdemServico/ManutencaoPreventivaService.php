@@ -6,7 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
 use App\Models\PlanoPreventivo;
-use App\Services\NotificacaoService as notify;
+// use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Facades\Auth;
 
 class ManutencaoPreventivaService
@@ -19,7 +19,7 @@ class ManutencaoPreventivaService
             ->first();
 
         if ($manutencaoPreventivaAssociada) {
-            notify::error('Plano Preventivo já associado a esta Ordem de Serviço.');
+            // notify::error('Plano Preventivo já associado a esta Ordem de Serviço.');
             return;
         }
 
@@ -47,14 +47,14 @@ class ManutencaoPreventivaService
             }
         } catch (\Exception $e) {
             $manutencaoPreventivaAssociada->delete();
-            notify::error('Erro ao associar Plano Preventivo. Itens não foram criados');
+            // notify::error('Erro ao associar Plano Preventivo. Itens não foram criados');
             return;
         }
 
         if ($manutencaoPreventivaAssociada) {
-            notify::success('Plano Preventivo associado com sucesso.');
+            // notify::success('Plano Preventivo associado com sucesso.');
         } else {
-            notify::error('Erro ao associar Plano Preventivo.');
+            // notify::error('Erro ao associar Plano Preventivo.');
         }
     }
 
@@ -62,11 +62,11 @@ class ManutencaoPreventivaService
     {
 
         if (! ItemOrdemServicoService::removerItensComPlanoPreventivo($planoManutencaoOrdemServico)){
-            notify::error('Erro ao desassociar Plano Preventivo.');
+            // notify::error('Erro ao desassociar Plano Preventivo.');
             return;
         }
 
         $planoManutencaoOrdemServico->delete();
-        notify::success('Plano Preventivo desassociado com sucesso.');
+        // notify::success('Plano Preventivo desassociado com sucesso.');
     }
 }

@@ -7,7 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
-use App\Services\NotificacaoService as notify;
+// use App\Services\NotificacaoService as notify;
 
 class ItemOrdemServicoService
 {
@@ -38,7 +38,7 @@ class ItemOrdemServicoService
             ->get();
 
         if ($itens->where('status', '!=', StatusOrdemServicoEnum::PENDENTE)->count() > 0) {
-            notify::error('Não é possível remover o vínculo com o plano preventivo, pois existem itens com status diferente de PENDENTE.');
+            // notify::error('Não é possível remover o vínculo com o plano preventivo, pois existem itens com status diferente de PENDENTE.');
             return false;
         }
 
@@ -52,18 +52,18 @@ class ItemOrdemServicoService
     public static function delete(ItemOrdemServico $itemOrdemServico)
     {
         if ($itemOrdemServico->status != StatusOrdemServicoEnum::PENDENTE) {
-            notify::error('Não é possível remover um item de ordem de serviço que não esteja pendente.');
+            // notify::error('Não é possível remover um item de ordem de serviço que não esteja pendente.');
             return;
         }
 
         if($itemOrdemServico->plano_preventivo_id) {
-            notify::alert('Não é possível remover um item de ordem de serviço que esteja associado a um plano preventivo.');
+            // notify::alert('Não é possível remover um item de ordem de serviço que esteja associado a um plano preventivo.');
             return;
         }
 
         $itemOrdemServico->delete();
 
-        notify::success('Item de Ordem de Serviço removido com sucesso.');
+        // notify::success('Item de Ordem de Serviço removido com sucesso.');
     }
 
 }
