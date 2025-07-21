@@ -42,10 +42,6 @@ class PlanoManutencaoVeiculo extends Model
 
     public function quilometragemRestante(): Attribute
     {
-        Log::debug('Km restante', [
-            'km_atual' => $this->veiculo->kmAtual->quilometragem ?? 0,
-            'proxima_execucao' => $this->proxima_execucao,
-        ]);
         return Attribute::make(
             get: fn(): float => $this->proxima_execucao - $this->veiculo->kmAtual->quilometragem
         );
