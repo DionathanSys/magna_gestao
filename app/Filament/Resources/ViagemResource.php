@@ -416,15 +416,6 @@ class ViagemResource extends Resource
                         $record->updated_by = Auth::user()->id;
                         $record->checked_by = Auth::user()->id;
                         $record->save();
-
-                        // if($record->km_cobrar > 0) {
-                        // //     ds($record->km_cobrar);
-                        //     notify::success('Viagem registrada p/ cobrança.');
-                        //     (new ViagemComplementoService)->create($record->id);
-
-                        //         // RegistrarViagemComplementoJob::dispatch($record->id);
-                        //     Log::debug('registro de complemento da viagem: ' . $record->id);
-                        // }
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Ñ Conferido')
