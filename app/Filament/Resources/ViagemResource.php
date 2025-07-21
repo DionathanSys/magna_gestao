@@ -417,6 +417,7 @@ class ViagemResource extends Resource
                         $record->save();
 
                         RegistrarViagemComplementoJob::dispatch($record);
+                        Log::debug('Disparado job de registro de complemento da viagem: ' . $record->id);
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Ñ Conferido')
