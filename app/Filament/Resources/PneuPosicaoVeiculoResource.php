@@ -88,6 +88,15 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->relationship('pneu', 'numero_fogo')
                     ->searchable(),
             ])
+            ->groups([
+                Tables\Grouping\Group::make('eixo')
+                    ->label('Eixo')
+                    ->collapsible(),
+                Tables\Grouping\Group::make('veiculo.placa')
+                    ->label('Veículo')
+                    ->collapsible(),
+            ])
+            ->defaultGroup('eixo')
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
