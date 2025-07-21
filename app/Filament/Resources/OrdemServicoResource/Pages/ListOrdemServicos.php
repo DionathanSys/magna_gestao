@@ -21,7 +21,7 @@ class ListOrdemServicos extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->successNotificationTitle(null)
+                ->successNotification(null)
                 ->label('OS')
                 ->icon('heroicon-o-plus')
                 ->before(function (Actions\CreateAction $action, array $data) {
