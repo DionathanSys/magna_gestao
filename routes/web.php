@@ -73,7 +73,7 @@ Route::get('/teste', function () {
                 'motivo_divergencia'    => $viagem->motivo_divergencia->value ?? 'N/A',
                 'num_destinos'          => $viagem->cargas->pluck('integrado_id')->unique()->count(),
                 'destinos'              => $viagem->cargas
-                    ->pluck('integrado.nome') 
+                    ->pluck('integrado.nome')
                     ->unique()
                     ->implode(', '),
             ];
@@ -85,7 +85,7 @@ Route::get('/teste', function () {
 
     // Cabeçalho
     $headers = [
-        'Nº Viagem', 'Doc. Transporte', 'KM Rodado', 'KM Pago', 'KM Disperso', 
+        'Nº Viagem', 'Doc. Transporte', 'KM Rodado', 'KM Pago', 'KM Disperso',
         'Motivo Divergência', 'Nº Destinos', 'Destinos'
     ];
     $sheet->fromArray($headers, null, 'A1');
@@ -110,6 +110,10 @@ Route::get('/teste', function () {
         'Pragma' => 'public',
     ]);
 
+});
+
+Route::get('/teste2', function (){
+    dd('teste');
 });
 
 

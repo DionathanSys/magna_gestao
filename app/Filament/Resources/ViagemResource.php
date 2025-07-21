@@ -416,15 +416,15 @@ class ViagemResource extends Resource
                         $record->updated_by = Auth::user()->id;
                         $record->checked_by = Auth::user()->id;
                         $record->save();
-                        
-                        if($record->km_cobrar > 0) {
-                        //     ds($record->km_cobrar);
-                            notify::success('Viagem registrada p/ cobrança.');
-                            (new ViagemComplementoService)->create($record->id);
 
-                                // RegistrarViagemComplementoJob::dispatch($record->id);
-                            Log::debug('registro de complemento da viagem: ' . $record->id);
-                        }
+                        // if($record->km_cobrar > 0) {
+                        // //     ds($record->km_cobrar);
+                        //     notify::success('Viagem registrada p/ cobrança.');
+                        //     (new ViagemComplementoService)->create($record->id);
+
+                        //         // RegistrarViagemComplementoJob::dispatch($record->id);
+                        //     Log::debug('registro de complemento da viagem: ' . $record->id);
+                        // }
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->label('Ñ Conferido')
@@ -439,43 +439,6 @@ class ViagemResource extends Resource
                             'checked_by' => null,
                         ]);
                     }),
-                // Tables\Actions\Action::make('km-cadastro')
-                //     ->label('KM')
-                //     ->icon('heroicon-o-pencil-square')
-                //     ->fillForm(fn (Viagem $record): array => [
-                //         'km_cadastro'       => $record->km_cadastro,
-                //         'km_rodado'         => $record->km_rodado,
-                //         'km_pago'           => $record->km_pago,
-                //         'km_rota_corrigido' => $record->km_rota_corrigido,
-                //     ])
-                //     ->form([
-                //         Forms\Components\TextInput::make('km_rodado')
-                //             ->label('KM Rodado')
-                //             ->numeric()
-                //             ->required(),
-                //         Forms\Components\TextInput::make('km_pago')
-                //             ->label('KM Pago')
-                //             ->numeric()
-                //             ->required(),
-                //         Forms\Components\TextInput::make('km_cadastro')
-                //             ->label('KM Cadastro')
-                //             ->numeric()
-                //             ->required(),
-                //         Forms\Components\TextInput::make('km_rota_corrigido')
-                //             ->label('KM Rota Corrigido')
-                //             ->numeric()
-                //             ->required(),
-                //     ])
-                //     ->action(function(Viagem $record, array $data) {
-
-                //             $record->update([
-                //                 'km_cadastro'       => $data['km_cadastro'],
-                //                 'km_rodado'         => $data['km_rodado'],
-                //                 'km_pago'           => $data['km_pago'],
-                //                 'km_rota_corrigido' => $data['km_rota_corrigido'],
-                //             ]);
-                //         })
-                //     ->after(fn(Viagem $record) => (new ViagemService())->recalcularViagem($record)),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
