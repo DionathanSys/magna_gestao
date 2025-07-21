@@ -5,6 +5,7 @@ namespace App\Filament\Resources\VeiculoResource\Pages;
 use App\Filament\Resources\VeiculoResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Auth;
 
 class EditVeiculo extends EditRecord
 {
@@ -13,18 +14,17 @@ class EditVeiculo extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn() => Auth::user()->is_admin),
         ];
     }
 
-    protected function fillForm(): void
-    {
-        $this->form->fill([
-            'placa'             => $this->record->placa,
-            'is_active'         => $this->record->is_active,
-            'km_movimento'      => 1,
-            'data_movimento'    => now()->format('Y-m-d'),
-        ]);
-    }
+    // protected function fillForm(): void
+    // {
+    //     $this->form->fill([
+    //         'placa'             => $this->record->placa,
+    //         'is_active'         => $this->record->is_active,
+    //     ]);
+    // }
 
 }
