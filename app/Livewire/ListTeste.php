@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Filament\Resources\ViagemResource;
 use App\Models\Shop\Product;
 use App\Models\Viagem;
 use Carbon\Carbon;
@@ -36,7 +37,7 @@ class ListTeste extends Component implements HasForms, HasTable
      public function table(Table $table): Table
     {
         return $table
-            ->query(Viagem::query())
+            ->query(ViagemResource::getEloquentQuery())
             ->columns([
                 TextColumn::make('veiculo.placa')
                     ->label('Placa')
@@ -123,7 +124,6 @@ class ListTeste extends Component implements HasForms, HasTable
                 ]
             )
             ->defaultGroup('veiculo.placa')
-            ->groupsOnly()
             ->defaultSort('km_rodado', 'desc')
             ->searchOnBlur()
             ->persistFiltersInSession()

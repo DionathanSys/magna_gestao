@@ -23,21 +23,6 @@ class ListViagems extends ListRecords
                     ->icon('heroicon-o-arrow-up-on-square')
                     ->url(route('import.viagens'))
                     ->color('primary'),
-                    BulkAction::make('conferido')
-                ->label('Conferir')
-                ->icon('heroicon-o-check-circle')
-                ->action(function (Collection $records) {
-                    $records->each(function (Viagem $record) {
-                        $record->conferido = true;
-                        $record->save();
-                    });
-                })
-                ->requiresConfirmation(),
-            FilamentExportBulkAction::make('export')
-                ->fileName('Viagens')
-                ->disableAdditionalColumns()
-                ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
-                ->filterColumnsFieldLabel('filter columns')
             ])
             ->label('Ações'),
             
