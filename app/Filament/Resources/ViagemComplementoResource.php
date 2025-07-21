@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class ViagemComplementoResource extends Resource
 {
@@ -121,6 +122,17 @@ class ViagemComplementoResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         ->successNotification(null),
                 ]),
+                Tables\Actions\BulkAction::make('conferido')
+                        ->successNotification(null)
+                        ->label('Conferir')
+                        ->icon('heroicon-o-check-circle')
+                        ->action(function (Collection $records) {
+                            $records->each(function (ViagemComplemento $record) {
+                                $record->conferido = true;
+                                $record->save();
+                            });
+                        })
+                        ->requiresConfirmation(),
             ]);
     }
 
