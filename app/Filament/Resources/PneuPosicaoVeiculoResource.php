@@ -51,7 +51,7 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_inicial')
                     ->width('1%')
-                    ->tooltip(fn (PneuPosicaoVeiculo $record): string => $record->km_inicial ? (($record->veiculo->kmAtual->quilometragem ?? 0) - $record->km_inicial) : 'N/A')
+                    ->state(fn (PneuPosicaoVeiculo $record): string => $record->km_inicial ? (($record->veiculo->kmAtual->quilometragem ?? 0) - $record->km_inicial) : 'N/A')
                     ->numeric(0, ',', '.'),
                 Tables\Columns\TextColumn::make('veiculo.kmAtual.quilometragem')
                     ->width('1%')
