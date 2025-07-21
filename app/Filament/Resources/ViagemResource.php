@@ -423,7 +423,10 @@ class ViagemResource extends Resource
                         $record->checked_by = Auth::user()->id;
                         $record->save();
 
-                        (new ViagemComplementoService)->create($record);
+                        if($record->km_cobrar > 0) {
+                            (new ViagemComplementoService)->create($record);
+                        }
+
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->successNotification(null)
@@ -453,6 +456,11 @@ class ViagemResource extends Resource
                             $records->each(function (Viagem $record) {
                                 $record->conferido = true;
                                 $record->save();
+
+                                if($record->km_cobrar > 0) {
+                                    (new ViagemComplementoService)->create($record);
+                                }
+
                             });
                         })
                         ->requiresConfirmation(),

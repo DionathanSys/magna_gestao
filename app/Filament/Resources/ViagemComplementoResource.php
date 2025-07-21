@@ -57,16 +57,16 @@ class ViagemComplementoResource extends Resource
                     ->label('Integrado')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_rodado')
-                    ->numeric(2, '.',',')
+                    ->numeric(2, ',','.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_pago')
-                    ->numeric(2, '.',',')
+                    ->numeric(2, ',','.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_divergencia')
-                    ->numeric(2, '.',',')
+                    ->numeric(2, ',','.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_cobrar')
-                    ->numeric(2, '.',',')
+                    ->numeric(2, ',','.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('motivo_divergencia')
                     ->label('Motivo Divergência')
