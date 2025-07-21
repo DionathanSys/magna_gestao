@@ -424,7 +424,6 @@ class ViagemResource extends Resource
                         $record->save();
 
                         (new ViagemComplementoService)->create($record);
-                        
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     ->successNotification(null)
