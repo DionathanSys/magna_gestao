@@ -19,7 +19,7 @@ class ViagemComplementoResource extends Resource
 {
     protected static ?string $model = ViagemComplemento::class;
 
-     protected static ?string $navigationGroup = 'Complemento Viagens';
+     protected static ?string $navigationGroup = 'Viagens';
 
     protected static ?string $pluralModelLabel = 'Complemento Viagens';
 

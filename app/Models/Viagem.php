@@ -33,6 +33,11 @@ class Viagem extends Model
         return $this->hasMany(DocumentoFrete::class, 'documento_transporte', 'documento_transporte');
     }
 
+    public function complementos(): HasMany
+    {
+        return $this->hasMany(ViagemComplemento::class, 'viagem_id');
+    }
+
     public function veiculo()
     {
         return $this->belongsTo(Veiculo::class, 'veiculo_id');
