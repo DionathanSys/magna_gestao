@@ -211,10 +211,13 @@ class ViagemResource extends Resource
                         ->wrapHeader()
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize([
-                            Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'),
-                            Range::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'),
-                        ])
+                        ->summarize(
+                            // Sum::make()
+                            //     ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                            Range::make()
+                                ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                                ->label('Km Perdido Range')
+                        )
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
                         ->wrapHeader()
