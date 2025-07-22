@@ -171,6 +171,11 @@ class ViagemResource extends Resource
                     ->label('Nº Viagem')
                     ->width('1%')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('cargas.integrado.codigo')
+                    ->label('Cód. Integrado')
+                    ->width('1%')
+                    ->listWithLineBreaks()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('cargas.integrado.nome')
                     ->label('Integrado')
                     ->width('1%')
