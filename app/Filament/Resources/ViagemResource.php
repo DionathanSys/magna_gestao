@@ -212,8 +212,8 @@ class ViagemResource extends Resource
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(
-                            Sum::make()
-                                ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                            // Sum::make()
+                            //     ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
                             Range::make()
                         )
                         ->toggleable(isToggledHiddenByDefault: false),
@@ -272,6 +272,7 @@ class ViagemResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('complementos_count')
                     ->label('Complementos')
+                    ->counts('complementos')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('Users', [
                     Tables\Columns\TextColumn::make('creator.name')
