@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -62,15 +63,19 @@ class ViagemComplementoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_rodado')
                     ->numeric(2, ',','.')
+                    ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_pago')
                     ->numeric(2, ',','.')
+                    ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_divergencia')
                     ->numeric(2, ',','.')
+                    ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_cobrar')
                     ->numeric(2, ',','.')
+                    ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('motivo_divergencia')
                     ->label('Motivo Divergência')
