@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
 use App\Jobs\RegistrarViagemComplementoJob;
 use App\Services\Viagem\ViagemComplementoService;
+use Filament\Tables\Columns\Summarizers\Range;
 
 class ViagemResource extends Resource
 {
@@ -210,7 +211,14 @@ class ViagemResource extends Resource
                         ->wrapHeader()
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
+                        ->summarize([
+                            Sum::make()
+                                ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                            Range::make()
+                                ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                                ->label('Km Perdido Range')
+                                ->color(fn($state, Viagem $record): string => $record->km_rodado_excedente > 0 ? 'info' : '')
+                        ])
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
                         ->wrapHeader()
@@ -265,6 +273,9 @@ class ViagemResource extends Resource
                         '1' => 'blue',
                         default => 'red',
                     }),
+                Tables\Columns\TextColumn::make('complementos_count')
+                    ->label('Complementos')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('Users', [
                     Tables\Columns\TextColumn::make('creator.name')
                         ->label('Criado Por')
