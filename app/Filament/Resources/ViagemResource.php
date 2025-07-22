@@ -217,7 +217,6 @@ class ViagemResource extends Resource
                             Range::make()
                                 ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                                 ->label('Km Perdido Range')
-                                ->color(fn($state, Viagem $record): string => $record->km_rodado_excedente > 0 ? 'info' : '')
                         ])
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
