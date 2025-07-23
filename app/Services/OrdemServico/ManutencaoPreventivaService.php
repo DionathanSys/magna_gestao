@@ -28,7 +28,7 @@ class ManutencaoPreventivaService
             'ordem_servico_id'      => $ordemServico->id,
             'veiculo_id'            => $ordemServico->veiculo_id,
             'km_execucao'           => $ordemServico->quilometragem,
-            'data_execucao'         => $ordemServico->data_fim,
+            'data_execucao'         => $ordemServico->data_inicio,
         ]);
 
         $itensPlano = $manutencaoPreventivaAssociada->planoPreventivo->itens;
