@@ -101,7 +101,7 @@ class PneuPosicaoVeiculoResource extends Resource
             ->defaultGroup('eixo')
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null),
+                    // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

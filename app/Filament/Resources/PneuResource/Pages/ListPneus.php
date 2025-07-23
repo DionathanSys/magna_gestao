@@ -16,7 +16,7 @@ class ListPneus extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->successNotification(null)
+                // ->successNotification(null)
                 ->label('Pneu')
                 ->icon('heroicon-o-plus-circle'),
         ];

@@ -52,12 +52,12 @@ class ParceiroResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null),
+                    // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->successNotification(null),
+                        // ->successNotification(null),
                 ]),
             ]);
     }

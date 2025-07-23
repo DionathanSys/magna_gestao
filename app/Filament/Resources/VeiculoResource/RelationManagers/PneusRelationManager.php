@@ -116,14 +116,14 @@ class PneusRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->label('Adicionar Pneu')
                     ->icon('heroicon-o-plus-circle')
                     ->visible(fn() => Auth::user()->is_admin),
             ])
             ->actions([
                 Tables\Actions\Action::make('desvincular-pneu')
-                ->successNotification(null)
+                // ->successNotification(null)
                     ->icon('heroicon-o-arrow-down-on-square')
                     ->color('danger')
                     ->iconButton()
@@ -147,7 +147,7 @@ class PneusRelationManager extends RelationManager
                         ]))
                     ->action(fn($record, array $data) => $this->movimentarPneuService->removerPneu($record, $data)),
                 Tables\Actions\Action::make('vincular-pneu')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                     ->icon('heroicon-o-arrow-up-on-square')
                     ->color('info')
                     ->iconButton()
@@ -170,7 +170,7 @@ class PneusRelationManager extends RelationManager
                         ]))
                     ->action(fn($record, array $data) => $this->movimentarPneuService->aplicarPneu($record, $data)),
                 Tables\Actions\Action::make('trocar-pneu')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                     ->icon('heroicon-o-arrows-right-left')
                     ->iconButton()
                     ->tooltip('Substituir Pneu')
@@ -187,18 +187,18 @@ class PneusRelationManager extends RelationManager
                         PneuResource::getObservacaoFormField(),
                     ])->action(fn(array $data, PneuPosicaoVeiculo $record) => $this->movimentarPneuService->trocarPneu($record, $data)),
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton()
                     ->visible(fn() => Auth::user()->is_admin),
                 Tables\Actions\DeleteAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton()
                     ->visible(fn() => Auth::user()->is_admin),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('rodizio')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->label('Rodízio')
                         ->icon('heroicon-o-arrows-right-left')
                         ->requiresConfirmation()

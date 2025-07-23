@@ -237,14 +237,14 @@ class OrdemServicoResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('encerrar')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->label('Encerrar OS')
                         ->icon('heroicon-o-check-circle')
                         ->action(fn(OrdemServico $record) => (new OrdemServicoService)->encerrarOrdemServico($record)),
-                    Tables\Actions\EditAction::make()
-                        ->successNotification(null),
+                    Tables\Actions\EditAction::make(),
+                        // ->successNotification(null),
                     Tables\Actions\Action::make('ordem_sankhya')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->label('Add Ordem Sankhya')
                         ->icon('heroicon-o-clipboard-document-list')
                         ->modal()
@@ -298,13 +298,13 @@ class OrdemServicoResource extends Resource
                 ])
                     ->icon('heroicon-o-bars-3-center-left'),
                 Tables\Actions\ViewAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->label('Visualizar')
                     ->color('primary')
                     ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->iconButton(),
                 Tables\Actions\Action::make('add-item')
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->label('Adicionar Item')
                     ->icon('heroicon-o-plus')
                     ->iconButton()
@@ -367,7 +367,7 @@ class OrdemServicoResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ])

@@ -14,7 +14,7 @@ class ListConsertos extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->successNotification(null)
+                // ->successNotification(null)
                 ->label('Registrar Reparo')
                 ->icon('heroicon-o-wrench'),
         ];

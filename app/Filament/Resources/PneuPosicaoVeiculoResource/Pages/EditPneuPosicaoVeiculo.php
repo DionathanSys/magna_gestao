@@ -14,7 +14,7 @@ class EditPneuPosicaoVeiculo extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                ->successNotification(null),
+                // ->successNotification(null),
         ];
     }
 }

@@ -15,7 +15,7 @@ class EditVeiculo extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                ->successNotification(null)
+                // ->successNotification(null)
                 ->visible(fn() => Auth::user()->is_admin),
         ];
     }

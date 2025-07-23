@@ -123,10 +123,10 @@ class RecapagemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\ReplicateAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
                     ->fillForm(fn(Recapagem $record) => [
@@ -146,7 +146,7 @@ class RecapagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->successNotification(null),
+                        // ->successNotification(null),
                 ]),
             ]);
     }

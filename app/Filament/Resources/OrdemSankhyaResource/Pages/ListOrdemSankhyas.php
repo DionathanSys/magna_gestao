@@ -14,7 +14,7 @@ class ListOrdemSankhyas extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->successNotification(null),
+                // ->successNotification(null),
         ];
     }
 }

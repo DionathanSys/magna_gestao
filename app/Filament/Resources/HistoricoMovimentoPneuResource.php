@@ -163,7 +163,7 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->searchable(),
             ])->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->successNotification(null),
+                    // ->successNotification(null),
             ])
             ->defaultSort('id', 'desc')
             ->defaultGroup('pneu.numero_fogo')
@@ -177,7 +177,7 @@ class HistoricoMovimentoPneuResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([

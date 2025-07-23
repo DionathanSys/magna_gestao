@@ -52,21 +52,21 @@ class VeiculosRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->label('Adicionar Veículo'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\DeleteAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->successNotification(null),
+                        // ->successNotification(null),
                 ]),
             ]);
     }

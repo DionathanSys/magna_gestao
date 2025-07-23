@@ -21,10 +21,10 @@ class EditOrdemServico extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                ->successNotification(null)
+                // ->successNotification(null)
                 ->visible(fn() => Auth::user()->is_admin),
             Actions\Action::make('encerrar')
-                ->successNotification(null)
+                // ->successNotification(null)
                 ->label('Encerrar OS')
                 ->action(function (OrdemServico $record) {
                     (new OrdemServicoService)->encerrarOrdemServico($record);
@@ -37,7 +37,7 @@ class EditOrdemServico extends EditRecord
                     'data_fim',
                 ])),
             Actions\Action::make('manutencao-preventiva')
-                ->successNotification(null)
+                // ->successNotification(null)
                 ->label('Manutenção Preventiva')
                 ->form(fn(\Filament\Forms\Form $form) => $form
                     ->schema([

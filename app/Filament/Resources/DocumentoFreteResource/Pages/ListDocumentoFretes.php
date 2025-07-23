@@ -14,7 +14,7 @@ class ListDocumentoFretes extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->successNotification(null),
+                // ->successNotification(null),
         ];
     }
 }

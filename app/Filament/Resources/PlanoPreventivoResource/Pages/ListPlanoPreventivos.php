@@ -14,7 +14,7 @@ class ListPlanoPreventivos extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->successNotification(null),
+                // ->successNotification(null),
         ];
     }
 }

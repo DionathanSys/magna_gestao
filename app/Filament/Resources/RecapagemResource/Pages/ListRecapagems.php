@@ -16,7 +16,7 @@ class ListRecapagems extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->successNotification(null)
+            // ->successNotification(null)
                 ->label('Registro Recap')
                 ->icon('heroicon-o-plus-circle')
                 ->color('primary')

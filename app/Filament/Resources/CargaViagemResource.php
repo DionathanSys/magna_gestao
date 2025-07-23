@@ -253,16 +253,16 @@ class CargaViagemResource extends Resource
             ->persistFiltersInSession()
             ->actions([
                 Tables\Actions\DeleteAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\EditAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->successNotification(null),
+                        // ->successNotification(null),
                     // FilamentExportBulkAction::make('export')
                     //     ->fileName('Cargas Viagem')
                     //     ->disableAdditionalColumns()

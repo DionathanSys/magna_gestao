@@ -374,15 +374,15 @@ class ViagemResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     // Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('atualizar')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
                         ->action(function (Viagem $record) {}),
                     Tables\Actions\EditAction::make()
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->visible(fn(Viagem $record) => ! $record->conferido),
                     Tables\Actions\Action::make('importar-viagem')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
                         ->action(function (Viagem $record) {
@@ -406,10 +406,10 @@ class ViagemResource extends Resource
                         }),
                 ])->link(),
                 Tables\Actions\DeleteAction::make()
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\Action::make('nova-carga')
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->label('Carga')
                     ->icon('heroicon-o-plus')
                     ->form([
@@ -423,7 +423,7 @@ class ViagemResource extends Resource
                     ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
                     ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
                 Tables\Actions\Action::make('conferido')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                     ->label('Conferido')
                     ->iconButton()
                     ->icon('heroicon-o-check-circle')
@@ -443,7 +443,7 @@ class ViagemResource extends Resource
 
                     }),
                 Tables\Actions\Action::make('nao-conferido')
-                    ->successNotification(null)
+                    // ->successNotification(null)
                     ->label('Ñ Conferido')
                     ->iconButton()
                     ->icon('heroicon-o-no-symbol')
@@ -460,10 +460,10 @@ class ViagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->successNotification(null),
+                        // ->successNotification(null),
                 ]),
                 Tables\Actions\BulkAction::make('conferido')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->label('Conferir')
                         ->icon('heroicon-o-check-circle')
                         ->action(function (Collection $records) {
@@ -479,7 +479,7 @@ class ViagemResource extends Resource
                         })
                         ->requiresConfirmation(),
                 Tables\Actions\BulkAction::make('cobrar')
-                        ->successNotification(null)
+                        // ->successNotification(null)
                         ->label('Cobrar')
                         ->icon('heroicon-o-banknotes')
                         ->action(function (Collection $records) {
