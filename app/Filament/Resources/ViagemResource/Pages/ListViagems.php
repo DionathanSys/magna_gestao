@@ -38,9 +38,7 @@ class ListViagems extends ListRecords
                         ->success()
                         ->send();
                     return;
-                })
-                ->requiresConfirmation()
-                ->deselectRecordsAfterCompletion(),
+                }),
 
         ];
     }
