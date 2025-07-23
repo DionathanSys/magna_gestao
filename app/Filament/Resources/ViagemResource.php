@@ -217,9 +217,9 @@ class ViagemResource extends Resource
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(
-                            // Sum::make()
-                            //     ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
-                            Range::make()
+                            Sum::make()
+                                ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                            // Range::make()
                         )
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
