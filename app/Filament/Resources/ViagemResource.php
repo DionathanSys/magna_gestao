@@ -473,7 +473,6 @@ class ViagemResource extends Resource
                         })
                         ->requiresConfirmation(),
                 Tables\Actions\BulkAction::make('cobrar')
-                        // ->successNotification(null)
                         ->label('Cobrar')
                         ->icon('heroicon-o-banknotes')
                         ->action(function (Collection $records) {
@@ -483,6 +482,7 @@ class ViagemResource extends Resource
                                 }
                             });
                         })
+                        ->after(fn() => notify::success('Viagem registrada para cobrança!'))
                         ->deselectRecordsAfterCompletion()
                         ->requiresConfirmation(),
                 // FilamentExportBulkAction::make('export')
