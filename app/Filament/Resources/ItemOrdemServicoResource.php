@@ -102,14 +102,14 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Select::make('servico_id')
             ->label('Serviço')
             ->required()
-            ->relationship('servico', 'descricao')
+            ->options(\App\Models\Servico::pluck('descricao', 'id'))
             ->searchable()
             ->preload()
             ->live()
             ->afterStateUpdated(function (Forms\Set $set, $state) {
                 if($state) {
-                    $servico = Servico::find($state);
-                    $set('controla_posicao', $servico->controla_posicao ? true : false);
+                    $servico = \App\Models\Servico::find($state);
+                    $set('controla_posicao', $servico?->controla_posicao ? true : false);
                 } else {
                     $set('controla_posicao', false);
                 }

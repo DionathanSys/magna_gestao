@@ -11,6 +11,7 @@ use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\NotificacaoService as notify;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Facades\Auth;
 
 class ListOrdemServicos extends ListRecords
@@ -24,6 +25,7 @@ class ListOrdemServicos extends ListRecords
                 ->successNotification(null)
                 ->label('OS')
                 ->icon('heroicon-o-plus')
+                ->modalWidth(MaxWidth::FourExtraLarge)
                 ->before(function (Actions\CreateAction $action, array $data) {
                     $veiculo = Veiculo::with('kmAtual')->find($data['veiculo_id']);
                     if ($veiculo->kmAtual->quilometragem > $data['quilometragem']) {

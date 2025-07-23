@@ -22,6 +22,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use App\Services\OrdemServico\ItemOrdemServicoService;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
@@ -64,19 +65,50 @@ class OrdemServicoResource extends Resource
                                 'lg' => 10,
                             ])
                             ->schema([
-                                static::getVeiculoIdFormField(),
-                                static::getQuilometragemFormField(),
-                                static::getTipoManutencaoFormField(),
+                                static::getVeiculoIdFormField()
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
+                                static::getQuilometragemFormField()
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
+                                static::getTipoManutencaoFormField()
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
                                 static::getDataInicioFormField()
                                     ->columnStart(1)
-                                    ->columnSpan(2),
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
                                 static::getDataFimFormField()
                                     ->visibleOn('edit')
-                                    ->columnSpan(2),
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
                                 static::getStatusFormField()
-                                    ->columnSpan(2),
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
                                 static::getStatusSankhyaFormField()
-                                    ->columnSpan(2),
+                                    ->columnSpan([
+                                        'sm' => 1,
+                                        'md' => 2,
+                                        'lg' => 3,
+                                    ]),
 
                                 Forms\Components\Section::make('Manutenção Externa')
                                     ->columnSpanFull()
@@ -207,11 +239,8 @@ class OrdemServicoResource extends Resource
                     Tables\Actions\Action::make('encerrar')
                         ->successNotification(null)
                         ->label('Encerrar OS')
+                        ->icon('heroicon-o-check-circle')
                         ->action(fn(OrdemServico $record) => (new OrdemServicoService)->encerrarOrdemServico($record)),
-                    Tables\Actions\ViewAction::make()
-                        ->successNotification(null)
-                        ->label('Visualizar')
-                        ->icon('heroicon-o-eye'),
                     Tables\Actions\EditAction::make()
                         ->successNotification(null),
                     Tables\Actions\Action::make('ordem_sankhya')
@@ -261,14 +290,78 @@ class OrdemServicoResource extends Resource
 
                             if ($arguments['another'] ?? false) {
                                 $form->fill();
-                                notify::success('Ordem Sankhya vinculada!');
                                 $action->halt();
                             }
 
                             return;
                         })
                 ])
-                    ->icon('heroicon-o-bars-3-center-left')
+                    ->icon('heroicon-o-bars-3-center-left'),
+                Tables\Actions\ViewAction::make()
+                    ->successNotification(null)
+                    ->label('Visualizar')
+                    ->color('primary')
+                    ->iconButton(),
+                Tables\Actions\Action::make('add-item')
+                    ->successNotification(null)
+                    ->label('Adicionar Item')
+                    ->icon('heroicon-o-plus')
+                    ->iconButton()
+                    ->tooltip('Adicionar Item')
+                    ->extraModalFooterActions(fn(\Filament\Tables\Actions\Action $action): array => [
+                            $action->makeModalSubmitAction('adicionarOutro', arguments: ['another' => true]),
+                        ])
+                    ->form(fn(Forms\Form $form) => $form
+                        ->columns([
+                            'sm' => 1,
+                            'md' => 4,
+                            'lg' => 8,
+                        ])
+                        ->schema([
+                            ItemOrdemServicoResource::getServicoIdFormField()
+                                ->columnStart(1)
+                                ->columnSpan([
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 3
+                                ]),
+                            ItemOrdemServicoResource::getControlaPosicaoFormField()
+                                ->columnSpan([
+                                    'sm' => 1,
+                                    'md' => 1,
+                                    'lg' => 2
+                                ]),
+                            ItemOrdemServicoResource::getPosicaoFormField()
+                                ->columnSpan([
+                                    'sm' => 1,
+                                    'md' => 1,
+                                    'lg' => 2
+                                ]),
+                            ItemOrdemServicoResource::getStatusFormField()
+                                ->columnSpan([
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 3
+                                ]),
+                            ItemOrdemServicoResource::getObersavacaoFormField()
+                                ->columnSpanFull(),
+                        ]))
+                    ->mutateFormDataUsing(function (OrdemServico $record, array $data): array {
+                        $data['ordem_servico_id'] = $record->id;
+                        $data['created_by'] = Auth::user()->id;
+                        return $data;
+                    })
+                    ->action(function(Tables\Actions\Action $action, Form $form, array $data) {
+
+                        ItemOrdemServicoService::create($data);
+
+                        if ($arguments['another'] ?? false) {
+                                $form->fill();
+                                $action->halt();
+                            }
+
+                        return;
+                    }),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
