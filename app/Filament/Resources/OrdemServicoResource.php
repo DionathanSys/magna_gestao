@@ -352,7 +352,7 @@ class OrdemServicoResource extends Resource
                         $data['created_by'] = Auth::user()->id;
                         return $data;
                     })
-                    ->action(function(Tables\Actions\Action $action, Form $form, array $data) {
+                    ->action(function(Tables\Actions\Action $action, Form $form, array $data, array $arguments) {
 
                         ItemOrdemServicoService::create($data);
 
