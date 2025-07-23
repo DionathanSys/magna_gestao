@@ -103,25 +103,8 @@ class ItemOrdemServicoResource extends Resource
             ->label('Serviço')
             ->required()
             ->options(\App\Models\Servico::pluck('descricao', 'id'))
-            ->searchable()
-            ->preload()
-            ->live()
-            ->afterStateUpdated(function (Forms\Set $set, $state) {
-                if($state) {
-                    $servico = \App\Models\Servico::find($state);
-                    $set('controla_posicao', $servico?->controla_posicao ? true : false);
-                } else {
-                    $set('controla_posicao', false);
-                }
-            });
-    }
-
-    public static function getServicoIdFormFieldWithPositionControl(): Forms\Components\Select
-    {   
-        return Forms\Components\Select::make('servico_id')
-            ->label('Serviço')
-            ->required()
-            ->options(\App\Models\Servico::pluck('descricao', 'id'))
+            ->createOptionAction(fn(Forms\Form $form) => ServicoResource::form($form))
+            ->editOptionAction(fn(Forms\Form $form) => ServicoResource::form($form))
             ->searchable()
             ->preload()
             ->live()
