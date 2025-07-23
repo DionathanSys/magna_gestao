@@ -301,6 +301,7 @@ class OrdemServicoResource extends Resource
                     ->successNotification(null)
                     ->label('Visualizar')
                     ->color('primary')
+                    ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->iconButton(),
                 Tables\Actions\Action::make('add-item')
                     ->successNotification(null)
@@ -398,7 +399,7 @@ class OrdemServicoResource extends Resource
                 Infolists\Components\RepeatableEntry::make('itens')
                     ->label('Serviços')
                     ->columnSpanFull()
-                    ->columns(8)
+                    ->columns(12)
                     ->schema([
                         Infolists\Components\TextEntry::make('servico.codigo')
                             ->label('Código')
@@ -418,7 +419,7 @@ class OrdemServicoResource extends Resource
                             ->color('primary'),
                         Infolists\Components\TextEntry::make('observacao')
                             ->label('Observação')
-                            ->columnSpanFull()
+                            ->columnSpan(4)
                             ->placeholder('Sem observações'),
                     ]),
             ]);
