@@ -199,6 +199,16 @@ class CargaViagemResource extends Resource
                     ->searchable()
                     ->preload()
                     ->multiple(),
+                Tables\Filters\TernaryFilter::make('sem_complemento')
+                    ->label('Sem Complemento')
+                    ->placeholder('Todos')
+                    ->trueLabel('Sim')
+                    ->falseLabel('Não')
+                    ->queries(
+                        true: fn (Builder $query) => $query->doesntHave('viagem.complementos'),
+                        false: fn (Builder $query) => $query->has('viagem.complementos'),
+                        blank: fn (Builder $query) => $query,
+                    ),
                 Tables\Filters\Filter::make('data_competencia')
                     ->columns(6)
                     ->form([
@@ -224,20 +234,20 @@ class CargaViagemResource extends Resource
                             );
                     }),
                 Tables\Filters\QueryBuilder::make()
-                ->constraints([
-                        \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_cobrar')
-                            ->relationship('viagem','km_cobrar'),
-                        // \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_perdido'),
-                        \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
-                            ->multiple()
-                            ->emptyable()
-                            ->selectable(
-                                \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator::make()
-                                    ->titleAttribute('nome')
-                                    ->searchable()
-                                    ->multiple()
-                            )
-                    ])
+                    ->constraints([
+                            \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_cobrar')
+                                ->relationship('viagem','km_cobrar'),
+                            \Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('km_perdido'),
+                            \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint::make('integrado')
+                                ->multiple()
+                                ->emptyable()
+                                ->selectable(
+                                    \Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator::make()
+                                        ->titleAttribute('nome')
+                                        ->searchable()
+                                        ->multiple()
+                                )
+                        ])
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->searchOnBlur()
             ->persistFiltersInSession()

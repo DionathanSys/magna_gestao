@@ -19,4 +19,9 @@ class CargaViagem extends Model
         return $this->belongsTo(Integrado::class, 'integrado_id');
     }
 
+    public function complementos(): BelongsTo
+    {
+        return $this->belongsTo(ViagemComplemento::class, 'documento_transporte', 'documento_transporte');
+    }
+
 }
