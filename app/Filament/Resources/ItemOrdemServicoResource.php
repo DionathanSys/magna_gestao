@@ -113,9 +113,26 @@ class ItemOrdemServicoResource extends Resource
                 } else {
                     $set('controla_posicao', false);
                 }
-            })
-            ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
-            ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form));
+            });
+    }
+
+    public static function getServicoIdFormFieldWithPositionControl(): Forms\Components\Select
+    {   
+        return Forms\Components\Select::make('servico_id')
+            ->label('Serviço')
+            ->required()
+            ->options(\App\Models\Servico::pluck('descricao', 'id'))
+            ->searchable()
+            ->preload()
+            ->live()
+            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                if($state) {
+                    $servico = \App\Models\Servico::find($state);
+                    $set('controla_posicao', $servico?->controla_posicao ? true : false);
+                } else {
+                    $set('controla_posicao', false);
+                }
+            });
     }
 
     public static function getControlaPosicaoFormField(): Forms\Components\Toggle

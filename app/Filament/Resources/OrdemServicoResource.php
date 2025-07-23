@@ -536,8 +536,6 @@ class OrdemServicoResource extends Resource
             ->searchable()
             ->preload()
             ->searchPrompt('Buscar Parceiro')
-            ->placeholder('Buscar ...')
-            ->createOptionForm(fn(Forms\Form $form) => ParceiroResource::form($form))
-            ->editOptionForm(fn(Forms\Form $form) => ParceiroResource::form($form));
+            ->placeholder('Buscar ...');
     }
 }
