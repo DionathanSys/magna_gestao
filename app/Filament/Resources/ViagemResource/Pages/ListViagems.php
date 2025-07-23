@@ -31,7 +31,7 @@ class ListViagems extends ListRecords
                 ->label('Teste')
                 ->icon('heroicon-o-arrow-up-on-square')
                 ->color('primary')
-                ->action(function (BulkAction $action, Collection $records) {
+                ->action(function () {
                     Notification::make()
                         ->title('Ação de Teste')
                         ->body('Você acionou a ação de teste com  registros.')
