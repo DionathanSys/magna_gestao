@@ -28,7 +28,8 @@ class ListOrdemServicos extends ListRecords
                 ->modalWidth(MaxWidth::FourExtraLarge)
                 ->before(function (Actions\CreateAction $action, array $data) {
                     $veiculo = Veiculo::with('kmAtual')->find($data['veiculo_id']);
-                    if ($veiculo->kmAtual->quilometragem > $data['quilometragem']) {
+
+                    if (($veiculo->kmAtual->quilometragem ?? 0) > $data['quilometragem']) {
                         // notify::error('A quilometragem informada deve ser maior ou igual à quilometragem atual do veículo.');
                         $action->halt();
                     }
