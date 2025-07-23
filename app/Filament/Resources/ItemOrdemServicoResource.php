@@ -104,7 +104,7 @@ class ItemOrdemServicoResource extends Resource
             ->required()
             ->options(\App\Models\Servico::pluck('descricao', 'id'))
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
-            ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
+            ->editOptionAction(fn(Forms\Form $form) => ServicoResource::form($form))
             ->searchable()
             ->preload()
             ->live()

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ViagemResource\Pages;
 
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\ViagemResource;
 use App\Models\Viagem;
 use Filament\Actions;

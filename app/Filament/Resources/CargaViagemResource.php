@@ -263,11 +263,11 @@ class CargaViagemResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->successNotification(null),
-                    FilamentExportBulkAction::make('export')
-                        ->fileName('Cargas Viagem')
-                        ->disableAdditionalColumns()
-                        ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
-                        ->filterColumnsFieldLabel('filter columns')
+                    // FilamentExportBulkAction::make('export')
+                    //     ->fileName('Cargas Viagem')
+                    //     ->disableAdditionalColumns()
+                    //     ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
+                    //     ->filterColumnsFieldLabel('filter columns')
                 ]),
             ]);
     }
