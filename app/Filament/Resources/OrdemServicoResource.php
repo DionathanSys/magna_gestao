@@ -412,15 +412,15 @@ class OrdemServicoResource extends Resource
                             ->label('Posição')
                             ->columnSpan(1)
                             ->placeholder('N/A'),
+                        Infolists\Components\TextEntry::make('observacao')
+                            ->label('Observação')
+                            ->columnSpan(4)
+                            ->placeholder('Sem observações'),
                         Infolists\Components\TextEntry::make('status')
                             ->label('Status')
                             ->columnSpan(2)
                             ->badge()
                             ->color('primary'),
-                        Infolists\Components\TextEntry::make('observacao')
-                            ->label('Observação')
-                            ->columnSpan(4)
-                            ->placeholder('Sem observações'),
                     ]),
             ]);
     }
