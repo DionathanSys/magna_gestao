@@ -409,7 +409,6 @@ class ViagemResource extends Resource
                     // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\Action::make('nova-carga')
-                    // ->successNotification(null)
                     ->label('Carga')
                     ->icon('heroicon-o-plus')
                     ->form([
@@ -423,7 +422,6 @@ class ViagemResource extends Resource
                     ->action(fn(Viagem $record, array $data) => CargaService::incluirCargaViagem($data['integrado_id'], $record))
                     ->after(fn() => notify::success('Carga incluída com sucesso!', 'A carga foi adicionada à viagem.')),
                 Tables\Actions\Action::make('conferido')
-                        // ->successNotification(null)
                     ->label('Conferido')
                     ->iconButton()
                     ->icon('heroicon-o-check-circle')
@@ -436,11 +434,7 @@ class ViagemResource extends Resource
                         $record->updated_by = Auth::user()->id;
                         $record->checked_by = Auth::user()->id;
                         $record->save();
-
-                        // if($record->km_cobrar > 0) {
-                        //     (new ViagemComplementoService)->create($record);
-                        // }
-
+                        notify::success('Viagem conferida com sucesso!', 'A viagem foi marcada como conferida.');
                     }),
                 Tables\Actions\Action::make('nao-conferido')
                     // ->successNotification(null)
