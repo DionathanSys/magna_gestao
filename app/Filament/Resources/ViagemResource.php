@@ -164,7 +164,6 @@ class ViagemResource extends Resource
                                     \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                         ->label('Nº Viagem')
                                         ->default($record->numero_viagem)
-                                        ->disabled()
                                 ])
                         )),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
