@@ -156,7 +156,7 @@ class ViagemResource extends Resource
                     ->width('1%')
                     ->sortable()
                     ->action(
-                        Tables\Actions\Action::make('view')
+                        Tables\Actions\Action::make('vr')
                             ->infolist(fn(Forms\Form $form, Viagem $record) => $form
                             ->schema([
                                 Forms\Components\TextInput::make('numero_viagem')
@@ -364,7 +364,6 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('atualizar')
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
