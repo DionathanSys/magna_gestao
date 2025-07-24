@@ -81,22 +81,6 @@ class ViagemResource extends Resource
                             ])
                             ->required(),
                     ]),
-                Forms\Components\Section::make('Frete')
-                    ->columns(4)
-                    ->schema([
-                        Forms\Components\TextInput::make('valor_frete')
-                            ->prefix('R$')
-                            ->readOnly(),
-                        Forms\Components\TextInput::make('valor_cte')
-                            ->prefix('R$')
-                            ->readOnly(),
-                        Forms\Components\TextInput::make('valor_nfs')
-                            ->prefix('R$')
-                            ->readOnly(),
-                        Forms\Components\TextInput::make('valor_icms')
-                            ->prefix('R$')
-                            ->readOnly(),
-                    ]),
                 Forms\Components\Section::make('Quilometragens')
                     ->columns(4)
                     ->schema([
@@ -170,7 +154,17 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
-                    ->sortable(),
+                    ->sortable()
+                    ->action(fn(Tables\Actions\Action $action) => $action
+                        ->infolist(fn(Forms\Form $form, Viagem $record) => $form
+                            ->schema([
+                                Forms\Components\TextInput::make('numero_viagem')
+                                    ->label('Nº Viagem')
+                                    ->default($record->numero_viagem)
+                                    ->disabled()
+                            ])
+                        )
+                    ),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
                     ->width('1%')
@@ -217,9 +211,9 @@ class ViagemResource extends Resource
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(
-                            Sum::make()
-                                ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
-                            // Range::make()
+                            // Sum::make()
+                            //     ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
+                            Range::make()
                         )
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
@@ -252,11 +246,9 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false)
                 ]),
                 Tables\Columns\ColumnGroup::make('Datas', [
-                    Tables\Columns\TextInputColumn::make('data_competencia')
-                        ->type('date')
+                    Tables\Columns\TextColumn::make('data_competencia')
                         ->label('Dt. Comp.')
                         ->width('1%')
-                        ->disabled(fn(Viagem $record) => $record->conferido)
                         ->sortable(),
                     Tables\Columns\TextColumn::make('data_inicio')
                         ->label('Dt. Início')
@@ -372,17 +364,14 @@ class ViagemResource extends Resource
             ->deselectAllRecordsWhenFiltered(false)
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    // Tables\Actions\ViewAction::make(),
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('atualizar')
-                        // ->successNotification(null)
                         ->label('Atualizar')
                         ->icon('heroicon-o-arrow-path')
                         ->action(function (Viagem $record) {}),
                     Tables\Actions\EditAction::make()
-                        // ->successNotification(null)
                         ->visible(fn(Viagem $record) => ! $record->conferido),
                     Tables\Actions\Action::make('importar-viagem')
-                        // ->successNotification(null)
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
                         ->action(function (Viagem $record) {
@@ -403,14 +392,16 @@ class ViagemResource extends Resource
                             $viagem->data_competencia = $data;
                             $viagem->updated_by = Auth::user()->id;
                             $viagem->save();
+
+                            notify::success('Viagem atualizada com sucesso!', 'A data da próxima viagem foi atualizada.');
                         }),
+                    Tables\Actions\DeleteAction::make()
+                        ->iconButton(),
                 ])->link(),
-                Tables\Actions\DeleteAction::make()
-                    // ->successNotification(null)
-                    ->iconButton(),
                 Tables\Actions\Action::make('nova-carga')
                     ->label('Carga')
                     ->icon('heroicon-o-plus')
+                    ->modalSubmitAction(fn(\Filament\Actions\StaticAction $action) => $action->label('Adicionar Carga'))
                     ->form([
                         Forms\Components\Select::make('integrado_id')
                             ->label('Integrado')
@@ -437,7 +428,6 @@ class ViagemResource extends Resource
                         notify::success('Viagem conferida com sucesso!', 'A viagem foi marcada como conferida.');
                     }),
                 Tables\Actions\Action::make('nao-conferido')
-                    // ->successNotification(null)
                     ->label('Ñ Conferido')
                     ->iconButton()
                     ->icon('heroicon-o-no-symbol')
@@ -454,42 +444,31 @@ class ViagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
+                        ->visible(fn() => Auth::user()->is_admin),
                 ]),
                 Tables\Actions\BulkAction::make('conferido')
-                        // ->successNotification(null)
-                        ->label('Conferir')
-                        ->icon('heroicon-o-check-circle')
-                        ->action(function (Collection $records) {
-                            $records->each(function (Viagem $record) {
-                                $record->conferido = true;
-                                $record->save();
-
-                                // if($record->km_cobrar > 0) {
-                                //     (new ViagemComplementoService)->create($record);
-                                // }
-
-                            });
-                        })
-                        ->requiresConfirmation(),
+                    ->label('Conferir')
+                    ->icon('heroicon-o-check-circle')
+                    ->action(function (Collection $records) {
+                        $records->each(function (Viagem $record) {
+                            $record->conferido = true;
+                            $record->save();
+                        });
+                    })
+                    ->requiresConfirmation(),
                 Tables\Actions\BulkAction::make('cobrar')
-                        ->label('Cobrar')
-                        ->icon('heroicon-o-banknotes')
-                        ->action(function (Collection $records) {
-                            $records->each(function (Viagem $record) {
-                                if($record->km_cobrar > 0) {
-                                    (new ViagemComplementoService)->create($record);
-                                }
-                            });
-                        })
-                        ->after(fn() => notify::success('Viagem registrada para cobrança!'))
-                        ->deselectRecordsAfterCompletion()
-                        ->requiresConfirmation(),
-                // FilamentExportBulkAction::make('export')
-                //         ->fileName('Viagens')
-                //         ->disableAdditionalColumns()
-                //         ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
-                //         ->filterColumnsFieldLabel('filter columns')
+                    ->label('Cobrar')
+                    ->icon('heroicon-o-banknotes')
+                    ->action(function (Collection $records) {
+                        $records->each(function (Viagem $record) {
+                            if ($record->km_cobrar > 0) {
+                                (new ViagemComplementoService)->create($record);
+                            }
+                        });
+                    })
+                    ->after(fn() => notify::success('Viagem registrada para cobrança!'))
+                    ->deselectRecordsAfterCompletion()
+                    ->requiresConfirmation(),
             ]);
     }
 

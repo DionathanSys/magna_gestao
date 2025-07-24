@@ -298,13 +298,11 @@ class OrdemServicoResource extends Resource
                 ])
                     ->icon('heroicon-o-bars-3-center-left'),
                 Tables\Actions\ViewAction::make()
-                    // ->successNotification(null)
                     ->label('Visualizar')
                     ->color('primary')
                     ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->iconButton(),
                 Tables\Actions\Action::make('add-item')
-                    // ->successNotification(null)
                     ->label('Adicionar Item')
                     ->icon('heroicon-o-plus')
                     ->iconButton()
@@ -367,7 +365,6 @@ class OrdemServicoResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null)
                         ->visible(fn() => Auth::user()->is_admin),
                 ]),
             ])
