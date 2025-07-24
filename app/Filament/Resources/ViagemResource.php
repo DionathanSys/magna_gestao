@@ -173,37 +173,41 @@ class ViagemResource extends Resource
                                             ->limit(10)
                                             ->get();
 
-                                        // Prepara os dados de forma mais simples
-                                        $cargasFormatadas = [];
-                                        foreach($ultimasCargas as $carga) {
-                                            $cargasFormatadas[] = [
-                                                'numero_viagem' => $carga->viagem->numero_viagem ?? 'N/A',
-                                                'data_competencia' => $carga->viagem->data_competencia 
-                                                    ? \Carbon\Carbon::parse($carga->viagem->data_competencia)->format('d/m/Y')
-                                                    : 'N/A',
-                                                'km_rodado' => $carga->viagem->km_rodado 
-                                                    ? number_format($carga->viagem->km_rodado, 2, ',', '.') . ' km'
-                                                    : 'N/A',
-                                                'created_at' => $carga->created_at 
-                                                    ? $carga->created_at->format('d/m/Y H:i')
-                                                    : 'N/A',
-                                            ];
-                                        }
-
                                         $entries[] = \Filament\Infolists\Components\Section::make("Integrado: {$integrado->codigo} - {$integrado->nome}")
                                             ->schema([
                                                 \Filament\Infolists\Components\RepeatableEntry::make('ultimasCargas')
                                                     ->label('10 Últimas Cargas')
-                                                    ->state($cargasFormatadas)
+                                                    ->state($ultimasCargas->toArray())
                                                     ->schema([
                                                         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
-                                                            ->label('Nº Viagem'),
+                                                            ->label('Nº Viagem')
+                                                            ->getStateUsing(function($record) {
+                                                                return $record->viagem->numero_viagem ?? 'N/A';
+                                                            }),
                                                         \Filament\Infolists\Components\TextEntry::make('data_competencia')
-                                                            ->label('Data Competência'),
+                                                            ->label('Data Competência')
+                                                            ->getStateUsing(function($record) {
+                                                                if (isset($record['viagem']['data_competencia'])) {
+                                                                    return \Carbon\Carbon::parse($record['viagem']['data_competencia'])->format('d/m/Y');
+                                                                }
+                                                                return 'N/A';
+                                                            }),
                                                         \Filament\Infolists\Components\TextEntry::make('km_rodado')
-                                                            ->label('KM Rodado'),
+                                                            ->label('KM Rodado')
+                                                            ->getStateUsing(function($record) {
+                                                                if (isset($record['viagem']['km_rodado'])) {
+                                                                    return number_format($record['viagem']['km_rodado'], 2, ',', '.') . ' km';
+                                                                }
+                                                                return 'N/A';
+                                                            }),
                                                         \Filament\Infolists\Components\TextEntry::make('created_at')
-                                                            ->label('Criado em'),
+                                                            ->label('Criado em')
+                                                            ->getStateUsing(function($record) {
+                                                                if (isset($record['created_at'])) {
+                                                                    return \Carbon\Carbon::parse($record['created_at'])->format('d/m/Y H:i');
+                                                                }
+                                                                return 'N/A';
+                                                            }),
                                                     ])
                                                     ->columns(4)
                                             ])
@@ -212,7 +216,7 @@ class ViagemResource extends Resource
                                     }
                                 }
 
-                                return $entries;
+                                return dd($entries);
                             })),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
