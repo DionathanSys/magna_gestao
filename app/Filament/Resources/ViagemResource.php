@@ -217,7 +217,7 @@ class ViagemResource extends Resource
                                                                 return 'N/A';
                                                             }),
                                                     ])
-                                                    ->columns(4)
+                                                    ->columns(6)
                                             ])
                                             ->collapsible()
                                             ->collapsed();
