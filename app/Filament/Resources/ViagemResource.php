@@ -192,11 +192,19 @@ class ViagemResource extends Resource
                                                                 }
                                                                 return 'N/A';
                                                             }),
-                                                        \Filament\Infolists\Components\TextEntry::make('km_rodado')
-                                                            ->label('KM Rodado')
+                                                        \Filament\Infolists\Components\TextEntry::make('km_pago')
+                                                            ->label('KM Pago')
                                                             ->getStateUsing(function($record) {
-                                                                if (isset($record->km_rodado)) {
-                                                                    return number_format($record->km_rodado, 2, ',', '.') . ' km';
+                                                                if (isset($record->km_pago)) {
+                                                                    return number_format($record->km_pago, 2, ',', '.') . ' km';
+                                                                }
+                                                                return 'N/A';
+                                                            }),
+                                                        \Filament\Infolists\Components\TextEntry::make('km_rodado_excedente')
+                                                            ->label('KM Rodado Excedente')
+                                                            ->getStateUsing(function($record) {
+                                                                if (isset($record->km_rodado_excedente)) {
+                                                                    return number_format($record->km_rodado_excedente, 2, ',', '.') . ' km';
                                                                 }
                                                                 return 'N/A';
                                                             }),
