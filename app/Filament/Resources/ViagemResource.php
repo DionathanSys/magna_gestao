@@ -182,22 +182,21 @@ class ViagemResource extends Resource
                                                         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                                             ->label('Nº Viagem')
                                                             ->getStateUsing(function($record) {
-                                                                // dd($record);
                                                                 return $record->numero_viagem ?? 'N/A';
                                                             }),
                                                         \Filament\Infolists\Components\TextEntry::make('data_competencia')
                                                             ->label('Data Competência')
                                                             ->getStateUsing(function($record) {
-                                                                if (isset($record['viagem']['data_competencia'])) {
-                                                                    return \Carbon\Carbon::parse($record['viagem']['data_competencia'])->format('d/m/Y');
+                                                                if (isset($record->data_competencia)) {
+                                                                    return \Carbon\Carbon::parse($record->data_competencia)->format('d/m/Y');
                                                                 }
                                                                 return 'N/A';
                                                             }),
                                                         \Filament\Infolists\Components\TextEntry::make('km_rodado')
                                                             ->label('KM Rodado')
                                                             ->getStateUsing(function($record) {
-                                                                if (isset($record['viagem']['km_rodado'])) {
-                                                                    return number_format($record['viagem']['km_rodado'], 2, ',', '.') . ' km';
+                                                                if (isset($record->km_rodado)) {
+                                                                    return number_format($record->km_rodado, 2, ',', '.') . ' km';
                                                                 }
                                                                 return 'N/A';
                                                             }),
