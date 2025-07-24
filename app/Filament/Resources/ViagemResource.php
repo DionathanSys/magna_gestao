@@ -160,9 +160,14 @@ class ViagemResource extends Resource
                             ->modalSubmitAction(false)
                             ->modalCancelAction(false)
                             ->infolist(fn(Viagem $record) =>[
-                                    \Filament\Infolists\Components\TextEntry::make('numero_viagem')
-                                        ->label('Nº Viagem')
-                                        ->default($record->numero_viagem)
+                                    \Filament\Infolists\Components\RepeatableEntry::make('cargas.integrado.cargas')
+                                        ->label('Cargas da Viagem')
+                                        ->schema([
+                                            \Filament\Infolists\Components\TextEntry::make('viagem.numero_viagem')
+                                                ->label('Código'),
+                                            \Filament\Infolists\Components\TextEntry::make('viagem.km_rodado_excedente')
+                                                ->label('Integrado'),
+                                        ])
                         ])),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
@@ -209,11 +214,7 @@ class ViagemResource extends Resource
                         ->wrapHeader()
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(
-                            // Sum::make()
-                            //     ->numeric(decimalPlaces: 2, locale: 'pt-BR'),
-                            Range::make()
-                        )
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('km_pago_excedente')
                         ->wrapHeader()
@@ -245,7 +246,8 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false)
                 ]),
                 Tables\Columns\ColumnGroup::make('Datas', [
-                    Tables\Columns\TextColumn::make('data_competencia')
+                    Tables\Columns\TextInputColumn::make('data_competencia')
+                        ->type('date')
                         ->label('Dt. Comp.')
                         ->width('1%')
                         ->sortable(),

@@ -11,4 +11,5 @@ class Integrado extends Model
     {
         return $this->hasMany(CargaViagem::class, 'integrado_id');
     }
+    
 }
