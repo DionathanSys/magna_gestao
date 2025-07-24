@@ -177,11 +177,11 @@ class ViagemResource extends Resource
                                             ->schema([
                                                 \Filament\Infolists\Components\RepeatableEntry::make('ultimasCargas')
                                                     ->label('10 Últimas Cargas')
-                                                    ->state(dd($ultimasCargas->toArray()))
+                                                    ->state($ultimasCargas->toArray())
                                                     ->schema([
                                                         \Filament\Infolists\Components\TextEntry::make('viagem.numero_viagem')
                                                             ->label('Nº Viagem')
-                                                            ->formatStateUsing(fn($state, $record) => $record['viagem']['numero_viagem'] ?? 'N/A'),
+                                                            ->formatStateUsing(fn($state, $record) => dd($record['viagem']['numero_viagem'], $state)),
                                                         \Filament\Infolists\Components\TextEntry::make('viagem.data_competencia')
                                                             ->label('Data Competência')
                                                             ->formatStateUsing(fn($state, $record) =>
