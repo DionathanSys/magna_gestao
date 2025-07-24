@@ -63,6 +63,8 @@ class PlanoManutencaoVeiculoResource extends Resource
                 Tables\Columns\TextColumn::make('quilometragem_restante')
                     ->label('Quilometragem Restante')
                     ->width('1%')
+                    ->badge()
+                    ->color(fn ($record) => $record->quilometragem_restante < 0 ? 'danger' : 'info')
                     ->numeric(0, ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('proxima_execucao')
