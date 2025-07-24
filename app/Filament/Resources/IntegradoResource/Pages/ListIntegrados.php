@@ -19,7 +19,7 @@ class ListIntegrados extends ListRecords
                 ->color('primary'),
             Actions\Action::make('importar')
                 ->label('Importar Integrados')
-                ->icon('heroicon-o-cloud-upload')
+                ->icon('heroicon-o-arrow-up-tray')
                 ->color('success')
                 ->url(route('import.integrados'))
                 ->openUrlInNewTab(),
