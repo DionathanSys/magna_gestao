@@ -159,12 +159,10 @@ class ViagemResource extends Resource
                         Tables\Actions\Action::make('view')
                             ->modalSubmitAction(false)
                             ->modalCancelAction(false)
-                            ->infolist(fn(Forms\Form $form, Viagem $record) => $form
-                                ->schema([
+                            ->infolist(fn(Viagem $record) =>
                                     \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                         ->label('Nº Viagem')
                                         ->default($record->numero_viagem)
-                                ])
                         )),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
