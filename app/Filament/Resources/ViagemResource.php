@@ -195,8 +195,8 @@ class ViagemResource extends Resource
                                                         \Filament\Infolists\Components\TextEntry::make('km_rodado')
                                                             ->label('KM Rodado')
                                                             ->getStateUsing(function($record) {
-                                                                if (isset($record['viagem']['km_rodado'])) {
-                                                                    return number_format($record['viagem']['km_rodado'], 2, ',', '.') . ' km';
+                                                                if (isset($record['viagem.km_rodado'])) {
+                                                                    return number_format($record['viagem.km_rodado'], 2, ',', '.') . ' km';
                                                                 }
                                                                 return 'N/A';
                                                             }),
