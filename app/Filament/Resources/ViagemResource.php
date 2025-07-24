@@ -216,7 +216,7 @@ class ViagemResource extends Resource
                                     }
                                 }
 
-                                return dd($entries);
+                                return $entries;
                             })),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
