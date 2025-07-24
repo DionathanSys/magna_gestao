@@ -37,7 +37,7 @@ Route::prefix('import')->group(function () {
     Route::view('/integrado', 'import.integrado.importFile', [
         'title' => 'Importar Integrados',
         'route' => 'store.integrados'
-    ]);
+    ])->name('import.integrados');
 
     Route::post('/integrado', [ImportController::class, 'importIntegrados'])->name('store.integrados');
 
