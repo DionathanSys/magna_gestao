@@ -155,8 +155,16 @@ class ViagemResource extends Resource
                     ->label('Nº Viagem')
                     ->width('1%')
                     ->sortable()
-                    ->action(fn(Tables\Actions\Action $action) => dd(1)
-                    ),
+                    ->action(
+                        Tables\Actions\Action::make('view')
+                            ->infolist(fn(Forms\Form $form, Viagem $record) => $form
+                            ->schema([
+                                Forms\Components\TextInput::make('numero_viagem')
+                                    ->label('Nº Viagem')
+                                    ->default($record->numero_viagem)
+                                    ->disabled()
+                            ])
+                        )),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
                     ->width('1%')
