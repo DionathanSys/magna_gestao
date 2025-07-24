@@ -163,7 +163,7 @@ class ViagemResource extends Resource
                             ->infolist(function(Viagem $record) {
                                 $integrados = $record->cargas->pluck('integrado')->unique('id');
                                 $entries = [];
-                                
+
                                 foreach($integrados as $integrado) {
                                     if($integrado) {
                                         // Busca as 10 últimas cargas do integrado
@@ -172,34 +172,34 @@ class ViagemResource extends Resource
                                             ->orderBy('created_at', 'desc')
                                             ->limit(10)
                                             ->get();
-                                        
+
                                         $entries[] = \Filament\Infolists\Components\Section::make("Integrado: {$integrado->codigo} - {$integrado->nome}")
                                             ->schema([
                                                 \Filament\Infolists\Components\RepeatableEntry::make('ultimasCargas')
                                                     ->label('10 Últimas Cargas')
-                                                    ->state($ultimasCargas->toArray())
+                                                    ->state(dd($ultimasCargas->toArray()))
                                                     ->schema([
                                                         \Filament\Infolists\Components\TextEntry::make('viagem.numero_viagem')
                                                             ->label('Nº Viagem')
                                                             ->formatStateUsing(fn($state, $record) => $record['viagem']['numero_viagem'] ?? 'N/A'),
                                                         \Filament\Infolists\Components\TextEntry::make('viagem.data_competencia')
                                                             ->label('Data Competência')
-                                                            ->formatStateUsing(fn($state, $record) => 
-                                                                isset($record['viagem']['data_competencia']) 
+                                                            ->formatStateUsing(fn($state, $record) =>
+                                                                isset($record['viagem']['data_competencia'])
                                                                     ? \Carbon\Carbon::parse($record['viagem']['data_competencia'])->format('d/m/Y')
                                                                     : 'N/A'
                                                             ),
                                                         \Filament\Infolists\Components\TextEntry::make('viagem.km_rodado')
                                                             ->label('KM Rodado')
-                                                            ->formatStateUsing(fn($state, $record) => 
-                                                                isset($record['viagem']['km_rodado']) 
+                                                            ->formatStateUsing(fn($state, $record) =>
+                                                                isset($record['viagem']['km_rodado'])
                                                                     ? number_format($record['viagem']['km_rodado'], 2, ',', '.') . ' km'
                                                                     : 'N/A'
                                                             ),
                                                         \Filament\Infolists\Components\TextEntry::make('created_at')
                                                             ->label('Criado em')
-                                                            ->formatStateUsing(fn($state, $record) => 
-                                                                isset($record['created_at']) 
+                                                            ->formatStateUsing(fn($state, $record) =>
+                                                                isset($record['created_at'])
                                                                     ? \Carbon\Carbon::parse($record['created_at'])->format('d/m/Y H:i')
                                                                     : 'N/A'
                                                             ),
@@ -210,7 +210,7 @@ class ViagemResource extends Resource
                                             ->collapsed();
                                     }
                                 }
-                                
+
                                 return $entries;
                             })),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
