@@ -156,21 +156,17 @@ class ViagemResource extends Resource
                     ->width('1%')
                     ->sortable()
                     ->action(
-                        Tables\Actions\Action::make('vr')
-                            ->infolist([
-                                \Filament\Infolists\Components\TextEntry::make('numero_viagem')
-                                    ->label('Nº Viagem')
-                                    ->default('$record->numero_viagem')
-                            ])
-                        // Tables\Actions\Action::make('vr')
-                        //     ->infolist(fn(Forms\Form $form, Viagem $record) => $form
-                        //     ->schema([
-                        //         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
-                        //             ->label('Nº Viagem')
-                        //             ->default($record->numero_viagem)
-                        //             ->disabled()
-                        //     ])
-                        ),
+                        Tables\Actions\Action::make('view')
+                            ->modalSubmitAction(false)
+                            ->modalCancelAction(false)
+                            ->infolist(fn(Forms\Form $form, Viagem $record) => $form
+                                ->schema([
+                                    \Filament\Infolists\Components\TextEntry::make('numero_viagem')
+                                        ->label('Nº Viagem')
+                                        ->default($record->numero_viagem)
+                                        ->disabled()
+                                ])
+                        )),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
                     ->width('1%')
