@@ -161,7 +161,6 @@ class ViagemResource extends Resource
                                 \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                     ->label('Nº Viagem')
                                     ->default('$record->numero_viagem')
-                                    ->disabled()
                             ])
                         // Tables\Actions\Action::make('vr')
                         //     ->infolist(fn(Forms\Form $form, Viagem $record) => $form
