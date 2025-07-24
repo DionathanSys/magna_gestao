@@ -115,7 +115,8 @@ class PlanoManutencaoVeiculoResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         // ->successNotification(null),
                 ]),
-            ]);
+            ])
+            ->poll('5s');
     }
 
     public static function getRelations(): array
