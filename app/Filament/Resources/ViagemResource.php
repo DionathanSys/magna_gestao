@@ -177,12 +177,12 @@ class ViagemResource extends Resource
                                             ->schema([
                                                 \Filament\Infolists\Components\RepeatableEntry::make('ultimasCargas')
                                                     ->label('10 Últimas Cargas')
-                                                    ->state(dump($ultimasCargas->toArray()))
+                                                    ->state($ultimasCargas->toArray())
                                                     ->schema([
                                                         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                                             ->label('Nº Viagem')
                                                             ->getStateUsing(function($record) {
-                                                                return dump($record['viagem']['numero_viagem']);
+                                                                return $record['viagem']['numero_viagem'];
                                                             }),
                                                         \Filament\Infolists\Components\TextEntry::make('data_competencia')
                                                             ->label('Data Competência')
@@ -216,7 +216,7 @@ class ViagemResource extends Resource
                                     }
                                 }
 
-                                return dd($entries);
+                                return $entries;
                             })),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
