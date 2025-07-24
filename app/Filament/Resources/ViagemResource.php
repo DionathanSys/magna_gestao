@@ -182,7 +182,7 @@ class ViagemResource extends Resource
                                                         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                                             ->label('Nº Viagem')
                                                             ->getStateUsing(function($record) {
-                                                                return $state['viagem']['numero_viagem'] ?? 'N/A';
+                                                                return dump($record['viagem']['numero_viagem']);
                                                             }),
                                                         \Filament\Infolists\Components\TextEntry::make('data_competencia')
                                                             ->label('Data Competência')
