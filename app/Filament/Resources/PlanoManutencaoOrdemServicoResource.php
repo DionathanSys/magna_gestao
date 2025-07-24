@@ -116,7 +116,8 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                         // ->successNotification(null),
                 ]),
             ])
-            ->poll('5s');
+            ->poll('5s')
+            ->persistFiltersInSession();
     }
 
     public static function getRelations(): array
