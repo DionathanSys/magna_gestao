@@ -177,7 +177,7 @@ class ViagemResource extends Resource
                                             ->schema([
                                                 \Filament\Infolists\Components\RepeatableEntry::make('ultimasCargas')
                                                     ->label('10 Últimas Cargas')
-                                                    ->state($ultimasCargas->toArray())
+                                                    ->state(dd($ultimasCargas->toArray()))
                                                     ->schema([
                                                         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                                             ->label('Nº Viagem')
