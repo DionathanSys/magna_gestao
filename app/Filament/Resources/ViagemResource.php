@@ -175,8 +175,8 @@ class ViagemResource extends Resource
                                 //             ->get();
                                 //     }
                                 // }
-                                return ViewEntry::make('teste')
-                                    ->view('infolists.components.info-viagem');
+                                return [ViewEntry::make('teste')
+                                    ->view('infolists.components.info-viagem')];
 
                             })),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
