@@ -10,6 +10,7 @@ use App\Models\Integrado;
 use App\Models\Viagem;
 use App\Enum\MotivoDivergenciaViagem;
 use App\Filament\Resources\ViagemResource\Widgets\AdvancedStatsOverviewWidget;
+use App\Infolists\Components\InfoViagem;
 use App\Services\CargaService;
 use App\Services\IntegradoService;
 use App\Services\ViagemService;
@@ -175,7 +176,7 @@ class ViagemResource extends Resource
                                 //             ->get();
                                 //     }
                                 // }
-                                return [ViewEntry::make('teste')
+                                return [InfoViagem::make('teste')
                                     ->view('infolists.components.info-viagem', ['te' => 'banana'])];
 
                             })),
