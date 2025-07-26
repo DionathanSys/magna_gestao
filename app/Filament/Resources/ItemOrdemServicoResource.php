@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
+use App\Enum\TipoServicoEnum;
 use App\Filament\Resources\ItemOrdemServicoResource\Pages;
 use App\Filament\Resources\ItemOrdemServicoResource\RelationManagers;
 use App\Models\ItemOrdemServico;
@@ -102,9 +103,9 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Select::make('servico_id')
             ->label('Serviço')
             ->required()
-            ->options(\App\Models\Servico::pluck('descricao', 'id'))
+            ->relationship('servico', 'descricao')
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
-            ->editOptionAction(fn(Forms\Form $form) => ServicoResource::form($form))
+            ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
             ->searchable()
             ->preload()
             ->live()

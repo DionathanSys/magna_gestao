@@ -48,7 +48,6 @@ class PlanoPreventivoRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null)
                         ->visible(fn() => Auth::user()->is_admin)
                         ->action(function (Collection $records) {
                             foreach ($records as $record) {
@@ -60,8 +59,6 @@ class PlanoPreventivoRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make()
-                    //     ->visible(fn() => Auth::user()->is_admin)
                 ]),
             ]);
     }

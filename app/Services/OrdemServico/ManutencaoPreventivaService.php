@@ -6,7 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
 use App\Models\PlanoPreventivo;
-// use App\Services\NotificacaoService as notify;
+use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Facades\Auth;
 
 class ManutencaoPreventivaService
@@ -19,7 +19,7 @@ class ManutencaoPreventivaService
             ->first();
 
         if ($manutencaoPreventivaAssociada) {
-            // notify::error('Plano Preventivo já associado a esta Ordem de Serviço.');
+            notify::error('Plano Preventivo já associado a esta Ordem de Serviço.');
             return;
         }
 

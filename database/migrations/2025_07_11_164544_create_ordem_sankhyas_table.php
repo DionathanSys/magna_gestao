@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('ordens_sankhya', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ordem_servico_id')->constrained('ordens_servico')->cascadeOnDelete();
-            $table->string('ordem_sankhya_id', 50)->unique();
+            $table->foreignId('ordem_servico_id')
+                ->constrained('ordens_servico')
+                ->cascadeOnDelete();
+            $table->string('ordem_sankhya_id', 50)
+                ->unique();
             $table->timestamps();
         });
     }

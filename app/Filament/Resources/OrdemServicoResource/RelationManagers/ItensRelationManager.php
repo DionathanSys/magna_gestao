@@ -32,7 +32,6 @@ class ItensRelationManager extends RelationManager
                 'md' => 4,
                 'lg' => 8,
             ])
-
             ->schema([
                 ItemOrdemServicoResource::getServicoIdFormField()
                     ->columnStart(1)
@@ -92,7 +91,7 @@ class ItensRelationManager extends RelationManager
                     ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('servico.tipo')
                     ->label('Tipo de Serviço'),
-                Tables\Columns\TextColumn::make('plano_preventivo_id')
+                Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano Preventivo'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
@@ -131,7 +130,8 @@ class ItensRelationManager extends RelationManager
                             \Filament\Infolists\Components\RepeatableEntry::make('comentarios')
                                 ->schema([
                                     \Filament\Infolists\Components\TextEntry::make('conteudo')
-                                        ->label('Comentário'),
+                                        ->label('Comentário')
+                                        ->html(),
                                     \Filament\Infolists\Components\TextEntry::make('created_at')
                                         ->label('Criado em')
                                         ->dateTime('d/m/Y H:i'),

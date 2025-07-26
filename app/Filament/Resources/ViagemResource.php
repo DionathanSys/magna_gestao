@@ -181,9 +181,11 @@ class ViagemResource extends Resource
                                                     ->schema([
                                                         \Filament\Infolists\Components\TextEntry::make('numero_viagem')
                                                             ->label('Nº Viagem')
-                                                            ->getStateUsing(function($record) {
-                                                                return $ultimasCargas['viagem']['numero_viagem'] ?? 'N/A';
-                                                            }),
+                                                            ->state(fn($state) => dd($state))
+                                                            // ->getStateUsing(function($record) {
+                                                            //     return $ultimasCargas['viagem']['numero_viagem'] ?? 'N/A';
+                                                            // })
+                                                            ,
                                                         \Filament\Infolists\Components\TextEntry::make('data_competencia')
                                                             ->label('Data Competência')
                                                             ->getStateUsing(function($record) {
