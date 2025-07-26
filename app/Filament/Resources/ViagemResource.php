@@ -156,30 +156,7 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
-                    ->sortable()
-                    ->action(
-                        Tables\Actions\Action::make('view')
-                            ->modalSubmitAction(false)
-                            ->modalCancelAction(false)
-                            ->modalWidth(\Filament\Support\Enums\MaxWidth::SevenExtraLarge)
-                            ->infolist(function(Viagem $record) {
-                                // $integrados = $record->cargas->pluck('integrado')->unique('id');
-                                // $entries = [];
-
-                                // foreach($integrados as $integrado) {
-                                //     if($integrado) {
-                                //         // Busca as 10 últimas cargas do integrado
-                                //         $ultimasCargas = \App\Models\CargaViagem::with(['viagem', 'integrado'])
-                                //             ->where('integrado_id', $integrado->id)
-                                //             ->orderBy('created_at', 'desc')
-                                //             ->limit(10)
-                                //             ->get();
-                                //     }
-                                // }
-                                return [InfoViagem::make('teste')
-                                    ->view('infolists.components.info-viagem', ['te' => 'banana'])];
-
-                            })),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
                     ->width('1%')
