@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportEvents\HandlesEvents;
 use App\Jobs\RegistrarViagemComplementoJob;
 use App\Services\Viagem\ViagemComplementoService;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Tables\Columns\Summarizers\Range;
 
 class ViagemResource extends Resource
@@ -161,72 +162,22 @@ class ViagemResource extends Resource
                             ->modalCancelAction(false)
                             ->modalWidth(\Filament\Support\Enums\MaxWidth::SevenExtraLarge)
                             ->infolist(function(Viagem $record) {
-                                $integrados = $record->cargas->pluck('integrado')->unique('id');
-                                $entries = [];
+                                // $integrados = $record->cargas->pluck('integrado')->unique('id');
+                                // $entries = [];
 
-                                foreach($integrados as $integrado) {
-                                    if($integrado) {
-                                        // Busca as 10 últimas cargas do integrado
-                                        $ultimasCargas = \App\Models\CargaViagem::with(['viagem', 'integrado'])
-                                            ->where('integrado_id', $integrado->id)
-                                            ->orderBy('created_at', 'desc')
-                                            ->limit(10)
-                                            ->get();
+                                // foreach($integrados as $integrado) {
+                                //     if($integrado) {
+                                //         // Busca as 10 últimas cargas do integrado
+                                //         $ultimasCargas = \App\Models\CargaViagem::with(['viagem', 'integrado'])
+                                //             ->where('integrado_id', $integrado->id)
+                                //             ->orderBy('created_at', 'desc')
+                                //             ->limit(10)
+                                //             ->get();
+                                //     }
+                                // }
+                                return ViewEntry::make('teste')
+                                    ->view('infolists.components.info-viagem');
 
-                                        $entries[] = \Filament\Infolists\Components\Section::make("Integrado: {$integrado->codigo} - {$integrado->nome}")
-                                            ->schema([
-                                                \Filament\Infolists\Components\RepeatableEntry::make('ultimasCargas')
-                                                    ->label('10 Últimas Cargas')
-                                                    ->state($ultimasCargas->toArray())
-                                                    ->schema([
-                                                        \Filament\Infolists\Components\TextEntry::make('numero_viagem')
-                                                            ->label('Nº Viagem')
-                                                            ->formatStateUsing(fn (string $state): string => __("statuses.{$state}"))
-                                                            // ->getStateUsing(function($record) {
-                                                            //     return $ultimasCargas['viagem']['numero_viagem'] ?? 'N/A';
-                                                            // })
-                                                            ,
-                                                        \Filament\Infolists\Components\TextEntry::make('data_competencia')
-                                                            ->label('Data Competência')
-                                                            ->getStateUsing(function($record) {
-                                                                if (isset($record->data_competencia)) {
-                                                                    return \Carbon\Carbon::parse($record->data_competencia)->format('d/m/Y');
-                                                                }
-                                                                return 'N/A';
-                                                            }),
-                                                        \Filament\Infolists\Components\TextEntry::make('km_pago')
-                                                            ->label('KM Pago')
-                                                            ->getStateUsing(function($record) {
-                                                                if (isset($record->km_pago)) {
-                                                                    return number_format($record->km_pago, 2, ',', '.') . ' km';
-                                                                }
-                                                                return 'N/A';
-                                                            }),
-                                                        \Filament\Infolists\Components\TextEntry::make('km_rodado_excedente')
-                                                            ->label('KM Rodado Excedente')
-                                                            ->getStateUsing(function($record) {
-                                                                if (isset($record->km_rodado_excedente)) {
-                                                                    return number_format($record->km_rodado_excedente, 2, ',', '.') . ' km';
-                                                                }
-                                                                return 'N/A';
-                                                            }),
-                                                        \Filament\Infolists\Components\TextEntry::make('created_at')
-                                                            ->label('Criado em')
-                                                            ->getStateUsing(function($record) {
-                                                                if (isset($record['created_at'])) {
-                                                                    return \Carbon\Carbon::parse($record['created_at'])->format('d/m/Y H:i');
-                                                                }
-                                                                return 'N/A';
-                                                            }),
-                                                    ])
-                                                    ->columns(6)
-                                            ])
-                                            ->collapsible()
-                                            ->collapsed();
-                                    }
-                                }
-
-                                return $entries;
                             })),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
