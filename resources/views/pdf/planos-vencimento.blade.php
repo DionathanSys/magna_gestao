@@ -207,7 +207,7 @@
                 <thead>
                     <tr>
                         <th style="width: 8%;">Veículo</th>
-                        <th style="width: 25%;">Plano Preventivo</th>
+                        <th style="width: 35%;">Plano Preventivo</th>
                         <th style="width: 10%;">KM Última</th>
                         <th style="width: 10%;">KM Restante</th>
                         <th style="width: 12%;">Próxima Execução</th>
