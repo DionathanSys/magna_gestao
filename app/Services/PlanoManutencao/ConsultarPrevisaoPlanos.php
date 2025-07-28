@@ -34,7 +34,11 @@ class ConsultarPrevisaoPlanos
         foreach ($veiculosPlano as $veiculoPlano) {
 
             try {
-                $previsaoPlano = $this->calcularPrevisaoPlano($veiculoPlano['veiculo_id'], $kmAtualVeiculos[$veiculoPlano['veiculo_id']]['km_atual']);
+                $previsaoPlano = $this->calcularPrevisaoPlano(
+                    $veiculoPlano['veiculo_id'],
+                    $kmAtualVeiculos[$veiculoPlano['veiculo_id']]['km_atual'],
+                    $kmAtualVeiculos[$veiculoPlano['veiculo_id']]['km_medio']
+                );
 
                 if (!empty($previsaoPlano) && $previsaoPlano['km_restante'] <= $this->kmTolerancia) {
                     $previsaoPlano['placa'] = $kmAtualVeiculos[$veiculoPlano['veiculo_id']]['placa'];
@@ -59,7 +63,7 @@ class ConsultarPrevisaoPlanos
 
     }
 
-    private function calcularPrevisaoPlano(int $veiculoId, int $kmAtual): array
+    private function calcularPrevisaoPlano(int $veiculoId, int $kmAtual, int $kmMedio): array
     {
         $ultimaExecucao = \App\Models\PlanoManutencaoOrdemServico::query()
             ->select('id', 'data_execucao', 'km_execucao')
@@ -77,13 +81,16 @@ class ConsultarPrevisaoPlanos
             return [];
         }
 
-        $kmRestante = $kmAtual - ($ultimaExecucao['km_execucao'] + $this->kmIntervaloPlano);
+        $kmRestante = ($ultimaExecucao['km_execucao'] + $this->kmIntervaloPlano) - $kmAtual;
+        $diasRestantes = ceil($kmRestante / $kmMedio);
+        $dataPrevista = now()->addDays($diasRestantes);
 
         return [
             'plano_preventivo_id' => $this->planoPreventivoId,
             'veiculo_id'          => $veiculoId,
             'km_atual'            => $kmAtual,
             'ultima_execucao'     => $ultimaExecucao,
+            'data_prevista'       => $dataPrevista,
             'km_proximo'          => $ultimaExecucao['km_execucao'] + $this->kmIntervaloPlano,
             'km_intervalo'        => $this->kmIntervaloPlano,
             'km_restante'         => $kmRestante,
