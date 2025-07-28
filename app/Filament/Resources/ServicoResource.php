@@ -29,33 +29,57 @@ class ServicoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(8)
+            ->columns([
+                'sm' => 1,
+                'md' => 4,
+                'lg' => 8,
+            ])
             ->schema([
                 Forms\Components\TextInput::make('codigo')
                     ->label('Código')
-                    ->columnSpan(2)
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 1,
+                        'lg' => 2
+                    ])
                     ->maxLength(10),
                 Forms\Components\TextInput::make('descricao')
                     ->label('Descrição')
                     ->required()
-                    ->columnSpan(6)
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 3,
+                        'lg' => 6
+                    ])
                     ->maxLength(255),
                 Forms\Components\TextInput::make('complemento')
                     ->columnSpanFull()
                     ->maxLength(255),
                 Forms\Components\Select::make('tipo')
-                    ->columnSpan(2)
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 3
+                    ])
                     ->options(TipoServicoEnum::toSelectArray())
                     ->default(TipoServicoEnum::CORRETIVA->value),
                 Forms\Components\Toggle::make('controla_posicao')
                     ->label('Controla Posição')
-                    ->columnSpan(3)
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 3
+                    ])
                     ->inline(false)
                     ->default(false)
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Ativo')
-                    ->columnSpan(3)
+                    ->columnSpan([
+                        'sm' => 1,
+                        'md' => 2,
+                        'lg' => 2
+                    ])
                     ->inline(false)
                     ->default(true)
                     ->required(),
@@ -99,12 +123,12 @@ class ServicoResource extends Resource
             ->persistFiltersInSession(true)
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null),
+                // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
+                    // ->successNotification(null),
                 ]),
             ]);
     }
