@@ -29,17 +29,13 @@ class OrdemServicoPdfService
             'dataGeracao' => now()->format('d/m/Y H:i:s')
         ];
 
-        return Pdf::loadView('pdf.ordem-servico', $data)
-            ->setPaper('A4', 'portrait')
-            ->setOptions([
-                'defaultFont' => 'DejaVu Sans',
-                'isHtml5ParserEnabled' => true,
-                'isPhpEnabled' => true,
-                'isFontSubsettingEnabled' => false,
-                'isRemoteEnabled' => true,
-                'chroot' => base_path(),
-            ])
-            ->download('ordem-servico-' . $ordemServico->id . '-' . date('Y-m-d-H-i') . '.pdf');
+        $pdf = Pdf::loadView('pdf.ordem-servico', $data);
+
+        return response()->streamDownload(
+            function () use ($pdf) {
+                echo $pdf->stream();
+            }, 'ordem-servico-' . date('Y-m-d-H-i') . '.pdf');
+
     }
 
     /**
