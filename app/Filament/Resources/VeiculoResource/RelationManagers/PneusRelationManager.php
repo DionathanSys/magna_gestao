@@ -83,8 +83,7 @@ class PneusRelationManager extends RelationManager
                     ->label('KM Rodado')
                     ->width('1%')
                     ->numeric(0, ',', '.')
-                    // ->formatStateUsing(fn(Forms\Get $get, $state) => $state - $get('km_inicial'))
-                    ,
+                    ->state(fn (PneuPosicaoVeiculo $record): string => $record->km_inicial ? (($record->veiculo->kmAtual->quilometragem ?? 0) - $record->km_inicial) : 'N/A'),
                 Tables\Columns\TextColumn::make('data_inicial')
                     ->width('1%')
                     ->date('d/m/Y'),
