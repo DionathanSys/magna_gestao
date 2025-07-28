@@ -18,7 +18,14 @@ class ListPlanoManutencaoVeiculos extends ListRecords
             Actions\Action::make('Gerar PDF')
                 ->label('Gerar PDF')
                 ->icon('heroicon-o-document-text')
-                ->action(fn() => (new PlanoManutencaoService)->gerarRelatorioVencimentoPdf())
+                ->form([
+                    \Filament\Forms\Components\TextInput::make('km_tolerancia')
+                        ->label('KM Tolerância')
+                        ->default(2500)
+                        ->numeric()
+                        ->required(),
+                ])
+                ->action(fn($data) => (new PlanoManutencaoService)->gerarRelatorioVencimentoPdf($data['km_tolerancia']))
                 ->color('primary'),
         ];
     }
