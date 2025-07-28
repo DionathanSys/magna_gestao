@@ -55,7 +55,7 @@ class PlanoManutencaoService
         return response()->streamDownload(
             function () use ($pdf) {
                 echo $pdf->stream();
-            }, 'teste.pdf');
+            }, 'relatorio-planos-vencimento-' . date('Y-m-d-H-i') . '.pdf');
 
 
     }
