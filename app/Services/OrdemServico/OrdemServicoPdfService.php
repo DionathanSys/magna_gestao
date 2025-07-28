@@ -17,6 +17,7 @@ class OrdemServicoPdfService
         $ordemServico->load([
             'veiculo.kmAtual',
             'planoPreventivoVinculado',
+            'planoPreventivoVinculado.planoPreventivo',
             'parceiro',
             'sankhyaId',
             'itens.servico',
