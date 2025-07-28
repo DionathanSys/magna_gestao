@@ -247,7 +247,7 @@
                                 {{ number_format($plano['km_proxima_execucao'], 0, ',', '.') }}
                             </td>
                             <td style="text-align: right;">
-                                {{ number_format($plano['data_prevista'], 0, ',', '.') }}
+                                {{ \Carbon\Carbon::parse($plano['data_prevista'])->format('d/m/Y') }}
                             </td>
                             <td style="text-align: right;">
                                 {{ number_format($plano['intervalo'], 0, ',', '.') }}
