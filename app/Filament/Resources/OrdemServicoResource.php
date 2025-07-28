@@ -327,7 +327,7 @@ class OrdemServicoResource extends Resource
                         ])
                         ->schema([
                             ItemOrdemServicoResource::getServicoIdFormField()
-                                ->relationship('servico', 'descricao')
+                                ->relationship('itens.servico', 'descricao')
                                 ->columnStart(1)
                                 ->columnSpan([
                                     'sm' => 1,
