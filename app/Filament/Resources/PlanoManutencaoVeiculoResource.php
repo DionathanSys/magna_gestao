@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,13 +19,13 @@ class PlanoManutencaoVeiculoResource extends Resource
 {
     protected static ?string $model = PlanoManutencaoVeiculo::class;
 
-     protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
-    protected static ?string $pluralModelLabel = 'Planos Preventivos Veículos';
+    protected static ?string $pluralModelLabel = 'Planos Preventivos - Veículos';
 
-    protected static ?string $pluralLabel = 'Planos Preventivos Veículos';
+    protected static ?string $pluralLabel = 'Planos Preventivos - Veículos';
 
-    protected static ?string $label = 'Plano Preventivo Veículo';
+    protected static ?string $label = 'Plano Preventivo - Veículo';
 
     public static function form(Form $form): Form
     {
@@ -45,6 +46,9 @@ class PlanoManutencaoVeiculoResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano Preventivo')
                     ->width('1%')
@@ -84,13 +88,11 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
-                    ->width('1%')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
-                    ->width('1%')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -110,8 +112,7 @@ class PlanoManutencaoVeiculoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null),
-            ])
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()

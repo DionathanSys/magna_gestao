@@ -17,7 +17,13 @@ class ParceiroResource extends Resource
 {
     protected static ?string $model = Parceiro::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Parceiros';
+
+    protected static ?string $pluralModelLabel = 'Parceiros';
+
+    protected static ?string $pluralLabel = 'Parceiros';
+
+    protected static ?string $label = 'Parceiro';
 
     public static function form(Form $form): Form
     {
@@ -52,12 +58,10 @@ class ParceiroResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
                 ]),
             ]);
     }

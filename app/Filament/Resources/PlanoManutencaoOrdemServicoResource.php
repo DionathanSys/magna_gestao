@@ -19,13 +19,13 @@ class PlanoManutencaoOrdemServicoResource extends Resource
 {
     protected static ?string $model = PlanoManutencaoOrdemServico::class;
 
-    protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
-    protected static ?string $pluralModelLabel = 'Plano Preventivo - Ordem de Serviço';
+    protected static ?string $pluralModelLabel = 'Hist. Planos Preventivos';
 
-    protected static ?string $pluralLabel = 'Plano Preventivo - Ordem de Serviço';
+    protected static ?string $pluralLabel = 'Hist. Planos Preventivos';
 
-    protected static ?string $label = 'Plano Preventivo - Ordem de Serviço';
+    protected static ?string $label = 'Hist. Planos Preventivo';
 
     public static function form(Form $form): Form
     {

@@ -20,7 +20,7 @@ class PlanoPreventivoResource extends Resource
 {
     protected static ?string $model = PlanoPreventivo::class;
 
-    protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
     protected static ?string $pluralModelLabel = 'Planos Preventivos';
 

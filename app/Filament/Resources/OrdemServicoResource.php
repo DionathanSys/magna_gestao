@@ -38,7 +38,7 @@ class OrdemServicoResource extends Resource
 {
     protected static ?string $model = OrdemServico::class;
 
-    protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
     protected static ?string $pluralModelLabel = 'Ordens de Serviço';
 

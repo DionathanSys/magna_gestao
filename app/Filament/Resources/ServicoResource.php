@@ -18,7 +18,7 @@ class ServicoResource extends Resource
 {
     protected static ?string $model = Servico::class;
 
-    protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
     protected static ?string $pluralModelLabel = 'Serviços';
 

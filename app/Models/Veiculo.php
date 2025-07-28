@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\{BelongsToMany, HasMany, HasOne};
 class Veiculo extends Model
 {
 
-    // protected $appends = ['km_atual'];
-    
+    protected $appends = ['km_atual'];
+
     public function pneus(): HasMany
     {
         return $this->hasMany(PneuPosicaoVeiculo::class);

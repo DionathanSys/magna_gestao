@@ -17,7 +17,7 @@ class OrdemSankhyaResource extends Resource
 {
     protected static ?string $model = OrdemSankhya::class;
 
-    protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
     protected static ?string $pluralModelLabel = 'Ordens Sankhya';
 

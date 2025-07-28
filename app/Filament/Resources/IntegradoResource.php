@@ -17,7 +17,13 @@ class IntegradoResource extends Resource
 {
     protected static ?string $model = Integrado::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Parceiros';
+
+    protected static ?string $pluralModelLabel = 'Integrados';
+
+    protected static ?string $pluralLabel = 'Integrados';
+
+    protected static ?string $label = 'Integrado';
 
     public static function form(Form $form): Form
     {

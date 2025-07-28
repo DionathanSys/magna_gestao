@@ -89,25 +89,31 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->label('Placa')
                     ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_inicial')
+                    ->label('Dt. Inicial')
                     ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_final')
+                    ->label('Dt. Final')
                     ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('km_inicial')
+                    ->label('KM Inicial')
                     ->width('1%')
                     ->numeric(null, '', '.')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('km_final')
+                    ->label('KM Final')
                     ->width('1%')
                     ->numeric(null, '', '.')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kmPercorrido')
+                    ->label('KM Percorrido')
                     ->width('1%')
                     ->numeric(null, '', '.')
                     ->summarize(
@@ -126,10 +132,11 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('posicao')
-                    ->width('1%')
                     ->label('Posição')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sulco_movimento')
+                    ->label('Sulco')
                     ->width('1%')
                     ->wrapHeader()
                     ->numeric()
@@ -138,8 +145,8 @@ class HistoricoMovimentoPneuResource extends Resource
                     ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('observacao')
-                    ->width('1%')
                     ->label('Observação')
+                    ->width('1%')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
@@ -156,14 +163,15 @@ class HistoricoMovimentoPneuResource extends Resource
                 Tables\Filters\SelectFilter::make('pneu_id')
                     ->label('Pneu')
                     ->relationship('pneu', 'numero_fogo')
+                    ->multiple()
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
+                    ->multiple()
                     ->searchable(),
             ])->headerActions([
-                Tables\Actions\CreateAction::make()
-                    // ->successNotification(null),
+                // Tables\Actions\CreateAction::make()
             ])
             ->defaultSort('id', 'desc')
             ->defaultGroup('pneu.numero_fogo')

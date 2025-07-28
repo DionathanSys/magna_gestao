@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
-use App\Enum\TipoServicoEnum;
 use App\Filament\Resources\ItemOrdemServicoResource\Pages;
 use App\Filament\Resources\ItemOrdemServicoResource\RelationManagers;
 use App\Models\ItemOrdemServico;
@@ -20,7 +19,7 @@ class ItemOrdemServicoResource extends Resource
 {
     protected static ?string $model = ItemOrdemServico::class;
 
-    protected static ?string $navigationGroup = 'Mant.';
+    protected static ?string $navigationGroup = 'Manutenção';
 
     protected static ?string $pluralModelLabel = 'Itens OS';
 
