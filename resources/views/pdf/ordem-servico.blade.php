@@ -22,7 +22,7 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
-            border-bottom: 2px solid #0066cc;
+            border-bottom: 2px solid #93b5d8ff;
             padding-bottom: 15px;
         }
 
@@ -42,9 +42,9 @@
             flex-direction: column;
             margin-bottom: 20px;
             padding: 15px;
-            background-color: #f8f9fa;
+            background-color: #ffffffff;
             border-radius: 4px;
-            border: 1px solid #dee2e6;
+            border: 1px solid #ffffffff;
             width: 48%;
             float: left;
             margin-right: 2%;
@@ -55,8 +55,8 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding: 12px;
-            background-color: #e8f4fd;
-            border-left: 4px solid #0066cc;
+            background-color: #ffffffff;
+            border-left: 4px solid #ffffffff;
             width: 48%;
             float: right;
             margin-left: 2%;
@@ -73,7 +73,7 @@
         }
 
         .info-item strong {
-            color: #0066cc;
+            color: #464c52ff;
             display: block;
             margin-bottom: 3px;
         }
@@ -83,7 +83,7 @@
         }
 
         .section-title {
-            background-color: #0066cc;
+            background-color: #464c52ff;
             color: white;
             padding: 8px 12px;
             font-size: 14px;
@@ -106,7 +106,7 @@
         .veiculo-item .value {
             font-size: 14px;
             font-weight: bold;
-            color: #0066cc;
+            color: #464c52ff;
         }
 
         .table-container {
@@ -212,7 +212,7 @@
         .totais-item.total {
             font-weight: bold;
             font-size: 12px;
-            border-top: 1px solid #0066cc;
+            border-top: 1px solid #93b5d8ff;
             padding-top: 5px;
             margin-top: 8px;
         }
@@ -238,13 +238,12 @@
         <div class="info-item">
             <strong>Data Abertura:</strong>
             {{ date('d/m/Y H:i', strtotime($ordemServico->data_inicio)) }}
+            @if($ordemServico->data_fim)
+                    <strong>Data Encerramento:</strong>
+                    {{ date('d/m/Y H:i', strtotime($ordemServico->data_fim)) }}
+            @endif
         </div>
-        @if($ordemServico->data_fim)
-        <div class="info-item">
-            <strong>Data Encerramento:</strong>
-            {{ date('d/m/Y H:i', strtotime($ordemServico->data_fim)) }}
-        </div>
-        @endif
+
     </div>
 
     <div class="veiculo-info">
@@ -289,7 +288,7 @@
                     @foreach($ordemServico->itens as $item)
                     <tr>
                         <td style="text-align: center; font-weight: bold;">
-                            {{ e($item->servico->codigo ?? 'N/A') }}
+                            {{ e($item->servico->id ?? 'N/A') }}
                         </td>
                         <td>{{ e($item->servico->descricao ?? 'N/A') }}</td>
                         <td style="text-align: center;">{{ e($item->posicao ?? 'N/A') }}</td>
@@ -305,24 +304,6 @@
             </table>
         </div>
 
-        <div class="totais">
-            <div class="totais-item">
-                <span>Total de Serviços:</span>
-                <span>{{ $ordemServico->itens->count() }}</span>
-            </div>
-            <div class="totais-item">
-                <span>Serviços Pendentes:</span>
-                <span>{{ $ordemServico->itens->where('status', 'PENDENTE')->count() }}</span>
-            </div>
-            <div class="totais-item">
-                <span>Serviços Concluídos:</span>
-                <span>{{ $ordemServico->itens->where('status', 'CONCLUIDO')->count() }}</span>
-            </div>
-            <div class="totais-item total">
-                <span>Status Geral:</span>
-                <span>{{ $ordemServico->status }}</span>
-            </div>
-        </div>
         @else
         <div class="no-data">
             <p>Nenhum serviço cadastrado para esta ordem de serviço.</p>
@@ -362,8 +343,6 @@
     </div>
     @endif --}}
 
-    //crie uma seção para informações de planos preventivos vinculados
-    
     @if($ordemServico->planoPreventivoVinculado && $ordemServico->planoPreventivoVinculado->count() > 0)
     <div class="section">
         <div class="section-title">Planos Preventivos Vinculados</div>
@@ -400,7 +379,6 @@
 
     <div class="observacoes">
         <h4>Informações Adicionais</h4>
-        <p><strong>Criado por:</strong> {{ e($ordemServico->creator->name ?? 'N/A') }}</p>
         <p><strong>Data de Criação:</strong> {{ date('d/m/Y H:i:s', strtotime($ordemServico->created_at)) }}</p>
         @if($ordemServico->updated_at != $ordemServico->created_at)
         <p><strong>Última Atualização:</strong> {{ date('d/m/Y H:i:s', strtotime($ordemServico->updated_at)) }}</p>
