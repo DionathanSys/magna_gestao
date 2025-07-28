@@ -363,15 +363,37 @@
     @endif --}}
 
     //crie uma seção para informações de planos preventivos vinculados
-
-    @if($ordemServico->planoPreventivoVinculado)
+    
+    @if($ordemServico->planoPreventivoVinculado && $ordemServico->planoPreventivoVinculado->count() > 0)
     <div class="section">
-        <div class="section-title">Plano Preventivo Vinculado</div>
-        <div class="veiculo-info">
-            <div class="veiculo-item">
-                <div class="label">Plano</div>
-                <div class="value">{{ e($ordemServico->planoPreventivoVinculado->planoPreventivo->id) }} - {{ e($ordemServico->planoPreventivoVinculado->planoPreventivo->descricao) }}</div>
-            </div>
+        <div class="section-title">Planos Preventivos Vinculados</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">ID Plano</th>
+                        <th style="width: 80%;">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($ordemServico->planoPreventivoVinculado as $planoVinculado)
+                    @if($planoVinculado->planoPreventivo)
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">
+                            {{ $planoVinculado->planoPreventivo->id ?? 'N/A' }}
+                        </td>
+                        <td>{{ e($planoVinculado->planoPreventivo->descricao ?? 'N/A') }}</td>
+                    </tr>
+                    @else
+                    <tr>
+                        <td colspan="2" style="text-align: center; font-style: italic; color: #666;">
+                            Plano preventivo não encontrado
+                        </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
     @endif
