@@ -7,6 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class OrdemServico extends Model
@@ -31,6 +32,18 @@ class OrdemServico extends Model
     public function itens(): HasMany
     {
         return $this->hasMany(ItemOrdemServico::class, 'ordem_servico_id');
+    }
+
+    public function servicos(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Servico::class,
+            ItemOrdemServico::class,
+            'ordem_servico_id',
+            'id',
+            'id',
+            'servico_id'
+        );
     }
 
     public function sankhyaId(): HasMany
