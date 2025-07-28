@@ -370,27 +370,12 @@
         <div class="veiculo-info">
             <div class="veiculo-item">
                 <div class="label">Plano</div>
-                <div class="value">{{ e($ordemServico->planoPreventivoVinculado->nome ?? 'N/A') }}</div>
-            </div>
-            <div class="veiculo-item">
-                <div class="label">Próximo Vencimento</div>
-                <div class="value">{{ date('d/m/Y', strtotime($ordemServico->planoPreventivoVinculado->proximo_vencimento)) }}</div>
+                <div class="value">{{ e($ordemServico->planoPreventivoVinculado->planoPreventivo->id) }} - {{ e($ordemServico->planoPreventivoVinculado->planoPreventivo->descricao) }}</div>
             </div>
         </div>
     </div>
     @endif
-    <div class="section">
-        <div class="section-title">Observações</div>
-        <p>{{ e($ordemServico->observacoes ?? 'Nenhuma observação registrada.') }}</p>
-    </div>
-    <div class="section">
-        <div class="section-title">Informações Adicionais</div>
-        <p><strong>Criado por:</strong> {{ e($ordemServico->creator->name ?? 'N/A') }}</p>
-        <p><strong>Data de Criação:</strong> {{ date('d/m/Y H:i:s', strtotime($ordemServico->created_at)) }}</p>
-        @if($ordemServico->updated_at != $ordemServico->created_at)
-        <p><strong>Última Atualização:</strong> {{ date('d/m/Y H:i:s', strtotime($ordemServico->updated_at)) }}</p>
-        @endif
-    </div>
+
     <div class="observacoes">
         <h4>Informações Adicionais</h4>
         <p><strong>Criado por:</strong> {{ e($ordemServico->creator->name ?? 'N/A') }}</p>
