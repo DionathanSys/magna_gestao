@@ -112,11 +112,11 @@ class PlanoManutencaoVeiculoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->iconButton(),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->poll('5s')

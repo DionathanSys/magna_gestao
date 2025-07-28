@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -68,28 +69,37 @@ class PlanoManutencaoOrdemServicoResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('plano_preventivo_id')
                     ->label('Plano Preventivo')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Descrição')
+                    ->width('1%')
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
                     ->label('Ordem de Serviço')
+                    ->width('1%')
                     ->placeholder('Sem Vínculo')
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
+                    ->width('1%')
                     ->sortable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('km_execucao')
                     ->label('KM de Execução')
+                    ->width('1%')
                     ->numeric(0, ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_execucao')
                     ->label('Data de Execução')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -107,13 +117,11 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    // ->successNotification(null),
-            ])
+                Tables\Actions\EditAction::make(),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->poll('5s')
