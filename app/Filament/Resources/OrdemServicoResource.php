@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
 use App\Services\OrdemServico\ItemOrdemServicoService;
 use App\Services\OrdemServico\OrdemServicoService;
+use App\Services\OrdemServico\OrdemServicoPdfService;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Support\Enums\Alignment;
@@ -236,15 +237,23 @@ class OrdemServicoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('pdf_download')
+                        ->label('Download PDF')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->action(fn(OrdemServico $record) => (new OrdemServicoPdfService)->gerarPdfOrdemServico($record)),
+                    Tables\Actions\Action::make('pdf_view')
+                        ->label('Visualizar PDF')
+                        ->icon('heroicon-o-eye')
+                        ->color('info')
+                        ->openUrlInNewTab()
+                        ->url(fn(OrdemServico $record): string => route('ordem-servico.pdf', $record)),
                     Tables\Actions\Action::make('encerrar')
-                        // ->successNotification(null)
                         ->label('Encerrar OS')
                         ->icon('heroicon-o-check-circle')
                         ->action(fn(OrdemServico $record) => (new OrdemServicoService)->encerrarOrdemServico($record)),
                     Tables\Actions\EditAction::make(),
-                        // ->successNotification(null),
                     Tables\Actions\Action::make('ordem_sankhya')
-                        // ->successNotification(null)
                         ->label('Add Ordem Sankhya')
                         ->icon('heroicon-o-clipboard-document-list')
                         ->modal()

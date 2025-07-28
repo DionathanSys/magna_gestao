@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\OrdemServicoPdfController;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoVeiculo;
 use App\Models\Pneu;
@@ -110,6 +111,14 @@ Route::get('/teste', function () {
         'Pragma' => 'public',
     ]);
 
+});
+
+// Rotas para PDF da Ordem de Serviço
+Route::prefix('ordem-servico')->group(function () {
+    Route::get('/{ordemServico}/pdf', [OrdemServicoPdfController::class, 'visualizar'])
+        ->name('ordem-servico.pdf');
+    Route::get('/{ordemServico}/pdf/download', [OrdemServicoPdfController::class, 'download'])
+        ->name('ordem-servico.pdf.download');
 });
 
 Route::get('/teste2', function (){
