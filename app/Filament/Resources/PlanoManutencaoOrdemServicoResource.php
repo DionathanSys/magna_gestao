@@ -99,7 +99,6 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_execucao')
                     ->label('Data de Execução')
-                    ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -117,7 +116,8 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
