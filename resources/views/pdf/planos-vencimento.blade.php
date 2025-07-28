@@ -167,7 +167,7 @@
         <p>Planos com Vencimento Próximo ou Vencidos</p>
     </div>
 
-    {{-- <div class="info-section">
+    <div class="info-section">
         <div class="info-item">
             <strong>Data de Geração:</strong> {{ date('d/m/Y H:i') }}
         </div>
@@ -177,7 +177,7 @@
         <div class="info-item">
             <strong>Total de Registros:</strong> {{ count($planos) }}
         </div>
-    </div> --}}
+    </div>
 
     @if(count($planos) > 0)
         <div class="summary">
@@ -208,7 +208,7 @@
                     <tr>
                         <th style="width: 8%;">Veículo</th>
                         <th style="width: 25%;">Plano Preventivo</th>
-                        <th style="width: 12%;">Última Execução</th>
+                        {{-- <th style="width: 12%;">Última Execução</th> --}}
                         <th style="width: 10%;">KM Última</th>
                         {{-- <th style="width: 10%;">KM Atual</th> --}}
                         <th style="width: 10%;">KM Restante</th>
@@ -236,9 +236,9 @@
                         @endphp
 
                         <tr class="{{ $statusClass }}">
-                            <td style="font-weight: bold;">{{ e($plano['veiculo']['placa'] ?? 'N/A') }}</td>
+                            <td style="font-weight: bold;">{{ e($plano['placa'] ?? 'N/A') }}</td>
                             <td>{{ e($plano['plano_preventivo']['descricao'] ?? 'N/A') }}</td>
-                            <td>{{ isset($plano['ultima_execucao']) ? date('d/m/Y', strtotime($plano['ultima_execucao'])) : 'Nunca' }}</td>
+                            {{-- <td>{{ isset($plano['ultima_execucao']) ? date('d/m/Y', strtotime($plano['ultima_execucao'])) : 'Nunca' }}</td> --}}
                             <td style="text-align: right;">
                                 {{ isset($plano['km_execucao']) ? number_format($plano['km_execucao'], 0, ',', '.') : '0' }}
                             </td>
@@ -263,12 +263,12 @@
             </table>
         </div>
 
-        {{-- <div style="font-size: 10px; color: #666; margin-top: 20px;">
+        <div style="font-size: 10px; color: #666; margin-top: 20px;">
             <p><strong>Legenda:</strong></p>
             <p>&bull; <span style="color: #c62828; font-weight: bold;">URGENTE:</span> Manutenção deve ser realizada em até 500 km</p>
             <p>&bull; <span style="color: #ef6c00; font-weight: bold;">ATENÇÃO:</span> Manutenção deve ser programada (501 - 1.500 km)</p>
             <p>&bull; <span style="color: #2e7d32; font-weight: bold;">OK:</span> Manutenção preventiva (acima de 1.500 km)</p>
-        </div> --}}
+        </div>
 
     @else
         <div class="no-data">

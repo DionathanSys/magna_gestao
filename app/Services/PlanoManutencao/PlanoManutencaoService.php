@@ -4,6 +4,7 @@ namespace App\Services\PlanoManutencao;
 
 use \App\Models;
 use App\Services\Pdf\MakePdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PlanoManutencaoService
 {
@@ -28,6 +29,8 @@ class PlanoManutencaoService
                 ->exec();
 
             if ($previsaoPlano['km_restante'] <= $kmTolerancia) {
+                $previsaoPlano['placa'] = $planoVeiculo->veiculo->placa ?? 'N/A';
+                $previsaoPlano['plano_preventivo']['descricao'] = $planoVeiculo->planoPreventivo->descricao ?? 'N/A';
                 $previsaoPlanos[] = $previsaoPlano;
             }
 
@@ -47,11 +50,14 @@ class PlanoManutencaoService
             'dataGeracao' => now()->format('d/m/Y H:i:s')
         ];
 
-        $makePdf = new MakePdf('pdf.planos-vencimento');
+        $pdf = Pdf::loadView('pdf.planos-vencimento', $data);
 
-        return $makePdf
-            ->createPdf($data)
-            ->download('relatorio-planos-vencimento-' . date('Y-m-d-H-i') . '.pdf');
+        return response()->streamDownload(
+            function () use ($pdf) {
+                echo $pdf->stream();
+            }, 'teste.pdf');
+
+
     }
 
     public function visualizarRelatorioVencimentoPdf(int $kmTolerancia = 2500)
