@@ -212,7 +212,6 @@
                         <th style="width: 10%;">KM Restante</th>
                         <th style="width: 12%;">Próxima Execução</th>
                         <th style="width: 12%;">Dt. Prevista</th>
-                        <th style="width: 8%;">Intervalo</th>
                         <th style="width: 5%;">Status</th>
                     </tr>
                 </thead>
@@ -248,9 +247,6 @@
                             </td>
                             <td style="text-align: right;">
                                 {{ $plano['data_prevista'] }}
-                            </td>
-                            <td style="text-align: right;">
-                                {{ number_format($plano['intervalo'], 0, ',', '.') }}
                             </td>
                             <td style="text-align: center; font-size: 9px;">
                                 {{ $statusText }}

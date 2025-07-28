@@ -23,6 +23,7 @@ class ListPlanoManutencaoVeiculos extends ListRecords
                         ->label('KM Tolerância')
                         ->default(2500)
                         ->numeric()
+                        ->columnSpan(1)
                         ->required(),
                 ])
                 ->action(fn($data) => (new PlanoManutencaoService)->gerarRelatorioVencimentoPdf($data['km_tolerancia']))
