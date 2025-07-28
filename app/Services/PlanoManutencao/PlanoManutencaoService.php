@@ -30,7 +30,6 @@ class PlanoManutencaoService
 
             if ($previsaoPlano['km_restante'] <= $kmTolerancia) {
                 $previsaoPlano['placa'] = $planoVeiculo->veiculo->placa ?? 'N/A';
-                $previsaoPlano['plano_preventivo']['descricao'] = $planoVeiculo->planoPreventivo->descricao ?? 'N/A';
                 $previsaoPlanos[] = $previsaoPlano;
             }
 

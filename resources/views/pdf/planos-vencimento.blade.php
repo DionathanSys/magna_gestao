@@ -208,11 +208,10 @@
                     <tr>
                         <th style="width: 8%;">Veículo</th>
                         <th style="width: 25%;">Plano Preventivo</th>
-                        {{-- <th style="width: 12%;">Última Execução</th> --}}
                         <th style="width: 10%;">KM Última</th>
-                        {{-- <th style="width: 10%;">KM Atual</th> --}}
                         <th style="width: 10%;">KM Restante</th>
                         <th style="width: 12%;">Próxima Execução</th>
+                        <th style="width: 12%;">Dt. Prevista</th>
                         <th style="width: 8%;">Intervalo</th>
                         <th style="width: 5%;">Status</th>
                     </tr>
@@ -237,19 +236,18 @@
 
                         <tr class="{{ $statusClass }}">
                             <td style="font-weight: bold;">{{ e($plano['placa'] ?? 'N/A') }}</td>
-                            <td>{{ e($plano['plano_preventivo']['descricao'] ?? 'N/A') }}</td>
-                            {{-- <td>{{ isset($plano['ultima_execucao']) ? date('d/m/Y', strtotime($plano['ultima_execucao'])) : 'Nunca' }}</td> --}}
+                            <td>{{ e($plano['plano_preventivo_id'] ?? 'N/A') }} - {{ e($plano['descricao'] ?? 'N/A') }}</td>
                             <td style="text-align: right;">
                                 {{ isset($plano['km_execucao']) ? number_format($plano['km_execucao'], 0, ',', '.') : '0' }}
                             </td>
-                            {{-- <td style="text-align: right;">
-                                {{ number_format($plano['km_atual'], 0, ',', '.') }}
-                            </td> --}}
                             <td class="km-restante">
                                 {{ number_format($plano['km_restante'], 0, ',', '.') }}
                             </td>
                             <td style="text-align: right;">
                                 {{ number_format($plano['km_proxima_execucao'], 0, ',', '.') }}
+                            </td>
+                            <td style="text-align: right;">
+                                {{ number_format($plano['data_prevista'], 0, ',', '.') }}
                             </td>
                             <td style="text-align: right;">
                                 {{ number_format($plano['intervalo'], 0, ',', '.') }}
