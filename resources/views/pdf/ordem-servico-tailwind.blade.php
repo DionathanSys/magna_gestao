@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>OS. #{{ $ordemServico->id }}</title>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <style>
         @page {
             margin: 1cm;
@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 text-sm leading-relaxed">
+<body class="bg-red-500 text-gray-900 text-sm leading-relaxed">
     <!-- Header -->
     <div class="text-center mb-6 pb-3 border-b-2 border-blue-500">
         <h1 class="text-2xl font-bold text-blue-600 mb-2">ORDEM DE SERVIÇO #{{ $ordemServico->id }}</h1>
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Info Grid -->
-    <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="grid grid-cols-2 gap-4 mb-6 bg-red-500">
         <!-- Informações da OS -->
         <div class="bg-white rounded-lg border border-gray-200 p-4">
             <h3 class="font-semibold text-gray-700 mb-3 text-sm">Informações da Ordem</h3>
