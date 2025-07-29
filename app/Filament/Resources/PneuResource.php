@@ -217,7 +217,6 @@ class PneuResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('conserto')
-                        // ->successNotification(null)
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->form(fn(Forms\Form $form) => $form
                             ->columns(4)
@@ -296,7 +295,6 @@ class PneuResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
                 ]),
             ]);
     }

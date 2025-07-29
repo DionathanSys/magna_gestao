@@ -7,8 +7,8 @@
     <title>Ordem de Serviço #{{ $ordemServico->id }}</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
+            margin: 2px;
+            padding: 2px;
             box-sizing: border-box;
         }
 
@@ -21,9 +21,9 @@
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             border-bottom: 2px solid #93b5d8ff;
-            padding-bottom: 15px;
+            padding-bottom: 7.5px;
         }
 
         .header h1 {
@@ -40,8 +40,8 @@
         .info-section {
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: 12px;
+            padding: 5px;
             background-color: #ffffffff;
             border-radius: 4px;
             border: 1px solid #ffffffff;
@@ -53,8 +53,8 @@
         .veiculo-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            padding: 12px;
+            margin-bottom: 12px;
+            padding: 5px;
             background-color: #ffffffff;
             border-left: 4px solid #ffffffff;
             width: 48%;
@@ -68,14 +68,14 @@
 
         .info-item {
             font-size: 11px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             flex: 1;
         }
 
         .info-item strong {
             color: #464c52ff;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 1.5px;
         }
 
         .section {

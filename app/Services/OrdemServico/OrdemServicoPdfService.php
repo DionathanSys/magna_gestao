@@ -62,15 +62,63 @@ class OrdemServicoPdfService
         // Para visualizar no navegador
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.ordem-servico', $data)
             ->setPaper('A4', 'portrait')
-            ->setOptions([
-                'defaultFont' => 'DejaVu Sans',
-                'isHtml5ParserEnabled' => true,
-                'isPhpEnabled' => true,
-                'isFontSubsettingEnabled' => false,
-                'isRemoteEnabled' => true,
-                'chroot' => base_path(),
-            ])
             ->stream('ordem-servico-' . $ordemServico->id . '-' . date('Y-m-d-H-i') . '.pdf');
+    }
+
+    /**
+     * Gera o PDF da Ordem de Serviço com Tailwind CSS para download
+     */
+    public function gerarPdfOrdemServicoTailwind(OrdemServico $ordemServico)
+    {
+        // Carregar relacionamentos necessários
+        $ordemServico->load([
+            'veiculo.kmAtual',
+            'planoPreventivoVinculado.planoPreventivo',
+            'parceiro',
+            'sankhyaId',
+            'itens.servico',
+            'itens.creator',
+            'creator'
+        ]);
+
+        $data = [
+            'ordemServico' => $ordemServico,
+            'dataGeracao' => now()->format('d/m/Y H:i:s')
+        ];
+
+        $pdf = Pdf::loadView('pdf.ordem-servico-tailwind', $data);
+
+        return response()->streamDownload(
+            function () use ($pdf) {
+                echo $pdf->stream();
+            }, 'ordem-servico-tailwind-' . date('Y-m-d-H-i') . '.pdf');
+    }
+
+    /**
+     * Visualiza o PDF da Ordem de Serviço com Tailwind CSS no navegador
+     */
+    public function visualizarPdfOrdemServicoTailwind(OrdemServico $ordemServico)
+    {
+        // Carregar relacionamentos necessários
+        $ordemServico->load([
+            'veiculo.kmAtual',
+            'planoPreventivoVinculado.planoPreventivo',
+            'parceiro',
+            'sankhyaId',
+            'itens.servico',
+            'itens.creator',
+            'creator'
+        ]);
+
+        $data = [
+            'ordemServico' => $ordemServico,
+            'dataGeracao' => now()->format('d/m/Y H:i:s')
+        ];
+
+        // Para visualizar no navegador
+        return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.ordem-servico-tailwind', $data)
+            ->setPaper('A4', 'portrait')
+            ->stream('ordem-servico-tailwind-' . $ordemServico->id . '-' . date('Y-m-d-H-i') . '.pdf');
     }
 
     /**

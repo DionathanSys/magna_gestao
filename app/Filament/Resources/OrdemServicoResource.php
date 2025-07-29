@@ -248,6 +248,17 @@ class OrdemServicoResource extends Resource
                         ->color('info')
                         ->openUrlInNewTab()
                         ->url(fn(OrdemServico $record): string => route('ordem-servico.pdf', $record)),
+                    Tables\Actions\Action::make('pdf_download_tailwind')
+                        ->label('Download PDF (Tailwind)')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('purple')
+                        ->action(fn(OrdemServico $record) => (new OrdemServicoPdfService)->gerarPdfOrdemServicoTailwind($record)),
+                    Tables\Actions\Action::make('pdf_view_tailwind')
+                        ->label('Visualizar PDF (Tailwind)')
+                        ->icon('heroicon-o-eye')
+                        ->color('indigo')
+                        ->openUrlInNewTab()
+                        ->url(fn(OrdemServico $record): string => route('ordem-servico.pdf.tailwind', $record)),
                     Tables\Actions\Action::make('encerrar')
                         ->label('Encerrar OS')
                         ->icon('heroicon-o-check-circle')

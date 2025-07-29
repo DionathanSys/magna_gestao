@@ -27,4 +27,20 @@ class OrdemServicoPdfController extends Controller
     {
         return $this->ordemServicoPdfService->gerarPdfOrdemServico($ordemServico);
     }
+
+    /**
+     * Visualiza o PDF da Ordem de Serviço com Tailwind CSS no navegador
+     */
+    public function visualizarTailwind(OrdemServico $ordemServico)
+    {
+        return $this->ordemServicoPdfService->visualizarPdfOrdemServicoTailwind($ordemServico);
+    }
+
+    /**
+     * Faz download do PDF da Ordem de Serviço com Tailwind CSS
+     */
+    public function downloadTailwind(OrdemServico $ordemServico)
+    {
+        return $this->ordemServicoPdfService->gerarPdfOrdemServicoTailwind($ordemServico);
+    }
 }
