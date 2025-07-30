@@ -146,6 +146,7 @@ class AgendamentoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
