@@ -110,7 +110,7 @@
         }
 
         .table-container {
-            margin-bottom: 12px;
+            margin-bottom: 7px;
         }
 
         table {
@@ -311,38 +311,6 @@
         @endif
     </div>
 
-    {{-- @if($ordemServico->agendamentos && $ordemServico->agendamentos->count() > 0)
-    <div class="section">
-        <div class="section-title">Agendamentos</div>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 20%;">Data/Hora</th>
-                        <th style="width: 60%;">Descrição</th>
-                        <th style="width: 20%;">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($ordemServico->agendamentos as $agendamento)
-                    <tr>
-                        <td style="text-align: center;">
-                            {{ date('d/m/Y H:i', strtotime($agendamento->data_agendamento)) }}
-                        </td>
-                        <td>{{ e($agendamento->descricao ?? 'Sem descrição') }}</td>
-                        <td style="text-align: center;">
-                            <span class="status-badge status-{{ str_replace(' ', '-', strtolower($agendamento->status)) }}">
-                                {{ $agendamento->status }}
-                            </span>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-    @endif --}}
-
     @if($ordemServico->planoPreventivoVinculado && $ordemServico->planoPreventivoVinculado->count() > 0)
     <div class="section">
         <div class="section-title">Planos Preventivos Vinculados</div>
@@ -376,14 +344,6 @@
         </div>
     </div>
     @endif
-
-    <div class="observacoes">
-        <h4>Informações Adicionais</h4>
-        <p><strong>Data de Criação:</strong> {{ date('d/m/Y H:i:s', strtotime($ordemServico->created_at)) }}</p>
-        @if($ordemServico->updated_at != $ordemServico->created_at)
-        <p><strong>Última Atualização:</strong> {{ date('d/m/Y H:i:s', strtotime($ordemServico->updated_at)) }}</p>
-        @endif
-    </div>
 
     <div class="footer">
         <p>Sistema de Gestão de Frota - Ordem de Serviço #{{ $ordemServico->id }} - Gerado automaticamente em {{ date('d/m/Y H:i:s') }}</p>
