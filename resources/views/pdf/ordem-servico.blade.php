@@ -110,7 +110,7 @@
         }
 
         .table-container {
-            margin-bottom: 7px;
+            margin-bottom: 12px;
         }
 
         table {
@@ -121,7 +121,7 @@
 
         th, td {
             border: 1px solid #dee2e6;
-            padding: 8px;
+            padding: 4px;
             text-align: left;
             vertical-align: top;
         }
@@ -134,7 +134,7 @@
 
         .status-badge {
             display: inline-block;
-            padding: 3px 8px;
+            padding: 2px 6px;
             border-radius: 12px;
             font-size: 7px;
             font-weight: bold;
