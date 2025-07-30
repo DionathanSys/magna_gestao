@@ -41,8 +41,7 @@ class AgendamentoResource extends Resource
                 'xl' => 8,
             ])
             ->schema([
-                Forms\Components\Section::make('Informações Básicas')
-
+                Forms\Components\Fieldset::make('Informações Básicas')
                     ->columns([
                         'sm' => 1,
                         'md' => 2,
@@ -70,9 +69,8 @@ class AgendamentoResource extends Resource
                             ->default(StatusOrdemServicoEnum::PENDENTE->value)
                             ->selectablePlaceholder(false)
                             ->disableOptionWhen(fn(string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
-                    ])
-                    ->compact(),
-                Forms\Components\Section::make('Datas')
+                    ]),
+                Forms\Components\Fieldset::make('Datas')
                     ->columns([
                         'sm' => 1,
                         'md' => 3,
@@ -81,7 +79,6 @@ class AgendamentoResource extends Resource
                     ->schema([
                         Forms\Components\DatePicker::make('data_agendamento')
                             ->label('Agendado Para')
-                            ->minDate(now()->format('Y-m-d'))
                             ->columnSpan([
                                 'sm' => 1,
                                 'md' => 1,
@@ -89,7 +86,6 @@ class AgendamentoResource extends Resource
                             ]),
                         Forms\Components\DatePicker::make('data_limite')
                             ->label('Dt. Limite')
-                            ->minDate(now())
                             ->columnSpan([
                                 'sm' => 1,
                                 'md' => 1,
@@ -97,14 +93,14 @@ class AgendamentoResource extends Resource
                             ]),
                         Forms\Components\DatePicker::make('data_realizado')
                             ->label('Realizado em')
-                            ->minDate(now()->format('Y-m-d'))
+                            ->maxDate(now()->format('Y-m-d'))
                             ->columnSpan([
                                 'sm' => 1,
                                 'md' => 1,
                                 'xl' => 2,
                             ]),
                     ]),
-                Forms\Components\Section::make('Serviço')
+                Forms\Components\Fieldset::make('Serviço')
                     ->columns([
                         'sm' => 1,
                         'md' => 3,
@@ -115,8 +111,8 @@ class AgendamentoResource extends Resource
                             ->columnStart(1)
                             ->columnSpan([
                                 'sm' => 1,
-                                'md' => 2,
-                                'xl' => 3,
+                                'md' => 3,
+                                'xl' => 8,
                             ]),
                         ItemOrdemServicoResource::getControlaPosicaoFormField()
                             ->columnSpan([
@@ -148,38 +144,51 @@ class AgendamentoResource extends Resource
                 $query->with(['veiculo', 'ordemServico', 'servico', 'parceiro', 'creator', 'updater']);
             })
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
-                    ->sortable(),
+                    ->width('1%')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
                     ->label('OS ID')
+                    ->width('1%')
                     ->numeric()
                     ->sortable()
-                    ->url(fn (Agendamento $record): string => OrdemServicoResource::getUrl('edit', ['record' => $record->ordem_servico_id ?? 0]))
+                    ->url(fn(Agendamento $record): string => OrdemServicoResource::getUrl('edit', ['record' => $record->ordem_servico_id ?? 0]))
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('data_agendamento')
                     ->label('Agendado Para')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_limite')
                     ->label('Dt. Limite')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->sortable()
                     ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('data_realizado')
                     ->label('Finalizado Em')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->placeholder('Não definido')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('observacao')
-                    ->label('Observação'),
+                    ->label('Observação')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->label('Fornecedor')
+                    ->width('1%')
                     ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Criado por')
