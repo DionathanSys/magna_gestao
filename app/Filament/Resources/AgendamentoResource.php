@@ -71,7 +71,7 @@ class AgendamentoResource extends Resource
                             ->selectablePlaceholder(false)
                             ->disableOptionWhen(fn(string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
                     ]),
-                Forms\Components\Fieldset::make('Datas')
+                Forms\Components\Section::make('Datas')
                     ->columns([
                         'sm' => 1,
                         'md' => 3,
@@ -103,7 +103,7 @@ class AgendamentoResource extends Resource
                                 'xl' => 2,
                             ]),
                     ]),
-                Forms\Components\Fieldset::make('Serviço')
+                Forms\Components\Section::make('Serviço')
                     ->columns([
                         'sm' => 1,
                         'md' => 3,
