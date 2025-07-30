@@ -42,7 +42,7 @@ class AgendamentoResource extends Resource
             ])
             ->schema([
                 Forms\Components\Section::make('Informações Básicas')
-                    ->compact()
+
                     ->columns([
                         'sm' => 1,
                         'md' => 2,
@@ -70,7 +70,8 @@ class AgendamentoResource extends Resource
                             ->default(StatusOrdemServicoEnum::PENDENTE->value)
                             ->selectablePlaceholder(false)
                             ->disableOptionWhen(fn(string $value): bool => in_array($value, [StatusOrdemServicoEnum::VALIDAR->value, StatusOrdemServicoEnum::ADIADO->value])),
-                    ]),
+                    ])
+                    ->compact(),
                 Forms\Components\Section::make('Datas')
                     ->columns([
                         'sm' => 1,
