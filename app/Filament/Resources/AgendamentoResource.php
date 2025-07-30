@@ -326,9 +326,10 @@ class AgendamentoResource extends Resource
                         });
                     })
                     ->deselectRecordsAfterCompletion(),
-            ])->checkIfRecordIsSelectableUsing(
-                fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null,
-            )
+            ])
+            // ->checkIfRecordIsSelectableUsing(
+            //     fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null,
+            // )
             ->poll('5s');
     }
 
