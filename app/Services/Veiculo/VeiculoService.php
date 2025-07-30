@@ -2,6 +2,8 @@
 
 namespace App\Services\Veiculo;
 
+use Illuminate\Support\Facades\Cache;
+
 class VeiculoService
 {
     public function getKmMedio(int $veiculoId): float
@@ -31,5 +33,18 @@ class VeiculoService
         }
 
         return $resultado;
+    }
+
+    public function getQuilometragemAtualByVeiculoId(int $veiculoId): int
+    {
+        return Cache::remember('km_atual_veiculo_id', 172800, function () use ($veiculoId) {
+             $veiculo = \App\Models\Veiculo::query()
+                ->select('id', 'placa')
+                ->findOrFail($veiculoId);
+
+            return $veiculo->kmAtual?->quilometragem ?? 0;
+
+        });
+
     }
 }

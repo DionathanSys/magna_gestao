@@ -3,23 +3,52 @@
 namespace App\Services\OrdemServico;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
+use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Models\Agendamento;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
 use App\Services\NotificacaoService as notify;
+use App\Services\Veiculo\VeiculoService;
 use Illuminate\Support\Facades\Auth;
+
+use function PHPUnit\Framework\isEmpty;
 
 class OrdemServicoService
 {
     protected AgendamentoService $agendamentoService;
+    protected VeiculoService $veiculoService;
 
     public function __construct()
     {
         $this->agendamentoService = new AgendamentoService();
+        $this->veiculoService = new VeiculoService();
+
+    }
+
+    public function firstOrCreate($data): ?OrdemServico
+    {
+        return OrdemServico::query()->firstOrCreate(
+            [
+                'veiculo_id'    => $data['veiculo_id'],
+                'parceiro_id'   => $data['parceiro_id'],
+                'status'        => StatusOrdemServicoEnum::PENDENTE,
+            ],
+            $data
+        );
+    
     }
 
     public static function create(array $data): ?OrdemServico
     {
+        //TODO: incluir validação de dados
+
+        $data['status']             = $data['status'] ?? StatusOrdemServicoEnum::PENDENTE;
+        $data['status_sankhya']     = $data['status_sankhya'] ?? StatusOrdemServicoEnum::PENDENTE;
+        $data['created_by']         = $data['created_by'] ?? Auth::user()->id;
+        $data['quilometragem']      = $data['quilometragem'] ?? (new self)->veiculoService->getQuilometragemAtualByVeiculoId($data['veiculo_id']);
+        $data['data_inicio']        = $data['data_inicio'] ?? now();
+        $data['tipo_manutencao']    = $data['tipo_manutencao'] ?? TipoManutencaoEnum::CORRETIVA;
+
         return OrdemServico::create($data);
     }
 

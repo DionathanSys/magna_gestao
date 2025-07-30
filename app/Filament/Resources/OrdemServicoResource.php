@@ -155,6 +155,7 @@ class OrdemServicoResource extends Resource
                     ->label('Veículo'),
                 Tables\Columns\TextColumn::make('quilometragem')
                     ->label('Quilometragem')
+                    ->numeric(0, ',', '.')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('tipo_manutencao')
                     ->label('Tipo Manutenção'),

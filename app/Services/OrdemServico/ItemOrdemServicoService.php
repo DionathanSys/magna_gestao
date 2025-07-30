@@ -7,7 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoOrdemServico;
-// use App\Services\NotificacaoService as notify;
+use App\Services\NotificacaoService as notify;
 
 class ItemOrdemServicoService
 {
