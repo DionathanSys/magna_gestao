@@ -14,7 +14,7 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 12px;
+            font-size: 8px;
             line-height: 1.4;
             color: #333;
         }
@@ -28,13 +28,13 @@
 
         .header h1 {
             color: #0066cc;
-            font-size: 20px;
+            font-size: 10;
             margin-bottom: 5px;
         }
 
         .header p {
             color: #666;
-            font-size: 11px;
+            font-size: 9px;
         }
 
         .info-section {
@@ -67,7 +67,7 @@
         }
 
         .info-item {
-            font-size: 11px;
+            font-size: 9px;
             margin-bottom: 4px;
             flex: 1;
         }
@@ -86,7 +86,7 @@
             background-color: #464c52ff;
             color: white;
             padding: 8px 12px;
-            font-size: 14px;
+            font-size: 10px;
             font-weight: bold;
             margin-bottom: 15px;
         }
@@ -97,26 +97,26 @@
         }
 
         .veiculo-item .label {
-            font-size: 10px;
+            font-size: 8px;
             color: #666;
             text-transform: uppercase;
             margin-bottom: 3px;
         }
 
         .veiculo-item .value {
-            font-size: 14px;
+            font-size: 8px;
             font-weight: bold;
             color: #464c52ff;
         }
 
         .table-container {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 8px;
         }
 
         th, td {
@@ -136,7 +136,7 @@
             display: inline-block;
             padding: 3px 8px;
             border-radius: 12px;
-            font-size: 9px;
+            font-size: 7px;
             font-weight: bold;
             text-transform: uppercase;
             text-align: center;
@@ -167,13 +167,13 @@
             padding: 12px;
             border-left: 4px solid #17a2b8;
             margin-top: 15px;
-            font-size: 11px;
+            font-size: 8px;
         }
 
         .observacoes h4 {
             color: #17a2b8;
             margin-bottom: 8px;
-            font-size: 12px;
+            font-size: 9px;
         }
 
         .footer {
@@ -182,7 +182,7 @@
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 10px;
+            font-size: 8px;
             color: #666;
             border-top: 1px solid #ddd;
             padding-top: 10px;
@@ -206,12 +206,12 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 5px;
-            font-size: 11px;
+            font-size: 9px;
         }
 
         .totais-item.total {
             font-weight: bold;
-            font-size: 12px;
+            font-size: 10px;
             border-top: 1px solid #93b5d8ff;
             padding-top: 5px;
             margin-top: 8px;

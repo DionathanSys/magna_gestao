@@ -157,6 +157,7 @@ class AgendamentoResource extends Resource
                     ->width('1%')
                     ->numeric()
                     ->sortable()
+                    ->placeholder('Sem Vínculo')
                     ->url(fn(Models\Agendamento $record): string => OrdemServicoResource::getUrl('edit', ['record' => $record->ordem_servico_id ?? 0]))
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('data_agendamento')

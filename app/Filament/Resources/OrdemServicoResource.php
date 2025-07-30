@@ -148,37 +148,49 @@ class OrdemServicoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('sankhyaId.ordem_sankhya_id')
-                    ->label('OS Sankhya'),
+                    ->label('OS Sankhya')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('veiculo.placa')
-                    ->label('Veículo'),
+                    ->label('Veículo')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('quilometragem')
                     ->label('Quilometragem')
+                    ->width('1%')
                     ->numeric(0, ',', '.')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('tipo_manutencao')
-                    ->label('Tipo Manutenção'),
+                    ->label('Tipo Manutenção')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('data_inicio')
                     ->label('Dt. Inicio')
+                    ->width('1%')
                     ->date('d/m/Y'),
                 Tables\Columns\TextColumn::make('data_fim')
                     ->label('Dt. Fim')
+                    ->width('1%')
                     ->date('d/m/Y')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('itens_count')->counts('itens')
-                    ->label('Qtd. Serviços'),
+                    ->label('Qtd. Serviços')
+                    ->width('1%'),
                 Tables\Columns\TextColumn::make('pendentes_count')->counts('pendentes')
                     ->label('Pendencias')
+                    ->width('1%')
                     ->color(fn($state): string => $state == 0 ? 'gray' : 'info')
                     ->badge(fn($state): bool => $state > 0),
                 Tables\Columns\TextColumn::make('status')
+                    ->width('1%')
                     ->badge('success'),
                 Tables\Columns\SelectColumn::make('status_sankhya')
                     ->label('Sankhya')
+                    ->width('1%')
                     ->options(StatusOrdemServicoEnum::toSelectArray()),
                 Tables\Columns\TextColumn::make('parceiro.nome')
                     ->label('Fornecedor')
+                    ->width('1%')
                     ->placeholder('N/A')
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
@@ -243,23 +255,6 @@ class OrdemServicoResource extends Resource
                         ->icon('heroicon-o-arrow-down-tray')
                         ->color('success')
                         ->action(fn(OrdemServico $record) => (new OrdemServicoPdfService)->gerarPdfOrdemServico($record)),
-                    Tables\Actions\Action::make('pdf_view')
-                        ->label('Visualizar PDF')
-                        ->icon('heroicon-o-eye')
-                        ->color('info')
-                        ->openUrlInNewTab()
-                        ->url(fn(OrdemServico $record): string => route('ordem-servico.pdf', $record)),
-                    Tables\Actions\Action::make('pdf_download_tailwind')
-                        ->label('Download PDF (Tailwind)')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->color('purple')
-                        ->action(fn(OrdemServico $record) => (new OrdemServicoPdfService)->gerarPdfOrdemServicoTailwind($record)),
-                    Tables\Actions\Action::make('pdf_view_tailwind')
-                        ->label('Visualizar PDF (Tailwind)')
-                        ->icon('heroicon-o-eye')
-                        ->color('indigo')
-                        ->openUrlInNewTab()
-                        ->url(fn(OrdemServico $record): string => route('ordem-servico.pdf.tailwind', $record)),
                     Tables\Actions\Action::make('encerrar')
                         ->label('Encerrar OS')
                         ->icon('heroicon-o-check-circle')
@@ -329,8 +324,8 @@ class OrdemServicoResource extends Resource
                     ->iconButton()
                     ->tooltip('Adicionar Item')
                     ->extraModalFooterActions(fn(\Filament\Tables\Actions\Action $action): array => [
-                            $action->makeModalSubmitAction('adicionarOutro', arguments: ['another' => true]),
-                        ])
+                        $action->makeModalSubmitAction('adicionarOutro', arguments: ['another' => true]),
+                    ])
                     ->form(fn(Forms\Form $form) => $form
                         ->columns([
                             'sm' => 1,
@@ -372,14 +367,14 @@ class OrdemServicoResource extends Resource
                         $data['created_by'] = Auth::user()->id;
                         return $data;
                     })
-                    ->action(function(Tables\Actions\Action $action, Form $form, array $data, array $arguments) {
+                    ->action(function (Tables\Actions\Action $action, Form $form, array $data, array $arguments) {
 
                         ItemOrdemServicoService::create($data);
 
                         if ($arguments['another'] ?? false) {
-                                $form->fill();
-                                $action->halt();
-                            }
+                            $form->fill();
+                            $action->halt();
+                        }
 
                         return;
                     }),

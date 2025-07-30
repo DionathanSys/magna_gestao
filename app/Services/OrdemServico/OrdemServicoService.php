@@ -15,12 +15,10 @@ use function PHPUnit\Framework\isEmpty;
 
 class OrdemServicoService
 {
-    protected AgendamentoService $agendamentoService;
     protected VeiculoService $veiculoService;
 
     public function __construct()
     {
-        $this->agendamentoService = new AgendamentoService();
         $this->veiculoService = new VeiculoService();
 
     }
@@ -35,7 +33,7 @@ class OrdemServicoService
             ],
             $data
         );
-    
+
     }
 
     public static function create(array $data): ?OrdemServico
@@ -54,6 +52,8 @@ class OrdemServicoService
 
     public function encerrarOrdemServico(OrdemServico $ordemServico): void
     {
+        //TODO: Usar eventos para encerrar agendamentos relacionados
+        
         if ($ordemServico->status == StatusOrdemServicoEnum::CONCLUIDO) {
             notify::error('Ordem de Serviço já está encerrada.');
             return;

@@ -20,6 +20,15 @@ class AgendamentoService
         $this->itemOrdemServicoService = new ItemOrdemServicoService();
     }
 
+    public function create(array $data): Models\Agendamento
+    {
+        //TODO: implementar vinculo com plano preventivo
+        $data['created_by'] = Auth::user()->id;
+        $data['updated_by'] = Auth::user()->id;
+
+        return Models\Agendamento::create($data);
+    }
+
     public function incluirEmOrdemServico()
     {
         $ordemServico = $this->ordemServicoService->firstOrCreate([

@@ -7,6 +7,7 @@ use App\Models\OrdemServico;
 use App\Models\PlanoManutencaoVeiculo;
 use App\Models\Veiculo;
 use App\Services\OrdemServico\ManutencaoPreventivaService;
+use App\Services\OrdemServico\OrdemServicoPdfService;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Actions;
 use Filament\Facades\Filament;
@@ -21,10 +22,8 @@ class EditOrdemServico extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                // ->successNotification(null)
                 ->visible(fn() => Auth::user()->is_admin),
             Actions\Action::make('encerrar')
-                // ->successNotification(null)
                 ->label('Encerrar OS')
                 ->action(function (OrdemServico $record) {
                     (new OrdemServicoService)->encerrarOrdemServico($record);
@@ -37,7 +36,6 @@ class EditOrdemServico extends EditRecord
                     'data_fim',
                 ])),
             Actions\Action::make('manutencao-preventiva')
-                // ->successNotification(null)
                 ->label('Manutenção Preventiva')
                 ->form(fn(\Filament\Forms\Form $form) => $form
                     ->schema([
@@ -56,7 +54,12 @@ class EditOrdemServico extends EditRecord
                     ManutencaoPreventivaService::associarPlanoPreventivo($record, $data['plano_preventivo_id']);
                 })
                 ->color('primary')
-                ->icon('heroicon-o-wrench')
+                ->icon('heroicon-o-wrench'),
+            Actions\Action::make('pdf_download')
+                ->label('Download PDF')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
+                ->action(fn(OrdemServico $record) => (new OrdemServicoPdfService)->gerarPdfOrdemServico($record)),
         ];
     }
 }
