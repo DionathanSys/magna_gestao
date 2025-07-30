@@ -32,6 +32,10 @@ class ListAgendamentos extends ListRecords
     {
         return [
             'todos' => Tab::make(),
+            'Em Execução' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', StatusOrdemServicoEnum::EXECUCAO))
+                ->badge(Agendamento::query()->where('status', StatusOrdemServicoEnum::EXECUCAO)->count())
+                ->badgeColor('info'),
             'Sem Data' => Tab::make()
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', null))
                 ->badge(Agendamento::query()->where('data_agendamento', null)->count())
