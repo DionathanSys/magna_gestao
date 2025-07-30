@@ -5,10 +5,8 @@ namespace App\Filament\Resources;
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Filament\Resources\AgendamentoResource\Pages;
 use App\Filament\Resources\AgendamentoResource\RelationManagers;
-use App\Models\Agendamento;
-use App\Models\OrdemServico;
+use App\Models;
 use App\Services\Agendamento\AgendamentoService;
-use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AgendamentoResource extends Resource
 {
-    protected static ?string $model = Agendamento::class;
+    protected static ?string $model = Models\Agendamento::class;
 
     protected static ?string $navigationGroup = 'Manutenção';
 
@@ -159,7 +157,7 @@ class AgendamentoResource extends Resource
                     ->width('1%')
                     ->numeric()
                     ->sortable()
-                    ->url(fn(Agendamento $record): string => OrdemServicoResource::getUrl('edit', ['record' => $record->ordem_servico_id ?? 0]))
+                    ->url(fn(Models\Agendamento $record): string => OrdemServicoResource::getUrl('edit', ['record' => $record->ordem_servico_id ?? 0]))
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('data_agendamento')
                     ->label('Agendado Para')
@@ -294,7 +292,7 @@ class AgendamentoResource extends Resource
                         ->icon('heroicon-o-x-circle')
                         ->requiresConfirmation()
                         ->action(function (Collection $records) {
-                           $records->each(function(Agendamento $record) {
+                           $records->each(function(Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
                                 (new AgendamentoService($record))->cancelar();
                             }
@@ -307,19 +305,19 @@ class AgendamentoResource extends Resource
                     ->icon('heroicon-o-clipboard-document-list')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
-                        $records->each(function(Agendamento $record) {
+                        $records->each(function(Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
                                 (new AgendamentoService($record))->incluirEmOrdemServico();
                             }
                         });
                     })
                     ->deselectRecordsAfterCompletion(),
-                Tables\Actions\BulkAction::make('encerrar-ordem-servico')
-                    ->label('Encerrar agendamento')
+                Tables\Actions\BulkAction::make('encerrar')
+                    ->label('Encerrar')
                     ->icon('heroicon-o-clipboard-document-check')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
-                        $records->each(function(Agendamento $record) {
+                        $records->each(function(Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::EXECUCAO) {
                                 (new AgendamentoService($record))->encerrar();
                             }

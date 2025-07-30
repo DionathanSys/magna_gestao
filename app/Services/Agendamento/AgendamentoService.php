@@ -72,7 +72,7 @@ class AgendamentoService
 
     public function update(array $data): void
     {
-        $this->agendamento->query()
+        $this->agendamento
             ->update($data);
     }
 }
