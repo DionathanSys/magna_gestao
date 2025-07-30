@@ -41,7 +41,7 @@ class AgendamentoResource extends Resource
                 'xl' => 8,
             ])
             ->schema([
-                Forms\Components\Fieldset::make('Informações Básicas')
+                Forms\Components\Section::make('Informações Básicas')
                     ->compact()
                     ->columns([
                         'sm' => 1,
