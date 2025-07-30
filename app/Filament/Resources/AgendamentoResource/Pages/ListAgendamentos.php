@@ -19,7 +19,7 @@ class ListAgendamentos extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                // ->successNotification(null)
+                ->label('Novo')
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['created_by'] = Auth::user()->id;
                     $data['updated_by'] = Auth::user()->id;

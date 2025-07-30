@@ -7,7 +7,7 @@ use App\Filament\Resources\AgendamentoResource\Pages;
 use App\Filament\Resources\AgendamentoResource\RelationManagers;
 use App\Models\Agendamento;
 use App\Models\OrdemServico;
-use App\Services\OrdemServico\AgendamentoService;
+use App\Services\Agendamento\AgendamentoService;
 use App\Services\OrdemServico\OrdemServicoService;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -147,7 +147,8 @@ class AgendamentoResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->width('1%')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
                     ->width('1%')
@@ -164,7 +165,8 @@ class AgendamentoResource extends Resource
                     ->label('Agendado Para')
                     ->width('1%')
                     ->date('d/m/Y')
-                    ->sortable(),
+                    ->sortable()
+                    ->placeholder('Não definido'),
                 Tables\Columns\TextColumn::make('data_limite')
                     ->label('Dt. Limite')
                     ->width('1%')
@@ -176,7 +178,7 @@ class AgendamentoResource extends Resource
                     ->width('1%')
                     ->date('d/m/Y')
                     ->placeholder('Não definido')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
                     ->width('1%')
@@ -270,6 +272,7 @@ class AgendamentoResource extends Resource
                     ->label('Placa')
                     ->collapsible()
             ])
+            ->groupingSettingsHidden()
             ->defaultGroup('veiculo.placa')
             ->defaultSort('data_agendamento', 'asc')
             ->actions([
@@ -281,21 +284,50 @@ class AgendamentoResource extends Resource
                     }),
 
             ])
+            ->headerActions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('gerar-ordem-servico')
-                        ->label('Gerar OS')
-                        ->icon('heroicon-o-forward')
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn() => Auth::user()->is_admin),
+                    Tables\Actions\BulkAction::make('cancelar')
+                        ->label('Cancelar')
+                        ->icon('heroicon-o-x-circle')
                         ->requiresConfirmation()
-                        ->action(function ($records) {
-                            (new AgendamentoService())
-                                ->incluirAgendamentosEmOrdemServico($records);
+                        ->action(function (Collection $records) {
+                           $records->each(function(Agendamento $record) {
+                            if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
+                                (new AgendamentoService($record))->cancelar();
+                            }
+                        });
                         })
                         ->deselectRecordsAfterCompletion(),
                 ]),
+                Tables\Actions\BulkAction::make('gerar-ordem-servico')
+                    ->label('Gerar OS')
+                    ->icon('heroicon-o-clipboard-document-list')
+                    ->requiresConfirmation()
+                    ->action(function (Collection $records) {
+                        $records->each(function(Agendamento $record) {
+                            if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
+                                (new AgendamentoService($record))->incluirEmOrdemServico();
+                            }
+                        });
+                    })
+                    ->deselectRecordsAfterCompletion(),
+                Tables\Actions\BulkAction::make('encerrar-ordem-servico')
+                    ->label('Encerrar agendamento')
+                    ->icon('heroicon-o-clipboard-document-check')
+                    ->requiresConfirmation()
+                    ->action(function (Collection $records) {
+                        $records->each(function(Agendamento $record) {
+                            if ($record->status == StatusOrdemServicoEnum::EXECUCAO) {
+                                (new AgendamentoService($record))->encerrar();
+                            }
+                        });
+                    })
+                    ->deselectRecordsAfterCompletion(),
             ])->checkIfRecordIsSelectableUsing(
-                fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE,
+                fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null,
             )
             ->poll('5s');
     }

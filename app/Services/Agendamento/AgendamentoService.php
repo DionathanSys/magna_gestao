@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models;
 use App\Services\ItemOrdemServico\ItemOrdemServicoService;
 use App\Services\OrdemServico\OrdemServicoService;
+use App\Services\NotificacaoService as notify;
 use Illuminate\Support\Facades\Auth;
 
 class AgendamentoService
@@ -41,16 +42,35 @@ class AgendamentoService
         ]);
 
         //TODO: Implementar verificação de plano preventivo
-        
+
+        notify::success('Agendamento incluído em Ordem de Serviço com sucesso.');
+
         return true;
     }
 
-    public function cancelar(int $agendamentoId)
+    public function cancelar(): void
     {
-        return true;
+        $this->update([
+            'data_agendamento' => null,
+            'status'        => StatusOrdemServicoEnum::CANCELADO,
+            'updated_by'    => Auth::user()->id,
+        ]);
+
+        notify::success('Agendamento cancelado com sucesso.');
     }
 
-    public function update(array $data)
+    public function encerrar(): void
+    {
+        $this->update([
+            'data_realizado' => now(),
+            'status'        => StatusOrdemServicoEnum::CONCLUIDO,
+            'updated_by'    => Auth::user()->id,
+        ]);
+
+        notify::success('Agendamento encerrado com sucesso.');
+    }
+
+    public function update(array $data): void
     {
         $this->agendamento->query()
             ->update($data);
