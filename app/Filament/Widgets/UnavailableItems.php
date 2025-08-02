@@ -133,7 +133,7 @@ class UnavailableItems extends BaseWidget
         if ($this->queryCount === 0) {
             return new HtmlString(<<<HTML
             <div class="text-gray-500">
-                Todos os veículos estão disponíveis.
+                Nenhum plano preventivo abaixo de 3.000 KM encontrado.
             </div>
             HTML
             );
@@ -141,7 +141,7 @@ class UnavailableItems extends BaseWidget
 
         return new HtmlString(<<<HTML
         <div class="text-base tracking-[0.07rem] uppercase font-normal text-red-700 dark:text-red-400">
-            Veículos Indisponíveis ({$this->queryCount})
+            Planos Preventivos com vencimento <= 3000 KM ({$this->queryCount})
         </div>
         HTML
         );
