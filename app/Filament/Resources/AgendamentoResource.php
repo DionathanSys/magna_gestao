@@ -136,7 +136,7 @@ class AgendamentoResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->with(['veiculo', 'ordemServico', 'servico', 'parceiro', 'creator', 'updater']);
+                $query->with(['veiculo', 'ordemServico', 'servico', 'planoPreventivo', 'parceiro', 'creator', 'updater']);
             })
             ->columns([
                 Tables\Columns\TextColumn::make('id')
@@ -150,7 +150,7 @@ class AgendamentoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ordem_servico_id')
-                    ->label('OS ID')
+                    ->label('Ordem de Serviço')
                     ->width('1%')
                     ->numeric()
                     ->sortable()
@@ -177,6 +177,11 @@ class AgendamentoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
+                    ->width('1%')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('planoPreventivo.descricao')
+                    ->label('Plano Preventivo')
+                    ->placeholder('Não definido')
                     ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
