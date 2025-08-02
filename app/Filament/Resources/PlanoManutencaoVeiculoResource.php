@@ -108,7 +108,11 @@ class PlanoManutencaoVeiculoResource extends Resource
             ->defaultGroup('veiculo.placa')
             ->defaultSort('planoPreventivo.descricao', 'asc')
             ->filters([
-
+                // Tables\Filters\QueryBuilder::make()
+                //      ->constraints([
+                //         Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('quilometragem_restante')
+                //             ->label('Quilometragem Restante'),
+                //      ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
