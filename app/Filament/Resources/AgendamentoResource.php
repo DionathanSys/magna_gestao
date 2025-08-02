@@ -3,9 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
+use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Filament\Resources\AgendamentoResource\Pages;
 use App\Filament\Resources\AgendamentoResource\RelationManagers;
 use App\Models;
+use App\Models\PlanoPreventivo;
 use App\Services\Agendamento\AgendamentoService;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -105,13 +107,7 @@ class AgendamentoResource extends Resource
                         'xl' => 8,
                     ])
                     ->schema([
-                        ItemOrdemServicoResource::getServicoIdFormField()
-                            ->columnStart(1)
-                            ->columnSpan([
-                                'sm' => 1,
-                                'md' => 3,
-                                'xl' => 8,
-                            ]),
+                        static::getServicoIdFormField(),
                         ItemOrdemServicoResource::getControlaPosicaoFormField()
                             ->columnSpan([
                                 'sm' => 1,
@@ -124,6 +120,7 @@ class AgendamentoResource extends Resource
                                 'md' => 2,
                                 'xl' => 2,
                             ]),
+                        static::getPlanoPreventivoIdFormField(),
                         Forms\Components\Textarea::make('observacao')
                             ->label('Observação')
                             ->columnSpanFull()
@@ -293,11 +290,11 @@ class AgendamentoResource extends Resource
                         ->icon('heroicon-o-x-circle')
                         ->requiresConfirmation()
                         ->action(function (Collection $records) {
-                           $records->each(function(Models\Agendamento $record) {
-                            if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
-                                (new AgendamentoService($record))->cancelar();
-                            }
-                        });
+                            $records->each(function (Models\Agendamento $record) {
+                                if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
+                                    (new AgendamentoService($record))->cancelar();
+                                }
+                            });
                         })
                         ->deselectRecordsAfterCompletion(),
                 ]),
@@ -306,7 +303,7 @@ class AgendamentoResource extends Resource
                     ->icon('heroicon-o-clipboard-document-list')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
-                        $records->each(function(Models\Agendamento $record) {
+                        $records->each(function (Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
                                 (new AgendamentoService($record))->incluirEmOrdemServico();
                             }
@@ -318,7 +315,7 @@ class AgendamentoResource extends Resource
                     ->icon('heroicon-o-clipboard-document-check')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
-                        $records->each(function(Models\Agendamento $record) {
+                        $records->each(function (Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::EXECUCAO) {
                                 (new AgendamentoService($record))->encerrar();
                             }
@@ -344,5 +341,75 @@ class AgendamentoResource extends Resource
         return [
             'index' => Pages\ListAgendamentos::route('/'),
         ];
+    }
+
+    // ------------------------
+    // # Campos Formulário
+    // ------------------------
+
+    public static function getServicoIdFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('servico_id')
+            ->label('Serviço')
+            ->required()
+            ->relationship('servico', 'descricao')
+            // ->relationship('servico', 'descricao', fn(Builder $query) => $query->where('tipo', '!=', TipoManutencaoEnum::PREVENTIVA->value))
+            ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
+            ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
+            ->searchable()
+            ->preload()
+            ->live()
+            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                if ($state) {
+                    $servico = \App\Models\Servico::find($state);
+                    $set('controla_posicao', $servico?->controla_posicao ? true : false);
+                } else {
+                    $set('controla_posicao', false);
+                }
+            })
+            ->columnStart(1)
+            ->columnSpan([
+                'sm' => 1,
+                'md' => 3,
+                'xl' => 8,
+            ]);
+    }
+
+    public static function getPlanoPreventivoIdFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('plano_preventivo_id')
+            ->label('Plano Preventivo')
+            ->options(function (Forms\Get $get) {
+                // if (!$get('veiculo_id')) {
+                    return PlanoPreventivo::query()
+                        ->join('planos_manutencao_veiculo', 'planos_manutencao_veiculo.plano_preventivo_id', '=', 'planos_preventivo.id')
+                        ->where('planos_manutencao_veiculo.veiculo_id', $get('veiculo_id'))
+                        ->where('planos_preventivo.is_active', true)
+                        ->orderBy('planos_preventivo.descricao')
+                        ->pluck('planos_preventivo.descricao', 'planos_preventivo.id');
+                // }
+            })
+            ->preload()
+            ->live()
+            ->columnStart(1)
+            ->columnSpan([
+                'sm' => 1,
+                'md' => 3,
+                'xl' => 8,
+            ]);
+    }
+
+    public static function getVeiculoIdFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('veiculo_id')
+            ->label('Veículo')
+            ->searchPrompt('Buscar Placa')
+            ->placeholder('Buscar ...')
+            ->columnSpan(2)
+            ->required()
+            ->relationship('veiculo', 'placa')
+            ->searchable()
+            ->preload()
+            ->live(onBlur: true);
     }
 }

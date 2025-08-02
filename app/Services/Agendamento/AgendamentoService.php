@@ -16,8 +16,8 @@ class AgendamentoService
 
     public function __construct(protected Models\Agendamento $agendamento)
     {
-        $this->ordemServicoService = new OrdemServicoService();
-        $this->itemOrdemServicoService = new ItemOrdemServicoService();
+        $this->ordemServicoService      = new OrdemServicoService();
+        $this->itemOrdemServicoService  = new ItemOrdemServicoService();
     }
 
     public function create(array $data): Models\Agendamento

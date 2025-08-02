@@ -85,7 +85,6 @@ class UnavailableItems extends BaseWidget
                 Tables\Columns\TextColumn::make('veiculo.km_medio')
                     ->label('KM Médio')
                     ->numeric(0, ',', '.')
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('planoPreventivo.descricao')
                     ->label('Plano')

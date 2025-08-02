@@ -30,6 +30,11 @@ class Agendamento extends Model
         return $this->belongsTo(Servico::class);
     }
 
+    public function planoPreventivo(): BelongsTo
+    {
+        return $this->belongsTo(PlanoPreventivo::class);
+    }
+
     public function parceiro(): BelongsTo
     {
         return $this->belongsTo(Parceiro::class);
