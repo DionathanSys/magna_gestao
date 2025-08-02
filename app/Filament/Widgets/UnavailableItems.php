@@ -141,7 +141,7 @@ class UnavailableItems extends BaseWidget
 
         return new HtmlString(<<<HTML
         <div class="text-base tracking-[0.07rem] uppercase font-normal text-red-700 dark:text-red-400">
-            Planos Preventivos com vencimento <= 3000 KM ({$this->queryCount})
+            Planos Preventivos com vencimento abaixo de 3.000 KM ({$this->queryCount})
         </div>
         HTML
         );
