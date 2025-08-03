@@ -6,7 +6,6 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models;
 use App\Services\ItemOrdemServico\ItemOrdemServicoService;
 use App\Services\OrdemServico\OrdemServicoService;
-use App\Services\NotificacaoService as notify;
 use App\Traits\ServiceResponseTrait;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,10 +29,8 @@ class AgendamentoService
             $agendamento = (new Actions\CriarAgendamento())->handle($data);
 
             // $this->setSuccess('Agendamento criado com sucesso!');
-            // $this->setError('Erro ao criar agendamento: ');
-            notify::alert(
-                'TESTE!',
-            );
+            $this->setError('Erro ao criar agendamento: ');
+
             return $agendamento;
 
         } catch (\Exception $e) {
