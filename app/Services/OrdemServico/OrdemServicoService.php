@@ -27,12 +27,12 @@ class OrdemServicoService
 
     }
 
-    public function firstOrCreate($data): ?OrdemServico
+    public function firstOrCreate($data): OrdemServico
     {
         Log::debug(__METHOD__. ' - ' . __LINE__, [
             'data' => $data,
         ]);
-        
+
         $ordemServico = OrdemServico::query()
             ->where('veiculo_id', $data['veiculo_id'])
             ->where('parceiro_id', $data['parceiro_id'] ?? null)

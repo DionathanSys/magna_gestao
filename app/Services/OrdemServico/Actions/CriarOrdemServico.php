@@ -58,8 +58,12 @@ class CriarOrdemServico
             'status_sankhya'    => 'required',
             'data_inicio'       => 'required|date',
             'created_by'        => 'required|exists:users,id',
-        ])->validate();
+        ]);
 
+        if ($validator->fails()) {
+            throw new \InvalidArgumentException($validator->errors()->first());
+        }
+        
         if ($this->exists($data)) {
             throw new \InvalidArgumentException('Ordem de serviço já existe para este veículo e parceiro.');
         }
