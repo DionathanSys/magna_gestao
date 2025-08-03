@@ -22,6 +22,7 @@ class ListAgendamentos extends ListRecords
             Actions\CreateAction::make()
                 ->label('Agendamento')
                 ->icon('heroicon-o-plus')
+                ->successNotificationTitle('User registered')
                 ->using(function (Actions\Action $action, array $data, string $model): Models\Agendamento {
                     $service = new AgendamentoService();
                     $agendamento = $service->create($data);
