@@ -29,7 +29,7 @@ class ListAgendamentos extends ListRecords
                     if ($service->hasError()) {
                         // ds('error no list agendamentos');
                         notify::error('Erro ao criar agendamento.', $service->getMessage());
-                        $action->cancel();
+                        $action->halt();
                     }
 
                     // ds($agendamento)->label('Agendamento criado com sucesso');
