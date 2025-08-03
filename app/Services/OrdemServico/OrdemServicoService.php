@@ -85,7 +85,7 @@ class OrdemServicoService
         }
     }
 
-
+    //TODO Implementar método para excluir ordem de serviço
     //************************************************* */
 
     public function encerrarOrdemServico(OrdemServico $ordemServico): void

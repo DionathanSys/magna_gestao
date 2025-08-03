@@ -44,6 +44,7 @@ class CriarOrdemServico
         return Models\OrdemServico::query()
             ->where('veiculo_id', $data['veiculo_id'])
             ->where('parceiro_id', $data['parceiro_id'] ?? null)
+            ->where('status', StatusOrdemServicoEnum::PENDENTE)
             ->exists();
     }
 
