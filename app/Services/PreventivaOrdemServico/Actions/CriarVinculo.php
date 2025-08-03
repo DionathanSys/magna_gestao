@@ -32,8 +32,8 @@ class CriarVinculo
 
         if ($ultimoRegistro) {
             Log::info(__METHOD__.'-'.__LINE__, [
-                'ultimo_registro_km' => $ultimoRegistro->km_execucao,
-                'km_execucao' => $data['km_execucao'],
+                'ultimo_registro' => $ultimoRegistro,
+                'data' => $data,
             ]);
             return $data['km_execucao'] < $ultimoRegistro->km_execucao ? false : true;
         }
