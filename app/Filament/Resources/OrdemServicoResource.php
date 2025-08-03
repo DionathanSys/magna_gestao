@@ -258,7 +258,15 @@ class OrdemServicoResource extends Resource
                     Tables\Actions\Action::make('encerrar')
                         ->label('Encerrar OS')
                         ->icon('heroicon-o-check-circle')
-                        ->action(fn(OrdemServico $record) => (new OrdemServicoService)->encerrarOrdemServico($record)),
+                        ->action(function(OrdemServico $record) {
+                            $service = new OrdemServicoService();
+                            $service->encerrarOrdemServico($record);
+                            if ($service->hasError()) {
+                                notify::error(mensagem: $service->getMessage());
+                                return;
+                            }
+                            notify::success(mensagem: 'Ordem de Serviço encerrada com sucesso!');
+                        }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('ordem_sankhya')
                         ->label('Add Ordem Sankhya')

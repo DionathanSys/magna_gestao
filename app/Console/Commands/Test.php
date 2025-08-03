@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ItemOrdemServico;
 use App\Services\Agendamento\AgendamentoService;
 use App\Services\PlanoManutencao\PlanoManutencaoService;
 use App\Services\NotificacaoService as notify;
@@ -28,19 +29,13 @@ class Test extends Command
      */
     public function handle()
     {
-        $data = [
-            'veiculo_id' =>'r',
-            'servico_id' => 3,
-        ];
+        $item = ItemOrdemServico::query()
+            ->where('ordem_servico_id', 148)
+            ->with(['ordemServico', 'agendamento'])
+            ->get();
 
-        $agendamento = (new AgendamentoService())->create($data);
+            ds($item)->label('Item Ordem de Serviço');
+            ds($item->first()->agendamento)->label('Agendamento do Item Ordem de Serviço');
 
-        if ($agendamento->hasError()){
-            notify::error('Erro ao criar agendamento.', $agendamento->getMessage());
-            return;
-        }
-
-        notify::success('Agendamento criado com sucesso!');
-        return $agendamento;
     }
 }

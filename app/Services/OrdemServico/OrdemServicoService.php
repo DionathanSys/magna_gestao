@@ -85,33 +85,27 @@ class OrdemServicoService
         }
     }
 
+    public function encerrarOrdemServico(OrdemServico $ordemServico): void
+    {
+        try {
+            $action = new Actions\EncerrarOrdemServico($ordemServico);
+            $action->handle();
+
+            $this->setSuccess('Ordem de Serviço encerrada com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao encerrar ordem de serviço', [
+                'ordem_servico_id' => $ordemServico->id,
+                'error' => $e->getMessage(),
+            ]);
+            $this->setError($e->getMessage());
+            return;
+        }
+    }
+
     //TODO Implementar método para excluir ordem de serviço
     //************************************************* */
 
-    public function encerrarOrdemServico(OrdemServico $ordemServico): void
-    {
-        //TODO: Usar eventos para encerrar agendamentos relacionados
 
-        if ($ordemServico->status == StatusOrdemServicoEnum::CONCLUIDO) {
-            notify::error('Ordem de Serviço já está encerrada.');
-            return;
-        }
-
-        $ordemServico->update([
-            'status'        => StatusOrdemServicoEnum::CONCLUIDO,
-            'data_fim'      => now(),
-        ]);
-
-        $ordemServico->itens()->each(function (ItemOrdemServico $item) {
-            if (in_array($item->status, [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])) {
-                $item->update([
-                    'status' => StatusOrdemServicoEnum::CONCLUIDO,
-                ]);
-            }
-        });
-
-        notify::success('Ordem de Serviço encerrada com sucesso.');
-    }
 
     public function reagendarServico(ItemOrdemServico $item, $data = null)
     {
