@@ -40,7 +40,7 @@ class CriarVinculo
     private function validate(array $data): void
     {
         $validator = Validator::make($data, [
-            'plano_preventivo_id' => 'required|exists:planos_preventivos,id',
+            'plano_preventivo_id' => 'required|exists:planos_preventivo,id',
             'ordem_servico_id'    => 'required|exists:ordens_servico,id',
             'veiculo_id'          => 'required|exists:veiculos,id',
             'km_execucao'         => 'required|numeric|min:0',
