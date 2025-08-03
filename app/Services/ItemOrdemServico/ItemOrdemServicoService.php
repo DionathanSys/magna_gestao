@@ -2,31 +2,32 @@
 
 namespace App\Services\ItemOrdemServico;
 
-use App\Models\ItemOrdemServico;
+use App\Models;
+use App\Traits\ServiceResponseTrait;
+use Illuminate\Support\Facades\Log;
 
 class ItemOrdemServicoService
 {
+    use ServiceResponseTrait;
+
     public function __construct()
     {
         // Constructor logic if needed
     }
 
-    public function create(array $data)
+    public function create(array $data): ?Models\ItemOrdemServico
     {
-        // Logic to create an item in the service order
-        ItemOrdemServico::query()->updateOrCreate(
-            [
-                'ordem_servico_id' => $data['ordem_servico_id'],
-                'servico_id'       => $data['servico_id'],
-            ],
-            [
-                'plano_preventivo_id' => $data['plano_preventivo_id'] ?? null,
-                'posicao'             => $data['posicao'] ?? null,
-                'observacao'          => $data['observacao'] ?? null,
-                'status'              => $data['status'] ?? null,
-                'created_by'          => $data['created_by'] ?? null,
-                
-            ]
-        );
+        try {
+            $item = (new Actions\CriarItem())->handle($data);
+            $this->setSuccess('Item criado com sucesso!');
+            return $item;
+        } catch (\Exception $e) {
+            Log::error(__METHOD__, [
+                'error' => $e->getMessage(),
+                'data' => $data
+            ]);
+           $this->setError($e->getMessage());
+           return null;
+        }
     }
 }

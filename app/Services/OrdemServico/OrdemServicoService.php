@@ -4,17 +4,21 @@ namespace App\Services\OrdemServico;
 
 use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Enum\OrdemServico\TipoManutencaoEnum;
-use App\Models\Agendamento;
+use App\Models;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
 use App\Services\NotificacaoService as notify;
 use App\Services\Veiculo\VeiculoService;
+use App\Traits\ServiceResponseTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 use function PHPUnit\Framework\isEmpty;
 
 class OrdemServicoService
 {
+    use ServiceResponseTrait;
+
     protected VeiculoService $veiculoService;
 
     public function __construct()
@@ -23,37 +27,65 @@ class OrdemServicoService
 
     }
 
-    public function firstOrCreate($data): ?OrdemServico
+    public function firstOrCreate($data): OrdemServico
     {
-        return OrdemServico::query()->firstOrCreate(
-            [
-                'veiculo_id'    => $data['veiculo_id'],
-                'parceiro_id'   => $data['parceiro_id'],
-                'status'        => StatusOrdemServicoEnum::PENDENTE,
-            ],
-            $data
-        );
+        $ordemServico = OrdemServico::query()
+            ->where('veiculo_id', $data['veiculo_id'])
+            ->where('parceiro_id', $data['parceiro_id'] ?? null)
+            ->where('status', StatusOrdemServicoEnum::PENDENTE)
+            ->first();
+
+        if ($ordemServico) {
+            return $ordemServico;
+        }
+
+        return $this->create($data);
 
     }
 
-    public static function create(array $data): ?OrdemServico
+    public function create(array $data): ?OrdemServico
     {
-        //TODO: incluir validação de dados
-
-        $data['status']             = $data['status'] ?? StatusOrdemServicoEnum::PENDENTE;
-        $data['status_sankhya']     = $data['status_sankhya'] ?? StatusOrdemServicoEnum::PENDENTE;
-        $data['created_by']         = $data['created_by'] ?? Auth::user()->id;
-        $data['quilometragem']      = $data['quilometragem'] ?? (new self)->veiculoService->getQuilometragemAtualByVeiculoId($data['veiculo_id']);
-        $data['data_inicio']        = $data['data_inicio'] ?? now();
-        $data['tipo_manutencao']    = $data['tipo_manutencao'] ?? TipoManutencaoEnum::CORRETIVA;
-
-        return OrdemServico::create($data);
+        try {
+            $ordemServico = (new Actions\CriarOrdemServico())->handle($data);
+            $this->setSuccess('Ordem de Serviço criada com sucesso!');
+            return $ordemServico;
+        } catch (\Exception $e) {
+           $this->setError($e->getMessage());
+           return null;
+        }
     }
+
+    public function vincularAgendamento(Models\Agendamento $agendamento): ?OrdemServico
+    {
+        try {
+            $ordemServico = $this->firstOrCreate([
+                'veiculo_id'    => $agendamento->veiculo_id,
+                'parceiro_id'   => $agendamento->parceiro_id,
+                'tipo_manutencao' => $agendamento->plano_preventivo_id ? TipoManutencaoEnum::PREVENTIVA : TipoManutencaoEnum::CORRETIVA,
+            ]);
+
+            $action = new Actions\VincularAgendamento($ordemServico, $agendamento);
+            $action->handle();
+
+            $this->setSuccess('Agendamento vinculado à Ordem de Serviço com sucesso!');
+            return $ordemServico;
+        } catch (\Exception $e) {
+            Log::error('Erro ao vincular agendamento a ordem de serviço', [
+                'agendamento_id' => $agendamento->id,
+                'error' => $e->getMessage(),
+            ]);
+            $this->setError($e->getMessage());
+            return null;
+        }
+    }
+
+
+    //************************************************* */
 
     public function encerrarOrdemServico(OrdemServico $ordemServico): void
     {
         //TODO: Usar eventos para encerrar agendamentos relacionados
-        
+
         if ($ordemServico->status == StatusOrdemServicoEnum::CONCLUIDO) {
             notify::error('Ordem de Serviço já está encerrada.');
             return;
@@ -86,7 +118,7 @@ class OrdemServicoService
             'status' => StatusOrdemServicoEnum::ADIADO,
         ]);
 
-        Agendamento::create([
+        Models\Agendamento::create([
             'ordem_servico_id'  => null,
             'veiculo_id'        => $item->ordemServico->veiculo_id,
             'data_agendamento'  => $data ?? null,

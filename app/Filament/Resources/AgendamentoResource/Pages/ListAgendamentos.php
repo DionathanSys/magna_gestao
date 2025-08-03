@@ -76,6 +76,9 @@ class ListAgendamentos extends ListRecords
                 ->badge(Models\Agendamento::query()->where('data_agendamento', '<', now()->subDay()->format('Y-m-d'))
                     ->whereIn('status', [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])->count())
                 ->badgeColor('info'),
+            'Cancelados' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', StatusOrdemServicoEnum::CANCELADO)),
+
 
         ];
     }

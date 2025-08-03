@@ -2,12 +2,10 @@
 
 namespace App\Services\Agendamento;
 
-use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models;
 use App\Services\ItemOrdemServico\ItemOrdemServicoService;
 use App\Services\OrdemServico\OrdemServicoService;
 use App\Traits\ServiceResponseTrait;
-use Illuminate\Support\Facades\Auth;
 
 class AgendamentoService
 {
@@ -47,35 +45,15 @@ class AgendamentoService
 
     }
 
-    // public function incluirEmOrdemServico()
-    // {
-    //     try {
-    //         $ordemServico = $this->ordemServicoService->firstOrCreate([
-    //             'veiculo_id'    => $this->agendamento->veiculo_id,
-    //             'parceiro_id'   => $this->agendamento->parceiro_id,
-    //         ]);
-
-    //         $this->itemOrdemServicoService->create([
-    //             'ordem_servico_id'      => $ordemServico->id,
-    //             'servico_id'            => $this->agendamento->servico_id,
-    //             'plano_preventivo_id'   => $this->agendamento->plano_preventivo_id,
-    //             'posicao'               => $this->agendamento->posicao,
-    //             'observacao'            => $this->agendamento->observacao,
-    //             'status'                => StatusOrdemServicoEnum::PENDENTE,
-    //             'created_by'            => Auth::user()->id,
-    //         ]);
-
-    //         $this->update([
-    //             'ordem_servico_id' => $ordemServico->id,
-    //         ]);
-
-    //         //TODO: Implementar verificação de plano preventivo
-
-    //         return $this->setSuccess('Agendamento incluído em Ordem de Serviço com sucesso.');
-    //     } catch (\Exception $e) {
-    //         return $this->setError('Erro ao incluir agendamento em ordem de serviço: ' . $e->getMessage());
-    //     }
-    // }
+    public function vincularEmOrdemServico(Models\Agendamento $agendamento)
+    {
+        try {
+            $agendamento = (new Actions\VincularOrdemServico($agendamento))->handle();
+            return $this->setSuccess('Agendamento vinculado a Ordem de Serviço com sucesso.');
+        } catch (\Exception $e) {
+            return $this->setError('Erro ao vincular agendamento a ordem de serviço: ' . $e->getMessage());
+        }
+    }
 
     public function cancelar(Models\Agendamento $agendamento)
     {
@@ -89,11 +67,4 @@ class AgendamentoService
         }
     }
 
-
-
-    // public function update(array $data): void
-    // {
-    //     $this->agendamento
-    //         ->update($data);
-    // }
 }

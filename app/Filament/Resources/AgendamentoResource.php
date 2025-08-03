@@ -308,14 +308,14 @@ class AgendamentoResource extends Resource
                         })
                         ->deselectRecordsAfterCompletion(),
                 ]),
-                Tables\Actions\BulkAction::make('gerar-ordem-servico')
-                    ->label('Gerar OS')
+                Tables\Actions\BulkAction::make('enviar-para-ordem-servico')
+                    ->label('Enviar p/ OS')
                     ->icon('heroicon-o-clipboard-document-list')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
                         $records->each(function (Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
-                                (new AgendamentoService($record))->incluirEmOrdemServico();
+                                (new AgendamentoService())->vincularEmOrdemServico($record);
                             }
                         });
                     })
