@@ -31,7 +31,7 @@ class ListAgendamentos extends ListRecords
                     //     // ds('error no list agendamentos');
 
                     // }
-                    $action->halt();
+                    // $action->halt();
 
                     return $agendamento;
                 })
