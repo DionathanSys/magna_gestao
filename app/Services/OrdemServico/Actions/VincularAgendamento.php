@@ -17,6 +17,7 @@ class VincularAgendamento
 {
     use UserCheckTrait;
 
+    protected VeiculoService $veiculoService;
     protected ItemOrdemServicoService $itemOrdemServicoService;
     protected PreventivaOrdemServicoService $preventivaOrdemServicoService;
 
@@ -24,6 +25,7 @@ class VincularAgendamento
     {
         $this->itemOrdemServicoService = new ItemOrdemServicoService();
         $this->preventivaOrdemServicoService = new PreventivaOrdemServicoService();
+        $this->veiculoService = new VeiculoService();
     }
 
     public function handle(): void
@@ -34,9 +36,9 @@ class VincularAgendamento
             $this->preventivaOrdemServicoService->create([
                 'plano_preventivo_id' => $this->agendamento->plano_preventivo_id,
                 'ordem_servico_id'    => $this->ordemServico->id,
-                'veiculo_id'          => $this->agendamento->veiculo_id,
-                'km_execucao'         => $this->agendamento->posicao,
-                'data_execucao'       => now(),
+                'veiculo_id'          => $this->ordemServico->veiculo_id,
+                'km_execucao'         => $this->ordemServico->quilometragem,
+                'data_execucao'       => $this->ordemServico->data_inicio,
             ]);
 
             Log::debug('Plano Preventivo vinculado a Ordem de Serviço', [

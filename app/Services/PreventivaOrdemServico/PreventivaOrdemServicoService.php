@@ -22,9 +22,14 @@ class PreventivaOrdemServicoService
     {
         try {
 
-            Log::debug(__METHOD__, ['data' => $data]);
+            Log::debug(__METHOD__ . '-' . __LINE__, ['data' => $data]);
 
             $preventivaOrdemServico = (new Actions\CriarVinculo())->handle($data);
+
+            Log::debug(__METHOD__ . '-' . __LINE__, [
+                'ordem_servico_id' => $preventivaOrdemServico->ordem_servico_id,
+                'plano_preventivo_id' => $preventivaOrdemServico->plano_preventivo_id,
+            ]);
 
             $itensPlano = $preventivaOrdemServico->planoPreventivo->itens;
 

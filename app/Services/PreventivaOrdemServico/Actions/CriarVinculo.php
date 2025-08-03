@@ -6,6 +6,7 @@ use App\Enum\OrdemServico\StatusOrdemServicoEnum;
 use App\Models;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\UserCheckTrait;
+use Illuminate\Support\Facades\Log;
 
 class CriarVinculo
 {
@@ -13,6 +14,8 @@ class CriarVinculo
 
     public function handle(array $data): Models\PlanoManutencaoOrdemServico
     {
+        Log::debug(__METHOD__.'-'.__LINE__, ['data' => $data]);
+
         $this->validate($data);
 
         return Models\PlanoManutencaoOrdemServico::query()
