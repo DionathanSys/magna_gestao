@@ -325,7 +325,7 @@ class AgendamentoResource extends Resource
                             $service = new AgendamentoService();
                             $service->encerrar($record);
                             if ($service->hasError()) {
-                                notify::error(mensagem: 'Agendamento: ' . $record->id . PHP_EOL . $service->getMessage());
+                                notify::error(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
                                 return;
                             }
                             notify::success(mensagem: $service->getMessage());
