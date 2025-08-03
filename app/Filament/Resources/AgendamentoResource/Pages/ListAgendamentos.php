@@ -26,13 +26,17 @@ class ListAgendamentos extends ListRecords
                     $service = new AgendamentoService();
                     $agendamento = $service->create($data);
 
-                    if ($service->hasError()) {
-                        // ds('error no list agendamentos');
-                        notify::error('Erro ao criar agendamento.', $service->getMessage());
-                        // $action->halt();
-                    }
+                    // ds($service->hasError())->label('Service Error Check');
+                    // if ($service->hasError()) {
+                    //     // ds('error no list agendamentos');
+
+                    // }
+                    $action->halt();
 
                     return $agendamento;
+                })
+                ->after(function () {
+                    notify::error('Erro ao criar agendamento.');
                 }),
         ];
     }
