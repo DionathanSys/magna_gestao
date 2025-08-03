@@ -34,6 +34,10 @@ class PreventivaOrdemServicoService
             $itensPlano = $preventivaOrdemServico->planoPreventivo->itens;
 
             foreach ($itensPlano as $item) {
+                Log::debug(__METHOD__ . '-' . __LINE__, [
+                    'item' => $item,
+                    'ordem_servico_id' => $preventivaOrdemServico->ordem_servico_id,
+                ]);
                 $this->itemOrdemServicoService->create([
                     'plano_preventivo_id'   => $preventivaOrdemServico->plano_preventivo_id,
                     'ordem_servico_id'      => $preventivaOrdemServico->ordem_servico_id,
