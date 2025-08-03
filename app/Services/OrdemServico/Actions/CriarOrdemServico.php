@@ -28,6 +28,7 @@ class CriarOrdemServico
         ]);
 
         $data['created_by'] = $this->getUserIdChecked();
+        $data['data_inicio'] = $data['data_inicio'] ?? now();
         $data['status'] = StatusOrdemServicoEnum::PENDENTE;
         $data['status_sankhya'] = StatusOrdemServicoEnum::PENDENTE;
         $data['quilometragem'] = $data['quilometragem'] ?? $this->veiculoService->getQuilometragemAtualByVeiculoId($data['veiculo_id']);
@@ -61,14 +62,13 @@ class CriarOrdemServico
         ]);
 
         if ($validator->fails()) {
-            dump($validator->errors()->all());
             throw new \InvalidArgumentException($validator->errors()->first());
         }
 
         if ($this->exists($data)) {
             throw new \InvalidArgumentException('Ordem de serviço já existe para este veículo e parceiro.');
         }
-        dd($data);
+
     }
 
 

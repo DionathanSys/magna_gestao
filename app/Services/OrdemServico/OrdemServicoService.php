@@ -24,12 +24,11 @@ class OrdemServicoService
     public function __construct()
     {
         $this->veiculoService = new VeiculoService();
-
     }
 
     public function firstOrCreate($data): OrdemServico
     {
-        Log::debug(__METHOD__. ' - ' . __LINE__, [
+        Log::debug(__METHOD__ . ' - ' . __LINE__, [
             'data' => $data,
         ]);
 
@@ -44,7 +43,6 @@ class OrdemServicoService
         }
 
         return $this->create($data);
-
     }
 
     public function create(array $data): ?OrdemServico
@@ -54,8 +52,12 @@ class OrdemServicoService
             $this->setSuccess('Ordem de Serviço criada com sucesso!');
             return $ordemServico;
         } catch (\Exception $e) {
-           $this->setError($e->getMessage());
-           return null;
+            Log::error(__METHOD__, [
+                'error' => $e->getMessage(),
+                'data' => $data
+            ]);
+            $this->setError($e->getMessage());
+            return null;
         }
     }
 
@@ -101,7 +103,7 @@ class OrdemServicoService
         ]);
 
         $ordemServico->itens()->each(function (ItemOrdemServico $item) {
-            if(in_array($item->status, [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])) {
+            if (in_array($item->status, [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])) {
                 $item->update([
                     'status' => StatusOrdemServicoEnum::CONCLUIDO,
                 ]);
@@ -113,7 +115,7 @@ class OrdemServicoService
 
     public function reagendarServico(ItemOrdemServico $item, $data = null)
     {
-        if($item->status != StatusOrdemServicoEnum::PENDENTE) {
+        if ($item->status != StatusOrdemServicoEnum::PENDENTE) {
             notify::error('Serviço não pode ser reagendado, pois não está pendente.');
             return;
         }

@@ -315,7 +315,13 @@ class AgendamentoResource extends Resource
                     ->action(function (Collection $records) {
                         $records->each(function (Models\Agendamento $record) {
                             if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
-                                (new AgendamentoService())->vincularEmOrdemServico($record);
+                                $service = new AgendamentoService();
+                                $service->vincularEmOrdemServico($record);
+                                if ($service->hasError()) {
+                                    notify::error(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
+                                    return;
+                                }
+                                notify::success(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
                             }
                         });
                     })
