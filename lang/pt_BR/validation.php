@@ -32,7 +32,7 @@ return [
         'numeric' => 'O campo :attribute deve conter um número entre :min e :max.',
         'string' => 'O campo :attribute deve conter entre :min e :max caracteres.',
     ],
-    'boolean' => 'O campo :attribute deve conter o valor verdadeiro ou falso.',
+    'boolean' => 'O campo :attribute deve ser verdadeiro ou falso.',
     'can' => 'O campo :attribute contém um valor não autorizado.',
     'confirmed' => 'A confirmação para o campo :attribute não confere.',
     'current_password' => 'A senha está incorreta.',
