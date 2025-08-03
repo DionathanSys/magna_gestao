@@ -41,7 +41,7 @@ class CriarItem
         $validator = Validator::make($data, [
             'ordem_servico_id'    => 'required|exists:ordens_servico,id',
             'servico_id'          => 'required|exists:servicos,id',
-            'plano_preventivo_id' => 'nullable|exists:planos_preventivos,id',
+            'plano_preventivo_id' => 'nullable|exists:planos_preventivo,id',
             'observacao'          => 'nullable|string|max:255',
         ])->validate();
 
