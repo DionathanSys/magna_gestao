@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NotificacaoService as notify;
 
 class AgendamentoResource extends Resource
 {
@@ -321,16 +322,17 @@ class AgendamentoResource extends Resource
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
                         $records->each(function (Models\Agendamento $record) {
-                            if ($record->status == StatusOrdemServicoEnum::EXECUCAO) {
-                                (new AgendamentoService($record))->encerrar();
+                            $service = new AgendamentoService();
+                            $service->encerrar($record);
+                            if ($service->hasError()) {
+                                notify::error(mensagem: $service->getMessage());
+                                return;
                             }
+                            notify::success(mensagem: $service->getMessage());
                         });
                     })
                     ->deselectRecordsAfterCompletion(),
             ])
-            // ->checkIfRecordIsSelectableUsing(
-            //     fn(Agendamento $record): bool => $record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null,
-            // )
             ->poll('5s');
     }
 
@@ -386,12 +388,12 @@ class AgendamentoResource extends Resource
             ->label('Plano Preventivo')
             ->options(function (Forms\Get $get) {
                 // if (!$get('veiculo_id')) {
-                    return PlanoPreventivo::query()
-                        ->join('planos_manutencao_veiculo', 'planos_manutencao_veiculo.plano_preventivo_id', '=', 'planos_preventivo.id')
-                        ->where('planos_manutencao_veiculo.veiculo_id', $get('veiculo_id'))
-                        ->where('planos_preventivo.is_active', true)
-                        ->orderBy('planos_preventivo.descricao')
-                        ->pluck('planos_preventivo.descricao', 'planos_preventivo.id');
+                return PlanoPreventivo::query()
+                    ->join('planos_manutencao_veiculo', 'planos_manutencao_veiculo.plano_preventivo_id', '=', 'planos_preventivo.id')
+                    ->where('planos_manutencao_veiculo.veiculo_id', $get('veiculo_id'))
+                    ->where('planos_preventivo.is_active', true)
+                    ->orderBy('planos_preventivo.descricao')
+                    ->pluck('planos_preventivo.descricao', 'planos_preventivo.id');
                 // }
             })
             ->preload()

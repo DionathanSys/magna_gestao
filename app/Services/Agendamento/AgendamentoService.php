@@ -25,17 +25,26 @@ class AgendamentoService
     public function create(array $data): ?Models\Agendamento
     {
         try {
-
             $agendamento = (new Actions\CriarAgendamento())->handle($data);
-
             $this->setSuccess('Agendamento criado com sucesso!');
-
             return $agendamento;
-
         } catch (\Exception $e) {
-           $this->setError('Erro ao criar agendamento: ' . $e->getMessage());
+           $this->setError($e->getMessage());
            return null;
         }
+    }
+
+    public function encerrar(Models\Agendamento $agendamento)
+    {
+        try {
+            $agendamento = (new Actions\EncerrarAgendamento($agendamento))->handle();
+            $this->setSuccess('Agendamento encerrado com sucesso!');
+            return $agendamento;
+        } catch (\Exception $e) {
+           $this->setError($e->getMessage());
+           return null;
+        }
+
     }
 
     // public function incluirEmOrdemServico()
@@ -83,20 +92,7 @@ class AgendamentoService
     //     }
     // }
 
-    // public function encerrar(): self
-    // {
-    //     try {
-    //         $this->update([
-    //             'data_realizado' => now(),
-    //             'status'        => StatusOrdemServicoEnum::CONCLUIDO,
-    //             'updated_by'    => Auth::user()->id,
-    //         ]);
 
-    //         return $this->setSuccess('Agendamento encerrado com sucesso.');
-    //     } catch (\Exception $e) {
-    //         return $this->setError('Erro ao encerrar agendamento: ' . $e->getMessage());
-    //     }
-    // }
 
     // public function update(array $data): void
     // {

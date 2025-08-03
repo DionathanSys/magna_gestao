@@ -14,7 +14,7 @@ class CriarAgendamento
 
     public function handle(array $data): Models\Agendamento
     {
-        $data['veiculo_id'] = 'e';
+        
         $this->validate($data);
 
         $data['created_by'] = $this->getUserIdChecked();
