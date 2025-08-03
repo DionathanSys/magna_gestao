@@ -61,13 +61,14 @@ class CriarOrdemServico
         ]);
 
         if ($validator->fails()) {
+            dump($validator->errors()->all());
             throw new \InvalidArgumentException($validator->errors()->first());
         }
-        
+
         if ($this->exists($data)) {
             throw new \InvalidArgumentException('Ordem de serviço já existe para este veículo e parceiro.');
         }
-
+        dd($data);
     }
 
 
