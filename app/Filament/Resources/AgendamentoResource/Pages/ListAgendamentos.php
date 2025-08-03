@@ -10,7 +10,7 @@ use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
-use App\Services\NotificacaoService as notify;
+use Filament\Notifications\Notification;
 
 class ListAgendamentos extends ListRecords
 {
@@ -22,22 +22,28 @@ class ListAgendamentos extends ListRecords
             Actions\CreateAction::make()
                 ->label('Agendamento')
                 ->icon('heroicon-o-plus')
-                ->successNotificationTitle('User registered')
-                ->using(function (Actions\Action $action, array $data, string $model): Models\Agendamento {
+                ->using(function (Actions\Action $action, array $data, string $model): ?Models\Agendamento {
                     $service = new AgendamentoService();
                     $agendamento = $service->create($data);
 
-                    // ds($service->hasError())->label('Service Error Check');
-                    // if ($service->hasError()) {
-                    //     // ds('error no list agendamentos');
+                    if ($service->hasError()) {
+                        Notification::make()
+                            ->title('Erro ao criar agendamento')
+                            ->body($service->getMessage())
+                            ->danger()
+                            ->send();
 
-                    // }
-                    // $action->halt();
+                        $action->halt();
+                        return null;
+                    }
+
+                    Notification::make()
+                        ->title('Sucesso!')
+                        ->body('Agendamento criado com sucesso!')
+                        ->success()
+                        ->send();
 
                     return $agendamento;
-                })
-                ->after(function () {
-                    notify::error('Erro ao criar agendamento.');
                 }),
         ];
     }
