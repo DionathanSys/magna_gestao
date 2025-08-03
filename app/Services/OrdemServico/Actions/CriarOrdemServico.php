@@ -23,15 +23,16 @@ class CriarOrdemServico
 
     public function handle(array $data): Models\OrdemServico
     {
-        Log::debug(__METHOD__. ' - ' . __LINE__, [
-            'data' => $data,
-        ]);
 
         $data['created_by'] = $this->getUserIdChecked();
         $data['data_inicio'] = $data['data_inicio'] ?? now();
         $data['status'] = StatusOrdemServicoEnum::PENDENTE;
         $data['status_sankhya'] = StatusOrdemServicoEnum::PENDENTE;
         $data['quilometragem'] = $data['quilometragem'] ?? $this->veiculoService->getQuilometragemAtualByVeiculoId($data['veiculo_id']);
+
+        Log::debug(__METHOD__. ' - ' . __LINE__, [
+            'data' => $data,
+        ]);
 
         $this->validate($data);
 
