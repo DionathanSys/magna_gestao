@@ -77,20 +77,17 @@ class AgendamentoService
     //     }
     // }
 
-    // public function cancelar(): self
-    // {
-    //     try {
-    //         $this->update([
-    //             'data_agendamento' => null,
-    //             'status'        => StatusOrdemServicoEnum::CANCELADO,
-    //             'updated_by'    => Auth::user()->id,
-    //         ]);
-
-    //         return $this->setSuccess('Agendamento cancelado com sucesso.');
-    //     } catch (\Exception $e) {
-    //         return $this->setError('Erro ao cancelar agendamento: ' . $e->getMessage());
-    //     }
-    // }
+    public function cancelar(Models\Agendamento $agendamento)
+    {
+        try {
+            $agendamento = (new Actions\CancelarAgendamento($agendamento))->handle();
+            $this->setSuccess('Agendamento cancelado com sucesso!');
+            return;
+        } catch (\Exception $e) {
+            $this->setError($e->getMessage());
+            return null;
+        }
+    }
 
 
 

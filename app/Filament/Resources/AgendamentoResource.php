@@ -297,9 +297,13 @@ class AgendamentoResource extends Resource
                         ->requiresConfirmation()
                         ->action(function (Collection $records) {
                             $records->each(function (Models\Agendamento $record) {
-                                if ($record->status == StatusOrdemServicoEnum::PENDENTE && $record->ordem_servico_id === null) {
-                                    (new AgendamentoService($record))->cancelar();
+                                $service = new AgendamentoService();
+                                $service->cancelar($record);
+                                if ($service->hasError()) {
+                                    notify::error(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
+                                    return;
                                 }
+                                notify::success(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
                             });
                         })
                         ->deselectRecordsAfterCompletion(),
@@ -328,7 +332,7 @@ class AgendamentoResource extends Resource
                                 notify::error(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
                                 return;
                             }
-                            notify::success(mensagem: $service->getMessage());
+                            notify::success(mensagem: 'Agendamento: ' . $record->id . '<br>' . $service->getMessage());
                         });
                     })
                     ->deselectRecordsAfterCompletion(),
