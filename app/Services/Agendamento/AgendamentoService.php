@@ -29,14 +29,12 @@ class AgendamentoService
 
             $agendamento = (new Actions\CriarAgendamento())->handle($data);
 
-            $this->setSuccess('Agendamento criado com sucesso!', ['agendamento' => $agendamento]);
-
+            // $this->setSuccess('Agendamento criado com sucesso!');
+            $this->setError('Erro ao criar agendamento: ');
             return $agendamento;
 
         } catch (\Exception $e) {
            $this->setError('Erro ao criar agendamento: ' . $e->getMessage());
-        //    ds($this->getMessage())->label('Erro ao criar agendamento');
-        //    ds($e->getMessage());
            return null;
         }
     }
