@@ -14,7 +14,7 @@ class CriarItem
 
     public function handle(array $data): Models\ItemOrdemServico
     {
-        Log::debug('Criando item de ordem de serviço', [
+        Log::debug(__METHOD__. ' - ' . __LINE__, [
             'data' => $data,
         ]);
 

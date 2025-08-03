@@ -7,6 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Models;
 use App\Services\Veiculo\VeiculoService;
 use App\Traits\UserCheckTrait;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CriarOrdemServico
@@ -22,6 +23,10 @@ class CriarOrdemServico
 
     public function handle(array $data): Models\OrdemServico
     {
+        Log::debug(__METHOD__. ' - ' . __LINE__, [
+            'data' => $data,
+        ]);
+
         $data['created_by'] = $this->getUserIdChecked();
         $data['status'] = StatusOrdemServicoEnum::PENDENTE;
         $data['status_sankhya'] = StatusOrdemServicoEnum::PENDENTE;

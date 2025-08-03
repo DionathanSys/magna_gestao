@@ -7,6 +7,7 @@ use App\Models;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\UserCheckTrait;
+use Illuminate\Support\Facades\Log;
 
 class CriarAgendamento
 {
@@ -14,7 +15,10 @@ class CriarAgendamento
 
     public function handle(array $data): Models\Agendamento
     {
-        
+        Log::debug(__METHOD__. ' - ' . __LINE__, [
+            'data' => $data,
+        ]);
+
         $this->validate($data);
 
         $data['created_by'] = $this->getUserIdChecked();
