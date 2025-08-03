@@ -21,6 +21,8 @@
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laradumps/laradumps": "4.0",
+        "laravel-lang/actions": "^1.10",
+        "laravel-lang/attributes": "^2.13",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",

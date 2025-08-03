@@ -7,81 +7,103 @@ use App\Models;
 use App\Services\ItemOrdemServico\ItemOrdemServicoService;
 use App\Services\OrdemServico\OrdemServicoService;
 use App\Services\NotificacaoService as notify;
+use App\Traits\ServiceResponseTrait;
 use Illuminate\Support\Facades\Auth;
 
 class AgendamentoService
 {
+    use ServiceResponseTrait;
+
     protected OrdemServicoService $ordemServicoService;
     protected ItemOrdemServicoService $itemOrdemServicoService;
 
-    public function __construct(protected Models\Agendamento $agendamento)
+    public function __construct()
     {
         $this->ordemServicoService      = new OrdemServicoService();
         $this->itemOrdemServicoService  = new ItemOrdemServicoService();
     }
 
-    public function create(array $data): Models\Agendamento
+    public function create(array $data): ?Models\Agendamento
     {
-        //TODO: implementar vinculo com plano preventivo
-        $data['created_by'] = Auth::user()->id;
-        $data['updated_by'] = Auth::user()->id;
+        try {
 
-        return Models\Agendamento::create($data);
+            $agendamento = (new Actions\CriarAgendamento())->handle($data);
+
+            $this->setSuccess('Agendamento criado com sucesso!', ['agendamento' => $agendamento]);
+
+            return $agendamento;
+
+        } catch (\Exception $e) {
+           $this->setError('Erro ao criar agendamento: ' . $e->getMessage());
+        //    ds($this->getMessage())->label('Erro ao criar agendamento');
+        //    ds($e->getMessage());
+           return null;
+        }
     }
 
-    public function incluirEmOrdemServico()
-    {
-        $ordemServico = $this->ordemServicoService->firstOrCreate([
-            'veiculo_id'    => $this->agendamento->veiculo_id,
-            'parceiro_id'   => $this->agendamento->parceiro_id,
-        ]);
+    // public function incluirEmOrdemServico()
+    // {
+    //     try {
+    //         $ordemServico = $this->ordemServicoService->firstOrCreate([
+    //             'veiculo_id'    => $this->agendamento->veiculo_id,
+    //             'parceiro_id'   => $this->agendamento->parceiro_id,
+    //         ]);
 
-        $this->itemOrdemServicoService->create([
-            'ordem_servico_id'      => $ordemServico->id,
-            'servico_id'            => $this->agendamento->servico_id,
-            'plano_preventivo_id'   => $this->agendamento->plano_preventivo_id,
-            'posicao'               => $this->agendamento->posicao,
-            'observacao'            => $this->agendamento->observacao,
-            'status'                => StatusOrdemServicoEnum::PENDENTE,
-            'created_by'            => Auth::user()->id,
-        ]);
+    //         $this->itemOrdemServicoService->create([
+    //             'ordem_servico_id'      => $ordemServico->id,
+    //             'servico_id'            => $this->agendamento->servico_id,
+    //             'plano_preventivo_id'   => $this->agendamento->plano_preventivo_id,
+    //             'posicao'               => $this->agendamento->posicao,
+    //             'observacao'            => $this->agendamento->observacao,
+    //             'status'                => StatusOrdemServicoEnum::PENDENTE,
+    //             'created_by'            => Auth::user()->id,
+    //         ]);
 
-        $this->update([
-            'ordem_servico_id' => $ordemServico->id,
-        ]);
+    //         $this->update([
+    //             'ordem_servico_id' => $ordemServico->id,
+    //         ]);
 
-        //TODO: Implementar verificação de plano preventivo
+    //         //TODO: Implementar verificação de plano preventivo
 
-        notify::success('Agendamento incluído em Ordem de Serviço com sucesso.');
+    //         return $this->setSuccess('Agendamento incluído em Ordem de Serviço com sucesso.');
+    //     } catch (\Exception $e) {
+    //         return $this->setError('Erro ao incluir agendamento em ordem de serviço: ' . $e->getMessage());
+    //     }
+    // }
 
-        return true;
-    }
+    // public function cancelar(): self
+    // {
+    //     try {
+    //         $this->update([
+    //             'data_agendamento' => null,
+    //             'status'        => StatusOrdemServicoEnum::CANCELADO,
+    //             'updated_by'    => Auth::user()->id,
+    //         ]);
 
-    public function cancelar(): void
-    {
-        $this->update([
-            'data_agendamento' => null,
-            'status'        => StatusOrdemServicoEnum::CANCELADO,
-            'updated_by'    => Auth::user()->id,
-        ]);
+    //         return $this->setSuccess('Agendamento cancelado com sucesso.');
+    //     } catch (\Exception $e) {
+    //         return $this->setError('Erro ao cancelar agendamento: ' . $e->getMessage());
+    //     }
+    // }
 
-        notify::success('Agendamento cancelado com sucesso.');
-    }
+    // public function encerrar(): self
+    // {
+    //     try {
+    //         $this->update([
+    //             'data_realizado' => now(),
+    //             'status'        => StatusOrdemServicoEnum::CONCLUIDO,
+    //             'updated_by'    => Auth::user()->id,
+    //         ]);
 
-    public function encerrar(): void
-    {
-        $this->update([
-            'data_realizado' => now(),
-            'status'        => StatusOrdemServicoEnum::CONCLUIDO,
-            'updated_by'    => Auth::user()->id,
-        ]);
+    //         return $this->setSuccess('Agendamento encerrado com sucesso.');
+    //     } catch (\Exception $e) {
+    //         return $this->setError('Erro ao encerrar agendamento: ' . $e->getMessage());
+    //     }
+    // }
 
-        notify::success('Agendamento encerrado com sucesso.');
-    }
-
-    public function update(array $data): void
-    {
-        $this->agendamento
-            ->update($data);
-    }
+    // public function update(array $data): void
+    // {
+    //     $this->agendamento
+    //         ->update($data);
+    // }
 }
