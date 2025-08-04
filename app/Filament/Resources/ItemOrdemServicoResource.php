@@ -51,6 +51,7 @@ class ItemOrdemServicoResource extends Resource
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
                     ->width('1%')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ordemServico.data_inicio')
                     ->label('Dt. de Abertura')
@@ -92,7 +93,7 @@ class ItemOrdemServicoResource extends Resource
                     ->label('Dt. de Abertura')
                     ->date()
                     ->titlePrefixedWithLabel(false)
-                    // ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => Carbon::parse($record->ordemServico->data_inicio)->format('d/m/Y'))
+                    ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => $record->ordemServico->data_inicio)
                     ->collapsible(),
                 Tables\Grouping\Group::make('status')
                     ->label('Status')
@@ -119,10 +120,12 @@ class ItemOrdemServicoResource extends Resource
                     ->searchable()
                     ->preload()
                     ->multiple(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(StatusOrdemServicoEnum::toSelectArray())
+                    ->multiple(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
