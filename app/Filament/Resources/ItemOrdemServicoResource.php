@@ -87,13 +87,18 @@ class ItemOrdemServicoResource extends Resource
             ])
             ->groups([
                 Tables\Grouping\Group::make('ordemServico.data_inicio')
-                    ->label('Dt. de Abertura'),
+                    ->label('Dt. de Abertura')
+                    ->date()
+                    ->collapsible(),
                 Tables\Grouping\Group::make('status')
-                    ->label('Status'),
+                    ->label('Status')
+                    ->collapsible(),
                 Tables\Grouping\Group::make('veiculo.placa')
-                    ->label('Veículo'),
+                    ->label('Veículo')
+                    ->collapsible(),
                 Tables\Grouping\Group::make('servico.descricao')
-                    ->label('Serviço'),
+                    ->label('Serviço')
+                    ->collapsible(),
             ])
             ->defaultGroup('veiculo.placa')
             ->persistFiltersInSession()
