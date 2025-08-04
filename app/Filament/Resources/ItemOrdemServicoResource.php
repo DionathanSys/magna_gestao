@@ -7,6 +7,7 @@ use App\Filament\Resources\ItemOrdemServicoResource\Pages;
 use App\Filament\Resources\ItemOrdemServicoResource\RelationManagers;
 use App\Models\ItemOrdemServico;
 use App\Models\Servico;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -89,6 +90,8 @@ class ItemOrdemServicoResource extends Resource
                 Tables\Grouping\Group::make('ordemServico.data_inicio')
                     ->label('Dt. de Abertura')
                     ->date()
+                    ->titlePrefixedWithLabel(false)
+                    ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => Carbon::parse($record->ordemServico->data_inicio)->format('d/m/Y'))
                     ->collapsible(),
                 Tables\Grouping\Group::make('status')
                     ->label('Status')
