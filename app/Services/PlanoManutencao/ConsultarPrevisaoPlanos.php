@@ -82,7 +82,7 @@ class ConsultarPrevisaoPlanos
         }
 
         $kmRestante = ($ultimaExecucao['km_execucao'] + $this->kmIntervaloPlano) - $kmAtual;
-        $diasRestantes = ceil($kmRestante / $kmMedio);
+        $diasRestantes = $kmRestante <= 0 ? 0 : ceil($kmRestante / $kmMedio);
         $dataPrevista = now()->addDays($diasRestantes);
 
         return [
