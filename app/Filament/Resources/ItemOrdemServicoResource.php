@@ -91,9 +91,9 @@ class ItemOrdemServicoResource extends Resource
             ->groups([
                 Tables\Grouping\Group::make('ordemServico.data_inicio')
                     ->label('Dt. de Abertura')
-                    ->date()
+                    ->date('d/m/Y')
                     ->titlePrefixedWithLabel(false)
-                    ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => Carbon::parse($record->ordemServico->data_inicio)->format('d/m/Y'))
+                    // ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => $record->ordemServico->data_inicio)
                     ->collapsible(),
                 Tables\Grouping\Group::make('status')
                     ->label('Status')
@@ -103,7 +103,7 @@ class ItemOrdemServicoResource extends Resource
                     ->collapsible(),
                 Tables\Grouping\Group::make('servico.descricao')
                     ->label('Serviço')
-                    ->collapsible(),    
+                    ->collapsible(),
             ])
             ->defaultGroup('veiculo.placa')
             ->persistFiltersInSession()
