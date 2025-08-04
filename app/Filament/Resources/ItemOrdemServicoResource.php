@@ -135,11 +135,15 @@ class ItemOrdemServicoResource extends Resource
                         return $query
                             ->when(
                                 $data['data_inicio'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('ordemServico.data_inicio', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereHas('ordemServico', function ($q) use ($date) {
+                                    $q->whereDate('data_inicio', '>=', $date);
+                                }),
                             )
                             ->when(
                                 $data['data_fim'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('ordemServico.data_inicio', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereHas('ordemServico', function ($q) use ($date) {
+                                    $q->whereDate('data_inicio', '<=', $date);
+                                }),
                             );
                     }),
             ])
