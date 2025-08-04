@@ -124,6 +124,24 @@ class ItemOrdemServicoResource extends Resource
                     ->label('Status')
                     ->options(StatusOrdemServicoEnum::toSelectArray())
                     ->multiple(),
+                Tables\Filters\Filter::make('data_inicio')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->label('Dt. Abertura de'),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->label('Dt. Abertura até'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['data_inicio'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('ordemServico.data_inicio', '>=', $date),
+                            )
+                            ->when(
+                                $data['data_fim'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('ordemServico.data_inicio', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
             ])
