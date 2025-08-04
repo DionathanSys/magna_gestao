@@ -86,6 +86,7 @@ class ItemOrdemServicoResource extends Resource
                     ->label('Serviço'),
             ])
             ->defaultGroup('veiculo.placa')
+            ->persistFiltersInSession()
             ->filters([
                 Tables\Filters\SelectFilter::make('veiculo')
                     ->label('Veículo')
