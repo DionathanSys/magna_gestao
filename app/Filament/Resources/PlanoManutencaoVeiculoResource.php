@@ -34,10 +34,12 @@ class PlanoManutencaoVeiculoResource extends Resource
                 Forms\Components\Select::make('plano_preventivo_id')
                     ->label('Plano Preventivo')
                     ->relationship('planoPreventivo', 'descricao')
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
+                    ->searchable()
                     ->required(),
             ]);
     }
