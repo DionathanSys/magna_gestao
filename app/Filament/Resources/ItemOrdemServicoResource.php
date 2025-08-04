@@ -40,11 +40,14 @@ class ItemOrdemServicoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
-                    ->label('Veículo'),
+                    ->label('Veículo')
+                    ->toggledHiddenByDefault(true),
                 Tables\Columns\TextColumn::make('servico.descricao')
-                    ->label('Serviço'),
+                    ->label('Serviço')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('posicao')
                     ->label('Posição')
                     ->placeholder('N/A'),
@@ -81,6 +84,12 @@ class ItemOrdemServicoResource extends Resource
                 Tables\Filters\SelectFilter::make('veiculo')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('servico')
+                    ->label('Serviço')
+                    ->relationship('servico', 'descricao')
                     ->searchable()
                     ->preload()
                     ->multiple(),
