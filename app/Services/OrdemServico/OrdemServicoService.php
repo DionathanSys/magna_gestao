@@ -7,6 +7,7 @@ use App\Enum\OrdemServico\TipoManutencaoEnum;
 use App\Models;
 use App\Models\ItemOrdemServico;
 use App\Models\OrdemServico;
+use App\Services\Agendamento\AgendamentoService;
 use App\Services\NotificacaoService as notify;
 use App\Services\Veiculo\VeiculoService;
 use App\Traits\ServiceResponseTrait;
@@ -118,15 +119,13 @@ class OrdemServicoService
             'status' => StatusOrdemServicoEnum::ADIADO,
         ]);
 
-        Models\Agendamento::create([
+        $service = new AgendamentoService();
+        $service->create([
             'ordem_servico_id'  => null,
             'veiculo_id'        => $item->ordemServico->veiculo_id,
             'data_agendamento'  => $data ?? null,
             'servico_id'        => $item->servico_id,
-            'status'            => StatusOrdemServicoEnum::PENDENTE,
             'observacao'        => $item->observacao,
-            'created_by'        => Auth::user()->id,
-            'updated_by'        => Auth::user()->id,
             'parceiro_id'       => $item->ordemServico->parceiro_id ?? null,
         ]);
     }

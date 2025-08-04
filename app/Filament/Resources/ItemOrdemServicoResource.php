@@ -41,6 +41,8 @@ class ItemOrdemServicoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID'),
+                Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->label('Veículo'),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço'),
                 Tables\Columns\TextColumn::make('posicao')
@@ -66,8 +68,20 @@ class ItemOrdemServicoResource extends Resource
                     ->label('Criado por')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups([
+                Tables\Grouping\Group::make('status')
+                    ->label('Status'),
+                Tables\Grouping\Group::make('veiculo.placa')
+                    ->label('Veículo'),
+
+            ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('veiculo')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
