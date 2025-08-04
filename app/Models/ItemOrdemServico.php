@@ -26,6 +26,11 @@ class ItemOrdemServico extends Model
         return $this->belongsTo(OrdemServico::class, 'ordem_servico_id');
     }
 
+    public function veiculo(): HasOneThrough
+    {
+        return $this->hasOneThrough(Veiculo::class, OrdemServico::class, 'id', 'id', 'ordem_servico_id', 'veiculo_id');
+    }
+
     public function planoPreventivo(): BelongsTo
     {
         return $this->belongsTo(PlanoPreventivo::class, 'plano_preventivo_id');
