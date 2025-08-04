@@ -43,8 +43,16 @@ class ItemOrdemServicoResource extends Resource
                     ->label('ID')
                     ->width('1%')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('ordemServico.id')
+                    ->label('Nº OS')
+                    ->width('1%')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
+                    ->width('1%')
+                    ->toggledHiddenByDefault(true),
+                Tables\Columns\TextColumn::make('ordemServico.data_inicio')
+                    ->label('Dt. de Abertura')
                     ->width('1%')
                     ->toggledHiddenByDefault(true),
                 Tables\Columns\TextColumn::make('servico.descricao')
@@ -78,6 +86,8 @@ class ItemOrdemServicoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups([
+                Tables\Grouping\Group::make('ordemServico.data_inicio')
+                    ->label('Dt. de Abertura'),
                 Tables\Grouping\Group::make('status')
                     ->label('Status'),
                 Tables\Grouping\Group::make('veiculo.placa')
