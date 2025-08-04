@@ -51,11 +51,12 @@ class ItemOrdemServicoResource extends Resource
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
                     ->width('1%')
-                    ->toggledHiddenByDefault(true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ordemServico.data_inicio')
                     ->label('Dt. de Abertura')
+                    ->date('d/m/Y')
                     ->width('1%')
-                    ->toggledHiddenByDefault(true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
                     ->width('1%')
@@ -91,7 +92,7 @@ class ItemOrdemServicoResource extends Resource
                     ->label('Dt. de Abertura')
                     ->date()
                     ->titlePrefixedWithLabel(false)
-                    ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => Carbon::parse($record->ordemServico->data_inicio)->format('d/m/Y'))
+                    // ->getTitleFromRecordUsing(fn(ItemOrdemServico $record): string => Carbon::parse($record->ordemServico->data_inicio)->format('d/m/Y'))
                     ->collapsible(),
                 Tables\Grouping\Group::make('status')
                     ->label('Status')
