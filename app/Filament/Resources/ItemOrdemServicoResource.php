@@ -41,21 +41,27 @@ class ItemOrdemServicoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Veículo')
+                    ->width('1%')
                     ->toggledHiddenByDefault(true),
                 Tables\Columns\TextColumn::make('servico.descricao')
                     ->label('Serviço')
+                    ->width('1%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('posicao')
                     ->label('Posição')
+                    ->width('1%')
                     ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('observacao')
                     ->label('Observação')
+                    ->width('1%')
                     ->placeholder('N/A'),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Status')
+                    ->width('1%')
                     ->options(StatusOrdemServicoEnum::toSelectArray()),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
