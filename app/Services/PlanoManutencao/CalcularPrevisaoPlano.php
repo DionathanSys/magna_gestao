@@ -22,7 +22,8 @@ class CalcularPrevisaoPlano
 
     public function exec(): array
     {
-        $diasRestantes = ceil($this->planoVeiculo->quilometragem_restante / $this->kmMedio);
+        $kmRestante = $this->planoVeiculo->quilometragem_restante;
+        $diasRestantes = $kmRestante <= 0 ? 0 : ceil($kmRestante / $this->kmMedio);
         $dataPrevista = now()->addDays($diasRestantes)->format('d/m/Y');
 
         return [
