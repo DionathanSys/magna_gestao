@@ -73,8 +73,10 @@ class ItemOrdemServicoResource extends Resource
                     ->label('Status'),
                 Tables\Grouping\Group::make('veiculo.placa')
                     ->label('Veículo'),
-
+                Tables\Grouping\Group::make('servico.descricao')
+                    ->label('Serviço'),
             ])
+            ->defaultGroup('veiculo.placa')
             ->filters([
                 Tables\Filters\SelectFilter::make('veiculo')
                     ->label('Veículo')
