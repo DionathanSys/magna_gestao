@@ -120,15 +120,16 @@ class ServicoResource extends Resource
             ->filters([
                 //
             ])
-            ->persistFiltersInSession(true)
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->actions([
                 Tables\Actions\EditAction::make()
-                // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                    // ->successNotification(null),
                 ]),
             ]);
     }

@@ -174,6 +174,10 @@ class PneuResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 Tables\Filters\SelectFilter::make('numero_fogo')
                     ->label('Nº de Fogo')

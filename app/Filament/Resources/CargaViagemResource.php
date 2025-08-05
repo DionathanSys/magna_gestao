@@ -163,8 +163,10 @@ class CargaViagemResource extends Resource
                         ->collapsible(),
                 ]
             )
-            ->persistFiltersInSession()
             ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 Tables\Filters\Filter::make('motivo_divergencia')
                     ->label('Motivo Divergência')
@@ -253,21 +255,13 @@ class CargaViagemResource extends Resource
             ->persistFiltersInSession()
             ->actions([
                 Tables\Actions\DeleteAction::make()
-                    // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null)
                     ->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
-                    // FilamentExportBulkAction::make('export')
-                    //     ->fileName('Cargas Viagem')
-                    //     ->disableAdditionalColumns()
-                    //     ->pageOrientationFieldLabel('Page Orientation') // Label for page orientation input
-                    //     ->filterColumnsFieldLabel('filter columns')
                 ]),
             ]);
     }
@@ -283,8 +277,6 @@ class CargaViagemResource extends Resource
     {
         return [
             'index' => Pages\ListCargaViagems::route('/'),
-            // 'create' => Pages\CreateCargaViagem::route('/create'),
-            // 'edit' => Pages\EditCargaViagem::route('/{record}/edit'),
         ];
     }
 }

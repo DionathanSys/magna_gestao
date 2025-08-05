@@ -112,6 +112,10 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 //
             ])
@@ -124,8 +128,7 @@ class PlanoManutencaoOrdemServicoResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll('5s')
-            ->persistFiltersInSession();
+            ->poll('5s');
     }
 
     public static function getRelations(): array

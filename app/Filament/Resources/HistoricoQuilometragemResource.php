@@ -76,6 +76,10 @@ class HistoricoQuilometragemResource extends Resource
                     ->sortable(),
             ])
             ->defaultSort('id', 'desc')
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 //
             ])

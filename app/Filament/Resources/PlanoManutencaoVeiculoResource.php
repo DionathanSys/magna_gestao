@@ -35,11 +35,13 @@ class PlanoManutencaoVeiculoResource extends Resource
                     ->label('Plano Preventivo')
                     ->relationship('planoPreventivo', 'descricao')
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('veiculo_id')
                     ->label('Veículo')
                     ->relationship('veiculo', 'placa')
                     ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }
@@ -109,12 +111,11 @@ class PlanoManutencaoVeiculoResource extends Resource
             ])
             ->defaultGroup('veiculo.placa')
             ->defaultSort('planoPreventivo.descricao', 'asc')
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
-                // Tables\Filters\QueryBuilder::make()
-                //      ->constraints([
-                //         Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('quilometragem_restante')
-                //             ->label('Quilometragem Restante'),
-                //      ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
@@ -125,8 +126,7 @@ class PlanoManutencaoVeiculoResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll('5s')
-            ->persistFiltersInSession();
+            ->poll('5s');
     }
 
     public static function getRelations(): array

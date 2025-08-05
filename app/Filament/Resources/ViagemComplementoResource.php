@@ -115,20 +115,21 @@ class ViagemComplementoResource extends Resource
                 ]
             )
             ->defaultGroup('numero_viagem')
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
                 ]),
                 Tables\Actions\BulkAction::make('conferido')
-                        // ->successNotification(null)
                         ->label('Conferir')
                         ->icon('heroicon-o-check-circle')
                         ->action(function (Collection $records) {

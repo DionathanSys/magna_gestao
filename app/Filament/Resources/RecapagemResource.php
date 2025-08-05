@@ -118,15 +118,16 @@ class RecapagemResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->searchOnBlur(true)
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null)
                     ->iconButton(),
                 Tables\Actions\ReplicateAction::make()
-                    // ->successNotification(null)
                     ->icon('heroicon-o-document-duplicate')
                     ->iconButton()
                     ->fillForm(fn(Recapagem $record) => [
@@ -146,7 +147,6 @@ class RecapagemResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null),
                 ]),
             ]);
     }

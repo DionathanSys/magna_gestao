@@ -86,6 +86,10 @@ class ConsertoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->deferFilters()
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 Tables\Filters\Filter::make('garantia')
                     ->label('Sem Garantia')
@@ -96,13 +100,11 @@ class ConsertoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    // ->successNotification(null)
                     ->iconButton(),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        // ->successNotification(null)
                 ]),
             ]);
     }
