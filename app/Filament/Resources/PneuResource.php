@@ -127,7 +127,7 @@ class PneuResource extends Resource
                     ->label('Nº de Fogo')
                     ->width('1%')
                     ->numeric(null, '', '')
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('marca')
                     ->width('1%')
                     ->searchable(),
