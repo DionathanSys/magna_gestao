@@ -183,7 +183,7 @@ class PneuResource extends Resource
                     ->label('Nº de Fogo')
                     ->options(
                         Pneu::query()
-                            ->pluck('numero_fogo', 'id')
+                            ->pluck('numero_fogo', 'numero_fogo')
                     )
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('estado_pneu')
