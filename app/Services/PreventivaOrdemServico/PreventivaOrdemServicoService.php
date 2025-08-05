@@ -18,6 +18,13 @@ class PreventivaOrdemServicoService
         $this->itemOrdemServicoService = new ItemOrdemServicoService();
     }
 
+    /**
+     * Cria uma Ordem de Serviço vinculada a um Plano Preventivo.
+     * @param array $data
+     * @return Models\PlanoManutencaoOrdemServico
+     */
+
+
     public function create(array $data): ?Models\PlanoManutencaoOrdemServico
     {
         try {

@@ -15,6 +15,7 @@ use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Services\NotificacaoService as notify;
 
 class PlanoManutencaoOrdemServicoResource extends Resource
 {

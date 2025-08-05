@@ -45,7 +45,7 @@ class CriarVinculo
     {
         $validator = Validator::make($data, [
             'plano_preventivo_id' => 'required|exists:planos_preventivo,id',
-            'ordem_servico_id'    => 'required|exists:ordens_servico,id',
+            'ordem_servico_id'    => 'nullable|min:1|exists:ordens_servico,id',
             'veiculo_id'          => 'required|exists:veiculos,id',
             'km_execucao'         => 'required|numeric|min:0',
             'data_execucao'       => 'required|date',
