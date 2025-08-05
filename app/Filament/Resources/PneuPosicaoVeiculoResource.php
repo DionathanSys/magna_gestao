@@ -92,7 +92,7 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->searchDebounce('750ms')
+            ->searchOnBlur()
             ->persistSearchInSession()
             ->persistColumnSearchesInSession()
             ->filters([
