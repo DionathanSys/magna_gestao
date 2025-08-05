@@ -92,6 +92,9 @@ class PneuPosicaoVeiculoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->searchDebounce('750ms')
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 Tables\Filters\SelectFilter::make('veiculo_id')
                     ->label('Veículo')
