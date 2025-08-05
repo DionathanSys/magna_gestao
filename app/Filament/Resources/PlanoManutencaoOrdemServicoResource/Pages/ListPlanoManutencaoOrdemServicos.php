@@ -28,7 +28,8 @@ class ListPlanoManutencaoOrdemServicos extends ListRecords
                             ]);
                             $action->halt();
                         }
-                }),
+                })
+                ->modalSubmitAction(),
         ];
     }
 }

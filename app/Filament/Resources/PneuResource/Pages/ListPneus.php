@@ -25,6 +25,7 @@ class ListPneus extends ListRecords
     public function getTabs(): array
     {
         return [
+            'Todos' => \Filament\Resources\Components\Tab::make(),
             'Estoque' => \Filament\Resources\Components\Tab::make()
                 ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->where('local', LocalPneuEnum::ESTOQUE_CCO)),
             'Frota' => \Filament\Resources\Components\Tab::make()
