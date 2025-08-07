@@ -16,7 +16,6 @@ class EditViagem extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                // ->successNotification(null),
         ];
     }
 

@@ -358,7 +358,8 @@ class ViagemResource extends Resource
                         ->icon('heroicon-o-arrow-path')
                         ->action(function (Viagem $record) {}),
                     Tables\Actions\EditAction::make()
-                        ->visible(fn(Viagem $record) => ! $record->conferido),
+                        ->visible(fn(Viagem $record) => ! $record->conferido)
+                        ->after(fn(Viagem $record) => (new \App\Services\ViagemService())->recalcularViagem($record)),
                     Tables\Actions\Action::make('importar-viagem')
                         ->tooltip('Alt. Dt. Próxima Viagem')
                         ->icon('heroicon-o-arrow-left-end-on-rectangle')
