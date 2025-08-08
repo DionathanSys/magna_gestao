@@ -102,8 +102,14 @@ class UnavailableItems extends BaseWidget
                     }),
             ])
             ->groups([
-                'placa',
-                'planoPreventivo.descricao'
+                Tables\Grouping\Group::make('placa')
+                        ->label('Veículo')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
+                Tables\Grouping\Group::make('planoPreventivo.descricao')
+                        ->label('Plano Preventivo')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
             ])
             ->defaultGroup('placa')
             ->actions([

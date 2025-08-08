@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Filament\Resources\ViagemResource\Pages;
 use App\Filament\Resources\ViagemResource\RelationManagers;
@@ -37,6 +38,7 @@ use App\Jobs\RegistrarViagemComplementoJob;
 use App\Services\Viagem\ViagemComplementoService;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Tables\Columns\Summarizers\Range;
+use Illuminate\Support\Facades\Cache;
 
 class ViagemResource extends Resource
 {
@@ -506,5 +508,19 @@ class ViagemResource extends Resource
         return [
             AdvancedStatsOverviewWidget::class,
         ];
+    }
+
+    // Método para limpar cache do defaultGroup
+    public static function clearDefaultGroupCache(?int $userId = null): void
+    {
+        $userId = $userId ?? Auth::user()->id;
+        Cache::forget("defaultGroup-viagens-user-{$userId}");
+    }
+
+    // Método para forçar um defaultGroup específico
+    public static function setUserDefaultGroup(string $group, ?int $userId = null): void
+    {
+        $userId = $userId ?? Auth::user()->id;
+        Cache::put("defaultGroup-viagens-user-{$userId}", $group, 1800);
     }
 }
