@@ -69,7 +69,7 @@ class PneuResource extends Resource
                         'TR-01' => 'TR-01',
                         'G686 MSS PLUS' => 'G686 MSS PLUS',
                         'CHD3' => 'CHD3',
-
+                        'R02 PROWAY' => 'R02 PROWAY'
 
 
                     ]),
