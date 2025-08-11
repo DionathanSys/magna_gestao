@@ -70,8 +70,6 @@ class PneuResource extends Resource
                         'G686 MSS PLUS' => 'G686 MSS PLUS',
                         'CHD3' => 'CHD3',
                         'R02 PROWAY' => 'R02 PROWAY'
-
-
                     ]),
                 Forms\Components\Select::make('medida')
                     ->options([
@@ -88,6 +86,8 @@ class PneuResource extends Resource
                 Forms\Components\TextInput::make('valor')
                     ->label('Valor')
                     ->numeric()
+                    ->default(0)
+                    ->minValue(0)
                     ->prefix('R$'),
                 Forms\Components\Select::make('desenho_pneu_id')
                     ->label('Desenho Borracha')
@@ -175,6 +175,12 @@ class PneuResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
+            ->groups([
+                Tables\Grouping\Group::make('modelo')
+                    ->label('Modelo'),
+                Tables\Grouping\Group::make('marca')
+                    ->label('Marca')
+            ])
             ->deferFilters()
             ->searchOnBlur()
             ->persistSearchInSession()
