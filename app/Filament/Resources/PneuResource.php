@@ -131,13 +131,16 @@ class PneuResource extends Resource
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('marca')
                     ->width('1%')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('modelo')
                     ->width('1%')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('medida')
                     ->width('1%')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('desenhoPneu.medida')
                     ->label('Medida Sulco (mm)')
                     ->wrapHeader()
