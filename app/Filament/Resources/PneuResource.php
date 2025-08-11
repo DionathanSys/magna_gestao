@@ -66,6 +66,7 @@ class PneuResource extends Resource
                         'FG-01' => 'FG-01',
                         'TG-01' => 'TG-01',
                         'FR-88' => 'FR-88',
+                        'TR-01' => 'TR-01',
                         'G686 MSS PLUS' => 'G686 MSS PLUS',
                         'CHD3' => 'CHD3',
 
