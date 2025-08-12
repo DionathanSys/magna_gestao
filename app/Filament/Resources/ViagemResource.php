@@ -306,6 +306,8 @@ class ViagemResource extends Resource
                 Tables\Filters\SelectFilter::make('integrado_id')
                     ->label('Integrado')
                     ->relationship('cargas.integrado', 'nome')
+                    ->searchable(['codigo', 'nome'])
+                    ->getOptionLabelFromRecordUsing(fn(Integrado $record) => "{$record->codigo} {$record->nome}")
                     ->searchable()
                     ->preload()
                     ->multiple(),
