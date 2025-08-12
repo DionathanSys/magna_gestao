@@ -293,7 +293,7 @@ class ViagemResource extends Resource
                         ->collapsible(),
                 ]
             )
-            ->defaultGroup('data_competencia')
+            ->defaultGroup()
             ->defaultSort('numero_viagem')
             ->searchOnBlur()
             ->deferFilters()
