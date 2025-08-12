@@ -104,6 +104,10 @@ class ViagemComplementoResource extends Resource
                         ->titlePrefixedWithLabel(false)
                         ->getTitleFromRecordUsing(fn(ViagemComplemento $record): string => Carbon::parse($record->data_competencia)->format('d/m/Y'))
                         ->collapsible(),
+                    Tables\Grouping\Group::make('integrado.nome')
+                        ->label('Integrado')
+                        ->titlePrefixedWithLabel(false)
+                        ->collapsible(),
                     Tables\Grouping\Group::make('veiculo.placa')
                         ->label('Veículo')
                         ->titlePrefixedWithLabel(false)
