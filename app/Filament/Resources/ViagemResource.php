@@ -240,7 +240,8 @@ class ViagemResource extends Resource
                         ->type('date')
                         ->label('Dt. Comp.')
                         ->width('1%')
-                        ->sortable(),
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextColumn::make('data_inicio')
                         ->label('Dt. Início')
                         ->width('1%')
@@ -251,7 +252,8 @@ class ViagemResource extends Resource
                         ->width('1%')
                         ->dateTime('d/m/Y H:i')
                         ->dateTimeTooltip()
-                        ->sortable(),
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: false),
                 ]),
                 Tables\Columns\IconColumn::make('conferido')
                     ->color(fn(string $state): string => match ($state) {
