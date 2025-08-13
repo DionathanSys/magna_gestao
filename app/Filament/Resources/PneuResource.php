@@ -55,6 +55,7 @@ class PneuResource extends Resource
                 Forms\Components\Select::make('modelo')
                     ->options([
                         'ENDUTRAXMA' => 'ENDUTRAXMA',
+                        'KMAX Z' => 'KMAX Z',
                         'X WORKS' => 'X WORKS',
                         'X WORKS Z' => 'X WORKS Z',
                         'FORZA BLOCK' => 'FORZA BLOCK',

@@ -226,6 +226,11 @@ class ViagemResource extends Resource
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('km_dispersao')
+                        ->wrapHeader()
+                        ->width('1%')
+                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\SelectColumn::make('motivo_divergencia')
                         ->label('Motivo Divergência')
                         ->wrapHeader()
