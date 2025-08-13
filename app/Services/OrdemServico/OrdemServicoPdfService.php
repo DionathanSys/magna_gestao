@@ -116,9 +116,7 @@ class OrdemServicoPdfService
         ];
 
         // Para visualizar no navegador
-        return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.ordem-servico-tailwind', $data)
-            ->setPaper('A4', 'portrait')
-            ->stream('ordem-servico-tailwind-' . $ordemServico->id . '-' . date('Y-m-d-H-i') . '.pdf');
+        return view('pdf.ordem-servico-tailwind', $data);
     }
 
     /**

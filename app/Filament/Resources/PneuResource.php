@@ -42,6 +42,7 @@ class PneuResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('marca')
                     ->options([
+                        'APOLLO' => 'APOLLO',
                         'MICHELIN' => 'MICHELIN',
                         'X BRI' => 'X BRI',
                         'GOODYEAR' => 'GOODYEAR',
@@ -53,6 +54,7 @@ class PneuResource extends Resource
                     ]),
                 Forms\Components\Select::make('modelo')
                     ->options([
+                        'ENDUTRAXMA' => 'ENDUTRAXMA',
                         'X WORKS' => 'X WORKS',
                         'X WORKS Z' => 'X WORKS Z',
                         'FORZA BLOCK' => 'FORZA BLOCK',
