@@ -256,12 +256,14 @@ class ViagemResource extends Resource
                         ->toggleable(isToggledHiddenByDefault: false),
                 ]),
                 Tables\Columns\IconColumn::make('conferido')
+                    ->width('1%')
                     ->color(fn(string $state): string => match ($state) {
                         '1' => 'blue',
                         default => 'red',
                     }),
                 Tables\Columns\TextColumn::make('complementos_count')
                     ->label('Complementos')
+                    ->width('1%')
                     ->counts('complementos')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('Users', [
