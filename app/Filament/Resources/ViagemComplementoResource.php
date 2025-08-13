@@ -127,7 +127,7 @@ class ViagemComplementoResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('integrado_id')
                     ->label('Integrado')
-                    ->relationship('cargas.integrado', 'nome')
+                    ->relationship('integrado', 'nome')
                     ->searchable(['codigo', 'nome'])
                     ->getOptionLabelFromRecordUsing(fn(Integrado $record) => "{$record->codigo} {$record->nome}")
                     ->searchable()
