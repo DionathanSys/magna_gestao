@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ViagemComplementoResource\Pages;
 use App\Filament\Resources\ViagemComplementoResource\RelationManagers;
+use App\Models\Integrado;
 use App\Models\ViagemComplemento;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -124,7 +125,51 @@ class ViagemComplementoResource extends Resource
             ->persistSearchInSession()
             ->persistColumnSearchesInSession()
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('integrado_id')
+                    ->label('Integrado')
+                    ->relationship('cargas.integrado', 'nome')
+                    ->searchable(['codigo', 'nome'])
+                    ->getOptionLabelFromRecordUsing(fn(Integrado $record) => "{$record->codigo} {$record->nome}")
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
+                Tables\Filters\Filter::make('numero_viagem')
+                    ->form([
+                        Forms\Components\TextInput::make('numero_viagem')
+                            ->label('Nº Viagem'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['numero_viagem'],
+                                fn(Builder $query, $numeroViagem): Builder => $query->where('numero_viagem', $numeroViagem),
+                            );
+                    }),
+                Tables\Filters\SelectFilter::make('veiculo_id')
+                    ->label('Veículo')
+                    ->relationship('veiculo', 'placa')
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
+                    ->columnSpanFull(),
+                Tables\Filters\Filter::make('data_competencia')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_inicio')
+                            ->label('Data Comp. Início'),
+                        Forms\Components\DatePicker::make('data_fim')
+                            ->label('Data Comp. Fim'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['data_inicio'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_competencia', '>=', $date),
+                            )
+                            ->when(
+                                $data['data_fim'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('data_competencia', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
