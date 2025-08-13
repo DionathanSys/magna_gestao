@@ -230,6 +230,7 @@ class ViagemResource extends Resource
                         ->wrapHeader()
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\SelectColumn::make('motivo_divergencia')
                         ->label('Motivo Divergência')
