@@ -449,6 +449,8 @@ class ViagemResource extends Resource
                     ->action(function (Collection $records) {
                         $records->each(function (Viagem $record) {
                             $record->conferido = true;
+                            $record->updated_by = Auth::user()->id;
+                            $record->checked_by = Auth::user()->id;
                             $record->save();
                         });
                     })
