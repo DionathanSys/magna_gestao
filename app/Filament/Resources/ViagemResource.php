@@ -211,6 +211,7 @@ class ViagemResource extends Resource
                     Tables\Columns\TextColumn::make('dispersao_percentual')
                         ->label('Dispersão %')
                         ->width('1%')
+                        ->prefix('%')
                         ->badge()
                         ->wrapHeader()
                         ->sortable()
