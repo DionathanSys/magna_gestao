@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('viagens', function (Blueprint $table) {
-            $table->decimal('km_motivo_divergencia', 10, 2)
-                ->default(0);
-            $table->decimal('km_dispersao', 10, 2)
-                ->virtualAs("COALESCE(km_rodado_excedente, 0) - COALESCE(km_cobrar, 0) - COALESCE(km_motivo_divergencia, 0)");
+
+
+            // $table->decimal('km_dispersao', 10, 2)
+            //     ->virtualAs("COALESCE(km_rodado_excedente, 0) - COALESCE(km_cobrar, 0) - COALESCE(km_motivo_divergencia, 0)");
 
         });
     }

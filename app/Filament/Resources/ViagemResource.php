@@ -158,7 +158,9 @@ class ViagemResource extends Resource
                 Tables\Columns\TextColumn::make('numero_viagem')
                     ->label('Nº Viagem')
                     ->width('1%')
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable()
+                    ->copyMessage('Email address copied'),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
                     ->width('1%')
@@ -171,6 +173,7 @@ class ViagemResource extends Resource
                     ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('documento_transporte')
                     ->label('Doc. Transp.')
+                    ->width('1%')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColumnGroup::make('KM', [
                     Tables\Columns\TextColumn::make('km_rodado')
@@ -196,21 +199,13 @@ class ViagemResource extends Resource
                             Integrado::find($record->carga->integrado_id),
                             $state
                         )),
-                    Tables\Columns\TextColumn::make('km_rodado_excedente')
-                        ->label('Km Perdido')
+                    Tables\Columns\TextColumn::make('km_divergencia')
+                        ->label('Km Divergência')
                         ->width('1%')
-                        ->color(fn($state, Viagem $record): string => $record->km_rodado_excedente > 0 ? 'info' : '')
-                        ->badge(fn($state, Viagem $record): bool => $record->km_rodado_excedente > 0)
+                        ->color(fn($state, Viagem $record): string => $record->km_divergencia > 3.49 ? 'danger' : 'info')
+                        ->badge()
                         ->wrapHeader()
                         ->sortable()
-                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
-                        ->toggleable(isToggledHiddenByDefault: false),
-                    Tables\Columns\TextColumn::make('km_pago_excedente')
-                        ->wrapHeader()
-                        ->width('1%')
-                        ->color(fn($state, Viagem $record): string => $record->km_pago_excedente > 0 ? 'info' : '')
-                        ->badge(fn($state, Viagem $record): bool => $record->km_pago_excedente > 0)
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
@@ -225,12 +220,6 @@ class ViagemResource extends Resource
                         ->wrapHeader()
                         ->width('1%')
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('km_dispersao')
-                        ->wrapHeader()
-                        ->width('1%')
-                        ->numeric(decimalPlaces: 2, locale: 'pt-BR')
-                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\SelectColumn::make('motivo_divergencia')
                         ->label('Motivo Divergência')
