@@ -37,6 +37,7 @@ use Livewire\Features\SupportEvents\HandlesEvents;
 use App\Jobs\RegistrarViagemComplementoJob;
 use App\Services\Viagem\ViagemComplementoService;
 use Filament\Infolists\Components\ViewEntry;
+use Filament\Tables\Columns\Summarizers\Average;
 use Filament\Tables\Columns\Summarizers\Range;
 use Illuminate\Support\Facades\Cache;
 
@@ -215,6 +216,7 @@ class ViagemResource extends Resource
                         ->badge()
                         ->wrapHeader()
                         ->sortable()
+                        ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextInputColumn::make('km_cobrar')
                         ->width('1%')
