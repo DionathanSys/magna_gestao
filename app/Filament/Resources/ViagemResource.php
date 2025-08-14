@@ -159,8 +159,7 @@ class ViagemResource extends Resource
                     ->label('Nº Viagem')
                     ->width('1%')
                     ->sortable()
-                    ->copyable()
-                    ->copyMessage('Email address copied'),
+                    ->copyable(),
                 Tables\Columns\TextColumn::make('cargas.integrado.codigo')
                     ->label('Cód. Integrado')
                     ->width('1%')
@@ -208,6 +207,13 @@ class ViagemResource extends Resource
                         ->sortable()
                         ->numeric(decimalPlaces: 2, locale: 'pt-BR')
                         ->summarize(Sum::make()->numeric(decimalPlaces: 2, locale: 'pt-BR'))
+                        ->toggleable(isToggledHiddenByDefault: false),
+                    Tables\Columns\TextColumn::make('dispersao_percentual')
+                        ->label('Dispersão %')
+                        ->width('1%')
+                        ->badge()
+                        ->wrapHeader()
+                        ->sortable()
                         ->toggleable(isToggledHiddenByDefault: false),
                     Tables\Columns\TextInputColumn::make('km_cobrar')
                         ->width('1%')
@@ -387,8 +393,7 @@ class ViagemResource extends Resource
 
                             notify::success('Viagem atualizada com sucesso!', 'A data da próxima viagem foi atualizada.');
                         }),
-                    Tables\Actions\DeleteAction::make()
-                        ->iconButton(),
+                    Tables\Actions\DeleteAction::make(),
                 ])->link(),
                 Tables\Actions\Action::make('nova-carga')
                     ->label('Carga')
