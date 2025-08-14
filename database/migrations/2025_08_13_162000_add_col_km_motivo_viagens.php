@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('viagens', function (Blueprint $table) {
+            $table->decimal('km_dispersao', 10, 2)
+                ->virtualAs("COALESCE(km_rodado, 0) - COALESCE(km_pago, 0)");
             $table->decimal('dispersao_percentual', 10, 2)
-                ->virtualAs("(COALESCE(km_divergencia, 0) / NULLIF(COALESCE(km_rodado, 0), 0)) * 100");
+                ->virtualAs("(COALESCE(km_dispersao, 0) / NULLIF(COALESCE(km_rodado, 0), 0)) * 100");
 
         });
     }
@@ -25,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('viagens', function (Blueprint $table) {
             $table->dropColumn('dispersao_percentual');
+            $table->dropColumn('km_dispersao');
         });
     }
 };

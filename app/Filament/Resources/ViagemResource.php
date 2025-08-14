@@ -198,10 +198,10 @@ class ViagemResource extends Resource
                             Integrado::find($record->carga->integrado_id),
                             $state
                         )),
-                    Tables\Columns\TextColumn::make('km_divergencia')
-                        ->label('Km Divergência')
+                    Tables\Columns\TextColumn::make('km_km_dispersao')
+                        ->label('Km Dispersão')
                         ->width('1%')
-                        ->color(fn($state, Viagem $record): string => $record->km_divergencia > 3.49 ? 'danger' : 'info')
+                        ->color(fn($state, Viagem $record): string => $record->km_dispersao > 3.49 ? 'danger' : 'info')
                         ->badge()
                         ->wrapHeader()
                         ->sortable()
