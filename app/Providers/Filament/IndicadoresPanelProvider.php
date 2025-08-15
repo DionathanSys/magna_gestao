@@ -26,7 +26,7 @@ class IndicadoresPanelProvider extends PanelProvider
             ->id('indicadores')
             ->path('indicadores')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Sky,
             ])
             ->discoverResources(in: app_path('Filament/Indicadores/Resources'), for: 'App\\Filament\\Indicadores\\Resources')
             ->discoverPages(in: app_path('Filament/Indicadores/Pages'), for: 'App\\Filament\\Indicadores\\Pages')

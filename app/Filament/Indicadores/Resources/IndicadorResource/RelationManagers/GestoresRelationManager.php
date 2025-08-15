@@ -40,9 +40,9 @@ class GestoresRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->iconButton(),
+                    ->label('Gestor')
+                    ->icon('heroicon-o-plus'),
                 Tables\Actions\AttachAction::make()
-                    ->iconButton()
                     ->preloadRecordSelect()
                     ->modalHeading('Vincular Gestor')
                     ->recordSelect(
@@ -63,6 +63,8 @@ class GestoresRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Sem gestores vinculados')
+            ->emptyStateDescription('Clique no botão acima para adicionar/vincular um gestor.');
     }
 }

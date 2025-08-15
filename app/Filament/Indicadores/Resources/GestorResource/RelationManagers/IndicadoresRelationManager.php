@@ -55,13 +55,9 @@ class IndicadoresRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Indicador')
-                    ->iconButton()
-                    ->icon('heroicon-o-plus')
-                    ->modalHeading('Novo Indicador')
-                    ->form(fn(Forms\Form $form) => IndicadorResource::form($form)),
+                    ->icon('heroicon-o-plus'),
 
                 Tables\Actions\AttachAction::make()
-                    ->iconButton()
                     ->preloadRecordSelect()
                     ->modalHeading('Vincular Indicador')
                     ->recordSelect(
@@ -81,6 +77,8 @@ class IndicadoresRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Sem indicadores vinculados')
+            ->emptyStateDescription('Clique no botão acima para adicionar/vincular um indicador.');
     }
 }

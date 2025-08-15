@@ -27,6 +27,7 @@ class GestorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(6)
             ->schema([
                 static::getNomeFormField(),
                 static::getUnidadeFormField(),
