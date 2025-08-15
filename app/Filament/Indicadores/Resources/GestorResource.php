@@ -101,6 +101,7 @@ class GestorResource extends Resource
     {
         return Forms\Components\TextInput::make('nome')
             ->label('Nome')
+            ->columnSpan(2)
             ->required()
             ->maxLength(255);
     }
@@ -109,6 +110,7 @@ class GestorResource extends Resource
     {
         return Forms\Components\Select::make('unidade')
             ->label('Unidade')
+            ->columnSpan(2)
             ->options([
                 'CATANDUVAS' => 'CATANDUVAS',
                 'CHAPECÓ'   => 'CHAPECÓ',
@@ -121,6 +123,7 @@ class GestorResource extends Resource
     {
         return Forms\Components\TextInput::make('setor')
             ->label('Setor')
+            ->columnSpan(2)
             ->required();
     }
 

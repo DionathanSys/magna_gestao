@@ -36,24 +36,25 @@ class ResultadoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('gestor.id')
-                    ->numeric()
+                    ->label('Gestor')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador_id')
-                    ->numeric()
+                    ->label('Indicador')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao')
-                    ->numeric()
+                    ->label('Pontuação')
+                    ->numeric('2', ',' , '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -89,23 +90,32 @@ class ResultadoResource extends Resource
     public static function getIndicadorIdFormField(): Forms\Components\Select
     {
         return Forms\Components\Select::make('indicador_id')
-            ->relationship('indicador', 'id')
-            ->required();
+            ->label('Indicador')
+            ->columnSpan(2)
+            ->relationship('indicador', 'descricao')
+            ->required()
+            ->preload()
+            ->searchable();
     }
 
     public static function getGestorIdFormField(): Forms\Components\Select
     {
         return Forms\Components\Select::make('gestor_id')
-            ->relationship('gestor', 'id')
-            ->required();
+            ->label('Gestor')
+            ->columnSpan(2)
+            ->relationship('gestor', 'nome')
+            ->required()
+            ->preload()
+            ->searchable();
     }
 
     public static function getPontuacaoFormField(): Money
     {
         return Money::make('pontuacao')
             ->label('Pontuação')
+            ->columnSpan(2)
+            ->prefix(null)
             ->required()
-            ->numeric()
             ->minValue(0);
     }
 

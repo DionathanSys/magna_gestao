@@ -2,6 +2,7 @@
 
 namespace App\Filament\Indicadores\Resources\GestorResource\RelationManagers;
 
+use App\Filament\Indicadores\Resources\ResultadoResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -16,12 +17,7 @@ class ResultadosRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('id')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return ResultadoResource::form($form);
     }
 
     public function table(Table $table): Table
