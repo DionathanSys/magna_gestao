@@ -27,7 +27,7 @@ class IndicadorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(12)
+            ->columns(6)
             ->schema([
                 static::getDescricaoFormField(),
                 static::getObjetivoFormField(),
@@ -102,8 +102,8 @@ class IndicadorResource extends Resource
     {
         return Forms\Components\TextInput::make('descricao')
             ->label('Descrição')
+            ->columnSpan(3)
             ->autocomplete(false)
-            ->columnSpan(4)
             ->required()
             ->maxLength(255);
     }
@@ -113,7 +113,7 @@ class IndicadorResource extends Resource
         return Forms\Components\TextInput::make('objetivo')
             ->label('Meta')
             ->autocomplete(false)
-            ->columnSpan(2)
+            ->columnSpan(3)
             ->required()
             ->maxLength(255);
     }
