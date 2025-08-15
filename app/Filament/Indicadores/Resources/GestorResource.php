@@ -52,9 +52,11 @@ class GestorResource extends Resource
                 Tables\Columns\TextColumn::make('setor')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
-                    ->label('Pontuação obtida'),
+                    ->label('Pontuação obtida')
+                    ->numeric('2', ',' , '.'),
                 Tables\Columns\TextColumn::make('pontuacao_maxima')
-                    ->label('Pontuação máxima'),
+                    ->label('Pontuação máxima')
+                    ->numeric('2', ',' , '.'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
