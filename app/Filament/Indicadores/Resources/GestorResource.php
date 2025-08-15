@@ -5,7 +5,9 @@ namespace App\Filament\Indicadores\Resources;
 use App\Filament\Indicadores\Resources\GestorResource\Pages;
 use App\Filament\Indicadores\Resources\GestorResource\RelationManagers;
 use App\Filament\Indicadores\Resources\GestorResource\RelationManagers\IndicadoresRelationManager;
+use App\Filament\Indicadores\Resources\GestorResource\RelationManagers\ResultadosRelationManager;
 use App\Models\Gestor;
+use App\Models\Resultado;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use LDAP\Result;
 
 class GestorResource extends Resource
 {
@@ -52,6 +55,8 @@ class GestorResource extends Resource
                     ->label('Pontuação obtida'),
                 Tables\Columns\TextColumn::make('pontuacao_maxima')
                     ->label('Pontuação máxima'),
+                Tables\Columns\TextColumn::make('pontuacao_total')
+                    ->label('Pontuação máxima'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -84,7 +89,8 @@ class GestorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            IndicadoresRelationManager::class
+            IndicadoresRelationManager::class,
+            ResultadosRelationManager::class,
         ];
     }
 

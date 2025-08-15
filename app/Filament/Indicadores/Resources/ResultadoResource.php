@@ -25,6 +25,7 @@ class ResultadoResource extends Resource
             ->schema([
                 static::getGestorIdFormField(),
                 static::getIndicadorIdFormField(),
+                static::getStatusFormField(),
                 static::getPontuacaoFormField(),
                 static::getPeriodoFormField(),
             ]);
@@ -34,15 +35,18 @@ class ResultadoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('gestor.id')
+                Tables\Columns\TextColumn::make('gestor.nome')
                     ->label('Gestor')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('indicador_id')
+                Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao')
                     ->label('Pontuação')
                     ->numeric('2', ',' , '.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
@@ -90,7 +94,7 @@ class ResultadoResource extends Resource
     {
         return Forms\Components\Select::make('indicador_id')
             ->label('Indicador')
-            ->columnSpan(2)
+            ->columnSpan(4)
             ->relationship('indicador', 'descricao')
             ->required()
             ->preload()
@@ -101,7 +105,7 @@ class ResultadoResource extends Resource
     {
         return Forms\Components\Select::make('gestor_id')
             ->label('Gestor')
-            ->columnSpan(2)
+            ->columnSpan(4)
             ->relationship('gestor', 'nome')
             ->required()
             ->preload()
@@ -110,12 +114,36 @@ class ResultadoResource extends Resource
 
     public static function getPontuacaoFormField(): Money
     {
-        return Money::make('pontuacao')
+        return Money::make('pontuacao_obtida')
             ->label('Pontuação')
             ->columnSpan(2)
             ->prefix(null)
             ->required()
             ->minValue(0);
+    }
+
+    public static function getPontuacaoMaximaFormField(): Money
+    {
+        return Money::make('pontuacao_maxima')
+            ->label('Pontuação Máxima')
+            ->columnSpan(2)
+            ->prefix(null)
+            ->required()
+            ->minValue(0);
+    }
+
+    public static function getStatusFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('status')
+            ->label('Status')
+            ->columnSpan(3)
+            ->options([
+                'n_atingido' => 'Não Atingido',
+                'parcialmente_atingido' => 'Parcialmente Atingido',
+                'atingido' => 'Atingido',
+            ])
+            ->default('n_atingido')
+            ->required();
     }
     public static function getPeriodoFormField(): Forms\Components\DatePicker
     {
