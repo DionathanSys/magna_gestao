@@ -66,7 +66,7 @@ class IndicadoresRelationManager extends RelationManager
                         fn (Forms\Components\Select $select) =>
                             $select
                                 ->placeholder('Selecionar Indicador')
-                                ->relationship('indicadores', 'descricao')
+                                ->relationship('gestores.indicadores', 'descricao')
                                 ->preload(),
                     ),
             ])

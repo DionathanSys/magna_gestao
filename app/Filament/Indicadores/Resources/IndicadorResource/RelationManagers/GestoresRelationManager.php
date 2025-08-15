@@ -47,7 +47,8 @@ class GestoresRelationManager extends RelationManager
                         fn (Forms\Components\Select $select) =>
                             $select
                                 ->placeholder('Selecionar Gestor')
-                                ->relationship('gestores', 'nome'),
+                                ->relationship('indicadores.gestores', 'nome')
+                                ->preload(),
                     ),
             ])
             ->actions([
