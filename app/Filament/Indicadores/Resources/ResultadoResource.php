@@ -28,6 +28,7 @@ class ResultadoResource extends Resource
                 static::getGestorIdFormField(),
                 static::getIndicadorIdFormField(),
                 static::getPontuacaoFormField(),
+                static::getPeriodoFormField(),
             ]);
     }
 
