@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('indicador_id')
                 ->constrained('indicadores');
             $table->decimal('pontuacao', 10, 2);
+            $table->date('periodo');
             $table->timestamps();
             $table->softDeletes();
         });

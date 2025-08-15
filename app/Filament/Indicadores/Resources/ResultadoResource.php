@@ -23,7 +23,7 @@ class ResultadoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(6)
+            ->columns(8)
             ->schema([
                 static::getGestorIdFormField(),
                 static::getIndicadorIdFormField(),
@@ -117,6 +117,13 @@ class ResultadoResource extends Resource
             ->prefix(null)
             ->required()
             ->minValue(0);
+    }
+    public static function getPeriodoFormField(): Forms\Components\DatePicker
+    {
+        return Forms\Components\DatePicker::make('periodo')
+            ->label('Período')
+            ->columnSpan(2)
+            ->required();
     }
 
 }

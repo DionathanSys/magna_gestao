@@ -25,7 +25,28 @@ class ResultadosRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('gestor.id')
+                    ->label('Gestor')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('indicador_id')
+                    ->label('Indicador')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('pontuacao')
+                    ->label('Pontuação')
+                    ->numeric('2', ',' , '.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
