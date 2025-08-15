@@ -17,11 +17,7 @@ class IndicadoresRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-
-            ->schema([
-
-            ]);
+        return IndicadorResource::form($form);
     }
 
     public function table(Table $table): Table

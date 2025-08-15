@@ -124,6 +124,7 @@ class GestorResource extends Resource
     {
         return Forms\Components\TextInput::make('setor')
             ->label('Setor')
+            ->autocomplete(false)
             ->columnSpan(2)
             ->required();
     }
