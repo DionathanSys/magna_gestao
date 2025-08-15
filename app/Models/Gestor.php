@@ -24,9 +24,10 @@ class Gestor extends Model
 
     public function pontuacaoObtida(): Attribute
     {
+
         return Attribute::make(
             get: function () {
-                return $this->resultados->sum('pontuacao');
+                return $this->resultados->sum('pontuacao_obtida');
             }
         );
     }

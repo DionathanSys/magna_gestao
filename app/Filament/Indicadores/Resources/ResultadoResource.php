@@ -26,7 +26,8 @@ class ResultadoResource extends Resource
                 static::getGestorIdFormField(),
                 static::getIndicadorIdFormField(),
                 static::getStatusFormField(),
-                static::getPontuacaoFormField(),
+                static::getPontuacaoObtidaFormField(),
+                static::getPontuacaoMaximaFormField(),
                 static::getPeriodoFormField(),
             ]);
     }
@@ -112,10 +113,10 @@ class ResultadoResource extends Resource
             ->searchable();
     }
 
-    public static function getPontuacaoFormField(): Money
+    public static function getPontuacaoObtidaFormField(): Money
     {
         return Money::make('pontuacao_obtida')
-            ->label('Pontuação')
+            ->label('Pontuação Obtida')
             ->columnSpan(2)
             ->prefix(null)
             ->required()

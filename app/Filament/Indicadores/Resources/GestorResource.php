@@ -55,8 +55,6 @@ class GestorResource extends Resource
                     ->label('Pontuação obtida'),
                 Tables\Columns\TextColumn::make('pontuacao_maxima')
                     ->label('Pontuação máxima'),
-                Tables\Columns\TextColumn::make('pontuacao_total')
-                    ->label('Pontuação máxima'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')

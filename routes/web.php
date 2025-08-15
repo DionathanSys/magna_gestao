@@ -119,7 +119,7 @@ Route::prefix('ordem-servico')->group(function () {
         ->name('ordem-servico.pdf');
     Route::get('/{ordemServico}/pdf/download', [OrdemServicoPdfController::class, 'download'])
         ->name('ordem-servico.pdf.download');
-    
+
     // Rotas para versão Tailwind CSS
     Route::get('/{ordemServico}/pdf/tailwind', [OrdemServicoPdfController::class, 'visualizarTailwind'])
         ->name('ordem-servico.pdf.tailwind');
@@ -128,7 +128,7 @@ Route::prefix('ordem-servico')->group(function () {
 });
 
 Route::get('/teste2', function (){
-    dd('teste');
+    
 });
 
 
