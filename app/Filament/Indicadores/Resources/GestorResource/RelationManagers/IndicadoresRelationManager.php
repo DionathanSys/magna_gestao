@@ -37,7 +37,9 @@ class IndicadoresRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('descricao')
                     ->label('Descrição')
-                    ->width('1%'),
+                    ->width('1%')
+                    ->url(fn($record) => IndicadorResource::getUrl('edit', ['record' => $record->indicador_id]))
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('peso')
                     ->label('Peso')
                     ->width('1%')
@@ -45,8 +47,7 @@ class IndicadoresRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('tipo')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('periodicidade')
-                    ->label('Periodicidade')
-                    ->width('1%'),
+                    ->label('Periodicidade'),
             ])
             ->filters([
                 //
@@ -60,10 +61,13 @@ class IndicadoresRelationManager extends RelationManager
 
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                        ->modalHeading('Vincular Indicador')
-                        ->recordSelect(
-                            fn (Forms\Components\Select $select) => $select->placeholder('Selecionar Indicador'),
-                        ),
+                    ->modalHeading('Vincular Indicador')
+                    ->recordSelect(
+                        fn (Forms\Components\Select $select) =>
+                            $select
+                                ->placeholder('Selecionar Indicador')
+                                ->relationship('gestores', 'nome'),
+                    ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
