@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Filament\Indicadores\Resources\GestorResource\RelationManagers;
+
+use App\Filament\Indicadores\Resources\IndicadorResource;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class IndicadoresRelationManager extends RelationManager
+{
+    protected static string $relationship = 'indicadores';
+
+    public function form(Form $form): Form
+    {
+        return $form
+
+            ->schema([
+
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('descricao')
+            ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->width('1%')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('gestor_id')
+                    ->width('1%')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('descricao')
+                    ->label('Descrição')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('peso')
+                    ->label('Peso')
+                    ->width('1%')
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('tipo')
+                    ->width('1%'),
+                Tables\Columns\TextColumn::make('periodicidade')
+                    ->label('Periodicidade')
+                    ->width('1%'),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Indicador')
+                    ->icon('heroicon-o-plus')
+                    ->modalHeading('Novo Indicador')
+                    ->form(fn(Forms\Form $form) => IndicadorResource::form($form)),
+
+                Tables\Actions\AttachAction::make()
+                    ->preloadRecordSelect()
+                        ->modalHeading('Vincular Indicador')
+                        ->recordSelect(
+                            fn (Forms\Components\Select $select) => $select->placeholder('Selecionar Indicador'),
+                        ),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}

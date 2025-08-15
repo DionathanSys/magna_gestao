@@ -17,13 +17,19 @@ class GestorResource extends Resource
 {
     protected static ?string $model = Gestor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $pluralModelLabel = 'Gestores';
+
+    protected static ?string $pluralLabel = 'Gestores';
+
+    protected static ?string $label = 'Gestor';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                static::getNomeFormField(),
+                static::getUnidadeFormField(),
+                static::getSetorFormField(),
             ]);
     }
 
@@ -31,7 +37,34 @@ class GestorResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nome')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('unidade')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('setor')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('pontuacao_obtida')
+                    ->label('Pontuação obtida'),
+                Tables\Columns\TextColumn::make('pontuacao_maxima')
+                    ->label('Pontuação máxima'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->label('Excluído em')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -57,7 +90,7 @@ class GestorResource extends Resource
     {
         return [
             'index' => Pages\ListGestors::route('/'),
-            'create' => Pages\CreateGestor::route('/create'),
+            // 'create' => Pages\CreateGestor::route('/create'),
             'edit' => Pages\EditGestor::route('/{record}/edit'),
         ];
     }
