@@ -4,6 +4,7 @@ namespace App\Filament\Indicadores\Resources;
 
 use App\Filament\Indicadores\Resources\GestorResource\Pages;
 use App\Filament\Indicadores\Resources\GestorResource\RelationManagers;
+use App\Filament\Indicadores\Resources\GestorResource\RelationManagers\IndicadoresRelationManager;
 use App\Models\Gestor;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -82,7 +83,7 @@ class GestorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            IndicadoresRelationManager::class
         ];
     }
 
