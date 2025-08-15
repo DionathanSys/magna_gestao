@@ -43,7 +43,7 @@ class GestoresRelationManager extends RelationManager
                     ->label('Gestor')
                     ->icon('heroicon-o-plus')
                     ->modalHeading('Novo Gestor')
-                    ->form(fn(Forms\Form $form) => GestorResource::form($form)),
+                    ->form(fn(Forms\Form $form) => GestorResource::form($form->columns(6))),
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
                     ->modalHeading('Vincular Gestor')
