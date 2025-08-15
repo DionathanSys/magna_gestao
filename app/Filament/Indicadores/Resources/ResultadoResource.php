@@ -18,8 +18,6 @@ class ResultadoResource extends Resource
 {
     protected static ?string $model = Resultado::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     public static function form(Form $form): Form
     {
         return $form
