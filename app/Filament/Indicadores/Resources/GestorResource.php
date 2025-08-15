@@ -101,6 +101,7 @@ class GestorResource extends Resource
     {
         return Forms\Components\TextInput::make('nome')
             ->label('Nome')
+            ->autocomplete(false)
             ->columnSpan(2)
             ->required()
             ->maxLength(255);
