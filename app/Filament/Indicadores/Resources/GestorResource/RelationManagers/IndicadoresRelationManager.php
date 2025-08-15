@@ -55,11 +55,13 @@ class IndicadoresRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Indicador')
+                    ->iconButton()
                     ->icon('heroicon-o-plus')
                     ->modalHeading('Novo Indicador')
                     ->form(fn(Forms\Form $form) => IndicadorResource::form($form)),
 
                 Tables\Actions\AttachAction::make()
+                    ->iconButton()
                     ->preloadRecordSelect()
                     ->modalHeading('Vincular Indicador')
                     ->recordSelect(
@@ -72,11 +74,10 @@ class IndicadoresRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

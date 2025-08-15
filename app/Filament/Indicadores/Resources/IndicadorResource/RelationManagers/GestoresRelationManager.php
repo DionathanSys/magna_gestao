@@ -39,8 +39,10 @@ class GestoresRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->iconButton(),
                 Tables\Actions\AttachAction::make()
+                    ->iconButton()
                     ->preloadRecordSelect()
                     ->modalHeading('Vincular Gestor')
                     ->recordSelect(
@@ -54,12 +56,10 @@ class GestoresRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DetachBulkAction::make(),
-                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
