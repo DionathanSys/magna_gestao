@@ -86,7 +86,7 @@ class UnavailableItems extends BaseWidget
                     ->label('KM Médio')
                     ->numeric(0, ',', '.')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('veiculo.km_atual.quilometragem')
+                Tables\Columns\TextColumn::make('veiculo.quilometragem_atual')
                     ->label('KM Atual')
                     ->numeric(0, ',', '.')
                     ->sortable(),
