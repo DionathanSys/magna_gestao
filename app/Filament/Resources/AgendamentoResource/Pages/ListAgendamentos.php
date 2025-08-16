@@ -45,12 +45,21 @@ class ListAgendamentos extends ListRecords
                 ->badge(Models\Agendamento::query()->where('status', StatusOrdemServicoEnum::EXECUCAO)->count())
                 ->badgeColor('info'),
             'Sem Data' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', null))
-                ->badge(Models\Agendamento::query()->where('data_agendamento', null)->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query
+                        ->where('data_agendamento', null)
+                        ->where('status', StatusOrdemServicoEnum::PENDENTE)
+                )
+                ->badge(Models\Agendamento::query()
+                    ->where('data_agendamento', null)
+                    ->where('status', StatusOrdemServicoEnum::PENDENTE)
+                    ->count())
                 ->badgeColor('info'),
             'Hoje' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->format('Y-m-d')))
-                ->badge(Models\Agendamento::query()->where('data_agendamento', now()->format('Y-m-d'))->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query
+                    ->where('data_agendamento', now()->format('Y-m-d')))
+                ->badge(Models\Agendamento::query()
+                    ->where('data_agendamento', now()->format('Y-m-d'))->count())
                 ->badgeColor('info'),
             'Amanhã' => Tab::make()
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('data_agendamento', now()->addDay()->format('Y-m-d')))
