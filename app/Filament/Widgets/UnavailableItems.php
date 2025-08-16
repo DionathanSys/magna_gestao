@@ -22,7 +22,7 @@ class UnavailableItems extends BaseWidget
 
     public static function canView(): bool
     {
-        return Auth::check() && Auth::user()->is_admin;
+        return Auth::check();
     }
 
     protected int $queryCount;
