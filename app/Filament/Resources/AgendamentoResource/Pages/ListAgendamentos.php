@@ -77,6 +77,7 @@ class ListAgendamentos extends ListRecords
                     ])
                 )
                 ->badge(Models\Agendamento::query()
+                    ->whereIn('status', [StatusOrdemServicoEnum::PENDENTE, StatusOrdemServicoEnum::EXECUCAO])
                     ->whereBetween('data_agendamento', [
                         now()->startOfWeek()->format('Y-m-d'),
                         now()->endOfWeek()->format('Y-m-d')
