@@ -75,7 +75,13 @@ class ListAgendamentos extends ListRecords
                         now()->startOfWeek()->format('Y-m-d'),
                         now()->endOfWeek()->format('Y-m-d')
                     ])
-                ),
+                )
+                ->badge(Models\Agendamento::query()
+                    ->whereBetween('data_agendamento', [
+                        now()->startOfWeek()->format('Y-m-d'),
+                        now()->endOfWeek()->format('Y-m-d')
+                    ])
+                    ->count()),
             'Atrasados' => Tab::make()
                 ->modifyQueryUsing(
                     fn(Builder $query) =>
