@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -47,7 +48,7 @@ class ResultadoResource extends Resource
                     ->numeric('2', ',' , '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_maxima')
-                    ->label('Pontuação Máxima')
+                    ->label('% Obtido')
                     ->state(fn($record) => ($record->pontuacao_maxima > 0) ? ($record->pontuacao_obtida / $record->pontuacao_maxima) * 100 : 0 )
                     ->suffix('%')
                     ->numeric('2', ',' , '.')
@@ -68,6 +69,18 @@ class ResultadoResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups([
+                Group::make('gestor.nome')
+                    ->label('Gestor')
+                    ->titlePrefixedWithLabel(false)
+                    ->collapsible(),
+                Group::make('indicador.descricao')
+                    ->label('Indicador')
+                    ->titlePrefixedWithLabel(false)
+                    ->collapsible(),
+
+            ])
+            ->defaultGroup('gestor.nome')
             ->filters([
                 //
             ])
