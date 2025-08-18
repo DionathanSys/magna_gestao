@@ -190,7 +190,7 @@ class ResultadoResource extends Resource
     {
         return Forms\Components\Select::make('status')
             ->label('Status')
-            ->columnSpan(3)
+            ->columnSpan(2)
             ->options([
                 'n_atingido' => 'Não Atingido',
                 'parcialmente_atingido' => 'Parcialmente Atingido',
