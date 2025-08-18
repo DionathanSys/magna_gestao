@@ -65,6 +65,7 @@ class ResultadoResource extends Resource
                         'parcialmente_atingido' => 'warning',
                         'atingido' => 'info',
                     })
+                    ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('periodo')
                     ->label('Período')

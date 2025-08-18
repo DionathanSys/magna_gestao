@@ -38,6 +38,20 @@ class ResultadosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('indicador.peso')
                     ->label('Peso Indicador')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->state(fn($record) => match($record->status) {
+                        'n_atingido' => 'Não Atingido',
+                        'parcialmente_atingido' => 'Parcialmente Atingido',
+                        'atingido' => 'Atingido',
+                    })
+                    ->color(fn($record) => match($record->status) {
+                        'n_atingido' => 'danger',
+                        'parcialmente_atingido' => 'warning',
+                        'atingido' => 'info',
+                    })
+                    ->badge()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('periodo')
                     ->label('Período')
                     ->dateTime('F/Y')
