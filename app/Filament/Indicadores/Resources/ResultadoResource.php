@@ -60,6 +60,11 @@ class ResultadoResource extends Resource
                         'parcialmente_atingido' => 'Parcialmente Atingido',
                         'atingido' => 'Atingido',
                     })
+                    ->color(fn($record) => match($record->status) {
+                        'n_atingido' => 'danger',
+                        'parcialmente_atingido' => 'warning',
+                        'atingido' => 'info',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('periodo')
                     ->label('Período')
