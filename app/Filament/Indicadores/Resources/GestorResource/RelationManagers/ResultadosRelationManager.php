@@ -25,15 +25,18 @@ class ResultadosRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('gestor.id')
+                Tables\Columns\TextColumn::make('gestor.nome')
                     ->label('Gestor')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('indicador_id')
+                Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pontuacao')
+                Tables\Columns\TextColumn::make('pontuacao_obtida')
                     ->label('Pontuação')
                     ->numeric('2', ',' , '.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('indicador.peso')
+                    ->label('Peso Indicador')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')

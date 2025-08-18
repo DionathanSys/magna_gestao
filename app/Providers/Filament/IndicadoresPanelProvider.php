@@ -24,6 +24,8 @@ class IndicadoresPanelProvider extends PanelProvider
     {
         return $panel
             ->id('indicadores')
+            ->login()
+            ->profile()
             ->path('indicadores')
             ->colors([
                 'primary' => Color::Sky,
