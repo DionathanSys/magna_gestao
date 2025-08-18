@@ -122,6 +122,7 @@ class GestorResource extends Resource
                 'CATANDUVAS' => 'CATANDUVAS',
                 'CHAPECÓ'   => 'CHAPECÓ',
                 'CONCÓRDIA' => 'CONCÓRDIA'
+                'RIO_VERDE' => 'RIO VERDE'
             ])
             ->required();
     }
