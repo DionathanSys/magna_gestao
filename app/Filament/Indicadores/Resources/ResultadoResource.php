@@ -133,7 +133,6 @@ class ResultadoResource extends Resource
             ->relationship('indicador', 'descricao')
             ->required()
             ->preload()
-            ->live()
             ->searchable();
     }
 
@@ -171,7 +170,7 @@ class ResultadoResource extends Resource
         return Money::make('objetivo')
             ->label('Objetivo')
             ->columnSpan(2)
-            ->prefix(fn($record) => $record->tipo_meta ?? null)
+            ->prefix(fn($record) => $record->indicador->tipo_meta ?? null)
             ->required()
             ->reactive()
             ->minValue(0);
@@ -181,7 +180,7 @@ class ResultadoResource extends Resource
         return Money::make('resultado')
             ->label('Resultado')
             ->columnSpan(2)
-            ->prefix(fn($record) => $record->tipo_meta ?? null)
+            ->prefix(fn($record) => $record->indicador->tipo_meta ?? null)
             ->required()
             ->reactive()
             ->minValue(0);
