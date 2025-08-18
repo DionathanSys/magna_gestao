@@ -121,8 +121,8 @@ class GestorResource extends Resource
             ->options([
                 'CATANDUVAS' => 'CATANDUVAS',
                 'CHAPECÓ'   => 'CHAPECÓ',
-                'CONCÓRDIA' => 'CONCÓRDIA'
-                'RIO_VERDE' => 'RIO VERDE'
+                'CONCÓRDIA' => 'CONCÓRDIA',
+                'RIO_VERDE' => 'RIO VERDE',
             ])
             ->required();
     }
