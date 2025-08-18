@@ -90,7 +90,7 @@ class ResultadoResource extends Resource
                     ->collapsible(),
                 Group::make('periodo')
                     ->label('Período')
-                    ->dateTime('F/Y')
+                    ->date('F/Y')
                     ->titlePrefixedWithLabel(false)
                     ->collapsible(),
 
