@@ -55,6 +55,11 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
+                    ->state(fn($record) => match($record->status) {
+                        'n_atingido' => 'Não Atingido',
+                        'parcialmente_atingido' => 'Parcialmente Atingido',
+                        'atingido' => 'Atingido',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('periodo')
                     ->label('Período')
