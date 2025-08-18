@@ -3,6 +3,7 @@
 namespace App\Filament\Indicadores\Resources\GestorResource\RelationManagers;
 
 use App\Filament\Indicadores\Resources\ResultadoResource;
+use App\Services\Indicador\IndicadorService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -10,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Services\NotificacaoService as notify;
 
 class ResultadosRelationManager extends RelationManager
 {
@@ -33,19 +35,19 @@ class ResultadosRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
                     ->label('Pontuação')
-                    ->numeric('2', ',' , '.')
+                    ->numeric('2', ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.peso')
                     ->label('Peso Indicador')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->state(fn($record) => match($record->status) {
+                    ->state(fn($record) => match ($record->status) {
                         'n_atingido' => 'Não Atingido',
                         'parcialmente_atingido' => 'Parcialmente Atingido',
                         'atingido' => 'Atingido',
                     })
-                    ->color(fn($record) => match($record->status) {
+                    ->color(fn($record) => match ($record->status) {
                         'n_atingido' => 'danger',
                         'parcialmente_atingido' => 'warning',
                         'atingido' => 'info',
@@ -80,6 +82,15 @@ class ResultadosRelationManager extends RelationManager
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['gestor_id'] = $this->ownerRecord->id;
                         return $data;
+                    })
+                    ->using(function (array $data) {
+                        $service = new IndicadorService();
+                        $service->createResultado($data);
+                        if ($service->hasError()) {
+                            notify::error();
+                            return;
+                        }
+                        notify::success();
                     }),
             ])
             ->actions([

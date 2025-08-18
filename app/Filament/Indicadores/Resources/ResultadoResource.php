@@ -127,6 +127,7 @@ class ResultadoResource extends Resource
 
     public static function getIndicadorIdFormField(): Forms\Components\Select
     {
+        //TODO Limitar opções
         return Forms\Components\Select::make('indicador_id')
             ->label('Indicador')
             ->columnSpan(4)
@@ -191,6 +192,8 @@ class ResultadoResource extends Resource
         return Forms\Components\Select::make('status')
             ->label('Status')
             ->columnSpan(2)
+            ->visibleOn('edit')
+            ->disabled()
             ->options([
                 'n_atingido' => 'Não Atingido',
                 'parcialmente_atingido' => 'Parcialmente Atingido',
@@ -199,10 +202,13 @@ class ResultadoResource extends Resource
             ->default('n_atingido')
             ->required();
     }
+
     public static function getPeriodoFormField(): Forms\Components\DatePicker
     {
         return Forms\Components\DatePicker::make('periodo')
             ->label('Período')
+            ->placeholder(now()->startOfMonth())
+            ->default(now()->startOfMonth())
             ->columnSpan(2)
             ->required();
     }

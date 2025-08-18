@@ -116,6 +116,7 @@ class IndicadorResource extends Resource
                 '%' => '%',
             ])
             ->searchPrompt('')
+            ->placeholder('')
             ->default('%');
     }
 
