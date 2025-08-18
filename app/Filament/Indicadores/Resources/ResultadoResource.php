@@ -48,6 +48,8 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_maxima')
                     ->label('Pontuação Máxima')
+                    ->state(fn($record) => $record->pontuacao_obtida / $record->pontuacao_maxima)
+                    ->prefix('%')
                     ->numeric('2', ',' , '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
