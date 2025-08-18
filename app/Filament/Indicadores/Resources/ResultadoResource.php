@@ -27,8 +27,8 @@ class ResultadoResource extends Resource
                 static::getGestorIdFormField(),
                 static::getIndicadorIdFormField(),
                 static::getStatusFormField(),
-                static::getPontuacaoObtidaFormField(),
-                static::getPontuacaoMaximaFormField(),
+                static::getResultadoFormField(),
+                static::getObjetivoFormField(),
                 static::getPeriodoFormField(),
             ]);
     }
@@ -45,12 +45,6 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
                     ->label('Pontuação Obtida')
-                    ->numeric('2', ',' , '.')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('pontuacao_maxima')
-                    ->label('% Obtido')
-                    ->state(fn($record) => ($record->pontuacao_maxima > 0) ? ($record->pontuacao_obtida / $record->pontuacao_maxima) * 100 : 0 )
-                    ->suffix('%')
                     ->numeric('2', ',' , '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
@@ -94,6 +88,11 @@ class ResultadoResource extends Resource
                     ->label('Indicador')
                     ->titlePrefixedWithLabel(false)
                     ->collapsible(),
+                Group::make('periodo')
+                    ->label('Período')
+                    ->dateTime('F/Y')
+                    ->titlePrefixedWithLabel(false)
+                    ->collapsible(),
 
             ])
             ->defaultGroup('gestor.nome')
@@ -134,6 +133,7 @@ class ResultadoResource extends Resource
             ->relationship('indicador', 'descricao')
             ->required()
             ->preload()
+            ->live()
             ->searchable();
     }
 
@@ -164,6 +164,26 @@ class ResultadoResource extends Resource
             ->columnSpan(2)
             ->prefix(null)
             ->required()
+            ->minValue(0);
+    }
+    public static function getObjetivoFormField(): Money
+    {
+        return Money::make('objetivo')
+            ->label('Objetivo')
+            ->columnSpan(2)
+            ->prefix(fn($record) => $record->tipo_meta ?? null)
+            ->required()
+            ->reactive()
+            ->minValue(0);
+    }
+    public static function getResultadoFormField(): Money
+    {
+        return Money::make('resultado')
+            ->label('Resultado')
+            ->columnSpan(2)
+            ->prefix(fn($record) => $record->tipo_meta ?? null)
+            ->required()
+            ->reactive()
             ->minValue(0);
     }
 

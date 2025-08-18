@@ -119,10 +119,10 @@ class GestorResource extends Resource
             ->label('Unidade')
             ->columnSpan(2)
             ->options([
-                'CATANDUVAS' => 'CATANDUVAS',
-                'CHAPECÓ'   => 'CHAPECÓ',
-                'CONCÓRDIA' => 'CONCÓRDIA',
-                'RIO_VERDE' => 'RIO VERDE',
+                'CATANDUVAS'    => 'CATANDUVAS',
+                'CHAPECÓ'       => 'CHAPECÓ',
+                'CONCÓRDIA'     => 'CONCÓRDIA',
+                'RIO_VERDE'     => 'RIO VERDE',
             ])
             ->required();
     }

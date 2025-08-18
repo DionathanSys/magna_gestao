@@ -27,10 +27,10 @@ class IndicadorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(6)
+            ->columns(12)
             ->schema([
                 static::getDescricaoFormField(),
-                static::getObjetivoFormField(),
+                static::getTipoValorMetaFormField(),
                 static::getPesoFormField(),
                 static::getPeriodicidadeFormField(),
                 static::getTipoFormField(),
@@ -43,8 +43,6 @@ class IndicadorResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('descricao')
                     ->label('Descrição')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('objetivo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('peso')
                     ->numeric('2', ',' , '.')
@@ -101,20 +99,24 @@ class IndicadorResource extends Resource
     {
         return Forms\Components\TextInput::make('descricao')
             ->label('Descrição')
-            ->columnSpan(3)
+            ->columnSpan(4)
             ->autocomplete(false)
             ->required()
             ->maxLength(255);
     }
 
-    public static function getObjetivoFormField(): Forms\Components\TextInput
+    public static function getTipoValorMetaFormField(): Forms\Components\Select
     {
-        return Forms\Components\TextInput::make('objetivo')
-            ->label('Meta')
-            ->autocomplete(false)
-            ->columnSpan(3)
+        return Forms\Components\Select::make('tipo_meta')
+            ->columnSpan(2)
+            ->native(false)
             ->required()
-            ->maxLength(255);
+            ->options([
+                'R$'  => 'R$',
+                '%' => '%',
+            ])
+            ->searchPrompt('')
+            ->default('%');
     }
 
     public static function getPesoFormField(): Forms\Components\TextInput
