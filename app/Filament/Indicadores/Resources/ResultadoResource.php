@@ -57,9 +57,10 @@ class ResultadoResource extends Resource
                     ->label('Status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('periodo')
-                    ->dateTime('F/L')
+                    ->label('Período')
+                    ->dateTime('F/Y')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()

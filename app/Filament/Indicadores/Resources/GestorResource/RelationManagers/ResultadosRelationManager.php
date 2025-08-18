@@ -38,6 +38,11 @@ class ResultadosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('indicador.peso')
                     ->label('Peso Indicador')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('periodo')
+                    ->label('Período')
+                    ->dateTime('F/Y')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
