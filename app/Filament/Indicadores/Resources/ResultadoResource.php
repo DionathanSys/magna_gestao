@@ -42,8 +42,12 @@ class ResultadoResource extends Resource
                 Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pontuacao')
-                    ->label('Pontuação')
+                Tables\Columns\TextColumn::make('pontuacao_obtida')
+                    ->label('Pontuação Obtida')
+                    ->numeric('2', ',' , '.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('pontuacao_maxima')
+                    ->label('Pontuação Máxima')
                     ->numeric('2', ',' , '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
@@ -108,7 +112,6 @@ class ResultadoResource extends Resource
             ->label('Gestor')
             ->columnSpan(4)
             ->relationship('gestor', 'nome')
-            ->required()
             ->preload()
             ->searchable();
     }

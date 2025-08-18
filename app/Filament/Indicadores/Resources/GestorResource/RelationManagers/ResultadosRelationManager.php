@@ -55,7 +55,13 @@ class ResultadosRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('Resultado')
+                    ->icon('heroicon-o-plus')
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['gestor_id'] = $this->ownerRecord->id;
+                        return $data;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
