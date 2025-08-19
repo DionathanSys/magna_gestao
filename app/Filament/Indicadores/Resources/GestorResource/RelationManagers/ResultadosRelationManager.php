@@ -16,6 +16,7 @@ use Filament\Support\Enums\IconPosition;
 use Illuminate\Support\Facades\Log;
 use App\Models;
 use Filament\Actions\Action;
+use Filament\Tables\Enums\ActionsPosition;
 
 class ResultadosRelationManager extends RelationManager
 {
@@ -135,9 +136,11 @@ class ResultadosRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                Tables\Actions\EditAction::make()
+                    ->iconButton(),
+                Tables\Actions\DeleteAction::make()
+                    ->iconButton(),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
