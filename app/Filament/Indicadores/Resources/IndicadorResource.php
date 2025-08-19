@@ -46,10 +46,9 @@ class IndicadorResource extends Resource
                 Tables\Columns\TextColumn::make('descricao')
                     ->label('Indicador')
                     ->icon(fn($record) => match ($record->tipo_avaliacao) {
-                        'maior_melhor' => 'heroicon-o-arrow-trending-up',
-                        'menor_melhor' => 'heroicon-o-arrow-trending-down',
+                        'maior_melhor' => 'heroicon-s-arrow-up-circle',
+                        'menor_melhor' => 'heroicon-s-arrow-down-circle',
                     })
-                    ->iconPosition(IconPosition::After)
                     ->iconColor(fn($record) => match ($record->tipo_avaliacao) {
                         'maior_melhor' => 'info',
                         'menor_melhor' => 'danger',

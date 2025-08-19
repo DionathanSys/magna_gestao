@@ -33,9 +33,16 @@ class IndicadoresRelationManager extends RelationManager
                     ->width('1%')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('descricao')
-                    ->label('Descrição')
-                    ->width('1%')
-                    ->url(fn($record) => IndicadorResource::getUrl('edit', ['record' => $record->indicador_id]))
+                    ->label('Indicador')
+                    ->icon(fn($record) => match ($record->tipo_avaliacao) {
+                        'maior_melhor' => 'heroicon-s-arrow-up-circle',
+                        'menor_melhor' => 'heroicon-s-arrow-down-circle',
+                    })
+                    ->iconColor(fn($record) => match ($record->tipo_avaliacao) {
+                        'maior_melhor' => 'info',
+                        'menor_melhor' => 'danger',
+                    })
+                    ->sortable()
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('peso')
                     ->label('Peso')
