@@ -21,8 +21,8 @@ class RegistrarResultado
         Log::debug(__METHOD__, ['data' => $data]);
 
         Validator::make($data, [
-            'gestor_id'         => 'required|exists:gestores,id',
-            'indicador_id'      => 'required|exists:indicadores,id',
+            'gestor_id'         => 'required',
+            'indicador_id'      => 'required',
             'periodo'           => 'required|date_format:Y-m-d',
             'objetivo'          => 'required|numeric|min:0',
             'resultado'         => 'required|numeric|min:0.01',
