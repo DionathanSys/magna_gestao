@@ -40,7 +40,7 @@ class ResultadosRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
                     ->label('Peso Indicador')
-                    ->formatStateUsing(fn(Forms\Get $get, $state) => number_format(($get('pontuacao_obtida') / $state) * 100, 2, ',', '.'))
+                    ->formatState(fn(Forms\Get $get, $state) => number_format(($get('pontuacao_obtida') / $state) * 100, 2, ',', '.'))
                     ->prefix('%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
