@@ -162,7 +162,11 @@ class ResultadoResource extends Resource
         return Forms\Components\Select::make('indicador_id')
             ->label('Indicador')
             ->columnSpan(4)
-            ->relationship('indicador', 'descricao')
+            ->relationship('indicador', 'descricao', function (Builder $query, Forms\Get $get) {
+                $query->whereHas('gestores', fn($query) => $query->where('id', $get('gestor_id')));
+                return $query;
+            })
+            ->reactive()
             ->required()
             ->preload()
             ->searchable();
@@ -175,6 +179,7 @@ class ResultadoResource extends Resource
             ->columnSpan(4)
             ->relationship('gestor', 'nome')
             ->preload()
+            ->live(onBlur: true)
             ->searchable();
     }
 
