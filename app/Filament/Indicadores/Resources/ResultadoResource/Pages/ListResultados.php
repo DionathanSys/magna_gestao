@@ -26,7 +26,7 @@ class ListResultados extends ListRecords
                 ->modalWidth(MaxWidth::Medium)
                 ->form(function (\Filament\Forms\Form $form){
                     return $form
-                        ->columns(4)
+                        ->columns(6)
                         ->schema([
                             Forms\Components\Select::make('indicador_id')
                                 ->label('Indicador')
@@ -37,9 +37,9 @@ class ListResultados extends ListRecords
                                     ->pluck('descricao', 'id'))
                                 ->required(),
                             ResultadoResource::getObjetivoFormField()
-                                ->columnSpan(1),
+                                ->columnSpan(2),
                             ResultadoResource::getResultadoFormField()
-                                ->columnSpan(1),
+                                ->columnSpan(2),
                             ResultadoResource::getPeriodoFormField()
                                 ->columnSpan(2),
                         ]);
