@@ -50,7 +50,8 @@ class IndicadorResource extends Resource
                         'menor_melhor' => 'heroicon-s-arrow-down-circle',
                     })
                     ->iconColor('info')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('peso')
                     ->numeric('2', ',' , '.')
                     ->sortable(),
@@ -80,6 +81,9 @@ class IndicadorResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('descricao', 'asc')
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 //
             ])

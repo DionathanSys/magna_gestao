@@ -136,6 +136,9 @@ class ResultadoResource extends Resource
 
             ])
             ->defaultGroup('gestor.nome')
+            ->searchOnBlur()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
