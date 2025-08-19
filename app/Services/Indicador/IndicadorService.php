@@ -4,30 +4,33 @@ namespace App\Services\Indicador;
 
 use App\Traits\ServiceResponseTrait;
 use Illuminate\Support\Facades\Log;
+use App\Models;
 
 class IndicadorService
 {
 
     use ServiceResponseTrait;
-    // This service can be used to manage indicators, such as creating, updating, and retrieving them.
-    // It can also include methods for calculating scores or statuses based on the indicators.
 
-    // Example method to create an indicator
-    public function createIndicator(array $data)
+    public function createResultadoColetivo(array $data): bool
     {
-        // Logic to create an indicator
-    }
+        try {
+            
+            $gestores = Models\Gestor::query()
+                ->whereHas('indicadores', function ($query) use ($data) {
+                    $query->where('indicador_id', $data['indicador_id']);
+                });
 
-    // Example method to update an indicator
-    public function updateIndicator(int $id, array $data)
-    {
-        // Logic to update an indicator
-    }
+            $gestores->each(function ($gestor) use (&$data) {
+                $data['gestor_id'] = $gestor->id;
+                $this->createResultado($data);
+            });
 
-    // Example method to retrieve indicators
-    public function getIndicators()
-    {
-        // Logic to retrieve indicators
+            $this->setSuccess('Resultado coletivo criado com sucesso!');
+            return true;
+        } catch (\Exception $e) {
+           $this->setError($e->getMessage());
+           return false;
+        }
     }
 
     public function createResultado(array $data): ?\App\Models\Resultado

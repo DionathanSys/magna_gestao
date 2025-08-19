@@ -7,6 +7,8 @@ use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Forms;
 use App\Models;
+use Filament\Support\Enums\MaxWidth;
+use App\Services\NotificacaoService as notify;
 
 class ListResultados extends ListRecords
 {
@@ -15,25 +17,42 @@ class ListResultados extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Resultado Individual')
+                ->icon('heroicon-o-plus'),
             Actions\Action::make('add-resultado-coletivo')
+                ->label('Resultado Coletivo')
+                ->icon('heroicon-o-plus')
+                ->modalWidth(MaxWidth::Small)
                 ->form(function (\Filament\Forms\Form $form){
                     return $form
+                        ->columns(4)
                         ->schema([
                             Forms\Components\Select::make('indicador_id')
                                 ->label('Indicador')
+                                ->columnSpanFull()
+                                ->native(false)
                                 ->options(Models\Indicador::all()
                                     ->where('tipo', 'COLETIVO')
                                     ->pluck('descricao', 'id'))
                                 ->required(),
-                            ResultadoResource::getObjetivoFormField(),
-                            ResultadoResource::getResultadoFormField(),
+                            ResultadoResource::getObjetivoFormField()
+                                ->columnSpan(2),
+                            ResultadoResource::getResultadoFormField()
+                                ->columnSpan(2),
                         ]);
                 })
                 ->action(function (Actions\Action $action, array $data) {
-                    // Implement the logic to handle the action
-                    // For example, you might want to create a new ResultadoColetivo
-                    // and redirect to its edit page.
+                    $service = new \App\Services\Indicador\IndicadorService();
+                    $resultado = $service->createResultadoColetivo($data);
+
+                    if ($service->hasError()) {
+                        notify::error(mensagem: $service->getMessage());
+                        $action->halt();
+                    }
+
+                    notify::success(mensagem: 'Resultado coletivo criado com sucesso!');
+                    return $resultado;
                 })
         ];
     }

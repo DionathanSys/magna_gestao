@@ -158,12 +158,12 @@ class ResultadoResource extends Resource
 
     public static function getIndicadorIdFormField(): Forms\Components\Select
     {
-        //TODO Limitar opções
         return Forms\Components\Select::make('indicador_id')
             ->label('Indicador')
             ->columnSpan(4)
             ->options(function (Forms\Get $get) {
                 return Models\Indicador::query()
+                    ->where('tipo', 'INDIVIDUAL')
                     ->whereHas('gestores', fn($query) => $query->where('gestor_id', $get('gestor_id')))
                     ->pluck('descricao', 'id');
             })
