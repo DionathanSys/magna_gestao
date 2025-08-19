@@ -128,7 +128,7 @@ class ResultadoResource extends Resource
                     ->label('Período')
                     ->date()
                     ->titlePrefixedWithLabel(false)
-                    ->getTitleFromRecordUsing(fn($record) => \Carbon\Carbon::parse($record->periodo)->format('F/Y'))
+                    ->getTitleFromRecordUsing(fn($record) => $record->periodo)
                     ->collapsible(),
 
             ])
