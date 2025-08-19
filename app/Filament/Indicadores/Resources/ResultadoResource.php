@@ -44,8 +44,13 @@ class ResultadoResource extends Resource
                     ->label('Indicador')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
-                    ->label('Pontuação Obtida')
-                    ->numeric('2', ',' , '.')
+                    ->label('Pontuação')
+                    ->numeric('2', ',', '.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
+                    ->label('% Obtido')
+                    ->formatStateUsing(fn($record, $state) => number_format(($record->pontuacao_obtida / $state) * 100, 2, ',', '.'))
+                    ->suffix('%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')

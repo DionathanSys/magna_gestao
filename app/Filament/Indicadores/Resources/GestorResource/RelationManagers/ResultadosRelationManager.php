@@ -28,9 +28,6 @@ class ResultadosRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('gestor.nome')
-                    ->label('Gestor')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
                     ->sortable(),
@@ -39,7 +36,7 @@ class ResultadosRelationManager extends RelationManager
                     ->numeric('2', ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
-                    ->label('Peso Indicador')
+                    ->label('% Obtido')
                     ->formatStateUsing(fn($record, $state) => number_format(($record->pontuacao_obtida / $state) * 100, 2, ',', '.'))
                     ->suffix('%')
                     ->sortable(),
