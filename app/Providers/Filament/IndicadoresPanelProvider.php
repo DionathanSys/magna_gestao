@@ -26,7 +26,6 @@ class IndicadoresPanelProvider extends PanelProvider
         return $panel
             ->topNavigation()
             ->sidebarCollapsibleOnDesktop()
-            ->maxContentWidth(MaxWidth::Full)
             ->brandName('Magna Gestão')
             ->id('indicadores')
             ->login()
