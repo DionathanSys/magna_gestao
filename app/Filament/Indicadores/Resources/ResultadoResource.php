@@ -168,7 +168,8 @@ class ResultadoResource extends Resource
                             return $query->whereHas('indicador', fn($q) => $q->where('tipo', $data['tipo']));
                         }
                         return $query;
-                    }),
+                    })
+                    ->indicator('Tipo Indicador'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
