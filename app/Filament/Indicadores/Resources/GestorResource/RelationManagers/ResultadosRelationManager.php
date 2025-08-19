@@ -18,6 +18,7 @@ use App\Models;
 use Filament\Actions\Action;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Enums\ActionsPosition;
+use Filament\Tables\Grouping\Group;
 
 class ResultadosRelationManager extends RelationManager
 {
@@ -137,6 +138,27 @@ class ResultadosRelationManager extends RelationManager
                         return $resultado;
                     }),
             ])
+            ->groups([
+                Group::make('indicador.descricao')
+                    ->label('Indicador')
+                    ->titlePrefixedWithLabel(false)
+                    ->collapsible(),
+                Group::make('indicador.tipo')
+                    ->label('Indicador Tipo')
+                    ->titlePrefixedWithLabel(false)
+                    ->collapsible(),
+                Group::make('periodo')
+                    ->label('Período')
+                    // ->date() //! DEIXAR SEM PQ AI CONSEGUE FORMATAR A DATA
+                    ->titlePrefixedWithLabel(false)
+                    ->getTitleFromRecordUsing(fn($record) => \Carbon\Carbon::parse($record->periodo)
+                        ->locale('pt_BR')
+                        ->translatedFormat('F/Y')
+                        )
+                    ->collapsible(),
+
+            ])
+            ->defaultGroup('periodo')
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->iconButton(),
