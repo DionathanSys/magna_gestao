@@ -121,14 +121,14 @@ class ResultadoResource extends Resource
                     ->titlePrefixedWithLabel(false)
                     ->collapsible(),
                 Group::make('indicador.tipo')
-                    ->label('Indicador')
+                    ->label('Indicador Tipo')
                     ->titlePrefixedWithLabel(false)
                     ->collapsible(),
                 Group::make('periodo')
                     ->label('Período')
                     ->date()
                     ->titlePrefixedWithLabel(false)
-                    ->getTitleFromRecordUsing(fn($record) => $record->periodo->format('F/Y'))
+                    ->getTitleFromRecordUsing(fn($record) => \Carbon\Carbon::parse($record->periodo)->format('F/Y'))
                     ->collapsible(),
 
             ])
