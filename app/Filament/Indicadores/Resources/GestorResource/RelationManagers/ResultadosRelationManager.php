@@ -112,7 +112,34 @@ class ResultadosRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'n_atingido' => 'Não Atingido',
+                        'parcialmente_atingido' => 'Parcialmente Atingido',
+                        'atingido' => 'Atingido',
+                    ]),
+                Tables\Filters\SelectFilter::make('indicador_id')
+                    ->label('Indicador')
+                    ->relationship('indicador', 'descricao')
+                    ->preload()
+                    ->searchable(),
+                Tables\Filters\Filter::make('tipo')
+                    ->label('Tipo')
+                    ->form([
+                        Forms\Components\Select::make('tipo')
+                            ->label('Tipo')
+                            ->options([
+                                'individual' => 'Individual',
+                                'coletivo' => 'Coletivo',
+                            ])
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        if ($data['tipo']) {
+                            return $query->whereHas('indicador', fn($q) => $q->where('tipo', $data['tipo']));
+                        }
+                        return $query;
+                    })
+                    ->indicator('Tipo Indicador'),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
