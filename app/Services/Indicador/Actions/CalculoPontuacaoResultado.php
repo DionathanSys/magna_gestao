@@ -61,7 +61,8 @@ class CalculoPontuacaoResultado
             if ($data['resultado'] < $data['objetivo']) {
                 return $pesoIndicador;
             } else {
-                return 0;
+                $excedente = $data['resultado'] - $data['objetivo'];
+                return round(($pesoIndicador * $excedente / $data['objetivo']), 4);
             }
         } elseif ($this->tipoAvaliacao === 'maior_melhor') {
             if ($data['resultado'] > $data['objetivo']) {
