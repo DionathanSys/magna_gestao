@@ -32,8 +32,8 @@ class ResultadosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
                     ->icon(fn($record) => match ($record->indicador->tipo_avaliacao) {
-                        'maior_melhor' => 'heroicon-o-arrow-trending-up',
-                        'menor_melhor' => 'heroicon-s-arrow-trending-down',
+                        'maior_melhor' => 'heroicon-s-arrow-up-circle',
+                        'menor_melhor' => 'heroicon-s-arrow-down-circle',
                     })
                     ->iconPosition(IconPosition::After)
                     ->iconColor(fn($record) => match ($record->indicador->tipo_avaliacao) {
