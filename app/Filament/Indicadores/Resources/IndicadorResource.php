@@ -49,10 +49,7 @@ class IndicadorResource extends Resource
                         'maior_melhor' => 'heroicon-s-arrow-up-circle',
                         'menor_melhor' => 'heroicon-s-arrow-down-circle',
                     })
-                    ->iconColor(fn($record) => match ($record->tipo_avaliacao) {
-                        'maior_melhor' => 'info',
-                        'menor_melhor' => 'danger',
-                    })
+                    ->iconColor('info')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('peso')
                     ->numeric('2', ',' , '.')

@@ -38,16 +38,13 @@ class IndicadoresRelationManager extends RelationManager
                         'maior_melhor' => 'heroicon-s-arrow-up-circle',
                         'menor_melhor' => 'heroicon-s-arrow-down-circle',
                     })
-                    ->iconColor(fn($record) => match ($record->tipo_avaliacao) {
-                        'maior_melhor' => 'info',
-                        'menor_melhor' => 'danger',
-                    })
+                    ->iconColor('info')
                     ->sortable()
                     ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('peso')
                     ->label('Peso')
                     ->width('1%')
-                    ->numeric(),
+                    ->numeric('2', ',', '.'),
                 Tables\Columns\TextColumn::make('tipo')
                     ->width('1%'),
                 Tables\Columns\TextColumn::make('periodicidade')
