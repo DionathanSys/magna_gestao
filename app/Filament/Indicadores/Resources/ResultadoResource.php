@@ -120,10 +120,15 @@ class ResultadoResource extends Resource
                     ->label('Indicador')
                     ->titlePrefixedWithLabel(false)
                     ->collapsible(),
+                Group::make('indicador.tipo')
+                    ->label('Indicador')
+                    ->titlePrefixedWithLabel(false)
+                    ->collapsible(),
                 Group::make('periodo')
                     ->label('Período')
-                    ->date('F/Y')
+                    ->date()
                     ->titlePrefixedWithLabel(false)
+                    ->getTitleFromRecordUsing(fn($record) => $record->periodo->format('F/Y'))
                     ->collapsible(),
 
             ])
