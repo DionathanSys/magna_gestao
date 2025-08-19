@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Leandrocfe\FilamentPtbrFormFields\Money;
+use App\Models;
 
 class ResultadoResource extends Resource
 {
@@ -162,9 +163,10 @@ class ResultadoResource extends Resource
         return Forms\Components\Select::make('indicador_id')
             ->label('Indicador')
             ->columnSpan(4)
-            ->relationship('indicador', 'descricao', function (Builder $query, Forms\Get $get) {
-                $query->whereHas('gestores', fn($query) => $query->where('id', $get('gestor_id')));
-                return $query;
+            ->options(function (Forms\Get $get) {
+                return Models\Indicador::query()
+                    ->whereHas('gestores', fn($query) => $query->where('id', $get('gestor_id')))
+                    ->pluck('descricao', 'id');
             })
             ->reactive()
             ->required()
