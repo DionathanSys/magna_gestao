@@ -50,8 +50,9 @@ class IndicadorResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('periodicidade')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tipo')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('tipo_meta'),
+                Tables\Columns\TextColumn::make('tipo_avaliacao')
+                    ->label('Tipo de Avaliação'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
