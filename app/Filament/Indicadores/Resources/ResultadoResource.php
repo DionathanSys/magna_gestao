@@ -130,7 +130,8 @@ class ResultadoResource extends Resource
                     ->titlePrefixedWithLabel(false)
                     ->getTitleFromRecordUsing(fn($record) => \Carbon\Carbon::parse($record->periodo)
                         ->locale('pt_BR')
-                        ->format('F/Y'))
+                        ->translatedFormat('F/Y')
+                        )
                     ->collapsible(),
 
             ])
