@@ -147,9 +147,11 @@ class ResultadoResource extends Resource
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('tipo')
                     ->label('Tipo')
-                    ->relationship('indicador', 'tipo', function (Builder $query) {
-                        return $query->distinct();
-                    }),
+                    ->options([
+                        'individual' => 'Individual',
+                        'coletivo' => 'Coletivo',
+                    ])
+                    ->attribute('indicador.tipo'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
