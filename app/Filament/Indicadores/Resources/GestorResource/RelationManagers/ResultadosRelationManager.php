@@ -88,12 +88,10 @@ class ResultadosRelationManager extends RelationManager
                         $service = new IndicadorService();
                         $service->createResultado($data);
 
-                        Log::debug(__METHOD__, ['service' => $service]);
-
-                        if ($service->hasError()) {
-                            notify::error();
-                            return;
-                        }
+                        // if ($service->hasError()) {
+                        //     notify::error();
+                        //     return;
+                        // }
                         notify::success();
                     }),
             ])
