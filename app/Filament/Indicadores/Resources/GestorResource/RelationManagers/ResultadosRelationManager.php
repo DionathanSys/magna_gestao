@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use Illuminate\Support\Facades\Log;
 
 class ResultadosRelationManager extends RelationManager
 {
@@ -86,6 +87,9 @@ class ResultadosRelationManager extends RelationManager
                     ->using(function (array $data) {
                         $service = new IndicadorService();
                         $service->createResultado($data);
+
+                        Log::debug(__METHOD__, ['service' => $service]);
+
                         if ($service->hasError()) {
                             notify::error();
                             return;

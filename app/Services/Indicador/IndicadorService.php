@@ -3,6 +3,7 @@
 namespace App\Services\Indicador;
 
 use App\Traits\ServiceResponseTrait;
+use Illuminate\Support\Facades\Log;
 
 class IndicadorService
 {
@@ -29,12 +30,17 @@ class IndicadorService
         // Logic to retrieve indicators
     }
 
-    public function createResultado(array $data)
+    public function createResultado(array $data): ?\App\Models\Resultado
     {
         try {
             $pontucao = (new Actions\CalculoPontuacaoResultado())->handle($data);
             $data = array_merge($data, $pontucao);
             $resultado = (new Actions\RegistrarResultado())->handle($data);
+
+            Log::debug(__METHOD__,[
+                'resultado' => $resultado,
+            ]);
+
             $this->setSuccess('Resultado criado com sucesso!');
             return $resultado;
         } catch (\Exception $e) {
