@@ -79,6 +79,7 @@ class IndicadorResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('descricao', 'asc')
             ->filters([
                 //
             ])

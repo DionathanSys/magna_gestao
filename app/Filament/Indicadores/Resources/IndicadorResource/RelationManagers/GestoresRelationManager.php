@@ -31,10 +31,15 @@ class GestoresRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nome')
                     ->url(fn($record) => GestorResource::getUrl('edit', ['record' => $record->gestor_id]))
-                    ->openUrlInNewTab(),
-                Tables\Columns\TextColumn::make('unidade'),
-                Tables\Columns\TextColumn::make('setor'),
+                    ->openUrlInNewTab()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('unidade')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('setor')
+                    ->sortable(),
             ])
+            ->paginated(false)
+            ->defaultSort('nome', 'asc')
             ->filters([
                 //
             ])
@@ -61,6 +66,7 @@ class GestoresRelationManager extends RelationManager
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
             ])
+            ->allowDuplicates()
             ->emptyStateHeading('Sem gestores vinculados')
             ->emptyStateDescription('Clique no botão acima para adicionar/vincular um gestor.');
     }
