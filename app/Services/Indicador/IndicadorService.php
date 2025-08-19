@@ -14,12 +14,17 @@ class IndicadorService
     public function createResultadoColetivo(array $data): bool
     {
         try {
-            
+
             $gestores = Models\Gestor::query()
                 ->whereHas('indicadores', function ($query) use ($data) {
                     $query->where('indicador_id', $data['indicador_id']);
                 });
 
+            Log::debug(__METHOD__, [
+                'gestores' => $gestores->get(),
+                'data' => $data,
+            ]);
+            
             $gestores->each(function ($gestor) use (&$data) {
                 $data['gestor_id'] = $gestor->id;
                 $this->createResultado($data);
