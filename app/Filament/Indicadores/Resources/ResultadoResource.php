@@ -165,7 +165,8 @@ class ResultadoResource extends Resource
             ->columnSpan(4)
             ->options(function (Forms\Get $get) {
                 return Models\Indicador::query()
-                    ->whereHas('gestores', fn($query) => $query->where('id', $get('gestor_id')))
+                    ->where('ativo', true)
+                    ->whereHas('gestores', fn($query) => $query->where('gestor_id', $get('gestor_id')))
                     ->pluck('descricao', 'id');
             })
             ->reactive()
