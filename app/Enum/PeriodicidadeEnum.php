@@ -4,11 +4,11 @@ namespace App\Enum;
 
 enum PeriodicidadeEnum: string
 {
-    case MENSAL = 'mensal';
-    case BIMESTRAL = 'bimestral';
-    case TRIMESTRAL = 'trimestral';
-    case SEMESTRAL = 'semestral';
-    case ANUAL = 'anual';
+    case MENSAL = 'MENSAL';
+    case BIMESTRAL = 'BIMESTRAL';
+    case TRIMESTRAL = 'TRIMESTRAL';
+    case SEMESTRAL = 'SEMESTRAL';
+    case ANUAL = 'ANUAL';
 
     public function label(): string
     {
