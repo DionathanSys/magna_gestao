@@ -84,14 +84,15 @@ class ResultadosRelationManager extends RelationManager
                         $data['gestor_id'] = $this->ownerRecord->id;
                         return $data;
                     })
-                    ->using(function (array $data) {
+                    ->action(function (array $data) {
                         $service = new IndicadorService();
                         $service->createResultado($data);
 
-                        // if ($service->hasError()) {
-                        //     notify::error();
-                        //     return;
-                        // }
+                        if ($service->hasError()) {
+                            notify::error();
+                            return;
+                        }
+
                         notify::success();
                     }),
             ])
