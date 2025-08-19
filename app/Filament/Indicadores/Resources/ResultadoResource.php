@@ -8,6 +8,7 @@ use App\Models\Resultado;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
@@ -42,6 +43,15 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
+                    ->icon(fn($record) => match ($record->indicador->tipo_avaliacao) {
+                        'maior_melhor' => 'heroicon-o-arrow-trending-up',
+                        'menor_melhor' => 'heroicon-o-arrow-trending-down',
+                    })
+                    ->iconPosition(IconPosition::After)
+                    ->color(fn($record) => match ($record->indicador->tipo_avaliacao) {
+                        'maior_melhor' => 'info',
+                        'menor_melhor' => 'danger',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('objetivo')
                     ->label('Objetivo')

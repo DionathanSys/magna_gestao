@@ -9,6 +9,7 @@ use App\Models\Indicador;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -43,8 +44,17 @@ class IndicadorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('descricao')
-                    ->label('Descrição')
-                    ->searchable(),
+                    ->label('Indicador')
+                    ->icon(fn($record) => match ($record->tipo_avaliacao) {
+                        'maior_melhor' => 'heroicon-o-arrow-trending-up',
+                        'menor_melhor' => 'heroicon-o-arrow-trending-down',
+                    })
+                    ->iconPosition(IconPosition::After)
+                    ->color(fn($record) => match ($record->tipo_avaliacao) {
+                        'maior_melhor' => 'info',
+                        'menor_melhor' => 'danger',
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('peso')
                     ->numeric('2', ',' , '.')
                     ->sortable(),

@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
+use Filament\Support\Enums\IconPosition;
 use Illuminate\Support\Facades\Log;
 
 class ResultadosRelationManager extends RelationManager
@@ -34,6 +35,7 @@ class ResultadosRelationManager extends RelationManager
                         'maior_melhor' => 'heroicon-o-arrow-trending-up',
                         'menor_melhor' => 'heroicon-o-arrow-trending-down',
                     })
+                    ->iconPosition(IconPosition::After)
                     ->color(fn($record) => match ($record->indicador->tipo_avaliacao) {
                         'maior_melhor' => 'info',
                         'menor_melhor' => 'danger',
