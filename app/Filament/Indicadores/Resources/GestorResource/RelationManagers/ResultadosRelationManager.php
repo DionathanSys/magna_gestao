@@ -35,7 +35,6 @@ class ResultadosRelationManager extends RelationManager
                         'maior_melhor' => 'heroicon-s-arrow-up-circle',
                         'menor_melhor' => 'heroicon-s-arrow-down-circle',
                     })
-                    ->iconPosition(IconPosition::After)
                     ->iconColor(fn($record) => match ($record->indicador->tipo_avaliacao) {
                         'maior_melhor' => 'info',
                         'menor_melhor' => 'danger',
