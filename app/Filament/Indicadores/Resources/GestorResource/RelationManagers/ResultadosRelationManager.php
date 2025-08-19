@@ -118,7 +118,7 @@ class ResultadosRelationManager extends RelationManager
                         $data['gestor_id'] = $this->ownerRecord->id;
                         return $data;
                     })
-                    ->using(function (Action $action, array $data, string $model): Models\Resultado {
+                    ->using(function (Tables\Actions\CreateAction $action, array $data, string $model): Models\Resultado {
                         $service = new IndicadorService();
                         $resultado = $service->createResultado($data);
 
