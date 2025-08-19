@@ -126,9 +126,9 @@ class ResultadoResource extends Resource
                     ->collapsible(),
                 Group::make('periodo')
                     ->label('Período')
-                    // ->date()
+                    // ->date() //! DEIXAR SEM PQ AI CONSEGUE FORMATAR A DATA
                     ->titlePrefixedWithLabel(false)
-                    ->getTitleFromRecordUsing(fn($record) => $record->periodo)
+                    ->getTitleFromRecordUsing(fn($record) => \Carbon\Carbon::parse($record->periodo)->format('F/Y'))
                     ->collapsible(),
 
             ])
