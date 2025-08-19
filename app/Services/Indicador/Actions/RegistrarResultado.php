@@ -11,7 +11,7 @@ class RegistrarResultado
 
     public function handle(array $data): Models\Resultado
     {
-        $this->validate($data);
+        // $this->validate($data);
         dd($data);
         return Models\Resultado::create($data);
     }
