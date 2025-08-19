@@ -52,8 +52,8 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('objetivo')
                     ->label('Meta')
-                    ->formatStateUsing(function($record, $state) {
-                        return match($record->indicador->tipo_meta) {
+                    ->formatStateUsing(function ($record, $state) {
+                        return match ($record->indicador->tipo_meta) {
                             '%' => number_format($state, 2, ',', '.') . '%',
                             'R$' => 'R$ ' . number_format($state, 2, ',', '.'),
                             default => $state,
@@ -62,8 +62,8 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('resultado')
                     ->label('Resultado')
-                    ->formatStateUsing(function($record, $state) {
-                        return match($record->indicador->tipo_meta) {
+                    ->formatStateUsing(function ($record, $state) {
+                        return match ($record->indicador->tipo_meta) {
                             '%' => number_format($state, 2, ',', '.') . '%',
                             'R$' => 'R$ ' . number_format($state, 2, ',', '.'),
                             default => $state,
@@ -81,12 +81,12 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->state(fn($record) => match($record->status) {
+                    ->state(fn($record) => match ($record->status) {
                         'n_atingido' => 'Não Atingido',
                         'parcialmente_atingido' => 'Parcialmente Atingido',
                         'atingido' => 'Atingido',
                     })
-                    ->color(fn($record) => match($record->status) {
+                    ->color(fn($record) => match ($record->status) {
                         'n_atingido' => 'danger',
                         'parcialmente_atingido' => 'warning',
                         'atingido' => 'info',
@@ -131,10 +131,10 @@ class ResultadoResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                    'n_atingido' => 'Não Atingido',
-                    'parcialmente_atingido' => 'Parcialmente Atingido',
-                    'atingido' => 'Atingido',
-                ]),
+                        'n_atingido' => 'Não Atingido',
+                        'parcialmente_atingido' => 'Parcialmente Atingido',
+                        'atingido' => 'Atingido',
+                    ]),
                 Tables\Filters\SelectFilter::make('gestor_id')
                     ->label('Gestor')
                     ->relationship('gestor', 'nome')
@@ -147,11 +147,15 @@ class ResultadoResource extends Resource
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('tipo')
                     ->label('Tipo')
-                    ->relationship('indicador', 'tipo')
                     ->options([
                         'individual' => 'Individual',
                         'coletivo' => 'Coletivo',
-                    ]),
+                    ])
+                    ->query(function (Builder $query, $value) {
+                        if ($value) {
+                            $query->whereHas('indicador', fn($q) => $q->where('tipo', $value));
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -274,5 +278,4 @@ class ResultadoResource extends Resource
             ->columnSpan(2)
             ->required();
     }
-
 }
