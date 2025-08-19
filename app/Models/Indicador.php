@@ -24,7 +24,7 @@ class Indicador extends Model
 
     public function pesoPorPeriodo(): Attribute
     {
-        ds($this)->label('Indicador');
+        dd($this);
         return Attribute::make(
             get:  fn () => round($this->peso / PeriodicidadeEnum::from($this->periodicidade)->periodicidadeAno(), 4)
         );
