@@ -71,7 +71,7 @@ class ResultadoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
                     ->label('Pontuação')
-                    ->numeric('2', ',', '.')
+                    ->numeric('3', ',', '.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
                     ->label('% Obtido')
