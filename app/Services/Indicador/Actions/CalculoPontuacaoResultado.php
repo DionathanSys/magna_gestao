@@ -21,7 +21,7 @@ class CalculoPontuacaoResultado
         $this->validate($data);
 
         $pontuacao_obtida = $this->getPontuacaoResultado($data);
-        $status = $this->getStatusResultado($data['pontuacao_obtida']);
+        $status = $this->getStatusResultado($pontuacao_obtida);
 
         Log::debug(__METHOD__, [
             'data' => $data,
