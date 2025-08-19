@@ -16,12 +16,13 @@ class IndicadorService
         try {
 
             $gestores = Models\Gestor::query()
+                ->select('id', 'nome')
                 ->whereHas('indicadores', function ($query) use ($data) {
                     $query->where('indicador_id', $data['indicador_id']);
-                })->get();
+                })->get('id');
 
             Log::debug(__METHOD__, [
-                'gestores' => $gestores->get(),
+                'gestores' => $gestores,
                 'data' => $data,
             ]);
 
