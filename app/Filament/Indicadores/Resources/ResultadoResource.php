@@ -152,7 +152,6 @@ class ResultadoResource extends Resource
     {
         return [
             'index' => Pages\ListResultados::route('/'),
-            'create' => Pages\CreateResultado::route('/create'),
             'edit' => Pages\EditResultado::route('/{record}/edit'),
         ];
     }
