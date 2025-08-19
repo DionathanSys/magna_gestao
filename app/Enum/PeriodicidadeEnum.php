@@ -28,7 +28,7 @@ enum PeriodicidadeEnum: string
             self::BIMESTRAL => 6,
             self::TRIMESTRAL => 4,
             self::SEMESTRAL => 6,
-            self::ANUAL => 12,
+            self::ANUAL => 1,
         };
     }
 }
