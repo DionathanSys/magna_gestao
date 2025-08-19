@@ -50,6 +50,7 @@ class IndicadorResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('periodicidade')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('tipo'),
                 Tables\Columns\TextColumn::make('tipo_meta')
                     ->label('Tipo Resultado')
                     ->toggleable(isToggledHiddenByDefault: true),

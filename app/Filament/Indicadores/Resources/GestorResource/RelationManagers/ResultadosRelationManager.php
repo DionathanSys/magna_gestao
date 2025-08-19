@@ -30,6 +30,14 @@ class ResultadosRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
+                    ->icon(fn($record) => match ($record->indicador->tipo) {
+                        'maior_melhor' => 'arrow-trending-up',
+                        'menor_melhor' => 'arrow-trending-down',
+                    })
+                    ->color(fn($record) => match ($record->indicador->tipo) {
+                        'maior_melhor' => 'info',
+                        'menor_melhor' => 'danger',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('objetivo')
                     ->label('Objetivo')
@@ -79,6 +87,13 @@ class ResultadosRelationManager extends RelationManager
                     ->dateTime('F/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('tipo_avaliacao')
+                    ->label('Tipo de Avaliação')
+                    ->state(fn($state) => match ($state) {
+                        'maior_melhor' => 'Maior',
+                        'menor_melhor' => 'Menor',
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
