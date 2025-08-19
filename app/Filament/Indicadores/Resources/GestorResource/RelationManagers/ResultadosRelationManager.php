@@ -41,7 +41,7 @@ class ResultadosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
                     ->label('Peso Indicador')
                     ->formatStateUsing(fn($record, $state) => number_format(($record->pontuacao_obtida / $state) * 100, 2, ',', '.'))
-                    ->prefix('%')
+                    ->suffix('%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
