@@ -126,7 +126,7 @@ class ResultadoResource extends Resource
                     ->collapsible(),
                 Group::make('periodo')
                     ->label('Período')
-                    ->date()
+                    // ->date()
                     ->titlePrefixedWithLabel(false)
                     ->getTitleFromRecordUsing(fn($record) => $record->periodo)
                     ->collapsible(),
