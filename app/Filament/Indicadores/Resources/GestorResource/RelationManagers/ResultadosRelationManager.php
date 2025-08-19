@@ -15,6 +15,8 @@ use App\Services\NotificacaoService as notify;
 use Filament\Support\Enums\IconPosition;
 use Illuminate\Support\Facades\Log;
 use App\Models;
+use Filament\Actions\Action;
+
 class ResultadosRelationManager extends RelationManager
 {
     protected static string $relationship = 'resultados';
@@ -116,7 +118,7 @@ class ResultadosRelationManager extends RelationManager
                         $data['gestor_id'] = $this->ownerRecord->id;
                         return $data;
                     })
-                    ->using(function (\Filament\Actions\Action $action, array $data, string $model): Models\Resultado {
+                    ->using(function (Action $action, array $data, string $model): Models\Resultado {
                         $service = new IndicadorService();
                         $resultado = $service->createResultado($data);
 
