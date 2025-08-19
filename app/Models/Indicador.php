@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Enum\PeriodicidadeEnum;
 
 class Indicador extends Model
 {
@@ -18,5 +20,13 @@ class Indicador extends Model
     public function resultados(): HasMany
     {
         return $this->hasMany(Resultado::class, 'indicador_id');
+    }
+
+    public function pesoPorPeriodo(): Attribute
+    {
+        ds($this)->label('Indicador');
+        return Attribute::make(
+            get:  fn () => round($this->peso / PeriodicidadeEnum::from($this->periodicidade)->periodicidadeAno(), 4)
+        );
     }
 }

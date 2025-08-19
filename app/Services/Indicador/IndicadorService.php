@@ -32,6 +32,8 @@ class IndicadorService
     public function createResultado(array $data)
     {
         try {
+            $pontucao = (new Actions\CalculoPontuacaoResultado())->handle($data);
+            $data = array_merge($data, $pontucao);
             $resultado = (new Actions\RegistrarResultado())->handle($data);
             $this->setSuccess('Resultado criado com sucesso!');
             return $resultado;
