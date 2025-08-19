@@ -145,16 +145,21 @@ class ResultadoResource extends Resource
                     ->relationship('indicador', 'descricao')
                     ->preload()
                     ->searchable(),
-                Tables\Filters\SelectFilter::make('tipo')
+                Tables\Filters\Filter::make('tipo')
                     ->label('Tipo')
-                    ->options([
-                        'individual' => 'Individual',
-                        'coletivo' => 'Coletivo',
+                    ->form([
+                        Forms\Components\Select::make('tipo')
+                            ->label('Tipo')
+                            ->options([
+                                'individual' => 'Individual',
+                                'coletivo' => 'Coletivo',
+                            ])
                     ])
-                    ->query(function (Builder $query, $value) {
-                        if ($value) {
-                            $query->whereHas('indicador', fn($q) => $q->where('tipo', $value));
+                    ->query(function (Builder $query, array $data): Builder {
+                        if ($data['tipo']) {
+                            return $query->whereHas('indicador', fn($q) => $q->where('tipo', $data['tipo']));
                         }
+                        return $query;
                     }),
             ])
             ->actions([
