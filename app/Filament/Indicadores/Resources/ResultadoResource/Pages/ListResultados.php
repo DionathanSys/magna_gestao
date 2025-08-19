@@ -26,7 +26,7 @@ class ListResultados extends ListRecords
                 ->modalWidth(MaxWidth::Medium)
                 ->form(function (\Filament\Forms\Form $form){
                     return $form
-                        ->columns(6)
+                        ->columns(4)
                         ->schema([
                             Forms\Components\Select::make('indicador_id')
                                 ->label('Indicador')
