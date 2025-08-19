@@ -43,6 +43,26 @@ class ResultadoResource extends Resource
                 Tables\Columns\TextColumn::make('indicador.descricao')
                     ->label('Indicador')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('objetivo')
+                    ->label('Objetivo')
+                    ->formatStateUsing(function($record, $state) {
+                        return match($record->indicador->tipo_meta) {
+                            '%' => number_format($state, 2, ',', '.') . '%',
+                            'R$' => 'R$ ' . number_format($state, 2, ',', '.'),
+                            default => $state,
+                        };
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('resultado')
+                    ->label('Resultado')
+                    ->formatStateUsing(function($record, $state) {
+                        return match($record->indicador->tipo_meta) {
+                            '%' => number_format($state, 2, ',', '.') . '%',
+                            'R$' => 'R$ ' . number_format($state, 2, ',', '.'),
+                            default => $state,
+                        };
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
                     ->label('Pontuação')
                     ->numeric('2', ',', '.')
