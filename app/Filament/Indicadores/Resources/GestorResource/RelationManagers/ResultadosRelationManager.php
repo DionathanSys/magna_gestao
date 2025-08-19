@@ -16,6 +16,7 @@ use Filament\Support\Enums\IconPosition;
 use Illuminate\Support\Facades\Log;
 use App\Models;
 use Filament\Actions\Action;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Enums\ActionsPosition;
 
 class ResultadosRelationManager extends RelationManager
@@ -63,6 +64,7 @@ class ResultadosRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('pontuacao_obtida')
                     ->label('Pontuação')
                     ->numeric('3', ',', '.')
+                    ->summarize(Sum::make()->label('Total'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
                     ->label('% Obtido')
