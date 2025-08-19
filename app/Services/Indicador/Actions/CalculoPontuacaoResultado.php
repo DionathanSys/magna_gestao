@@ -10,6 +10,7 @@ class CalculoPontuacaoResultado
 {
     protected Models\Indicador $indicador;
     protected float $pesoIndicador;
+    protected string $tipoAvaliacao;
 
     public function __construct()
     {
@@ -45,26 +46,40 @@ class CalculoPontuacaoResultado
             'objetivo'      => 'required|numeric|min:0',
             'resultado'     => 'required|numeric|min:0',
         ])->validate();
-
     }
 
     protected function getPontuacaoResultado(array $data): float
     {
+        $this->getIndicador($data['indicador_id']);
+        $pesoIndicador = $this->pesoIndicador;
 
-        $pesoIndicador = $this->getPesoIndicador($data['indicador_id']);
-
-        if ($data['resultado'] >= $data['objetivo']) {
+        if ($data['resultado'] == $data['objetivo']) {
             return $pesoIndicador;
         }
 
-        return round(($pesoIndicador * $data['resultado']) / $data['objetivo'], 4);
+        if ($this->tipoAvaliacao === 'menor_melhor') {
+            if ($data['resultado'] < $data['objetivo']) {
+                return $pesoIndicador;
+            } else {
+                return 0;
+            }
+        } elseif ($this->tipoAvaliacao === 'maior_melhor') {
+            if ($data['resultado'] > $data['objetivo']) {
+                return $pesoIndicador;
+            } else {
+                return round(($pesoIndicador * $data['resultado']) / $data['objetivo'], 4);
+            }
+        }
+
+        return 0;
 
     }
 
-    protected function getPesoIndicador(int $indicadorId): float
+    protected function getIndicador(int $indicadorId): void
     {
-        $this->pesoIndicador = $this->indicador->findOrFail($indicadorId)->peso_por_periodo ?? 0;
-        return $this->pesoIndicador;
+        $indicador = $this->indicador->findOrFail($indicadorId);
+        $this->pesoIndicador = $indicador->peso_por_periodo ?? 0;
+        $this->tipoAvaliacao = $indicador->tipo_avaliacao;
     }
 
     protected function getStatusResultado(float $pontuacaoObtida): string
