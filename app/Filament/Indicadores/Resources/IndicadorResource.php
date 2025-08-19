@@ -30,6 +30,7 @@ class IndicadorResource extends Resource
             ->columns(12)
             ->schema([
                 static::getDescricaoFormField(),
+                static::getTipoAvalicaoFormField(),
                 static::getTipoValorMetaFormField(),
                 static::getPesoFormField(),
                 static::getPeriodicidadeFormField(),
@@ -103,6 +104,22 @@ class IndicadorResource extends Resource
             ->autocomplete(false)
             ->required()
             ->maxLength(255);
+    }
+
+    public static function getTipoAvalicaoFormField(): Forms\Components\Select
+    {
+        return Forms\Components\Select::make('tipo_avaliacao')
+            ->label('Tipo de Avaliação')
+            ->columnSpan(2)
+            ->native(false)
+            ->required()
+            ->options([
+                'maior_melhor'  => 'Maior',
+                'menor_melhor' => 'Menor',
+            ])
+            ->searchPrompt('')
+            ->placeholder('')
+            ->default('%');
     }
 
     public static function getTipoValorMetaFormField(): Forms\Components\Select
