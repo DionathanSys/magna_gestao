@@ -151,7 +151,7 @@ class ResultadoResource extends Resource
                         'individual' => 'Individual',
                         'coletivo' => 'Coletivo',
                     ])
-                    ->attribute('indicador.tipo'),
+                    ->relationship('indicador', 'tipo'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
