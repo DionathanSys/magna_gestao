@@ -38,7 +38,7 @@ class ResultadosRelationManager extends RelationManager
                     ->label('Pontuação')
                     ->numeric('2', ',', '.')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('indicador.peso')
+                Tables\Columns\TextColumn::make('indicador.peso_por_periodo')
                     ->label('Peso Indicador')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
