@@ -66,7 +66,7 @@ class GestoresRelationManager extends RelationManager
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
             ])
-            ->allowDuplicates()
+            // ->allowDuplicates()
             ->emptyStateHeading('Sem gestores vinculados')
             ->emptyStateDescription('Clique no botão acima para adicionar/vincular um gestor.');
     }
