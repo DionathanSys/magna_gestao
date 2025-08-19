@@ -23,7 +23,7 @@ class ListResultados extends ListRecords
             Actions\Action::make('add-resultado-coletivo')
                 ->label('Resultado Coletivo')
                 ->icon('heroicon-o-plus')
-                ->modalWidth(MaxWidth::Medium)
+                ->modalWidth(MaxWidth::Large)
                 ->form(function (\Filament\Forms\Form $form){
                     return $form
                         ->columns(6)
