@@ -147,11 +147,11 @@ class ResultadoResource extends Resource
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('tipo')
                     ->label('Tipo')
+                    ->relationship('indicador', 'tipo')
                     ->options([
                         'individual' => 'Individual',
                         'coletivo' => 'Coletivo',
-                    ])
-                    ->relationship('indicador', 'tipo'),
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
