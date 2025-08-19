@@ -79,7 +79,8 @@ class ResultadoResource extends Resource
                     ->label('% Obtido')
                     ->formatStateUsing(fn($record, $state) => number_format(($record->pontuacao_obtida / $state) * 100, 2, ',', '.'))
                     ->suffix('%')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->state(fn($record) => match ($record->status) {
