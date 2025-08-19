@@ -28,8 +28,8 @@ class ResultadoResource extends Resource
                 static::getGestorIdFormField(),
                 static::getIndicadorIdFormField(),
                 static::getStatusFormField(),
-                static::getResultadoFormField(),
                 static::getObjetivoFormField(),
+                static::getResultadoFormField(),
                 static::getPeriodoFormField(),
             ]);
     }
@@ -50,7 +50,7 @@ class ResultadoResource extends Resource
                     ->iconColor('info')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('objetivo')
-                    ->label('Objetivo')
+                    ->label('Meta')
                     ->formatStateUsing(function($record, $state) {
                         return match($record->indicador->tipo_meta) {
                             '%' => number_format($state, 2, ',', '.') . '%',
@@ -200,7 +200,7 @@ class ResultadoResource extends Resource
     public static function getObjetivoFormField(): Money
     {
         return Money::make('objetivo')
-            ->label('Objetivo')
+            ->label('Meta')
             ->columnSpan(2)
             ->prefix(fn($record) => $record->indicador->tipo_meta ?? null)
             ->required()

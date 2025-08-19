@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Services\NotificacaoService as notify;
 use Filament\Support\Enums\IconPosition;
 use Illuminate\Support\Facades\Log;
-
+use App\Models;
 class ResultadosRelationManager extends RelationManager
 {
     protected static string $relationship = 'resultados';
@@ -38,9 +38,9 @@ class ResultadosRelationManager extends RelationManager
                     ->iconColor('info')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('objetivo')
-                    ->label('Objetivo')
-                    ->formatStateUsing(function($record, $state) {
-                        return match($record->indicador->tipo_meta) {
+                    ->label('Meta')
+                    ->formatStateUsing(function ($record, $state) {
+                        return match ($record->indicador->tipo_meta) {
                             '%' => number_format($state, 2, ',', '.') . '%',
                             'R$' => 'R$ ' . number_format($state, 2, ',', '.'),
                             default => $state,
@@ -49,8 +49,8 @@ class ResultadosRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('resultado')
                     ->label('Resultado')
-                    ->formatStateUsing(function($record, $state) {
-                        return match($record->indicador->tipo_meta) {
+                    ->formatStateUsing(function ($record, $state) {
+                        return match ($record->indicador->tipo_meta) {
                             '%' => number_format($state, 2, ',', '.') . '%',
                             'R$' => 'R$ ' . number_format($state, 2, ',', '.'),
                             default => $state,
@@ -116,16 +116,17 @@ class ResultadosRelationManager extends RelationManager
                         $data['gestor_id'] = $this->ownerRecord->id;
                         return $data;
                     })
-                    ->action(function (array $data) {
+                    ->using(function (\Filament\Actions\Action $action, array $data, string $model): Models\Resultado {
                         $service = new IndicadorService();
-                        $service->createResultado($data);
+                        $resultado = $service->createResultado($data);
 
                         if ($service->hasError()) {
-                            notify::error();
-                            return;
+                            notify::error(mensagem: $service->getMessage());
+                            $action->halt();
                         }
 
                         notify::success();
+                        return $resultado;
                     }),
             ])
             ->actions([
