@@ -114,6 +114,9 @@ class ResultadosRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->label('Resultado')
                     ->icon('heroicon-o-plus')
+                    ->fillForm([
+                        'gestor_id' => $this->ownerRecord->id,
+                    ])
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['gestor_id'] = $this->ownerRecord->id;
                         return $data;
