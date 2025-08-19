@@ -28,7 +28,9 @@ class IndicadorService
 
             $gestores->each(function ($gestor) use (&$data) {
                 $data['gestor_id'] = $gestor->id;
-                $this->createResultado($data);
+                if(! $this->createResultado($data)){
+                    throw new \Exception('Erro ao criar resultado para o gestor: ' . $gestor->nome);
+                }
             });
 
             $this->setSuccess('Resultado coletivo criado com sucesso!');
