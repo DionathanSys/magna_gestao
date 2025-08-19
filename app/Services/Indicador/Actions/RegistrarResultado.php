@@ -11,7 +11,7 @@ class RegistrarResultado
 
     public function handle(array $data): Models\Resultado
     {
-        // $this->validate($data);
+        $this->validate($data);
         dd($data);
         return Models\Resultado::create($data);
     }
@@ -21,13 +21,13 @@ class RegistrarResultado
         Log::debug(__METHOD__, ['data' => $data]);
 
         Validator::make($data, [
-            'gestor_id'         => 'required',
-            'indicador_id'      => 'required',
+            'gestor_id'         => 'required|exists:gestores,id',
+            'indicador_id'      => 'required|exists:indicadores,id',
             'periodo'           => 'required|date_format:Y-m-d',
             'objetivo'          => 'required|numeric|min:0',
             'resultado'         => 'required|numeric|min:0.01',
             'pontuacao_obtida'  => 'required|numeric|min:0',
-            'status'            => 'required|in:atingido,nao_atingido',
+            'status'            => 'required|in:atingido,parcialmente_atingido,nao_atingido',
         ])->validate();
     }
 
