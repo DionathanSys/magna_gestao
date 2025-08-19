@@ -129,7 +129,25 @@ class ResultadoResource extends Resource
             ])
             ->defaultGroup('gestor.nome')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                    'n_atingido' => 'Não Atingido',
+                    'parcialmente_atingido' => 'Parcialmente Atingido',
+                    'atingido' => 'Atingido',
+                ]),
+                Tables\Filters\SelectFilter::make('gestor_id')
+                    ->label('Gestor')
+                    ->relationship('gestor', 'nome')
+                    ->preload()
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('indicador_id')
+                    ->label('Indicador')
+                    ->relationship('indicador', 'descricao')
+                    ->preload()
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('tipo')
+                    ->label('Tipo')
+                    ->relationship('indicador', 'tipo'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
