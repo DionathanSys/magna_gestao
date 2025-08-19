@@ -182,6 +182,9 @@ class ResultadoResource extends Resource
             ->relationship('gestor', 'nome')
             ->preload()
             ->live(onBlur: true)
+            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                $set('indicador_id', null);
+            })
             ->searchable();
     }
 
