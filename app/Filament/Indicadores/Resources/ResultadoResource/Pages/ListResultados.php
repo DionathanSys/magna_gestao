@@ -23,10 +23,10 @@ class ListResultados extends ListRecords
             Actions\Action::make('add-resultado-coletivo')
                 ->label('Resultado Coletivo')
                 ->icon('heroicon-o-plus')
-                ->modalWidth(MaxWidth::Small)
+                ->modalWidth(MaxWidth::Medium)
                 ->form(function (\Filament\Forms\Form $form){
                     return $form
-                        ->columns(4)
+                        ->columns(6)
                         ->schema([
                             Forms\Components\Select::make('indicador_id')
                                 ->label('Indicador')
@@ -37,8 +37,10 @@ class ListResultados extends ListRecords
                                     ->pluck('descricao', 'id'))
                                 ->required(),
                             ResultadoResource::getObjetivoFormField()
-                                ->columnSpan(2),
+                                ->columnSpan(1),
                             ResultadoResource::getResultadoFormField()
+                                ->columnSpan(1),
+                            ResultadoResource::getPeriodoFormField()
                                 ->columnSpan(2),
                         ]);
                 })
