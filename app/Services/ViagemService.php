@@ -138,6 +138,7 @@ class ViagemService
                             'data_competencia'      => $dataFim,
                             'data_inicio'           => $row[$header['data_inicio']],
                             'data_fim'              => $row[$header['data_fim']],
+                            'motivo_divergencia'    => MotivoDivergenciaViagem::SEM_OBS->value,
                         ]
                     );
 
