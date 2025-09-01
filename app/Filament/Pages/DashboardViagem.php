@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
 class DashboardViagem extends Page
 {
 
-
     protected static string $view = 'filament.pages.dashboard-viagem';
 
     protected static ?string $navigationGroup = 'Viagens';

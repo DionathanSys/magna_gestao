@@ -178,7 +178,7 @@ class ItemOrdemServicoResource extends Resource
         return Forms\Components\Select::make('servico_id')
             ->label('Serviço')
             ->required()
-            ->relationship('servico', 'descricao')
+            ->relationship('servico', 'descricao', fn(Builder $query) => $query->where('is_active', true))
             ->createOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
             ->editOptionForm(fn(Forms\Form $form) => ServicoResource::form($form))
             ->searchable()
