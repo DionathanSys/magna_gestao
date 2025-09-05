@@ -209,7 +209,7 @@ class ItemOrdemServicoResource extends Resource
             ->label('Posição')
             ->requiredIf('controla_posicao', true)
             ->minLength(2)
-            ->maxLength(5);
+            ->maxLength(7);
     }
 
     public static function getObersavacaoFormField(): Forms\Components\Textarea
